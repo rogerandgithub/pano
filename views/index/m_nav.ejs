@@ -1,0 +1,186 @@
+<style type="text/css">
+    #mobileNav{
+        width: 100%;
+        height: 0.88rem;
+        background: #fff;
+        position: fixed;
+        top: 0;
+        left: 0;
+        text-align: center;
+        line-height: 0.88rem;
+        font-size: 0.34rem;
+        z-index: 999;
+    }
+    #mobileNav .menu{
+        width: 0.36rem;
+        height: 100%;
+        padding-left: 0.2rem;
+    }
+    #mobileNav .logo{
+        width: 0.67rem;
+        margin-top: 0.19rem;
+        margin-left: 0.5rem;
+    }
+    #mobileNav .menu img,#mobileNav .logo img{
+        display: block;
+        width: 100%;
+    }
+    #mobileNav .menu img{
+        padding-top: 0.26rem;
+    }
+    #mobileNav .togglelang{
+        width: 0.46rem;
+        padding-right: 0.2rem;
+        height: 100%;
+        color: #000;
+    }
+    #mobileNav .togglelang img{
+        display: block;
+        width: 100%;
+        padding-top: 0.22rem;
+    }
+    #sideNav{
+        position: fixed;
+        right: 0;
+        top: 0;
+        width: 5.2rem;
+        height: 100%;
+        background: #f3f3f3;
+        z-index: 9991;
+        box-shadow: -5px 0 10px rgba(0,0,0,0.5);
+    }
+    #sideNav .menulist a{
+        display: block;
+        width: 100%;
+        height: 0.88rem;
+        border-bottom: 1px solid #fff;
+        font-size: 0.26rem;
+        color: #000;
+        line-height: 0.88rem;
+        text-indent: 0.5rem;
+    }
+    .toggle-transition {
+        transition: all 0.5s ease;
+        -webkit-transition: all 0.5s ease;
+        opacity: 1;
+        right: 0;
+    }
+    .toggle-enter, .toggle-leave{
+        opacity: 0;
+        right: -5.2rem;
+    }
+</style>
+<div id="mobileNav">
+    <a href="javascript:;" class="fl menu" v-touch:tap="toggleMenu">
+       <img src="http://qncdn.sz-sti.com/mobile/main/menu.png" />
+    </a> 
+    <a href="/mobile/<%=lang%>" class="fl logo">
+       <img src="http://qncdn.sz-sti.com/mobile/main/logo.png" />
+    </a> 
+    <a href="javascript:;" class="fr togglelang" @click.stop="togglelang()" v-text="langtext.<%=lang%>">
+        <!-- <img :src="langlist.<%=lang%>" /> -->
+    </a>
+</div>
+
+<div id="sideNav" transition="toggle" v-show="showmenu">
+    <ul class="menulist">
+        <li><a href="/mobile/rslidar/<%=lang%>" v-text="lang.navtop.rslidar">多线激光雷达</a></li>
+        <li><a href="/mobile/threedimensional/<%=lang%>" v-text="lang.navtop.threedimensional">静态激光雷达</a></li>
+        <li><a href="/mobile/company/<%=lang%>" v-text="lang.navtop.company">企业介绍</a></li>
+        <li><a href="/mobile/contact/<%=lang%>" v-text="lang.navtop.contact">联系我们</a></li>
+        <li><a href="/mobile/news/<%=lang%>" v-text="lang.navtop.news">新闻中心</a></li>
+        <li><a href="/mobile/resource/<%=lang%>" v-text="lang.navtop.resource">资源中心</a></li>
+        <li><a href="/mobile/recruitment/<%=lang%>" v-text="lang.navtop.recruit">人才招聘</a></li>
+    </ul>
+</div>
+
+<div id="backtop" @click.stop="backtops">
+    <img src="http://qncdn.sz-sti.com/top.png">
+</div>
+<script src="/index/js/jquery-2.2.4.min.js"></script>
+<script src="/index/js/Vue.min.js"></script>
+<script src="/index/js/hammer.js"></script>
+<script src="/index/js/vue-touch.min.js"></script>
+<script src="/index/js/smooth-scroll.min.js"></script>
+<script type="text/javascript">
+    var backtop = new Vue({
+        el: '#backtop',
+        methods: {
+            backtops: function(){
+                $.smoothScroll({
+                    scrollTarget: '#wrapper',
+                    speed: 1200
+                });
+            }
+        }
+    })
+    var mobileNav = new Vue({
+        el: '#mobileNav',
+        data: {
+            lang: '<%=lang%>',
+            langlist: {'cn':'/index/images/icon/chinese.png','en':'/index/images/icon/english.png'},
+            langtext: {'cn':'CN','en':'EN'}
+        },
+        methods: {
+            toggleMenu: function(){
+                sideNav.showmenu=!sideNav.showmenu;
+            },
+            togglelang: function(){
+                if(this.lang == 'cn'){
+                    location.href = location.href.replace('/cn', '/en');
+                }else{
+                    location.href = location.href.replace('/en', '/cn');
+                }
+            }
+        }
+    })
+    var sideNav = new Vue({
+        el: '#sideNav',
+        data: {
+            showmenu: false,
+            lang: <%-include("nav_lang_"+lang, {lang: lang})%>,
+        }
+    })
+</script>
+<script type="text/javascript">
+    (function (doc, win) {
+        var docEl = doc.documentElement,
+            resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+            recalc = function () {
+                var clientWidth = docEl.clientWidth;
+                if (!clientWidth) return;
+                if(clientWidth>=750){
+                    docEl.style.fontSize = '100px';
+                }else{
+                    docEl.style.fontSize = 100 * (clientWidth / 750) + 'px';
+                }
+            };
+
+        if (!doc.addEventListener) return;
+        win.addEventListener(resizeEvt, recalc, false);
+        doc.addEventListener('DOMContentLoaded', recalc, false);
+    })(document, window);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

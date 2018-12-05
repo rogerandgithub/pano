@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>深圳速腾聚创科技有限公司</title>
+    <link rel="stylesheet" href="/index/css/m_common.css" type="text/css"> 
+    <link rel="stylesheet" href="/index/css/m_resource.css" type="text/css"> 
+</head>
+<body>
+    <%include m_nav%>
+    <%include loading%>
+    <div id="wrapper">
+        <div class="section_1"></div>
+        <div class="section_2">
+            <div class="resourceLists" v-show="togglemenu">
+                <div class="list" v-for="list in datas.resource.c1[0][1]">
+                    <a class="title" :href="list[0]" v-text="list[1]"></a>
+                    <span class="size" v-text="list[2]"></span>
+                </div>
+            </div>
+            <div class="resourceLists" v-show="!togglemenu">
+                <div class="list" v-for="list in datas.resource.c2[0][1]">
+                    <a class="title" :href="list[0]" v-text="list[1]"></a>
+                    <span class="size" v-text="list[2]"></span>
+                </div>
+            </div>
+        </div>
+        <div id="bottommenu">
+            <a class="fl" :class="{active:togglemenu}" @click="toggle">RS-LiDAR</a>
+            <a class="fl" :class="{active:!togglemenu}" @click="toggle">Seeker</a>
+        </div>
+    </div>
+    
+    <script type="text/javascript">
+        var wrapper = new Vue({
+            el: '#wrapper',
+            data: {
+                datas: <%-include("mobile_lang_"+lang, {lang: lang})%>,
+                togglemenu: <%=name?false:true%>,
+                name: '<%=name%>'
+            },
+            methods: {
+                toggle: function(){
+                    this.togglemenu = !this.togglemenu;
+                }
+            }
+        })
+    </script>
+</body>
+</html>

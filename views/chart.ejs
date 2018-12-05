@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>STi 速腾聚创 子账户管理</title>
+		<meta charset="utf-8">
+        <meta name="format-detection" content="telephone=no">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="/css/suteng.css">
+        <script src="<%=cdnJsPath%>/zepto.min.js"></script>
+        <script src="/js/template-native.js"></script>
+        <script src="/js/dist/echarts.js"></script>
+        <script>
+            template.config('openTag','<#');
+            template.config('closeTag','#>');
+            require.config({
+                paths: {
+                    echarts: '/js/dist'
+                }
+            })
+        </script>
+    </head>
+    
+    <body id="management">
+        <div id="chart" class="sti-container">
+            <div id="databox">
+
+                <div class="head">
+                    <i class="icon pagelogo"></i>
+                    <span>子账号管理</span>
+                    <button class="btn btn-primary bloodred btn-chart" onclick="location.href='/management'">返回主页</button>
+                </div>
+
+                <div class="content">
+                    <div class="charts">
+                        <div id="dayscene"></div>
+                        <div id="daygroup"></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+        <script>
+        $(function(){
+
+
+
+            function checkDate(){
+
+                var dateStr = "<%=today%>";
+                var temp = dateStr.split('-');
+                var m = parseInt(temp[1],10)-1;
+                var now = new Date(parseInt(temp[0],10),m,parseInt(temp[2],10));
+                 
+                var index = 0;
+        
+                var data = [];
+                for(var i = 10;i > 0; i--){
+                    var n = new Date(now.getFullYear(),now.getMonth(),now.getDate() - i + 1);
+                    data.push((n.getMonth() + 1) + "/" + n.getDate());
+                }
+                return data;
+            }
+
+            function init(){  
+                require(
+                [
+                    'echarts',
+                    'echarts/chart/line' // 使用柱状图就加载bar模块，按需加载
+                ], function(chart){
+
+                    var dayscene = chart.init(document.getElementById('dayscene')); 
+                    var option = {
+                        title : {
+                            text: '日上传场景总数'
+                        },
+                        tooltip : {
+                            trigger: 'axis'
+                        },
+                        // legend: {
+                        //     data:['最高气温','最低气温']
+                        // },
+                        toolbox: {
+                            show : false,
+                            feature : {
+                                mark : {show: false},
+                                dataView : {show: false, readOnly: false},
+                                magicType : {show: false, type: ['line', 'bar']},
+                                restore : {show: false},
+                                saveAsImage : {show: false}
+                            }
+                        },
+                        calculable : true,
+                        xAxis : [
+                            {
+                                type : 'category',
+                                boundaryGap : false,
+                                data : checkDate()
+                            }
+                        ],
+                        yAxis : [
+                            {
+                                type : 'value',
+                                axisLabel : {
+                                    formatter: '{value}'
+                                }
+                            }
+                        ],
+
+                        series : [
+                            {
+                                name:'日上传场景总数',
+                                type:'line',
+                                smooth:true,
+                                itemStyle: {
+                                    normal: {
+                                        lineStyle: {
+                                            color : '#1aaffc'
+                                        },
+                                        borderColor: '#48b',
+                                        borderWidth: 2,
+                                        color: '#fff',
+                                        areaStyle: {
+                                            color: (function (){
+                                                var zrColor = require('zrender/tool/color');
+                                                return zrColor.getLinearGradient(
+                                                    0, 200, 0, 400,
+                                                    [[0, '#1aaffc'],[0.8, 'rgba(255,255,255,0.1)']]
+                                                )
+                                            })()
+                                        }
+                                    }
+                                },
+                                data:JSON.parse('[<%=day_scene_data%>]'),
+                                markPoint : {
+                                    itemStyle: {
+                                        normal: {
+                                            color : '#48b'
+                                        }
+                                    },
+                                    data : [
+                                        {type : 'max', name: '最大值'},
+                                        {type : 'min', name: '最小值'}
+                                    ]
+                                },
+                                markLine : {
+                                    itemStyle: {
+                                        normal: {
+                                            color : '#077ab6'
+                                        }
+                                    },
+                                    data : [
+                                        {type : 'average', name: '平均值'}
+                                    ]
+                                }
+                            }
+                        ]
+                    };
+                    dayscene.setOption(option);
+
+
+                    var daygroup = chart.init(document.getElementById('daygroup')); 
+                    var option = {
+                        title : {
+                            text: '日上传漫游总数'
+                        },
+                        tooltip : {
+                            trigger: 'axis'
+                        },
+                        // legend: {
+                        //     data:['最高气温','最低气温']
+                        // },
+                        toolbox: {
+                            show : false,
+                            feature : {
+                                mark : {show: false},
+                                dataView : {show: false, readOnly: false},
+                                magicType : {show: false, type: ['line', 'bar']},
+                                restore : {show: false},
+                                saveAsImage : {show: false}
+                            }
+                        },
+                        calculable : true,
+                        xAxis : [
+                            {
+                                type : 'category',
+                                boundaryGap : false,
+                                data : checkDate()
+                            }
+                        ],
+                        yAxis : [
+                            {
+                                type : 'value',
+                                axisLabel : {
+                                    formatter: '{value}'
+                                }
+                            }
+                        ],
+
+                        series : [
+                            {
+                                name:'日上传漫游总数',
+                                type:'line',
+                                smooth:true,
+                                itemStyle: {
+                                    normal: {
+                                        lineStyle: {
+                                            color : '#2ec7c9'
+                                        },
+                                        borderColor: '#02999b',
+                                        borderWidth: 2,
+                                        color: '#fff',
+                                        areaStyle: {
+                                            color: (function (){
+                                                var zrColor = require('zrender/tool/color');
+                                                return zrColor.getLinearGradient(
+                                                    0, 200, 0, 400,
+                                                    [[0, '#2ec7c9'],[0.8, 'rgba(255,255,255,0.1)']]
+                                                )
+                                            })()
+                                        }
+                                    }
+                                },
+                                data:JSON.parse('[<%=day_group_data%>]'),
+                                markPoint : {
+                                    itemStyle: {
+                                        normal: {
+                                            color : '#02999b'
+                                        }
+                                    },
+                                    data : [
+                                        {type : 'max', name: '最大值'},
+                                        {type : 'min', name: '最小值'}
+                                    ]
+                                },
+                                markLine : {
+                                    itemStyle: {
+                                        normal: {
+                                            color : '#02999b'
+                                        }
+                                    },
+                                    data : [
+                                        {type : 'average', name: '平均值'}
+                                    ]
+                                }
+                            }
+                        ]
+                    };
+                    daygroup.setOption(option);
+                });
+            }
+            init();
+        });
+        </script>
+    </body>
+</html>

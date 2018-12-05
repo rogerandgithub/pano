@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title><%=lang=='cn'?'新闻中心':'MEDIA'%></title>
+    <link rel="stylesheet" href="/index/css/common.css" type="text/css"> 
+    <link rel="stylesheet" href="/index/css/news.css" type="text/css"> 
+</head>
+<body>
+    <%include nav%>
+    <%include footer%>
+    <div id="navtop">
+        <navtop>
+            <div class="three-menu" slot="navbottom">
+                <div class="link">
+                    <a href="/web/news/<%=lang%>" class="button active">
+                        <span v-text="'<%=lang%>'=='cn'?'媒体报道':'Media'"></span>
+                    </a>
+                </div>
+            </div>
+        </navtop>
+    </div>
+    <div class="news-wrap" id="newswrap">
+        <div class="banner"></div>
+        <div class="robosense-about">
+            <div class="search"></div>
+            <div class="wrap">
+                <div class="list-wrapper" v-for="list in newlist">
+                    <div class="newlist clearfix">
+                        <div class="fl">
+                            <img :src="list.thumpic" />
+                        </div>
+                        <div class="fr">
+                            <h4 class="title" v-text="list.title" @click="checkall($index)"></h4>
+                            <div class="mt_30">
+                                <span class="edit" v-text="list.edit"></span>
+                                <span class="edittime" v-text="list.edittime"></span>
+                            </div>
+                            <div class="content">
+                                <p>{{list.content}}</p>
+                                <a href="javascript:;" @click="checkall($index)" class="checkall" target="_blank"><%=lang=='cn'?'阅读全文':'Read more'%></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="footnav">
+        <footnav></footnav>
+    </div>
+
+    <script type="text/javascript" src="/index/js/jquery.js"></script>
+    <script type="text/javascript">
+        var navtop = new Vue({
+            el: '#navtop',
+        });
+        var footnav = new Vue({
+            el: '#footnav'
+        });
+        var newswrap = new Vue({
+            el: '#newswrap',
+            data: {
+                newsdata: <%include article%>,
+                newlist:''
+            },
+            methods: {
+                init: function(){
+                    this.newlist = this.newsdata.news.newslist;
+                },
+                checkall: function(index){
+                    if(this.newlist[index].newinfo == "false"){
+                       window.open(this.newlist[index].link); 
+                    }else{
+                        window.open('/web/newinfo/' + index + '/' + '<%=lang%>');
+                    }
+                }
+            }
+        });
+        newswrap.init();
+    </script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>STi 速腾聚创 授权确认页面</title>
+		<meta charset="utf-8">
+        <meta name="format-detection" content="telephone=no">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="/css/common.css?v=<%=version%>">
+		<style>
+            input{
+                border: none;
+                -webkit-box-flex: 1;
+                font-size: 13px;
+                color: #545454;
+                height: 35px;
+                border-bottom: 1px solid #e3e3e3;
+                width: 100%;
+            }
+            .icon.logo{
+                width:138px;
+                height:62px;
+            }
+		</style>
+	</head>
+	<body>
+    <script src="<%=cdnJsPath%>/zepto.min.js?v=<%=libVersion%>"></script>
+    <script src="../js/sti-common.min.js?<%=version%>"></script>
+    <%include alert%>
+    <div>
+        <div class="vertical vcenter" style="padding-top:30px;">
+            <div class="icon logo"></div>
+            <div class="" style="margin:20px 20px;">本页面由速腾聚创公司开发，是否授权绑定</div>
+        </div>
+            <div class="buttons">
+                <a class="btn red flex1 btn-login" href="http://<%=redirect_uri%>?code=<%=code%>" style="line-height:40px;text-align:center;margin-top:20px;">确认</a>
+            </div>
+        <div class="horizontal padding10 hend" style="margin-top:30px">
+            <a class="btn tiny grayborder transparent hcenter vcenter marginright10 borderbox" href="http://www.sz-sti.com">官方网站</a>
+            <a class="btn tiny grayborder transparent hcenter vcenter borderbox" href="/downloads" >APP下载</a>
+        </div>
+    </div>
+    </body>
+</html>

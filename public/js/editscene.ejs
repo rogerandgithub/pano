@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>STi 速腾聚创-后台</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- bootstrap -->   
+    <link href="/css/newitem/bootstrap.css" rel="stylesheet" />
+    <link href="/css/newitem/bootstrap-responsive.css" rel="stylesheet" />
+    <link href="/css/newitem/bootstrap-overrides.css" type="text/css" rel="stylesheet" />
+
+    <!-- libraries -->
+    <link href="/css/newitem/font-awesome.css" type="text/css" rel="stylesheet" />
+
+    <!-- global styles -->
+    <link href="/css/newitem/layout.css" rel="stylesheet" type="text/css" />
+    <link href="/css/newitem/elements.css" rel="stylesheet" type="text/css" />
+    <link href="/css/newitem/icons.css" rel="stylesheet" type="text/css" />
+    <link href="/css/newitem/common.css" rel="stylesheet" type="text/css" /> 
+    <link href="/css/newitem/main.css" rel="stylesheet" type="text/css" />  
+    <link href="/css/newitem/reset.css" rel="stylesheet" type="text/css" /> 
+    <style type="text/css">
+        *{
+            -webkit-tap-highlight-color: transparent;  
+            -webkit-appearance: none; 
+        }
+    </style>
+    <script src="/js/newitem/vue.min.js"></script>
+</head>  
+<body @click="hidepopt">
+
+    <%include loading%>
+    <%include toast%>
+    <div id="wrapper">
+        <!-- sidebar -->
+        <%include nav%>
+        <%include menu%>
+        <!-- end sidebar -->
+
+        <div class="content scene-content">
+
+            <div id="menubox">
+                <menulist>
+                    <div class="btn-group" slot="orderPano" @click.stop>
+                        <a class="scene-lists" @click.prevent="open=!open">{{thescene}}&nbsp;&nbsp;<i class="icon-sort-down"></i></a>
+                        <ul class="scene-menu scenelists" transition="onehalf" v-show="open">
+                            <li v-for="scene in scenes"><a @click.prevent="loadscene($index)"><i class="icon-time"></i>{{scene.name}}</a></li>
+                        </ul>
+                    </div>
+                </menulist>
+            </div>
+
+            <div id="scene-wrapper" class="scene-wrapper">
+                <div id="sti-pano" :style="{height:sceneheight}" class="scene-one"></div>
+            </div>
+
+            <div id="ictoast" class="toast-content" transition="onehalf" v-show="showictoast">
+                <input id="file_input" type="file" v-on:change="filechange">
+                <span @click="cancel"><i class="close-pop ico-close"></i></span>
+                <div class="toast-center-wrapper">
+                    <div>
+                        <div class="m-header">
+                            <h6 class="toast-title text-center">预览</h6>
+                        </div>
+                        <div id="qrcoder" class="toast-body">
+                            <img :src="src"/>
+                            <div class="mask" :style="{width: maskwidth}"></div>
+                        </div>
+                        <div class="m-footer">
+                            <div class="text-center">
+                                <button class="btn btn-cancel btn-lg" type="button" @click="cancel">取消</button>
+                                <button class="btn btn-primary btn-setter btn-lg" type="submit" @click="upload">确定</button> 
+                            </div>
+                        </div>
+                    </div>
+                </div>   
+            </div>
+        </div>
+    </div>
+    <script src="/js/sti-tour.js"></script>
+    <script src="/js/qnuploader.js"></script>
+    <script type="text/javascript">
+
+        loading1.isshow = false;    
+
+        var scenewrapper = new Vue({
+            el: '#scene-wrapper',
+            data:{
+                sceneheight: '100%'
+            }
+        }) 
+
+        embedpano({swf:"/tour.swf", xml:"/scenesitem/editxml?key=<%=scene.key%>&width=<%=infowidth%>&is_360=true&ie="+ictoast.ishtml5, target:"sti-pano", html5:"<%=platform.indexOf('ie')==-1?'prefer':'never'%>", id:"stipano", passQueryParameters:true});
+
+        var menubox = new Vue({
+            el: '#menubox',
+            data: {
+                open: false,
+                scenes: []
+            },
+            computed: {
+                thescene: function(){
+                    for(var i in this.scenes){
+                        if(ictoast.scene.id == this.scenes[i].id)return this.scenes[i].name;
+                    }
+                }
+            },
+            methods: {
+                hidepopt: function(){
+                    nav.display = false;
+                    menubox.open = false;
+                },
+                loadscene: function(index){
+                    this.open = false;
+                    ictoast.krpano.call('loadscene("scene'+this.scenes[index].name+this.scenes[index].id+'",null,MERGE,BLEND(0.5))');
+                    ictoast.scene.key = this.scenes[index].key;
+                    ictoast.scene.id = this.scenes[index].id;
+                },
+                init: function(){
+                    var _this = this;
+                    $.get('/pano/scenes/<%=group.id%>', function(scenes){
+                        for(var i in scenes){
+                            _this.scenes.push(scenes[i]);
+                        }
+                        nav.current.pano = true;
+                    });
+                }
+            }
+        });
+
+        menubox.init();
+
+        var ictoast = new Vue({
+            el: '#ictoast',
+            data: {
+                showictoast: false,
+                panoname: '',
+                src: '',
+                atv: 0, 
+                ath: 0,
+                ishtml5: true,
+                group: {
+                    key: '<%=group.key%>',
+                    id: '<%=group.id%>'
+                },
+                scene: {
+                    key: '<%=scene.key%>',
+                    id: '<%=scene.id%>'
+                },
+                krpano: document.getElementById('stipano'),
+                newspot: {},
+                addspotname: ''
+            },
+            methods: {
+                show: function(){
+                    this.showictoast = true;
+                    scenewrapper.sceneheight = 0;
+                },
+                cancel: function(){
+                    scenewrapper.sceneheight = '100%';
+                    this.showictoast = false;
+                    this.krpano.call("add_img_cancel();");
+                    document.getElementById("file_input").value = '';
+                },
+                selfile: function(atv, ath){
+                    $("#file_input").click();
+                    this.atv = atv;
+                    this.ath = ath;
+                },
+                getobj: function (){
+                    var file = document.getElementById("file_input").files[0];
+                    var url = undefined;
+                    if (window.createObjectURL) {
+                        url = createObjectURL(file);
+                    }else if(window.URL){
+                        url = URL.createObjectURL(file);
+                    }else if(window.webkitURL){
+                        url = webkitURL.createObjectURL(file);
+                    }
+                    return {
+                        url: url,
+                        size: file.size,
+                        type: file.type
+                    };
+                },
+                filechange: function(){
+                    var obj = this.getobj();
+                    if(obj.type.split('/')[0]!='image'){
+                        toast.showmsg('[501] 仅支持图片类型的文件', true);
+                        this.krpano.call("add_img_cancel();");
+                        return;
+                    }
+                    if(obj.size>524288){
+                        toast.showmsg('[502] 图片大小不得大于500k', true);
+                        this.krpano.call("add_img_cancel();");
+                        return;
+                    }
+                    this.src = obj.url;
+                    this.show();
+                    this.krpano.call('add_img();');
+                },
+                upload: function(){
+                    var data = {
+                        position_x: this.ath,
+                        position_y: this.atv,
+                        scene_key: this.scene.key,
+                        groupid: this.group.id
+                    };
+                    var _this = this;
+                    $.post('/upload/slogan/token', data, function(res){
+
+                        var token = res.token;
+                        var key = res.key;
+                        var id = res.id;
+                        Q.addEvent("progress", function(p, s) {
+                            _this.maskwidth = (p==100?99:p)+'%';
+                        });
+                        Q.addEvent("putFinished", function(fsize, res, taking){
+                            var url = 'http://qncdn.sz-sti.com/'+key;
+                            var name = 'imgcomment'+id;
+                            _this.krpano.call("add_img_sure("+url+", "+id+", "+name+");");
+                            _this.showictoast = false;
+                            toast.showmsg('上传成功');
+                            scenewrapper.sceneheight = '100%';
+                        });
+                        Q.SetToken(token);
+                        Q.Upload(document.getElementById('file_input').files[0], key)
+                    });
+                },
+                add_comment: function(ath, atv, size){
+                    var _this = this;
+                    $.post('/scene/add_comment',{
+                        position_x: ath,
+                        position_y: atv,
+                        position_z: 0,
+                        reply_id: 0,
+                        scene_key: _this.scene.key,
+                        group_key: _this.group.key,
+                        is_new: 1,
+                        type: 7,//7表示马赛克
+                        is_description: 0,
+                        is_mosaic: size
+                    },
+                    function(res){
+                        toast.showmsg('['+res.code+'] '+res.msg, res.code!=0);
+                        if(res.code==0)
+                            _this.newspot[_this.addspotname] = parseInt(res.id);
+                    });
+                },
+                deleteComment: function(id,name){
+
+                    if(isNaN(id))id = this.newspot[id];
+                    var _this = this;
+
+                    $.post('/scene/delete_comment',
+                        {
+                            group_key: _this.group.key,
+                            scene_id: _this.scene.key,
+                            comment_id: id
+                        },
+                        function(res){
+                            toast.showmsg('['+res.code+'] '+res.msg, res.code!=0);
+                            if(_this.ishtml5&&res.code==0)_this.krpano.call('set(hotspot['+name+'].visible, false)');
+                        }
+                    );
+                },
+                setView: function(ath, atv){
+                    var _this = this;
+                    $.post('/scene/set_view',
+                        {
+                            key: _this.scene.key,
+                            rx:-ath,
+                            ry:-atv,
+                            is_new:1
+                        },
+                        function(res){
+                            toast.showmsg('['+res.code+'] '+res.msg, res.code!=0);
+                        }
+                    );
+                },
+                newaddSpot: function(ath, atv, arrow_type, go_scene, text){
+
+                    var data={
+                        text: text,
+                        position_x: ath,
+                        position_y: atv,
+                        position_z: 0,
+                        scene_id: this.scene.id,
+                        is_new: 1,
+                        type: arrow_type,
+                        groupkey: this.group.key,
+                        go_scene: go_scene
+                    },
+                    _this = this;
+
+                    $.post('/scene/add_spot',data,function(res){
+                        toast.showmsg('['+res.code+'] '+res.msg, res.code!=0);
+                        if(res.code==0)
+                            _this.newspot[_this.addspotname] = parseInt(res.id);
+                    });
+                },
+                deleteSpot: function(linkid,name){
+                    
+                    if(isNaN(linkid))linkid=this.newspot[linkid];
+                    var _this = this;
+
+                    $.post('/scene/delete_spot',
+                        {
+                            link_id:linkid,
+                            scene_id:_this.scene.id,
+                            scene_key:_this.scene.key,
+                            groupkey:_this.group.key
+                        },
+                        function(res){
+                            toast.showmsg('['+res.code+'] '+res.msg, res.code!=0);
+                            if(_this.ishtml5&&res.code==0)_this.krpano.call('set(hotspot['+name+'].visible, false)');
+                        }
+                    );
+                }
+            }
+        });
+
+        var body = new Vue({
+            el: 'body',
+            methods: {
+                hidepopt: function(){
+                    nav.display = false;
+                    menubox.open = false;
+                }
+            }
+        });
+
+        //krpano注册函数
+        function add_comment(ath, atv, size){
+            ictoast.add_comment(ath, atv, size);
+        }
+        function callcomment(atv, ath){
+            ictoast.selfile(atv, ath);
+        }
+        function deleteComment(id,name){
+            ictoast.deleteComment(id,name);
+        }
+        function setView(ath, atv){
+            ictoast.setView(ath, atv);
+        }
+        function newaddSpot(ath, atv, arrow_type, go_scene, text){
+            ictoast.newaddSpot(ath, atv, arrow_type, go_scene, text);
+        }
+        function deleteSpot(linkid, name){
+            ictoast.deleteSpot(linkid, name);
+        }
+        function savename(newname) {
+            ictoast.addspotname = newname;
+        }
+        function showtips(){
+            ictoast.ishtml5 = false;
+            toast.showmsg('您的浏览器版本太老了，请升级浏览器。360浏览器请切换到极速模式。')
+        }
+    </script>
+</body>
+</html>

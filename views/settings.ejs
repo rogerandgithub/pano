@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title><%=title%></title>
+        <meta charset="utf-8">
+        <meta name="format-detection" content="telephone=no">
+        <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        <link href="/css/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+        <!-- global styles -->
+        <link rel="stylesheet" type="text/css" href="/css/layout.css" />
+        <link rel="stylesheet" type="text/css" href="/css/suteng.css?v=<%=version%>">
+        <script src="/js/qrcode.min.js"></script>
+        <script src="<%=cdnJsPath%>/zepto.min.js"></script>
+        <script src="/js/jquery-latest.js"></script>
+        <script src="/js/sti-common.min.js?v=<%=version%>"></script>
+        <script src="/js/bootstrap/bootstrap.min.js"></script>
+        <script src="/js/bootstrap/bootstrap-datetimepicker.min.js" charset="UTF-8"></script>
+        <script src="/js/template-native.js?v=<%=version%>"></script>
+        <!-- bootstrap -->
+    </head>
+    <body id="settings" name="settings">
+        <!-- alert -->
+        <%include alert%>
+
+        <!-- sidebar -->
+        <%include sidebar%>
+
+        <!-- main container -->
+        <div class="content">
+            <div class="menu">
+                <a href="javascript:;" class="set trademarks"><span class="icon trademarksbg"></span><span class="title">顶部商标</span></a>
+                <a href="javascript:;" class="set bottrademarks"><span class="icon trademarksbg"></span><span class="title">底部商标</span></a>
+                <a href="javascript:;" class="set prefix"><span class="icon prefixbg"></span><span class="title">标题前缀</span></a>
+                <a href="javascript:;" class="set setlogo"><span class="icon setlogobg"></span><span class="title">设置logo</span></a>
+                <a href="javascript:;" class="set setbgsnd"><span class="icon setbgsndbg"></span><span class="title">背景音乐</span></a>
+                <a href="javascript:;" class="set setintroduction"><span class="icon introductionbg"></span><span class="title">语音播报</span></a>
+            </div>
+        </div>
+        <script type="text/javascript">
+        function addMusic(){
+            alert(111);
+        }
+        </script>
+        <script>
+        $(function(){
+
+            <%if(Date.parse(user.expiredate)>=Date.now()){%>
+
+            var MAX_HEIGHT = 300;
+            var upflag=0;
+
+            function setLogo(){
+
+
+                <%if(permission_logo==1){%>
+                    $('.alert-wrap').css('visibility','visible');
+                    <%if(!logo){%>
+                        initAlert('',{
+                            title:'上传logo',
+                            content:'<div class="middle">你目前没上传logo</div><div class="toptip" style="font-size:12px;">请上传高为60px，长不超过150px的图片</div><div id="preview" style="display:none;" class="upshow middle"><canvas id="myCanvas"></canvas></div><input type="file" id="input-file" style="display:none">',
+                            buttons:[
+                            {
+                                text:'取消'
+                            },{
+                                text:'选择文件上传',
+                                color:'red',
+                                callBack:upload
+                            }
+                            ]
+                        });
+                        $("#input-file").on('change',onlogorender);
+                    <%}else{%>
+                        initAlert('',{
+                            title:'商标图',
+                            content:'<div id="preview" class="upshow middle"><canvas id="myCanvas"></canvas></div>',
+                            // '<img class="map-img" height="100%" src="'+r.trademark+'">',
+                            buttons:[
+                            {
+                                text:'取消'
+                            },{
+                                text:'删除',
+                                color:'red',
+                                callBack:function(){
+                                    if(confirm('确定要删除吗？')){
+                                        $.ajax({
+                                            type:'POST',
+                                            url:'/logo/set',
+                                            async:false,
+                                            data:{
+                                            },
+                                            success:function(res){
+                                                if(res.code==0){
+                                                    location.reload();
+                                                }else{
+                                                    alert(res.msg);
+                                                }
+                                            }
+                                        });
+                                    }
+                                }
+                            }]
+                        });
+                        render('<%=logo%>');
+                    <%}%>
+                <%}else{%>
+                $('.alert-wrap').css('visibility','visible');
+                    initAlert('',{
+                        title:'设置logo',
+                        content:'<div class="middle">该功能为代理商的权限</div>',
+                        buttons:[
+                        {
+                            text:'确定',
+                            color:'red',
+                            callBack:function(){
+                                $('.alert-wrap').css('visibility','hidden');
+                            }
+                        }]
+                    });
+                <%}%>
+            }
+
+
+            function onlogorender(){
+
+                var src = getObjectUrl(document.getElementById("input-file").files[0]), cutflag=0;
+                render(src);
+                $('.middle').hide();
+                $('.toptip').hide();
+                $('.preview').show();
+                
+                if($('.alertbox .buttons').html().indexOf('保存')==-1){
+                    $('.alertbox .buttons').append('<button class="btn red flex1 btn-up">保存</button>');
+                    render(src, null, 50);
+                    $('.btn-up').on('click',function(){
+                        var data = document.getElementById("myCanvas").toDataURL('image/png').replace("data:image/png;base64,", "");
+                        upnewlogo(data);
+                    });
+                }
+            }
+
+
+            function upnewlogo(data){
+                if(hasup){
+                    return;
+                }
+                hasup=1;
+                $.post('/upload/logotoken',{},function(res){
+                    // console.log(res);
+                    // return;
+                    var token = res.token;
+                    var key = res.key;
+                    Q.addEvent("progress", function(p, s) {
+                        update((p==100?99:p)+'%', s);
+                    });
+                    Q.addEvent("putFinished", function(fsize, res, taking) {
+                        uploadSpeed = 1024 * fsize / (taking * 1000);
+                        if (uploadSpeed > 1024) {
+                            formatSpeed = (uploadSpeed / 1024).toFixed(2) + "Mb\/s";
+                        } else {
+                            formatSpeed = uploadSpeed.toFixed(2) + "Kb\/s";
+                        };
+                        var res = {
+                            key: res.key,
+                            hash: res.hash,
+                            speed: formatSpeed
+                        };
+                        update('上传成功');
+                        location.reload();
+                    });
+                    Q.SetToken(token);
+                    Q.Upload_base64(data, key);
+                });
+            };
+
+
+            
+            function setPrefix(){
+                $('.alert-wrap').css('visibility','visible');
+                <%if(!permission_prefix){%>
+                    initAlert('',{
+                        title:'设置标题前缀',
+                        content:'<div class="middle">抱歉，你没有此权限，请联系我们销售经理</div>',
+                        buttons:[
+                        {
+                            text:'确定',
+                            color:'red',
+                            callBack:function(){
+                                $('.alert-wrap').css('visibility','hidden');
+                            }
+                        }]
+                    });
+                <%}else{%>
+                initAlert('',{
+                    title:'设置标题前缀',
+                    content:'<input class="input-prefix" placeholder="例如:某某地产" value="<%=prefix%>"/>',
+                    buttons:[
+                    {
+                        text:'取消'
+                    },{
+                        text:'确定',
+                        className:'btn-title-confirm',
+                        color:'red',
+                        callBack:function(){
+                            $.ajax({
+                                url:'/settings/global_prefix',
+                                type:'POST',
+                                async:false,
+                                data:{
+                                    prefix:$('.input-prefix').val()
+                                },
+                                timeout:1000,
+                                success:function(result){
+                                    if(result.code!=0){
+                                        alert(result.msg);
+                                    }
+                                    window.location.reload();
+                                },
+                                error:function(e){
+                                    alert(e);
+                                }
+                            })
+                        }
+                        }
+                    ]
+                });
+                <%}%>
+            }
+            
+            function setTrademark(){
+                <%if(!permission_trademark){%>
+                $('.alert-wrap').css('visibility','visible');
+                    initAlert('',{
+                        title:'设置顶部商标',
+                        content:'<div class="middle">抱歉，你没有此权限，请联系我们销售经理</div>',
+                        buttons:[
+                        {
+                            text:'确定',
+                            color:'red',
+                            className:'btn-trademark-finish',
+                            callBack:function(){
+                                setTimeout(function(){$('.alert-wrap').css('visibility','hidden');},100);
+                            }
+                        }]
+                    });
+                <%}else{%>
+                    location.href='/trademarks';
+                <%}%>
+            }
+
+                <%
+                    var ad=advertisement?advertisement.split('</div>'):[''];
+                    var ad1,ad2,ad3;
+                    if( ad.length>0){
+                        ad1= ad[0].split('<div>').length>1 ? (ad[0].split('<div>'))[1] : ad[0];
+                    }
+                    if( ad.length>1){
+                        ad2= ad[1].split('<div>').length>1 ? (ad[1].split('<div>'))[1] : ad[1];
+                    }
+                    if( ad.length>2){
+                        ad3= ad[2].split('<div>').length>1 ? (ad[2].split('<div>'))[1] : ad[2];
+                    }
+                %>
+
+            function setAd(){
+                $('.alert-wrap').css('visibility','visible');
+                initAlert('',{
+                    title:'设置底部广告',
+                    content:'<div><input class="input-ad-1" placeholder="联系人" value="<%=ad1%>"></div>\
+                    <div style="margin-top:5px"><input class="input-ad-2" placeholder="电话" value="<%=ad2%>"></div>\
+                    <div style="margin-top:5px"><input class="input-ad-3" placeholder="其他" value="<%=ad3%>"></div>',
+                    buttons:[
+                    {
+                        text:'取消'
+                    },{
+                        text:'确定',
+                        className:'btn-confirm',
+                        color:'red',
+                        callBack:function(){
+                            $.ajax({
+                                url:'/settings/global_advertisement',
+                                type:'POST',
+                                async:false,
+                                data:{
+                                    advertisement:'<div>'+$('.input-ad-1').val()+'</div>'+
+                                    '<div>'+$('.input-ad-2').val()+'</div>'+
+                                    '<div>'+$('.input-ad-3').val()+'</div>'
+                                },
+                                timeout:1000,
+                                success:function(result){
+                                    if(result.code!=0){
+                                        alert(result.msg);
+                                    }
+                                    window.location.reload();
+                                },
+                                error:function(e){
+                                    alert(e);
+                                }
+                            })
+                        }
+                        }
+                    ]
+                });
+            }
+
+            function setIntroductionStatus(){
+                $('.alert-wrap').css('visibility','visible');
+                initAlert('',{
+                    title:"切换语音播报状态",
+                    content:'<div class="middle"><i class="icon <%if(!permission_introduction){%>introoff<%}else{%>introon<%}%>"></i></div>',
+                    buttons:[
+                    {
+                        text:'取消'
+                    },{
+                        text:'确认切换',
+                        className:'btn-confirm',
+                        color:'red',
+                        callBack:function(){
+                            $.ajax({
+                                url:'/settings/change_introduction_status',
+                                type:'POST',
+                                async:false,
+                                data:{},
+                                timeout:1000,
+                                success:function(result){
+                                    if(result.code!=0){
+                                        alert(result.msg);
+                                    }
+                                    window.location.reload();
+                                },
+                                error:function(e){
+                                    alert(e);
+                                }
+                            })
+                        }
+                        }
+                    ]
+                });
+            }
+            function setBgsndStatus() {
+                $('.alert-wrap').css('visibility','visible');
+                initAlert('',{
+                    title:"切换背景音乐播报状态",
+                    content:'<div class="middle"><i class="icon <%if(!permission_bgsnd){%>bgsndoff<%}else{%>bgsndon<%}%>"></i></div><button class="add_bgmusic" onclick="<%if(Date.parse(user.expire)<Date.now()){%>callexpire()<%}else{%>callsetmusic()<%}%>">自定义背景音乐</button>',
+                    buttons:[
+                    {
+                        text:'取消'
+                    },{
+                        text:'确认切换',
+                        className:'btn-confirm',
+                        color:'red',
+                        callBack:function(){
+                            $.ajax({
+                                url:'/settings/change_bgsnd_status',
+                                type:'POST',
+                                async:false,
+                                data:{},
+                                timeout:1000,
+                                success:function(result){
+                                    if(result.code!=0){
+                                        alert(result.msg);
+                                    }
+                                    window.location.reload();
+                                },
+                                error:function(e){
+                                    alert(e);
+                                }
+                            })
+                        }
+                        }
+                    ]
+                });
+            }
+
+            
+
+            function setglobeltramark(e){
+                $.ajax({
+                    type:'GET',
+                    url:'/trademarks?type=json',
+                    success:function(r){
+                        $('.alert-wrap').css('visibility','visible');
+                        console.log(r.trademark);
+                        if(!r.trademark){                    
+                            initAlert('',{
+                                title:'上传全局商标图',
+                                content:'<div class="middle">你目前没上传商标图</div><div class="toptip" style="font-size:12px;">请上传正方形图片</div><div id="preview" style="display:none;" class="upshow middle"><canvas id="myCanvas"></canvas></div><input type="file" id="input-file" style="display:none">',
+                                buttons:[
+                                {
+                                    text:'取消'
+                                },{
+                                    text:'选择文件上传',
+                                    color:'red',
+                                    callBack:upload
+                                }
+                                ]
+                            });
+                            $("#input-file").on('change',function(){
+                                onchangerender(false);
+                            });
+                        }else{   
+                            var cutflag=0;      
+                            var hasup=0;  
+                            var data; 
+                            initAlert('',{
+                                title:'商标图',
+                                content:'<div id="preview" class="upshow middle"><canvas id="myCanvas"></canvas></div>',
+                                // '<img class="map-img" height="100%" src="'+r.trademark+'">',
+                                buttons:[
+                                {
+                                    text:'取消'
+                                },{
+                                    text:'裁切',
+                                    color:'red',
+                                    callBack:function(){
+                                        if(cutflag){
+                                            render(r.trademark);
+                                        }else{
+                                            render(r.trademark,1);
+                                        }
+                                        cutflag = !cutflag;
+                                    }
+                                },{
+                                    text:'删除',
+                                    color:'red',
+                                    callBack:function(){
+                                        if(confirm('确定要删除吗？')){
+                                            $.ajax({
+                                                    type:'POST',
+                                                    url:'/trademarks/delete',
+                                                    async:false,
+                                                    data:{
+                                                        type:"global"
+                                                    },
+                                                    success:function(res){
+                                                        if(res.code==0){
+                                                            setTimeout(function(){$('.alert-wrap').css('visibility','hidden');},100);
+                                                        }else{
+                                                            alert(res.msg);
+                                                        }
+                                                    }
+                                            });
+                                        }
+                                    }
+                                }]
+                            });
+                            render(r.trademark, upflag);
+                        }
+                    }
+                });
+            }
+
+            
+            function setglobelbottramark(e){
+                $('.alert-wrap').css('visibility','visible');
+                <%if(!itccontactstel){%>                    
+                    initAlert('',{
+                        title:'上传全局底部商标图',
+                        content:'<div class="middle">你目前没上传底部背景图</div><div class="toptip" style="font-size:12px;">请上传正方形图片和圆形图片</div><div id="preview" style="display:none;" class="upshow middle"><canvas id="myCanvas"></canvas></div><input type="file" id="input-file" style="display:none">',
+                        buttons:[
+                        {
+                            text:'取消'
+                        },{
+                            text:'选择文件上传',
+                            color:'red',
+                            callBack:upload
+                        }
+                        ]
+                    });
+                    $("#input-file").on('change',function(){
+                        onchangerender(true)
+                    });
+                <%}else{%>   
+                    var cutflag=0;      
+                    var hasup=0;  
+                    var data; 
+                    initAlert('',{
+                        title:'底部背景图',
+                        content:'<div id="preview" class="upshow middle"><canvas id="myCanvas"></canvas></div>',
+                        buttons:[
+                        {
+                            text:'取消'
+                        },{
+                            text:'裁切',
+                            color:'red',
+                            callBack:function(){
+                                if(cutflag){
+                                    render('<%=itccontactstel%>');
+                                }else{
+                                    render('<%=itccontactstel%>',1);
+                                }
+                                cutflag = !cutflag;
+                            }
+                        },{
+                            text:'删除',
+                            color:'red',
+                            callBack:function(){
+                                if(confirm('确定要删除吗？')){
+                                    $.ajax({
+                                            type:'POST',
+                                            url:'/settings/delete_trademarks',
+                                            async:false,
+                                            data:{
+                                                type:"global"
+                                            },
+                                            success:function(res){
+                                                if(res.code==0){
+                                                    setTimeout(function(){$('.alert-wrap').css('visibility','hidden');},100);
+                                                    location.reload();
+                                                }else{
+                                                    alert(res.msg);
+                                                }
+                                            }
+                                    });
+                                }
+                            }
+                        }]
+                    });
+                    render('<%=itccontactstel%>', upflag);
+                <%}%>
+            }
+
+            function onchangerender(is_bot){
+
+                var src = getObjectUrl(document.getElementById("input-file").files[0]), cutflag=0;
+                render(src,0,null,is_bot);
+                $('.middle').hide();
+                $('.toptip').hide();
+                $('.preview').show();
+                
+                if($('.alertbox .buttons').html().indexOf('保存')==-1){
+                    // console.log($('.alertbox .buttons').html().indexOf('保存'));
+                    $('.alertbox .buttons').append('<div class="buttons clearfix"><button class="btn red flex1 btn-cut">裁切</button><button class="btn red flex1 btn-up">保存</button></div>');
+                    $('.btn-cut').on('click',function(){
+                        if(cutflag){
+                            render(src,0,null,is_bot);
+                        }else{
+                            render(src,1,null,is_bot);
+                        }
+                        cutflag = !cutflag;
+                    });
+                    $('.btn-up').on('click',function(){
+                        var data = document.getElementById("myCanvas").toDataURL('image/png').replace("data:image/png;base64,", "");
+                        upnewtrademark(data,is_bot);
+                    });
+                }
+            }
+
+
+            function render(src, flag, height, is_bot){
+
+                var image = new Image();
+                image.crossOrigin = "*";
+
+                image.onload = function(){
+
+                    var canvas = document.getElementById("myCanvas");
+                    var ctx = canvas.getContext("2d");
+
+                    if(height){
+                        canvas.height = height;
+                        console.log(height);
+                        canvas.width = image.width*height/image.height;
+                    }else{
+                        canvas.height = image.height;
+                        canvas.width = image.width;
+                    }
+                    
+                    var margintop = (300-(image.height*(450/image.width)))/2;
+                    margintop=image.height*(450/image.width)>300?0:margintop;
+                    $(canvas).css({'margin-top':margintop})
+
+
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                    if (flag) {
+
+                        canvas.height = 300;
+                        canvas.width = 300;
+                        $(canvas).css({'margin-top':0})
+
+                        var pattern = ctx.createPattern(image, "no-repeat");
+                        if (image.height < image.width) {
+                            ctx.translate(0, 0);
+                            ctx.scale(MAX_HEIGHT/image.height,MAX_HEIGHT/image.height);
+                            ctx.arc(image.height/2, image.height/2, Math.min(image.width, image.height) / 2, 0, 2 * Math.PI);
+                        }else{
+                            ctx.translate(0, 0);
+                            ctx.scale(MAX_HEIGHT/image.width,MAX_HEIGHT/image.width);
+                            ctx.arc(image.width/2, image.width/2, Math.min(image.width, image.height) / 2, 0, 2 * Math.PI);
+                        };
+                        ctx.fillStyle = pattern;
+                        ctx.fill();  
+
+                    }else{
+
+                        // if(image.height > image.width) {
+                            // image.height *= MAX_HEIGHT / image.width;
+                            // image.width = MAX_HEIGHT;
+                            if(height){
+                                ctx.drawImage(image, 0, 0, image.width*height/image.height, height);
+                            }else{
+                                ctx.drawImage(image, 0, 0, image.width, image.height);
+                            }
+                            
+                        // }else{
+                            // image.width *= MAX_HEIGHT / image.height;
+                            // image.height = MAX_HEIGHT;
+                            // ctx.drawImage(image, 0, 0, image.width, image.height);
+                        // }
+                    }
+
+                    $(".upshow").show();
+                    $(".tramarkbox").hide();
+                    if(flag){
+                        var data = document.getElementById("myCanvas").toDataURL('image/png').replace("data:image/png;base64,", "");
+                        if(confirm('已裁切成圆形，是否重新上传?')){
+                            upnewtrademark(data,is_bot);
+                        };
+                    }
+                };
+
+                image.src = src;
+            };
+
+            function upnewtrademark(data, is_bot){
+
+                if(hasup)return;
+                var url;hasup=1;
+
+                url = is_bot?'/upload/bottrademark/token':'/upload/trademark/token';
+
+                $.post(url,{
+                    type:'global'
+                },function(res){
+                    var token = res.token;
+                    var key = res.imgurl;
+                    Q.addEvent("progress", function(p, s) {
+                        update((p==100?99:p)+'%', s);
+                    });
+                    Q.addEvent("putFinished", function(fsize, res, taking) {
+                        uploadSpeed = 1024 * fsize / (taking * 1000);
+                        if (uploadSpeed > 1024) {
+                            formatSpeed = (uploadSpeed / 1024).toFixed(2) + "Mb\/s";
+                        } else {
+                            formatSpeed = uploadSpeed.toFixed(2) + "Kb\/s";
+                        };
+                        var res = {
+                            key: res.key,
+                            hash: res.hash,
+                            speed: formatSpeed
+                        };
+                        update('上传成功');
+                        location.reload();
+                    });
+                    Q.SetToken(token);
+                    Q.Upload_base64(data, key);
+                });
+            };
+
+
+            function getObjectUrl(file){
+                var url = undefined;
+                if (window.createObjectURL) {
+                    url = createObjectURL(file);
+                }else if(window.URL){
+                    url = URL.createObjectURL(file);
+                }else if(window.webkitURL){
+                    url = webkitURL.createObjectURL(file);
+                }
+                return url;
+            }
+            
+            function up(groupkey){
+                if(document.getElementById('input-file').files.length==0){
+                    return;
+                }
+                if(hasup){
+                    return;
+                }
+                hasup=1;
+                $.post('/upload/maptoken',{groupkey:groupkey},function(res){
+                    var token = res.token;
+                    var key = res.key;
+                    Q.addEvent("progress", function(p, s) {
+                        update((p==100?99:p)+'%', s);
+                    });
+                    //上传完成回调
+                    //fsize:文件大小(MB)
+                    //res:上传返回结果，默认为{hash:<hash>,key:<key>}
+                    Q.addEvent("putFinished", function(fsize, res, taking) {
+                        uploadSpeed = 1024 * fsize / (taking * 1000);
+                        if (uploadSpeed > 1024) {
+                            formatSpeed = (uploadSpeed / 1024).toFixed(2) + "Mb\/s";
+                        } else {
+                            formatSpeed = uploadSpeed.toFixed(2) + "Kb\/s";
+                        };
+                        var res = {
+                            key: res.key,
+                            hash: res.hash,
+                            speed: formatSpeed
+                        };
+                        update('上传成功');
+                        hasup=0;
+                        setTimeout(function(){$('.alert-wrap').css('visibility','hidden');},100);
+                    });
+                    Q.SetToken(token);
+                    Q.Upload(document.getElementById('input-file').files[0], key);
+                });
+            };
+
+            // $('.btn-changepassword').on('click',changePassword);
+            // $('.btn-ad').on('click',setAd);
+            // $('.btn-trademark').on('click',setTrademark);
+            $('.prefix').on('click',setPrefix);
+            $('.trademarks').on('click',setglobeltramark);
+            $('.bottrademarks').on('click',setglobelbottramark);
+            // $('.btn-changenickname').on('click',changeNickname);
+            $('.setlogo').on('click',setLogo);
+            $('.setintroduction').on('click',setIntroductionStatus);
+            $('.setbgsnd').on('click',setBgsndStatus);
+
+            <%}else{%>
+                function callexpire(){
+                    $('.alert-wrap').css('visibility','visible');
+                    initAlert('',{
+                        title:'提示',
+                        content:'<div class="middle">该功能为商业版功能，开通请联系销售经理</div>',
+                        buttons:[
+                        {
+                            text:'取消'
+                        }
+                        ]
+                    });
+                }  
+                $('.prefix').on('click',callexpire);
+                $('.trademarks').on('click',callexpire);
+                $('.bottrademarks').on('click',callexpire);
+                // $('.btn-changenickname').on('click',changeNickname);
+                $('.setlogo').on('click',callexpire);
+                $('.setintroduction').on('click',callexpire);
+                $('.setbgsnd').on('click',callexpire);
+            <%}%>
+        });
+        </script>
+        <script type="text/javascript">
+            <%if(bgmusic){%>    
+            function toggleplay(){
+                var audio = $('#bg_music');
+                if(audio[0].paused){
+                    audio[0].play();
+                    $('#play_bgmusic').attr('src','/images/pause.png');
+                }else{
+                    audio[0].pause();
+                    $('#play_bgmusic').attr('src','/images/play.png');
+                }
+            }
+            <%}%>
+
+            function callsetmusic(){
+                <%if(bgmusic){%>       
+                initAlert('',{
+                    title:'设置背景音乐',
+                    content:'<div class="middle"><img style="width: 60px;cursor:pointer;" id="play_bgmusic" src="/images/play.png"/></div>',
+                    buttons:[
+                    {
+                        text:'取消'
+                    },{
+                        text:'删除',
+                        color:'red',
+                        callBack:delete_bgmusic
+                    }
+                    ]
+                });
+                $('#play_bgmusic').on('click',toggleplay);
+                <%}else{%>             
+                initAlert('',{
+                    title:'上传背景音乐',
+                    content:'<div class="middle">你目前没上传背景音乐</div><input type="file" onchange="uploadmusic()" id="input-file" style="display:none">',
+                    buttons:[
+                    {
+                        text:'取消'
+                    },{
+                        text:'选择文件上传',
+                        color:'red',
+                        callBack:upload
+                    }
+                    ]
+                });
+                <%}%>
+            }
+
+            function delete_bgmusic(){
+                if(confirm('确定要删除吗？')){
+                    $.ajax({
+                            type:'POST',
+                            url:'/settings/delete_bgmusic',
+                            async:false,
+                            data:{
+                                type:"global"
+                            },
+                            success:function(res){
+                                if(res.code==0){
+                                    alert(res.msg);
+                                    location.reload();
+                                }else{
+                                    alert(res.msg);
+                                }
+                            }
+                    });
+                }
+            }
+
+            function uploadmusic(){
+                var file = $('#input-file')[0].files[0];
+                // if(file.type.indexOf("mp3") == -1&&file.type.indexOf("wma") == -1&&file.type.indexOf("wav") == -1&&file.type.indexOf("ogg") == -1){
+                //     alert('不支持的文件类型');
+                // }
+                var data = {
+                    type:"global",
+                    name:file.name
+                }
+                $.post('/upload/music/token', data, function(res){
+                    if(res.code!=0){
+                        alert(res.msg);
+                        return;
+                    }
+
+                    var token = res.token;
+                    var key = res.musicurl;
+                    Q.addEvent("progress", function(p, s) {
+                        update((p==100?99:p)+'%', s);
+                    });
+                    Q.addEvent("putFinished", function(fsize, res, taking) {
+                        uploadSpeed = 1024 * fsize / (taking * 1000);
+                        if (uploadSpeed > 1024) {
+                            formatSpeed = (uploadSpeed / 1024).toFixed(2) + "Mb\/s";
+                        } else {
+                            formatSpeed = uploadSpeed.toFixed(2) + "Kb\/s";
+                        };
+                        var res = {
+                            key: res.musicurl,
+                            hash: res.hash,
+                            speed: formatSpeed
+                        };
+                        update('上传成功');
+                        hasup=0;
+                        location.reload();
+                    });
+                    Q.SetToken(token);
+                    Q.Upload(document.getElementById('input-file').files[0], key);
+                });
+            }
+
+        </script>
+        <%if(bgmusic){%>    
+        <video id="bg_music" controls="" style="display:none;" name="media"><source src="<%=bgmusic%>" type="audio/mpeg"></video>
+        <%}%>
+    </body>
+</html>

@@ -1,0 +1,19 @@
+{
+	"domain": "wx.sz-sti.com",
+	"ios-version": "2.6.1",
+
+	"android-app-address": "http://7xiljm.com1.z0.glb.clouddn.com/app/houseApp2.5.6.apk",
+    "android-version" : "16",
+    "android-version-name" : "V2.5.6",
+    "android-app-description" : "1.修复分享时图片无法显示的bug\n2.优化用户名显示",
+    "android-app-size" : "23.2M",
+
+    "ipano2-ios-version":"1.0.5",
+    "ipano2-android-version":"1.0.2",
+
+    "android-version-2":"3",
+    "android-app-address-2" : "http://7xiljm.com5.z0.glb.clouddn.com/ipano2_v1.0.2.apk",
+    "android-version-name-2" : "V1.0.2",
+    "android-app-description-2" : "1.本地预览展示优化\n2.扫描时自动连接设备wifi\n3.添加wifi设置项,可以实现多设备切换\n4.修复已知bug",
+    "android-app-size-2" : "22.4M"
+}

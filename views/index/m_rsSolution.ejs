@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>深圳速腾聚创科技有限公司</title>
+    <link rel="stylesheet" href="/index/css/m_common.css" type="text/css"> 
+    <link rel="stylesheet" href="/index/css/m_rsSolution.css" type="text/css"> 
+    <%if(lang=='en'){%>
+        <style type="text/css">
+            #wrapper .section .textbox p{
+                text-align: center;
+            }
+        </style>
+    <%}%>
+</head>
+<body>
+    <%include m_nav%>
+    <%include loading%>
+    <div id="wrapper">
+        <div class="section section_1">
+            <div class="textbox">
+                <span class="title" v-text="datas.rsSolution.main.section_1.title"></span>
+                <p v-text="datas.rsSolution.main.section_1.info"></p>
+                <a href="javascript:;" @click="check(0)" v-text="datas.rsSolution.main.section_1.btn"></a>
+            </div>
+        </div>
+        <div class="section section_2">
+            <div class="textbox">
+                <span class="title" v-text="datas.rsSolution.main.section_2.title">机器人环境感知</span>
+                <p v-text="datas.rsSolution.main.section_2.info">在机器人领域，机器人获取局部三维环境信息是为了帮助自己判断并选取后续行进路线。如果要使设计出的移动机器人能够完全自主地应对复杂、未知的环境，使机器人具备精细的环境感知能力就显得至关重要...</p>
+                <a href="javascript:;" @click="check(1)" v-text="datas.rsSolution.main.section_2.btn">了解详情</a>
+            </div>
+        </div>
+        <div class="section section_3">
+            <div class="textbox">
+                <span class="title" v-text="datas.rsSolution.main.section_3.title">无人机测绘</span>
+                <p v-text="datas.rsSolution.main.section_3.info">机载激光雷达技术作为一种重要的航空遥感技术，已经被越来越多的学者所关注。在未来的航空遥感领域，机载激光雷达将成为主流之一。</p>
+                <a href="javascript:;" @click="check(2)" v-text="datas.rsSolution.main.section_3.btn">了解详情</a>
+            </div>
+        </div>
+
+        <div id="bottommenu">
+            <a class="fl" href="/mobile/rslidar/<%=lang%>" v-text="datas.rsSolution.threeMenu.introduction"></a>
+            <a class="fl active" href="/mobile/rslidar/solution/<%=lang%>" v-text="datas.rsSolution.threeMenu.solution"></a>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        var wrapper = new Vue({
+            el: '#wrapper',
+            data: {
+                datas: <%-include("mobile_lang_"+lang, {lang: lang})%>
+            },
+            methods: {
+                check: function(index){
+                    location.href = '/mobile/rssolution/' + index + '/' + '<%=lang%>';
+                }
+            }
+        })
+    </script>
+</body>
+</html>

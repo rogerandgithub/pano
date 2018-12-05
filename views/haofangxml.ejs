@@ -1,0 +1,173 @@
+<krpano version="1.18" title="<%=describe%>" onstart="startup();" showerrors="false" tileserver="<%=group_info[0].pic%>">
+
+    <include url="../../skin/vtourskin.xml" />
+
+    <!-- set skin settings: bingmaps? gyro? thumbnails? tooltips? -->
+    <skin_settings maps="false"
+                   maps_zoombuttons="false"
+                   gyro="true"
+                   title="true"
+                   thumbs="true"
+                   thumbs_width="122" thumbs_height="82" thumbs_padding="10" thumbs_crop="0|40|1220|820"
+                   thumbs_opened="true"
+                   thumbs_text="true"
+                   thumbs_dragging="true"
+                   thumbs_onhoverscrolling="true"
+                   thumbs_scrollbuttons="false"
+                   thumbs_scrollindicator="false"
+                   thumbs_loop="false"
+                   tooltips_thumbs="true"
+                   tooltips_hotspots="false"
+                   tooltips_mapspots="false"
+                   loadscene_flags="MERGE"
+                   loadscene_blend="BLEND(0.5)"
+                   controlbar_offset="20"
+    />
+
+    <!-- set optional skin logo url -->
+    <layer name="skin_logo" url="" scale="0.25" opened_onclick="openurl('...',_blank);" />
+    <action name="startup">
+        if(startscene === null, copy(startscene,scene[0].name));
+        loadscene(get(startscene), null, MERGE); skin_showthumbs();
+    </action>
+
+    <data name="bottom_html">
+        <p><%=group_info[0].text1%></p>
+        <p><%=group_info[0].text2%></p>
+        <p><%=group_info[0].text3%></p>
+    </data>
+
+
+    <!-- 底部广告图 -->
+    <hotspot name="bottom_background"
+             url="http://qncdn.sz-sti.com/images/tools/bottom.png"
+             enabled="true"
+             keep="true"
+             visible=""
+             handcursor="false"
+             ath="0" atv="90" rx="0.0" ry="0.0" rz="0.0"
+             width="510" height="510"
+             distorted="true"
+             ondown="skin_view_change_with_hotspot();"
+             />
+    <hotspot name="bottom_trademark"
+             url="%SWFPATH%/plugins/textfield.swf"
+             css="text-align:center; color:#494949; font-family:黑体; text-align:center;  font-size:40px;"
+             enabled="true"
+             keep="true"
+             shadowangle="45" shadowrange="4.0"
+             handcursor="false"
+             background="false"
+             ath="0" atv="90" rx="0.0" ry="0.0" rz="0.0"
+             distorted="true"
+             html="data:bottom_html"
+             />
+
+    <!-- 顶部广告图 -->
+    <hotspot name="top_trademark" 
+             type="image"
+             url="<%=group_info[0].top_logo%>"
+             waittime="1"
+             keep="true"
+             devices="all"
+             handcursor="false"
+             ath="0" atv="-90" rx="0.0" ry="0.0" rz="0.0"
+             width="360" height="360"
+             distorted="true"
+             ondown="skin_view_change_with_hotspot();"
+             />
+
+    <!-- 右键菜单 -->
+    <contextmenu fullscreen="false"
+                native="false"
+                enterfs="全屏查看"
+                exitfs="退出全屏"
+                touch="true"
+                versioninfo="false"
+                >
+    </contextmenu>
+
+    //顶部导航条
+    <layer name="login_bar" keep="true" type="container" bgcolor="0xffffff" bgalpha="0.5" align="lefttop" width="100%" height="50" x="0" y="0" y_opened="20" y_closed="-42" zorder="3">
+
+        <layer name="scene_title" url="%SWFPATH%/plugins/textfield.swf" align="righttop" edge="righttop" width="100%" height="50" autoheight="true" y="20%" enabled="false" background="false" border="false" css="text-align:center; color:#494949; font-family:黑体;  font-size:24px;" visible="true" html="<%=describe%>" />
+
+        //左上角logo
+        <layer  name="logo"   
+                type="image"
+                style="sprtestyle"
+                crop="431|185|140|53"
+                handcursor="false"
+                align="left"
+                x="15"   y="0"  scale="0.4" 
+                />
+    </layer>
+
+    <%for(i in group_info){%>
+        <scene name="scene<%=group_info[i].name%>" title="<%=group_info[i].name%>" lat="" lng="" heading="" onstart="" thumburl="<%=group_info[i].pic%>negx.jpg">
+
+        <image type="CUBE" tilesize="512">
+            <front url="%$tileserver%posx.jpg" flip="" />
+            <down url="%$tileserver%negy.jpg" flip="" rotate="-90" />
+            <left url="%$tileserver%posz.jpg" flip="" />
+            <back url="%$tileserver%negx.jpg" flip="" />
+            <up url="%$tileserver%posy.jpg" flip="" rotate="90" />
+            <right url="%$tileserver%negz.jpg" flip="" />
+        </image>
+
+        <!-- 自动旋转设置 -->
+        <autorotate enabled="false"
+                    waittime="0.5"
+                    accel="1.0"
+                    speed="12.0"
+                    horizon="0.0"
+                    tofov="off"
+                    />
+
+        //浏览量背景
+        <layer name="view_bg" style="sprtestyle" crop="325|292|66|40" handcursor="false"  align="rightbottom"  x="50" y="15" scale="0.5" />
+
+
+        <%if(group_info[i].cfov!=null){%>
+            <layer name="skin_compass" type="container" bgalpha="0" bgcolor="0x000000" align="lefttop" width="120" height="120" x="15" y="90">
+                //罗盘
+                <layer  name="skin_plate"   
+                        type="image"
+                        style="sprtestyle"
+                        crop="368|16|142|142"
+                        handcursor="false"
+                        width="120"
+                        height="120"
+                        align="center"
+                        visible="true"
+                        />
+                <layer  name="skin_<%=group_info[i].name%>_needle"   
+                        type="image"
+                        url="http://qncdn.sz-sti.com/images/needle.png"
+                        handcursor="false"
+                        width="120"
+                        parent="skin_plate"
+                        height="120"
+                        align="center"
+                        visible="true"
+                        />
+            </layer>
+            <events name="compass_<%=group_info[i].name%>_change" keep="false" 
+                    onviewchange="add(layer[skin_<%=group_info[i].name%>_needle].rotate,get(view.hlookat),<%=group_info[i].cfov%>);
+                        ifnot(device.mobile,set(layer[skin_<%=group_info[i].name%>_needle].scale, 0.7);set(layer[skin_plate].scale, 0.7);set(layer[skin_compass].y, 40);set(layer[skin_compass].x, -10), set(layer[contrl_bar].y, 0);set(layer[sound_container].y, 0))"
+                    />
+        <%}%>
+
+
+        <layer name="scene_views" url="%SWFPATH%/plugins/textfield.swf" align="rightbottom" width="100%" height="80" x="50" y="35" edge="lefttop" enabled="false" background="false" border="false" css="text-align:left; color:#ffffff; font-family:黑体;  font-size:15px;" visible="true" html="1" />
+    </scene>
+    <%}%>
+
+    <krpano devices="mobile">
+        <layer name="login_bar" height="80">
+            <layer name="scene_title" height="80"  x="-150" y="28%" css="font-size:30px;text-align:left;"/>
+            //左上角logo
+            <layer  name="logo" x="15" scale="0.6" />
+        </layer>
+    </krpano>
+</krpano>

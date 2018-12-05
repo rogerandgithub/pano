@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<title>多线实时激光雷达-应用领域</title>
+	<link type="text/css" rel="stylesheet" href="/index/css/rslidar-application.css" />
+</head>
+<body>
+    <%include nav%>
+    <%include footer%>
+    <div id="navtop" class="header">
+        <navtop>
+		    <ul id="item-menu" slot="item-menu">
+				<li class="back">&#215;</li>
+				<li class="next-btn icon-angle-right">></li>
+				<li class="prev-btn icon-angle-left"><</li>
+			</ul>
+          	<div class="three-menu" slot="navbottom">
+	            <div class="link">
+	                <a href="/web/rslidar/<%=lang%>" class="button">
+	                    <span class="line line-top"></span>
+	                    <span class="line line-right"></span>
+	                    <span class="line line-bottom"></span>
+	                    <span class="line line-left"></span>
+	                    <span v-text="threeMenu.introduction"></span>
+	                </a>
+	            </div>
+	            <div class="link">
+	                <a href="/web/rslidar-application/<%=lang%>#portfolio" class="button active">
+	                    <span class="line line-top"></span>
+	                    <span class="line line-right"></span>
+	                    <span class="line line-bottom"></span>
+	                    <span class="line line-left"></span>
+	                    <span v-text="threeMenu.applications"></span>
+	                </a>
+	            </div>
+	            <div class="link">
+	                <a href="/web/rslidar-software/<%=lang%>" class="button">
+	                    <span class="line line-top"></span>
+	                    <span class="line line-right"></span>
+	                    <span class="line line-bottom"></span>
+	                    <span class="line line-left"></span>
+	                    <span v-text="threeMenu.service"></span>
+	                </a>
+	            </div>
+          	</div>
+        </navtop>
+    </div>
+	<div id="pages">
+		<div id="portfolio" class="page rslidarApplication">
+			<div class="spacer"></div>
+			<div class="item bigswordfish content_1">		
+				<div class="bg"></div>
+				<div class="info">
+					<h2 v-text="portfoliodata.rslidarApplication.content1.header[0]"></h2>
+					<p class="transformen" v-text="portfoliodata.rslidarApplication.content1.header[1]"></p>
+					<p class="robosensethin" v-text="portfoliodata.rslidarApplication.content1.header[2]"></p>
+					<div class="btn-group">
+						<button class="viewdetails" v-text="portfoliodata.rslidarApplication.content1.header[3]"></button>
+						<button class="scrolldown" v-text="portfoliodata.rslidarApplication.content1.header[4]"></button>
+					</div>
+				</div>
+				<div class="content content1">
+					<div class="wrapper clearfix">
+						<div class="content-pic fl"><img src="http://qncdn.sz-sti.com/images/rslidar-application/perception.jpg?v=1" /></div>
+						<div class="content-info fr">
+			                <p class="first" v-text="portfoliodata.rslidarApplication.content1.content[0]"></p>
+			                <div v-for="data in portfoliodata.rslidarApplication.content1.content[1]">
+			                	<h4 v-text="data[0]"></h4>
+				                <p class="mt_10" v-text="data[1]"></p>
+			                </div>
+			            </div>
+					</div>
+				</div>
+			</div>
+			<div class="item formstudio delay-1 content_2">
+				<div class="bg"></div>
+				<div class="info">
+					<h2 v-text="portfoliodata.rslidarApplication.content2.header[0]"></h2>
+					<p class="transformen" v-text="portfoliodata.rslidarApplication.content2.header[1]"></p>
+					<p class="robosensethin" v-text="portfoliodata.rslidarApplication.content2.header[2]"></p>
+					<div class="btn-group">
+						<button class="viewdetails" v-text="portfoliodata.rslidarApplication.content2.header[3]"></button>
+						<button class="scrolldown" v-text="portfoliodata.rslidarApplication.content2.header[4]"></button>
+					</div>
+				</div>
+				<div class="content content2">
+					<div class="wrapper clearfix">
+						<div class="content-pic fl" style="width:50%;"><img src="http://qncdn.sz-sti.com/images/rslidar-application/environment.jpg?v=1" /></div>
+			            <div class="content-info fr" style="width:46%;">
+			                <p class="first" v-text="portfoliodata.rslidarApplication.content2.content[0]"></p>
+			                <div v-for="data in portfoliodata.rslidarApplication.content2.content[1]">
+			                	<h4 class="jiacolor" v-text="data[0]"></h4>
+				                <p class="mt_10" v-text="data[1]"></p>
+			                </div>
+			            </div>
+					</div>
+				</div>
+			</div>
+			<div class="item logosoftheworld delay-2 content_3">
+				<div class="bg"></div>
+				<div class="info">
+					<h2 v-text="portfoliodata.rslidarApplication.content3.header[0]"></h2>
+					<p class="transformen" v-text="portfoliodata.rslidarApplication.content3.header[1]"></p>
+					<div class="btn-group">
+						<button class="viewdetails" v-text="portfoliodata.rslidarApplication.content3.header[2]"></button>
+						<button class="scrolldown" v-text="portfoliodata.rslidarApplication.content3.header[3]"></button>
+					</div>			
+				</div>
+				<div class="content content3">
+					<div class="wrapper clearfix">
+						<div class="content-pic fl"><img src="http://qncdn.sz-sti.com/images/rslidar-application/autofly_small.jpg" /></div>
+			            <div class="content-info fr">
+			                <p class="first" v-text="portfoliodata.rslidarApplication.content3.content"></p>
+			            </div>
+					</div>
+				</div>
+			</div>
+			<div class="spacer"></div>
+		</div>
+	</div>
+
+	<script type="text/javascript" src="/index/js/aaa.js"></script>
+	<script type="text/javascript" src="/index/js/bbb.js"></script>
+	<script type="text/javascript">
+        var navtop = new Vue({
+            el: '#navtop',
+            data: {
+                threeMenu: ''
+            }
+        });
+        var footnav = new Vue({
+            el: '#footnav'
+        });
+        var portfolio = new Vue({
+            el: '#portfolio',
+            data: {
+                portfoliodata: <%-include("lang_"+lang, {lang: lang})%>
+            },
+            methods: {
+                init: function(){
+                    navtop.threeMenu = this.portfoliodata.rslidarApplication.threeMenu;
+                }
+            }
+        });
+        portfolio.init();
+        var navtop = new Vue({
+            el: '#navtop'
+        })
+		var flag = false;
+        $(window).load(function() {
+        	init_homepage();
+        	$(window).hashchange(); 
+        	flag = true;	
+        })
+	</script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+/*------------security----------------*/
+
+.madol-content .madol-center-wrapper{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform:translate(-50%,-60%);
+  -webkit-transform:translate(-50%,-60%);
+  -ms-transform:translate(-50%,-60%);
+  -moz-transform:translate(-50%,-60%);
+}
+.madol-content .close-security i{
+  font-size: 40px;
+  right: 10px;
+  position: absolute;
+}
+.madol-content .madol-center-wrapper form{
+  width: 300px;
+  margin:0 auto;
+}
+.madol-content .m-header i{
+  font-size: 50px;
+}
+.madol-content .m-header h6{
+  font-size: 16px;
+}
+.madol-content .modal-body input{
+  margin-bottom: 20px;
+  placeholder-color:red;
+}
+.madol-content .m-footer button{
+  padding: 10px 30px;
+  margin:0 10px;
+}
+div.preview {
+    width: 100%;
+    max-width: 100%;
+    min-height: 240px;
+    max-height: 291px;
+    background-color: #fafbfc;
+    border: 1px solid #e1e6f0;
+    border-radius: 12px;
+    padding: 10px;
+    display: table;
+    table-layout: fixed;
+}
+div.preview div {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+    padding: 10px;
+}
+div.preview a {
+    display: block;
+    margin: 15px 0;
+}
+div.preview a img {
+    max-width: 100%;
+    vertical-align: middle;
+}

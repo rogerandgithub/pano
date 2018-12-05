@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title><%=lang=='cn'?'人才招聘':'Careers'%></title>
+<link rel="stylesheet" href="/index/css/common.css" type="text/css"> 
+<link rel="stylesheet" href="/index/css/recruitment.css" type="text/css">
+<link rel="stylesheet" href="/index/css/aos.css" type="text/css">
+    <style type="text/css">
+        <%if(lang=='en'){%>
+            #recruitment .section_3 .welfareList li span{
+                display: block;
+                min-height: 60px;
+            }
+            #recruitment .section_1 .searchJob{
+                width: 800px;
+            }
+        <%}%>
+    </style>
+</head>
+<body>
+    <%include nav%>
+    <%include footer%>
+    <div id="navtop">
+        <navtop>
+            <div class="three-menu" slot="navbottom">
+                <div class="link">
+                    <a href="/web/recruitment/<%=lang%>" class="button active">
+                        <span v-text="threeMenu"></span>
+                    </a>
+                </div>
+            </div>
+        </navtop>
+    </div>
+    <div id="recruitment">
+        <div class="section_1">
+            <img class="joinUs" src="/index/images/recruitment/section1.jpg">
+            <div class="searchJob">
+                <h2 v-text="datas.recruitment.section_1.h2"></h2>
+                <p>
+                    <span v-text="datas.recruitment.section_1.span1"></span><br/>
+                    <span v-text="datas.recruitment.section_1.span2"></span>
+                </p>
+                <a class="searchAll" href="/web/recruitment/social/<%=lang%>" v-text="datas.recruitment.section_1.a"></a>
+                <div class="searchBox">
+                    <input v-model="jobname" class="keyword" :placeholder="datas.recruitment.section_1.inputplaceholder">
+                    <img @click="searchjob" class="search" width="26" src="/index/images/recruitment/search.png">
+                </div>
+            </div>
+        </div>
+        <div class="section_2">
+            <h2 v-text="datas.recruitment.section_2.h2"></h2>
+            <p v-text="datas.recruitment.section_2.p1"></p>
+            <p v-text="datas.recruitment.section_2.p2"></p>
+            <p v-text="datas.recruitment.section_2.p3"></p>
+        </div>
+        <div class="section_3">
+            <h2 v-text="datas.recruitment.section_3.h2"></h2>
+            <p v-text="datas.recruitment.section_3.p"></p>
+            <div class="welfareList">
+                <ul class="clearfix">
+                    <li aos-once="true" aos="flip-left" aos-easing="ease" aos-delay="100">
+                        <span v-text="datas.recruitment.section_3.li1"></span>
+                    </li>
+                    <li aos-once="true" aos="flip-right" aos-easing="ease" aos-delay="200">
+                        <span v-text="datas.recruitment.section_3.li2"></span>
+                    </li>
+                    <li aos-once="true" aos="flip-left" aos-easing="ease" aos-delay="300">
+                        <span v-text="datas.recruitment.section_3.li3"></span>
+                    </li>
+                    <li aos-once="true" aos="flip-right" aos-easing="ease" aos-delay="400">
+                        <span v-text="datas.recruitment.section_3.li4"></span>
+                    </li>
+                    <li aos-once="true" aos="flip-right" aos-easing="ease" aos-delay="100">
+                        <span v-text="datas.recruitment.section_3.li5"></span>
+                    </li>
+                    <li aos-once="true" aos="flip-left" aos-easing="ease" aos-delay="200">
+                        <span v-text="datas.recruitment.section_3.li6"></span>
+                    </li>
+                    <li aos-once="true" aos="flip-right" aos-easing="ease" aos-delay="300">
+                        <span v-text="datas.recruitment.section_3.li7"></span>
+                    </li>
+                    <li aos-once="true" aos="flip-left" aos-easing="ease" aos-delay="400">
+                        <span v-text="datas.recruitment.section_3.li8"></span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="section_4">
+            <div id="wrapper">
+                <div id="carousel-left">
+                    <img src="/index/images/recruitment/rally3.jpg" />
+                    <img src="/index/images/recruitment/rally1.jpg" />
+                    <img src="/index/images/recruitment/rally2.jpg" />
+                </div>
+                <div id="carousel-center">
+                    <img src="/index/images/recruitment/rally1.jpg" />
+                    <img src="/index/images/recruitment/rally2.jpg" />
+                    <img src="/index/images/recruitment/rally3.jpg" />
+                </div>
+                <div id="carousel-right">
+                    <img src="/index/images/recruitment/rally2.jpg" />
+                    <img src="/index/images/recruitment/rally3.jpg" />
+                    <img src="/index/images/recruitment/rally1.jpg" />
+                </div>
+                <a id="prev" href="#">&lsaquo;</a>
+                <a id="next" href="#">&rsaquo;</a>
+            </div>
+        </div>
+        <div class="section_5">
+            <div class="why_join"><img src="/index/images/recruitment/why_join.jpg"></div>
+            <div class="joinBox clearfix" aos-once="true" aos="slide-up" aos-easing="ease">
+                <div class="fl box">
+                    <img src="/index/images/recruitment/plane.jpg">
+                </div>
+                <div class="fl box">
+                    <div class="info">
+                        <h2 v-text="datas.recruitment.section_5.h2"></h2>
+                        <p v-text="datas.recruitment.section_5.p1"></p>
+                        <p v-text="datas.recruitment.section_5.p2"></p>
+                        <p v-text="datas.recruitment.section_5.p3"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="section_6">
+            <div class="readyBox">
+                <h2 class="title" v-text="datas.recruitment.section_6.h"></h2>
+                <p class="desc" v-text="datas.recruitment.section_6.p1"></p>
+                <div class="jobnum">
+                    <p class="num" v-text="count"></p>
+                    <p v-text="datas.recruitment.section_6.p2"></p>
+                </div>
+                <img class="map" src="/index/images/recruitment/map.jpg">
+                <div class="jobList">
+                    <ul class="clearfix">
+                        <li>
+                            <span></span>
+                            <h2 v-text="datas.recruitment.section_6.h1"></h2>
+                            <p v-text="datas.recruitment.section_6.p3"></p>
+                        </li>
+                        <li>
+                            <span></span>
+                            <h2 v-text="datas.recruitment.section_6.h2"></h2>
+                            <p v-text="datas.recruitment.section_6.p4"></p>
+                        </li>
+                        <li>
+                            <span></span>
+                            <h2 v-text="datas.recruitment.section_6.h3"></h2>
+                            <p v-text="datas.recruitment.section_6.p5"></p>
+                        </li>
+                        <li>
+                            <span></span>
+                            <h2 v-text="datas.recruitment.section_6.h4"></h2>
+                            <p v-text="datas.recruitment.section_6.p6"></p>
+                        </li>
+                        <li>
+                            <span></span>
+                            <h2 v-text="datas.recruitment.section_6.h5"></h2>
+                            <p v-text="datas.recruitment.section_6.p7"></p>
+                        </li>
+                        <li>
+                            <span></span>
+                            <h2 v-text="datas.recruitment.section_6.h6"></h2>
+                            <p v-text="datas.recruitment.section_6.p8"></p>
+                        </li>
+                        <li>
+                            <span></span>
+                            <h2 v-text="datas.recruitment.section_6.h7"></h2>
+                            <p v-text="datas.recruitment.section_6.p9"></p>
+                        </li>
+                        <li>
+                            <span></span>
+                            <h2 v-text="datas.recruitment.section_6.h8"></h2>
+                            <p v-text="datas.recruitment.section_6.p10"></p>
+                        </li>
+                    </ul>
+                </div>
+                <a class="checkAllJob" href="/web/recruitment/social/<%=lang%>" v-text="datas.recruitment.checkbtn"></a>
+            </div>
+        </div>
+    </div>
+    <div id="footnav">
+        <footnav></footnav>
+    </div>
+
+ 
+    <script src="/index/js/jquery-2.2.4.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="/index/js/smooth-scroll.min.js"></script>
+    <script src="/index/js/jquery.carouFredSel.js" type="text/javascript"></script>
+    <script src="/index/js/aos.js"></script>
+    <script type="text/javascript">
+        $(function() {
+            var bodyWid1 = $('body').width()*0.45;
+            var bodyWid2 = $('body').width()*0.6;
+            $('#carousel-left img').width(bodyWid1);
+            $('#carousel-right img').width(bodyWid1);
+            $('#carousel-center img').width(bodyWid2);
+            $('#wrapper').height($('#carousel-center img').height());
+            var $l = $('#carousel-left');
+            var $c = $('#carousel-center');
+            var $r = $('#carousel-right');
+            $l.carouFredSel({
+                auto: false,
+                items: 1,
+                direction: 'right',
+                prev: {
+                    button: '#prev',
+                    fx: 'uncover',
+                    onBefore: function() {
+                        setTimeout(function() {
+                            $c.trigger( 'prev' );
+                        }, 100);
+                    }
+                },
+                next: {
+                    fx: 'cover'
+                }
+            });
+            $c.carouFredSel({
+                auto: false,
+                items: 1,
+                prev: {
+                    onBefore: function() {
+                        setTimeout(function() {
+                            $r.trigger( 'prev' );
+                        }, 100);
+                    }
+                },
+                next: {
+                    onBefore: function() {
+                        setTimeout(function() {
+                            $l.trigger( 'next' );
+                        }, 100);
+                    }
+                }
+            });
+            $r.carouFredSel({
+                auto: false,
+                items: 1,
+                prev: {
+                    fx: 'cover'
+                },
+                next: {
+                    button: '#next',
+                    fx: 'uncover',
+                    onBefore: function() {
+                        setTimeout(function() {
+                            $c.trigger( 'next' );
+                        }, 100);
+                    }
+                }
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        var navtop = new Vue({
+            el: '#navtop',
+            data: {
+                threeMenu: ''
+            }
+        });
+        var footnav = new Vue({
+            el: '#footnav'
+        });
+        var recruitment = new Vue({
+            el: '#recruitment',
+            data: {
+                datas: <%-include("lang_"+lang, {lang: lang})%>,
+                count: '0',
+                finalcount: '',
+                lang: '<%=lang%>',
+                jobname: ''
+            },
+            methods: {
+                init: function(){
+                    navtop.threeMenu = this.datas.recruitment.threeMenu.SocialRecruitment;
+                    var _this = this;
+                    $.get('/web/join/data/'+this.lang,function(res){
+                        _this.finalcount = res.length;
+                    });
+                },
+                searchjob: function(){
+                    window.open('/web/recruitment/social/'+this.lang+'?jobname='+this.jobname);
+                }
+            }
+        });
+        AOS.init({
+            easing: 'ease-out-back',
+            duration: 1000
+        });
+        recruitment.init();
+    </script>
+    <script type="text/javascript">
+        $(function(){
+            var timer = null;
+            $(window).scroll(function(){
+                clearInterval(timer);
+                var jobnumT = $('.section_6 .jobnum').offset().top;
+                var t = document.documentElement.scrollTop || document.body.scrollTop;
+                var winH = $(window).height();
+                if ((t+winH-300) >= jobnumT) { 
+                    timer = setInterval(function(){
+                        if(recruitment.count == recruitment.finalcount){
+                            clearInterval(timer);
+                            return;
+                        }
+                        recruitment.count++;
+                    },50)
+                }
+
+            })
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>管理员账户</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
+    <!-- bootstrap -->
+    <link href="/css/supermaster/bootstrap/bootstrap.css" rel="stylesheet" />
+    <link href="/css/supermaster/bootstrap/bootstrap-responsive.css" rel="stylesheet" />
+    <link href="/css/supermaster/bootstrap/bootstrap-overrides.css" type="text/css" rel="stylesheet" />
+
+    <!-- global styles -->
+    <link rel="stylesheet" type="text/css" href="/css/supermaster/layout.css" />
+    <link rel="stylesheet" type="text/css" href="/css/supermaster/elements.css" />
+    <link rel="stylesheet" type="text/css" href="/css/supermaster/icons.css" />
+
+    <!-- libraries -->
+    <link href="/css/supermaster/lib/font-awesome.css" type="text/css" rel="stylesheet" />
+    <link href="/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+    
+    <!-- this page specific styles -->
+    <link rel="stylesheet" href="/css/supermaster/compiled/tables.css" type="text/css" media="screen" />
+    <style type="text/css">
+        .navbar-inverse .brand{padding:5px;margin-left: 0px;}
+        .loading{position: fixed;width:100%;height:100%;top: 0;left: 0;background: url(http://qncdn.sz-sti.com/images/tools/loading.gif) center no-repeat;display: none;z-index: 100;}
+        .setnickname{width: 80px;margin-bottom: 0 !important;margin-right: 10px;}
+        .icon_box{display: inline-block;width: 20px;height: 20px;cursor: pointer;background: #ffffff;background: -moz-linear-gradient(top, #ffffff 0%, #eef0f1 100%);background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#eef0f1));background: -webkit-linear-gradient(top, #ffffff 0%,#eef0f1 100%);background: -o-linear-gradient(top, #ffffff 0%,#eef0f1 100%);background: -ms-linear-gradient(top, #ffffff 0%,#eef0f1 100%);background: linear-gradient(to bottom, #ffffff 0%,#eef0f1 100%);filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#eef0f1',GradientType=0 );border: 1px solid #ccc;border-radius: 3px;}
+        .btn-box {min-width: 120px;font-size: 13px;border-radius: 4px;color: #333;padding: 5px 10px;text-align: center;box-shadow: 0px 1px 0px 0px rgba(255, 255, 255,0.2) inset, 0px 1px 0px 0px rgb(204, 204, 204);display: inline-block;border: 1px solid #e5e5e5;vertical-align: middle;}
+
+        #list_content input[type="checkbox"]{/*visibility: hidden;*/position: relative;}
+        #list_content input[type="checkbox"]:after{position: absolute;content: '';width: 30px;height: 30px;left: 0;top:0;border: 1px solid #000;z-index: 999;border-radius:5px;}
+    </style>
+<body>
+
+    <!-- alert -->
+    <%include alert%>
+
+    <!-- navbar -->
+    <%include smheader%>
+
+    <div class="loading"></div>
+
+    <!-- main container -->
+    <div class="content">
+
+        <div class="container-fluid">
+            <div id="pad-wrapper">
+                
+                <!-- products table-->
+                <!-- the script for the toggle all checkboxes from header is located in /js/supermaster/theme.js -->
+
+                <div class="row-fluid header">
+                    <h3>Users</h3>
+                    <div class="span10 pull-right">
+                        <input type="text" class="span5 search" placeholder="Type a user's name..." />
+                        <a href="javascript:;" class="btn-flat btn-search success pull-right">
+                            确定
+                        </a>
+                    </div>
+                </div>
+
+                <!-- <div class="span10 pull-right fliter">
+                    <div class="btn-group">
+                        <button class="btn glow" id="fliter">筛选排序</button>
+                        <button class="btn glow dropdown-toggle" data-toggle="dropdown">
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li data-fliter="trademark"><a href="javascript:;">商标（trademark）</a></li>
+                            <li data-fliter="prefix"><a href="javascript:;">前缀（prefix）</a></li>
+                            <li data-fliter="logo"><a href="javascript:;">标识（logo）</a></li>
+                            <li data-fliter="hidetitle"><a href="javascript:;">标题（hidetitle）</a></li>
+                        </ul>
+                    </div>
+                </div> -->
+
+                <!-- users table -->
+                <div class="table-wrapper users-table section">
+
+                    <div class="row-fluid">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th class="span4">
+                                        账户
+                                    </th>
+                                    <th class="span2">
+                                        <span class="line"></span>商标(trademark)
+                                    </th>
+                                    <th class="span2">
+                                        <span class="line"></span>前缀(prefix)
+                                    </th>
+                                    <th class="span2">
+                                        <span class="line"></span>标识(logo)
+                                    </th>
+                                    <th class="span2">
+                                        <span class="line"></span>生成子账户(permission_hidetitle)
+                                    </th>
+                                    <th class="span2">
+                                        <span class="line"></span>技术支持(permission_support)
+                                    </th>
+                                    <th class="span2">
+                                        <span class="line"></span>删除(delete)
+                                    </th>
+                                    <!-- <th class="span3 align-right">
+                                        <span class="line"></span>操作（operate）
+                                    </th> -->
+                                </tr>
+                            </thead>
+                            <tbody id="list_content">
+                                <!-- row -->
+                                <%for(i in users){%>
+                                <tr class="first">
+                                    <td>
+                                        <img src="/images/supermaster/contact-img<%=(i%2+1)%>.png" class="img-circle avatar hidden-phone" />
+                                        <a href="javascript:;" class="name"><%=users[i].name%></a>
+                                        <span class="subtext"><%=(new Date(users[i].createdAt).toLocaleDateString())%></span>
+                                    </td>
+                                    <td>
+                                        <div class="slider-frame <%if(users[i].permission_trademark==1){%>primary<%}else{%>default<%}%>">
+                                            <span data-userid='<%=users[i].id%>' data-kind="trademark" data-on="ON" data-off="OFF" class="slider-button <%if(users[i].permission_trademark==1){%>on<%}%>"><%if(users[i].permission_trademark==1){%>ON<%}else{%>OFF<%}%></span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="slider-frame <%if(users[i].permission_prefix==1){%>primary<%}else{%>default<%}%>">
+                                            <span data-userid='<%=users[i].id%>' data-kind="prefix" data-on="ON" data-off="OFF" class="slider-button <%if(users[i].permission_prefix==1){%>on<%}%>"><%if(users[i].permission_prefix==1){%>ON<%}else{%>OFF<%}%></span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="slider-frame <%if(users[i].permission_logo==1){%>primary<%}else{%>default<%}%>">
+                                            <span data-userid='<%=users[i].id%>' data-kind="logo" data-on="ON" data-off="OFF" class="slider-button <%if(users[i].permission_logo==1){%>on<%}%>"><%if(users[i].permission_logo==1){%>ON<%}else{%>OFF<%}%></span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="slider-frame <%if(users[i].permission_hidetitle==1){%>primary<%}else{%>default<%}%>">
+                                            <span data-userid='<%=users[i].id%>' data-kind="hidetitle" data-on="ON" data-off="OFF" class="slider-button <%if(users[i].permission_hidetitle==1){%>on<%}%>"><%if(users[i].permission_hidetitle==1){%>ON<%}else{%>OFF<%}%></span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="slider-frame <%if(users[i].permission_support==1){%>primary<%}else{%>default<%}%>">
+                                            <span data-userid='<%=users[i].id%>' data-kind="support" data-on="ON" data-off="OFF" class="slider-button <%if(users[i].permission_support==1){%>on<%}%>"><%if(users[i].permission_support==1){%>ON<%}else{%>OFF<%}%></span>
+                                        </div>
+                                    </td>
+                                    <td class="expiredate">
+                                        <div class="slider-frame <%if(users[i].permission_delete==1){%>primary<%}else{%>default<%}%>">
+                                            <span data-userid='<%=users[i].id%>' data-kind="delete" data-on="ON" data-off="OFF" class="slider-button <%if(users[i].permission_delete==1){%>on<%}%>"><%if(users[i].permission_delete==1){%>ON<%}else{%>OFF<%}%></span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <%}%>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- end users table -->
+                <div class="pagination pull-right">
+                    <ul>
+                        <li><a href="javascript:;" class="btn-pre">&#8249;</a></li>
+                        <li><a class="active" href="javascript:;">第<span id="cur_page">1</span>页</a></li>
+                        <li><a href="javascript:;" class="btn-next">&#8250;</a></li>
+                    </ul>
+                </div>
+                <!-- end users table -->
+            </div>
+        </div>
+    </div>
+    <!-- end main container -->
+
+    <!-- start template -->
+    <script id="users-data" type="text/html">
+        <#for(i in users){#>
+            <tr class="first">
+                <td>
+                    <img src="/images/supermaster/contact-img<#=(i%2+1)#>.png" class="img-circle avatar hidden-phone" />
+                    <a href="javascript:;" class="name"><#=users[i].name#></a>
+                    <span class="subtext"><#=users[i].createdAt#></span>
+                </td>
+                <td>
+                    <div class="slider-frame <#if(users[i].permission_trademark==1){#>primary<#}else{#>default<#}#>">
+                        <span data-userid='<#=users[i].id#>' data-kind="trademark" data-on="ON" data-off="OFF" class="slider-button<#if(users[i].permission_trademark==1){#> on<#}#>"><#if(users[i].permission_trademark==1){#>ON<#}else{#>OFF<#}#></span>
+                    </div>
+                </td>
+                <td>
+                    <div class="slider-frame <#if(users[i].permission_prefix==1){#>primary<#}else{#>default<#}#>">
+                        <span data-userid='<#=users[i].id#>' data-kind="prefix" data-on="ON" data-off="OFF" class="slider-button<#if(users[i].permission_prefix==1){#> on<#}#>"><#if(users[i].permission_prefix==1){#>ON<#}else{#>OFF<#}#></span>
+                    </div>
+                </td>
+                <td>
+                    <div class="slider-frame <#if(users[i].permission_logo==1){#>primary<#}else{#>default<#}#>">
+                        <span data-userid='<#=users[i].id#>' data-kind="logo" data-on="ON" data-off="OFF" class="slider-button<#if(users[i].permission_logo==1){#> on<#}#>"><#if(users[i].permission_logo==1){#>ON<#}else{#>OFF<#}#></span>
+                    </div>
+                </td>
+                <td>
+                    <div class="slider-frame <#if(users[i].permission_hidetitle==1){#>primary<#}else{#>default<#}#>">
+                        <span data-userid='<#=users[i].id#>' data-kind="hidetitle" data-on="ON" data-off="OFF" class="slider-button<#if(users[i].permission_hidetitle==1){#> on<#}#>"><#if(users[i].permission_hidetitle==1){#>ON<#}else{#>OFF<#}#></span>
+                    </div>
+                </td>
+                <td>
+                    <div class="slider-frame <#if(users[i].permission_support==1){#>primary<#}else{#>default<#}#>">
+                        <span data-userid='<#=users[i].id#>' data-kind="support" data-on="ON" data-off="OFF" class="slider-button<#if(users[i].permission_support==1){#> on<#}#>"><#if(users[i].permission_support==1){#>ON<#}else{#>OFF<#}#></span>
+                    </div>
+                </td>
+                <td class="expiredate">
+                    <div class="slider-frame <#if(users[i].permission_delete==1){#>primary<#}else{#>default<#}#>">
+                        <span data-userid='<#=users[i].id#>' data-kind="delete" data-on="ON" data-off="OFF" class="slider-button<#if(users[i].permission_delete==1){#> on<#}#>"><#if(users[i].permission_delete==1){#>ON<#}else{#>OFF<#}#></span>
+                    </div>
+                </td>
+            </tr>
+        <#}#>
+    </script>
+    <!-- end template -->
+
+    <!-- scripts -->
+    <script>
+
+        $(function(){
+
+            var html='';
+            var lastdate = new Date().valueOf();
+            var searchkey = '';
+
+            var offset=1;
+            var no_more=false;
+            var namekey = '';
+
+            $('.search').on('change', function(){
+                namekey = $('.search').val();
+            });
+
+            $('.dropdown-menu li').on('click', function(){
+
+                if($('#fliter').attr('data-fliter')!=$(this).attr('data-fliter')){
+                    
+                    $('#fliter').html($(this).find('a').html()).attr('data-fliter', $(this).attr('data-fliter'));
+                    offset = 1;
+                    $('.search').val('');
+                    loadMore(offset);
+                }
+            });
+
+            $('.icon_box').on('click', saveClick);
+
+            function saveClick(){
+                var i=$(this).parent().find('.setnickname');
+                if(i.val()&&i.val()!=i.attr('data-nickname')){
+                    var data={
+                        user_id:i.attr('data-id'),
+                        nickname:i.val()
+                    };
+                    $.ajax({
+                        type:'post',
+                        url:'/master/set',
+                        data:data,
+                        async:false,
+                        success:function(r){
+                            if(r.code!=0){
+                                alert(r.msg);
+                                return;
+                            }else{
+                                i.attr('data-nickname', i.val());
+                                alert('修改成功');
+                            }
+                        }
+                    });
+                }else{
+                    alert('请输入新昵称');
+                    i.focus();
+                }
+            }
+
+            function preClick(){
+
+                if(no_more)offset--;
+                
+                if(offset==1)return alert('当前页已经是第一页');
+
+                offset--;
+                no_more=false;
+                loadMore(offset);
+            }
+
+            function nextClick(){
+                if(!no_more){
+                    offset++;
+                }else{
+                    alert('没有了哦。。。');
+                    return;
+                }
+                loadMore(offset);
+            }
+
+            function findname(){
+                // offset = 1;
+                // $('#fliter').html('筛选排序').attr('data-fliter', '');
+                // loadMore(offset);
+                $.get('/supermaster/setpermission?type=json&key='+$('.search').val(),function(res){
+
+                    if(res.users.length==0){
+                        no_more=true;
+                        return alert('没有了哦。。');
+                    }
+                    searchkey = $('.search').val();
+                    for(var i in res.users){
+                        var t=new Date(res.users[i].createdAt);
+                        res.users[i].expiredate=(new Date(res.users[i].expiredate)).toLocaleDateString();
+                        res.users[i].createdAt=(new Date(res.users[i].createdAt)).toLocaleDateString();
+                    }
+                    // return;
+                    $('#list_content').html(template('users-data',res));
+                    $('#cur_page').html(offset);
+                    $('.slider-button').on('click',setPermission);
+                });
+            }
+
+            function loadMore(offset){
+
+                if(new Date().valueOf()-lastdate>300){
+
+                    $('.loading').show();
+                    lastdate = new Date().valueOf();
+                    $('.icon_box').off('click', saveClick);
+
+                    var searchkey = $('.search').val();
+                    var url = '/supermaster/setpermission?type=json&offset='+offset;
+
+                    if(searchkey){
+                        url = url + '&key='+searchkey;
+                    }
+
+                    $.get(url,function(res){
+
+                        if(res.users.length==0){
+                            no_more=true;
+                            alert('没有了哦。。');
+                            $('.loading').hide();
+                            return;
+                        }
+                        for(var i in res.users){
+                            var t=new Date(res.users[i].createdAt);
+                            res.users[i].expiredate=(new Date(res.users[i].expiredate)).toLocaleDateString();
+                            res.users[i].createdAt=(new Date(res.users[i].createdAt)).toLocaleDateString();
+                        }
+
+                        $('#list_content').html(template('users-data',res));
+                        $('.icon_box').on('click', saveClick);
+
+                        $('#cur_page').html(offset);
+                        $('.loading').hide();
+                        $('.slider-button').on('click',setPermission);
+                    });
+                }
+            }
+
+            function setPermission(){
+                var that = this;
+                $.ajax({
+                    url:'/supermaster/setpermission',
+                    type:'POST',
+                    data:{
+                        kind:'permission_'+$(this).attr('data-kind'),
+                        permission:$(this).html()=='OFF'?1:0,
+                        userid:$(this).data('userid')
+                    },
+                    success:function(res){
+                        if(res.code!=0){
+                            alert(res.msg);
+                        }else{
+                            if ($(that).hasClass("on")) {
+                                $(that).removeClass('on').html("OFF").parent().removeClass('primary').addClass('default'); 
+                            } else {
+                                $(that).addClass('on').html("ON").parent().removeClass('default').addClass('primary');
+                            }
+                        }
+                    }
+                });
+            }
+            $('.btn-search').on('click', findname);
+            $('.btn-pre').on('click',preClick);
+            $('.btn-next').on('click',nextClick);
+            $('.slider-button').on('click',setPermission);
+        });
+
+    </script>
+</body>
+</html>

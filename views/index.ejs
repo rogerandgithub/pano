@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>STi 速腾聚创 后台</title>
+		<meta charset="utf-8">
+        <meta name="format-detection" content="telephone=no">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="css/layout.css" />
+        <link rel="stylesheet" type="text/css" href="/css/suteng.css?v=<%=version%>">
+        <link href="/css/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+        <script src="/js/qrcode.min.js"></script>
+        <script src="<%=cdnJsPath%>/zepto.min.js?v=<%=libVersion%>"></script>
+        <script src="/js/jquery-latest.js"></script>
+        <script src="/js/sti-common.min.js?v=<%=version%>"></script>
+        <script src="/js/bootstrap/bootstrap.min.js"></script>
+        <script src="/js/bootstrap/bootstrap-datetimepicker.min.js" charset="UTF-8"></script>
+        <script src="/js/template-native.js?v=<%=version%>"></script>
+        <style type="text/css">
+            @media screen and (max-width: 640px){
+                a.goNew{display: none;}
+            }
+            a.goNew:hover{
+                text-decoration: none;
+            }
+            .goNew{
+                border: 1px solid red;
+                padding: 4px 10px;
+                border-radius: 4px;
+                background-color: red;
+                color: #fff !important;
+                text-decoration: none;
+                margin-left: 25px;
+                position: relative;
+                bottom: 44px;
+            }
+        </style>
+	</head>
+    <body id="index">
+            <!-- 计费弹窗 start -->
+            <div class="a_alert">
+                <div class="alert_left">
+                    <i class="alert_icon"></i>
+                </div>
+                <div class="alert_right">
+                    <div class="alert_close">
+                        <span>&nbsp; 关闭&nbsp; </span>
+                        <span class="line"></span>
+                        <span>x&nbsp;&nbsp;</span>
+                    </div>
+                    <div class="alert_msg">
+                        <p class="alert_title">系统提示：</p>
+                        <p class="alert_content">您好，您的VIP会员功能将于 <span id="alert_les"></span> 天后到期，为保障您的正常使用，请您及时充值</p>
+                    </div>
+                </div>
+            </div>
+            <!-- 计费弹窗 end -->
+
+        <!-- alert -->
+        <%include alert%>
+
+        <div class="qrcode">
+            <div class="chooseqr">
+                <i class="icon genern1" genern="1"></i>
+                <i class="icon genern2" genern="2"></i>
+            </div>
+            <div class="qrcodebox">
+                <i class="icon closeqr"></i>
+                <div class="qr qr1">
+                    <img src="http://qncdn.sz-sti.com/image/qrcode/ipano1/ios.jpg" />
+                    <img src="http://qncdn.sz-sti.com/image/qrcode/ipano1/andriod.jpg" />
+                </div>
+                <div class="qr qr2">
+                    <img src="http://qncdn.sz-sti.com/image/qrcode/ipano2/ios.png" />
+                    <img style="background: #fff;" src="http://wx.sz-sti.com/images/newitem/android.png" />
+                </div>
+            </div>
+        </div>
+
+        <div class="sti-container">
+
+            <div class="nav">
+                <div class="logo icon"></div>
+                <a class="goNew" href="/indexitem">新版后台</a>
+                <div class="nav-item">
+                    <a href="http://www.sz-sti.com">官网链接</a><span class="line"></span>
+                    <span class="download">APP下载</span><span class="line"></span>
+                    <a href="/login">退出登录</a><span class="line"></span>
+                </div>
+            </div>
+            <div class="menu">
+                <a href="/romaing" class="romaing"><span class="icon romaingbg"></span><span class="title">查看作品</span></a>
+                <a href="javascript:;" class="search"><span class="icon searchbg"></span><span class="title">作品查找</span></a>
+                <a href="/settings" class="set setall"><span class="icon setallbg"></span><span class="title">全局设置</span></a>
+                <a href="/settings/account" class="set setacount"><span class="icon setacountbg"></span><span class="title">账号设置</span></a>
+                <a href="/management" class="set management"><span class="icon managementbg"></span><span class="title">子账号管理</span></a>
+            </div>
+
+            
+            <ul id="lists">
+                <li><a href="javascript:;" class="leave-message hide">留言<br/>反馈</a></li>
+                <li><a href="javascript:;" class="video-course">视频<br/>教程</a></li>
+                <li><a href="tencent://message/?uin=3033371239&Site=&menu=yes" class="contact-service">联系<br/>客服</a></li>
+            </ul>
+            
+        </div>
+    
+        <script id="hidden-html" type="text/html">
+            <div class="alert">
+                <div class="alertbox">
+                    <div class="title"></div>
+                    <div class="contentbox"></div>
+                    <div class="buttons clearfix"></div>
+                </div>
+            </div>
+        </script>
+
+        <script id="template-setacount" type="text/html">
+            <div class="alertbox" style="margin-bottom:20px;">
+                <div class="title">修改昵称</div>
+                <div class="contentbox">
+                    <div class="horizontal" style="margin:20px auto;width:80%;">
+                        <div class="hcenter vcenter f14 ">新昵称:</div>
+                        <div class="input-wrap flex1"><input class="input-nickname" value="<%=user.nickname%>"></div>
+                    </div>
+                </div>
+                <div class="buttons clearfix">
+                    <button class="btn gray flex1 btn-11325" onClick="cancel()">取消</button>
+                    <button onClick="changeNickname()" class="btn red flex1 btn-96428">确定</button>
+                </div>
+            </div>
+
+            <div class="alertbox">
+                <div class="title">修改密码</div>
+                <div class="contentbox">
+                    <div class="horizontal marginb10">
+                        <div class="hcenter vcenter f14 ">旧密码:</div>
+                        <div class="input-wrap flex1"><input type="password" class="input-oldpassword"></div>
+                    </div>
+                    <div class="horizontal marginb10">
+                        <div class="hcenter vcenter f14 ">新密码:</div>
+                        <div class="input-wrap flex1"><input type="password" class="input-newpassword"></div>
+                    </div>
+                    <div class="horizontal">
+                        <div class="hcenter vcenter f14 ">重复新密码:</div>
+                        <div class="input-wrap flex1"><input type="password" class="input-newpassword-repeat"></div>
+                    </div>
+                </div>
+                <div class="buttons clearfix">
+                    <button class="btn gray flex1 btn-11325" onClick="cancel()">取消</button>
+                    <button onClick="changePassword()" class="btn red flex1 btn-96428">确定</button>
+                </div>
+            </div>
+        </script>
+
+
+        <script id="template-changenickname" type="text/html">
+            <div class="horizontal" style="margin:20px auto;width:80%;">
+                <div class="hcenter vcenter f14 ">新昵称:</div>
+                <div class="input-wrap flex1"><input class="input-nickname" value="<%=user.nickname%>"></div>
+            </div>
+        </script>
+        <script id="template-changepassword" type="text/html">
+                <div class="horizontal marginb10">
+                    <div class="hcenter vcenter f14 ">旧密码:</div>
+                    <div class="input-wrap flex1"><input type="password" class="input-oldpassword"></div>
+                </div>
+                <div class="horizontal marginb10">
+                    <div class="hcenter vcenter f14 ">新密码:</div>
+                    <div class="input-wrap flex1"><input type="password" class="input-newpassword"></div>
+                </div>
+                <div class="horizontal">
+                    <div class="hcenter vcenter f14 ">重复新密码:</div>
+                    <div class="input-wrap flex1"><input type="password" class="input-newpassword-repeat"></div>
+                </div>
+        </script>
+            
+        <script id="filter-html" type="text/html">
+            <div class="form-group">
+                <div style="text-align:start;margin-bottom:3px;">创建时间:</div>
+                <div class="input-group date form_date_start" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                    <input class="form-control" size="16" type="text" value="" readonly>
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                </div>
+                <input type="hidden" id="dtp_input2" value="" />
+            </div>
+            <div class="form-group">
+                <div class="input-group date form_date_end" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input3" data-link-format="yyyy-mm-dd">
+                    <input class="form-control" size="16" type="text" value="" readonly>
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                </div>
+                <input type="hidden" id="dtp_input3" value="" />
+            </div>
+            <div class="horizontal vcenter">
+                <div>城&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;市：</div>
+                <div class="input-warp" style="padding:3px;">
+                    <input class="filter-city" onClick="SelCity(this,event);" placeholder="不限" value="">
+                </div>
+            </div>
+            <div class="horizontal vcenter">
+                <div>商&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;圈：</div>
+                <div class="input-warp" style="padding:3px;">
+                    <input class="filter-business_circle" placeholder="不限" value="">
+                </div>
+            </div>
+            <div class="horizontal vcenter">
+                <div>小&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;区：</div>
+                <div class="input-warp" style="padding:3px;">
+                    <input class="filter-community" placeholder="不限" value="">
+                </div>
+            </div>
+            <div class="horizontal vcenter">
+                <div>朝&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;向：</div>
+                <div class="input-warp" style="padding:3px;">
+                    <input class="filter-face" placeholder="不限" value="">
+                </div>
+            </div>
+            <div class="horizontal vcenter">
+                <div>面&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;积：</div>
+                <div class="flex1" style="padding:3px;">
+                    <input class="filter-min-area" type="tel" placeholder="不限" value="">
+                </div>
+                <div>~</div>
+                <div class="flex1" style="padding:3px;">
+                    <input class="filter-max-area" type="tel" placeholder="不限" value="">
+                </div>
+                <div>㎡</div>
+            </div>
+            <div class="horizontal vcenter">
+                <div>房&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;型：</div>
+                <div class="flex1" style="padding:3px;">
+                    <input class="filter-halls" placeholder="不限" value="">
+                </div>
+                <div>房</div>
+                <div class="flex1" style="padding:3px;">
+                    <input class="filter-rooms" placeholder="不限" value="">
+                </div>
+                <div>室</div>
+                <div class="flex1" style="padding:3px;">
+                    <input class="filter-bathrooms" placeholder="不限" value="">
+                </div>
+                <div>卫</div>
+            </div>
+        </script>
+
+        <script src="/js/Popt.js"></script>
+        <script src="/js/cityJson.js"></script>
+        <script type="text/javascript">
+            if(navigator.appName == "Microsoft Internet Explorer" && navigator.appVersion .split(";")[1].replace(/[ ]/g,"")=="MSIE6.0" || navigator.appName == "Microsoft Internet Explorer" && navigator.appVersion .split(";")[1].replace(/[ ]/g,"")=="MSIE7.0" || navigator.appName == "Microsoft Internet Explorer" && navigator.appVersion .split(";")[1].replace(/[ ]/g,"")=="MSIE8.0" || navigator.appName == "Microsoft Internet Explorer" && navigator.appVersion .split(";")[1].replace(/[ ]/g,"")=="MSIE9.0"){
+                $('.goNew').hide();
+            }
+
+            template.config('openTag','<#');
+            template.config('closeTag','#>');
+
+            function changeNickname(){
+                var nickname=$('.input-nickname').val();
+                if (!nickname) {
+                    alert("昵称不错为空");
+                    return;
+                };
+                $.post('/settings/change_nickname',{nickname:$('.input-nickname').val()},function(r){
+                    if(r.code!=0){
+                        alert(r.msg);
+                        return;
+                    }
+                    location.reload();  
+                });
+            }
+            function changePassword(){
+                var old=$('.input-oldpassword').val();
+                var n1=$('.input-newpassword').val();
+                var n2=$('.input-newpassword-repeat').val();
+                if(n1!=n2){
+                    alert('密码不符合要求');
+                    return;
+                }else if(n1.length<3){
+                    alert('密码不符合要求');
+                    return;
+                }
+                $.post('/settings/change_password',{old_password:hex_sha1(old+'letian'),new_password:hex_sha1(n1+'letian')},function(r){
+                    if(r.code!=0){
+                        alert(r.msg);
+                        return;
+                    }
+                    $('.alert-wrap').css('visibility','hidden');
+                    $('.alert-td').html(template('hidden-html'));
+                });
+            };
+
+            function cancel(){
+                $('.alert-wrap').css('visibility','hidden');
+                $('.alert-td').html(template('hidden-html'));
+            }
+            
+            function rearch(){
+                $('.alert-wrap').css('visibility','visible');
+                var params={};
+                var tstr=location.href.split('?');
+                tstr=tstr.length>1?tstr[1].split('&'):[];
+                for(var i in tstr){
+                    var x=tstr[i].split('=');
+                    if(x.length==2){
+                        params[x[0]]=urldecode(x[1]);
+                    }
+                }
+                initAlert('filter',{
+                    // title:'筛选',
+                    content:'<div class="filterbox">'+template('filter-html',params)+'</div>',
+                    buttons:[
+                        {
+                            text:'取消'
+                        },
+                        {
+                            color:'bloodred',
+                            text:'确定',
+                            callBack:function(){
+                                var d={
+                                    city:$('.filter-city').val().split('-')[1]?$('.filter-city').val().split('-')[1].replace('市',''):'',
+                                    region:$('.filter-city').val().split('-')[2]?$('.filter-city').val().split('-')[2].replace('区',''):'',
+                                    face:$('.filter-face').val(),
+                                    community:$('.filter-community').val(),
+                                    min_area:$('.filter-min-area').val(),
+                                    max_area:$('.filter-max-area').val(),
+                                    apartment_rooms:$('.filter-rooms').val(),
+                                    apartment_bathrooms:$('.filter-bathrooms').val(),
+                                    apartment_halls:$('.filter-halls').val(),
+                                    business_circle:$('.filter-business_circle').val(),
+                                    start_created_time:$('.form_date_start').find('input').val(),
+                                    end_created_time:$('.form_date_end').find('input').val()
+                                };
+                                var data={},datastr='';
+                                for(var i in d){
+                                    if(d[i]){
+                                        data[i]=d[i];
+                                    }
+                                }
+                                for(var i in data){
+                                    datastr+=i+'='+data[i]+'&';
+                                }
+                                location.href=location.href.split('?')[0]+'romaing?'+datastr;
+                            }
+                        }
+                    ]
+                });
+                if(!$('.form_date_start').find('.form-control').val()||!$('.form_date_end').find('.form-control').val()){
+                    $('.form_date_start').find('.form-control').val(dateformat(new Date(new Date().valueOf()-60*1000*60*24*7),'yyyy-MM-dd'));
+                    $('.form_date_end').find('.form-control').val(dateformat(new Date(),'yyyy-MM-dd'));
+                }
+
+                $('.form_date_end').datetimepicker({
+                        endDate:new Date(),
+                        autoclose: 1,
+                        todayHighlight: 1,
+                        startView: 2,
+                        minView: 2,
+                        forceParse: 0
+                });
+                $('.form_date_start').datetimepicker({
+                        endDate:new Date(),
+                        autoclose: 1,
+                        todayHighlight: 1,
+                        startView: 2,
+                        minView: 2,
+                        forceParse: 0
+                });
+            };
+
+            function toggleqr(){
+                $('.qr').hide();
+                $('.qr'+$(this).attr('genern')).show();
+            }
+
+            function showqr() {
+                $('.qrcode').show();
+            }
+
+            function hideqr() {
+                $('.qrcode').hide();
+            }
+
+            function setacount() {
+                $('.alert-wrap').css('visibility','visible');
+                $('.alert').addClass('alert_acount');
+                $('.alert').html(template('template-setacount'));
+            }
+            
+            function videoBox(){
+                $('.alert-wrap').css('visibility','visible');
+                initAlert('',{
+                    title:'视频教程',
+                    content:'<ul id="video-lists"><li><a class="lists_first" onclick="firstBox()">IPANO操作方法演示</a></li><li><a class="lists_second" onclick="secondBox()">IPANO各项功能介绍（手机版）</a></li><li><a class="lists_three" onclick="threeBox()">IPANO各项功能介绍（电脑版）</a></li></ul>',
+                    buttons:[
+                        {
+                            text:'取消'
+                        }
+                    ]
+                });
+            }
+            function firstBox(){
+                $('.alert').width(800);
+                initAlert('vedio',{
+                    title:'IPANO操作方法演示',
+                    content:'<iframe height="490" width="100%" src="http://player.youku.com/embed/XMTUxODM5MTgxMg==" frameborder=0 allowfullscreen></iframe>',
+                    buttons:[
+                        {
+                            text:'取消'
+                        }
+                    ]
+                });
+            }
+            function secondBox(){
+                $('.alert').width(800);
+                initAlert('vedio',{
+                    title:'IPANO各项功能介绍（手机版）',
+                    content:'<iframe height="490" width="100%" src="http://player.youku.com/embed/XMTUxODIzNDAwMA==" frameborder=0 allowfullscreen></iframe>',
+                    buttons:[
+                        {
+                            text:'取消'
+                        }
+                    ]
+                });
+            }
+            function threeBox(){
+                $('.alert').width(800);
+                initAlert('vedio',{
+                    title:'IPANO各项功能介绍（电脑版）',
+                    content:'<iframe height="490" width="100%" src="http://player.youku.com/embed/XMTUxODIxNTcwOA==" frameborder=0 allowfullscreen></iframe>',
+                    buttons:[
+                        {
+                            text:'取消'
+                        }
+                    ]
+                });
+            }
+
+            $('.search').on('click',rearch);
+            // $('.setacount').on('click',setacount);
+            $('.download').on('click',showqr)
+            $('.chooseqr .icon').on('click',toggleqr);
+            $('.qrcode .closeqr').on('click',hideqr);
+            $('.video-course').on('click',videoBox);
+
+            setTimeout(function(){
+                var expiredate = Date.parse(new Date('<%=user.expiredate%>'));
+                var now = Date.parse(new Date());
+                var expire;
+                expire=Math.ceil((expiredate-now)/(24*60*60*1000));
+                if(expire<7&&expire>0){
+                    $('#alert_les').html(expire);
+                    $('.a_alert').addClass('show');
+                }
+                if(expire<0){
+                    $('.alert_content').html('您好，您的VIP会员功能已过期'+-expire+'天，为保障您的正常使用，请您及时充值');
+                    $('.a_alert').addClass('show');
+                }
+                setTimeout(function(){
+                    if($('.a_alert').is('.show')){
+                        $('.a_alert').removeClass('show');
+                    }
+                }, 4000);
+                $('.alert_close').on('click', function(){
+                    $('.a_alert').removeClass('show');
+                });
+            }, 500);
+
+
+        function SelCity(obj,e) {
+            var ths = obj;
+            var dal = '<div class="_citys"><span title="关闭" id="cColse" >×</span><ul id="_citysheng" class="_citys0"><li class="citySel">省份</li><li>城市</li><li>区县</li></ul><div id="_citys0" class="_citys1"></div><div style="display:none" id="_citys1" class="_citys1"></div><div style="display:none" id="_citys2" class="_citys1"></div></div>';
+            Iput.show({ id: ths, event: e, content: dal,width:"470"});
+            $("#cColse").click(function () {
+                Iput.colse();
+            });
+            var tb_province = [];
+            var b = province;
+            for (var i = 0, len = b.length; i < len; i++) {
+                tb_province.push('<a data-level="0" data-id="' + b[i]['id'] + '" data-name="' + b[i]['name'] + '">' + b[i]['name'] + '</a>');
+            }
+            $("#_citys0").append(tb_province.join(""));
+            $("#_citys0 a").click(function () {
+                var g = getCity($(this));
+                $("#_citys1 a").remove();
+                $("#_citys1").append(g);
+                $("._citys1").hide();
+                $("._citys1:eq(1)").show();
+                $("#_citys0 a,#_citys1 a,#_citys2 a").removeClass("AreaS");
+                $(this).addClass("AreaS");
+                var lev = $(this).data("name");
+                ths.value = $(this).data("name");
+                if (document.getElementById("hcity") == null) {
+                    var hcitys = $('<input>', {
+                        type: 'hidden',
+                        name: "hcity",
+                        "data-id": $(this).data("id"),
+                        id: "hcity",
+                        val: lev
+                    });
+                    $(ths).after(hcitys);
+                }
+                else {
+                    $("#hcity").val(lev);
+                    $("#hcity").attr("data-id", $(this).data("id"));
+                }
+                $("#_citys1 a").click(function () {
+                    $("#_citys1 a,#_citys2 a").removeClass("AreaS");
+                    $(this).addClass("AreaS");
+                    var lev =  $(this).data("name");
+                    if (document.getElementById("hproper") == null) {
+                        var hcitys = $('<input>', {
+                            type: 'hidden',
+                            name: "hproper",
+                            "data-id": $(this).data("id"),
+                            id: "hproper",
+                            val: lev
+                        });
+                        $(ths).after(hcitys);
+                    }
+                    else {
+                        $("#hproper").attr("data-id", $(this).data("id"));
+                        $("#hproper").val(lev);
+                    }
+                    var bc = $("#hcity").val();
+                    ths.value = bc+ "-" + $(this).data("name");
+
+                    var ar = getArea($(this));
+
+                    $("#_citys2 a").remove();
+                    $("#_citys2").append(ar);
+                    $("._citys1").hide();
+                    $("._citys1:eq(2)").show();
+
+                    $("#_citys2 a").click(function () {
+                        $("#_citys2 a").removeClass("AreaS");
+                        $(this).addClass("AreaS");
+                        var lev = $(this).data("name");
+                        if (document.getElementById("harea") == null) {
+                            var hcitys = $('<input>', {
+                                type: 'hidden',
+                                name: "harea",
+                                "data-id": $(this).data("id"),
+                                id: "harea",
+                                val: lev
+                            });
+                            $(ths).after(hcitys);
+                        }
+                        else {
+                            $("#harea").val(lev);
+                            $("#harea").attr("data-id", $(this).data("id"));
+                        }
+                        var bc = $("#hcity").val();
+                        var bp = $("#hproper").val();
+                        ths.value = bc + "-" + bp + "-" + $(this).data("name");
+                        Iput.colse();
+                    });
+
+                });
+            });
+            $("#_citysheng li").click(function () {
+                $("#_citysheng li").removeClass("citySel");
+                $(this).addClass("citySel");
+                var s = $("#_citysheng li").index(this);
+                $("._citys1").hide();
+                $("._citys1:eq(" + s + ")").show();
+            });
+        }
+
+        function getCity(obj) {
+            var c = obj.data('id');
+            var e = province;
+            var f;
+            var g = '';
+            for (var i = 0, plen = e.length; i < plen; i++) {
+                if (e[i]['id'] == parseInt(c)) {
+                    f = e[i]['city'];
+                    break
+                }
+            }
+            for (var j = 0, clen = f.length; j < clen; j++) {
+                g += '<a data-level="1" data-id="' + f[j]['id'] + '" data-name="' + f[j]['name'] + '" title="' + f[j]['name'] + '">' + f[j]['name'] + '</a>'
+            }
+            $("#_citysheng li").removeClass("citySel");
+            $("#_citysheng li:eq(1)").addClass("citySel");
+            return g;
+        }
+
+        function getArea(obj) {
+            var c = obj.data('id');
+            var e = area;
+            var f = [];
+            var g = '';
+            for (var i = 0, plen = e.length; i < plen; i++) {
+                if (e[i]['pid'] == parseInt(c)) {
+                    f.push(e[i]);
+                }
+            }
+            for (var j = 0, clen = f.length; j < clen; j++) {
+                g += '<a data-level="1" data-id="' + f[j]['id'] + '" data-name="' + f[j]['name'] + '" title="' + f[j]['name'] + '">' + f[j]['name'] + '</a>'
+            }
+
+            $("#_citysheng li").removeClass("citySel");
+            $("#_citysheng li:eq(2)").addClass("citySel");
+            return g;
+        }
+        </script>
+    </body>
+</html>

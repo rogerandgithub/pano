@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>超级管理员账户</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
+<!-- bootstrap -->
+<link href="/css/supermaster/bootstrap/bootstrap.css" rel="stylesheet" />
+<link href="/css/supermaster/bootstrap/bootstrap-responsive.css" rel="stylesheet" />
+<link href="/css/supermaster/bootstrap/bootstrap-overrides.css" type="text/css" rel="stylesheet" />
+
+<!-- global styles -->
+<link rel="stylesheet" type="text/css" href="/css/supermaster/layout.css" />
+<link rel="stylesheet" type="text/css" href="/css/supermaster/elements.css" />
+<link rel="stylesheet" type="text/css" href="/css/supermaster/icons.css" />
+
+<!-- libraries -->
+<link href="/css/supermaster/lib/font-awesome.css" type="text/css" rel="stylesheet" />
+<link href="/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+
+<!-- this page specific styles -->
+<link rel="stylesheet" href="/css/supermaster/compiled/tables.css" type="text/css" media="screen" />
+<style type="text/css">
+    .navbar-inverse .brand{padding:5px;margin-left: 0px;}
+    a.setitcmstertel,a.setcompany,a.setphone{
+        text-decoration: none !important;
+        display: inline-block;
+        border:1px solid #999;
+        padding: 4px 8px;
+        border-radius: 4px;
+        position: relative;
+        bottom: 4px;
+    }
+    .label, .badge{
+        background-color: #ff1616;
+        cursor: pointer;
+    }
+    .notips{
+        font-size: 13px;
+        border-radius: 4px;
+        color: #333;
+        padding: 5px 10px;
+        margin-bottom: 10px;
+        text-align: center;
+        box-shadow: 0px 1px 0px 0px rgba(255, 255, 255,0.2) inset, 0px 1px 0px 0px rgb(204, 204, 204);
+        display: inline-block;
+        border: 1px solid #e5e5e5;
+        vertical-align: middle;
+        cursor: pointer;
+        background: #ffffff;
+        background: -moz-linear-gradient(top, #ffffff 0%, #eef0f1 100%);
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#eef0f1));
+        background: -webkit-linear-gradient(top, #ffffff 0%,#eef0f1 100%);
+        background: -o-linear-gradient(top, #ffffff 0%,#eef0f1 100%);
+        background: -ms-linear-gradient(top, #ffffff 0%,#eef0f1 100%);
+        background: linear-gradient(to bottom, #ffffff 0%,#eef0f1 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#eef0f1',GradientType=0 );
+    }
+    .company,.telephone{
+        background-color: #3389d1;
+    }
+    .status{
+        background-color: #999;
+        display: none;
+        transition:all 1s;
+        -webkit-transition:all 1s;
+        -ms-transition:all 1s;
+        -moz-transition:all 1s;
+    }
+    .tips:hover .status{
+        display: inline-block;
+        margin-left: 4px;
+    }
+    input.checkbox{
+        display: inline-block;
+        width: 15px;
+        height: 15px;
+        position: relative;
+        top: 6px;
+    }
+    span.allcheck{
+        margin-right: 8px;
+        font-size: 14px;
+        cursor: pointer;
+        display: inline-block;
+    }
+    #list_content tr{
+        border-bottom: 1px solid #dee3ea;
+    }
+    .table thead{
+        border-bottom: 1px solid #dee3ea;
+        background-color: #dee3ea;
+    }
+    .table thead tr th{
+        font-size: 14px;
+        padding: 10px 0;
+    }
+    .childlist{
+        display: none;
+    }
+</style>
+<body>
+
+    <!-- alert -->
+    <%include alert%>
+
+    <!-- navbar -->
+    <%include smheader%>
+
+    <!-- main container -->
+    <div class="content">
+
+        <div class="container-fluid">
+            <div id="pad-wrapper">
+                
+                <div class="row-fluid header">
+                    <h3>Users</h3>
+                    <div class="span10 pull-right">
+                        <input type="text" class="span5 search" placeholder="Type a user's name..." />
+                        <a href="javascript:;" class="btn-flat btn-search success pull-right">
+                            确定
+                        </a>
+                    </div>
+                </div>
+
+                <!-- users table -->
+                <div class="table-wrapper users-table section">
+                    <span class="allcheck" data-onOff="true">全选</span>
+                    <div class="notips"><i class="icon-wrench"></i>过期不提醒</div>
+                    <div class="row-fluid">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class="span4">
+                                        账户
+                                    </th>
+                                    <th class="span1">
+                                        <span class="line"></span>公司名称
+                                    </th>
+                                    <th class="span2">
+                                        <span class="line"></span>联系方式
+                                    </th>
+                                    <th class="span1">
+                                        <span class="line"></span>到期时间
+                                    </th>
+                                    <th class="span4 align-right">
+                                        <span class="line"></span>操作
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody id="list_content">
+                                <!-- row -->
+                                <%for(i in users){%>
+                                    <tr class="first fatherlist">
+                                        <td>
+                                            <input class="checkbox" type="checkbox" data-id="<%=users[i].id%>" />
+                                            <img src="/images/supermaster/contact-img<%=(i%2+1)%>.jpg" class="img-circle avatar hidden-phone" />
+                                            <a href="javascript:;" class="name"><%=users[i].name%></a>
+                                            <span class="subtext"><%=(new Date(users[i].createdAt).toLocaleDateString())%></span>
+                                        </td>
+                                        <td>
+                                            <div>
+                                                <p><%=users[i].founder||users[i].company||users[i].prefix||'空'%>&nbsp;&nbsp;</p>
+                                                <span data-id="<%=users[i].id%>" data-company="<%=users[i].founder||users[i].company||users[i].prefix||'空'%>" class="badge company">更改</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div>
+                                                <p><%=users[i].itcmail?users[i].itcmail:'空'%>&nbsp;&nbsp;</p>
+                                                <span data-id="<%=users[i].id%>" data-telephone="<%=users[i].itcmail%>" class="badge telephone">更改</span>
+                                            </div>
+                                        </td>
+                                        <td class="expiredate">
+                                            <%=(new Date(users[i].expiredate)).toLocaleDateString()%>
+                                            <%if( (Date.parse(users[i].expiredate)-Date.now())<0 && users[i].status!=1 && Date.parse(users[i].expiredate)!=0 ){%>
+                                                <div class="tips"><span class="badge">已过期</span><span data-id="<%=users[i].id%>" class="badge status">不再提醒</span></div>
+                                            <%}else if((Date.parse(users[i].expiredate)-Date.now())<=15*24*3600*1000 && users[i].status!=1 && Date.parse(users[i].expiredate)!=0 ){%>
+                                                <div class="tips"><span class="badge">即将过期</span><span data-id="<%=users[i].id%>" class="badge status">不再提醒</span></div>
+                                            <%}%>
+                                        </td>
+                                        <td class="align-right">
+                                            <div class="btn-bind" data-userid="<%=users[i].id%>" data-deviceid="<%=users[i].itcmstertel%>"><i class="icon-wrench"></i>绑定设备</div>
+                                            <div class="btn-glow" data-userid="<%=users[i].id%>" data-username="<%=users[i].name%>"><i class="icon-wrench"></i>账号续费</div>
+                                            <div class="btn-delcount" data-userid="<%=users[i].id%>" data-username="<%=users[i].name%>"><i class="icon-wrench"></i>删除账号</div>
+                                        </td>
+                                    </tr>
+                                    <%if(users[i].dataValues.children_list){%>
+
+                                        <%for(j in users[i].dataValues.children_list){%>
+                                            <tr class="first childlist childlist<%=i%>" style="background:#eee;padding:20px;">
+                                                <td style="padding-left:40px;">
+                                                    <input class="checkbox" type="checkbox" data-id="<%=users[i].dataValues.children_list[j].id%>" />
+                                                    <img src="/images/supermaster/contact-img<%=(i%2+1)%>.jpg" class="img-circle avatar hidden-phone" />
+                                                    <a href="javascript:;" class="name" style="color: red;"><%=users[i].dataValues.children_list[j].name%></a>
+                                                    <span class="subtext"><%=(new Date(users[i].dataValues.children_list[j].createdAt).toLocaleDateString())%></span>
+                                                </td>
+                                                <td>
+                                                    <div>
+                                                        <p><%=users[i].dataValues.children_list[j].founder||users[i].dataValues.children_list[j].company||users[i].dataValues.children_list[j].prefix||'空'%>&nbsp;&nbsp;</p>
+                                                        <span data-id="<%=users[i].dataValues.children_list[j].id%>" data-company="<%=users[i].dataValues.children_list[j].founder||users[i].dataValues.children_list[j].company||users[i].dataValues.children_list[j].prefix||'空'%>" class="badge company">更改</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div>
+                                                        <p><%=users[i].dataValues.children_list[j].itcmail?users[i].dataValues.children_list[j].itcmail:'空'%>&nbsp;&nbsp;</p>
+                                                        <span data-id="<%=users[i].dataValues.children_list[j].id%>" data-telephone="<%=users[i].dataValues.children_list[j].itcmail%>" class="badge telephone">更改</span>
+                                                    </div>
+                                                </td>
+                                                <td class="expiredate">
+                                                    <%=(new Date(users[i].dataValues.children_list[j].expiredate)).toLocaleDateString()%>
+                                                    <%if( (Date.parse(users[i].dataValues.children_list[j].expiredate)-Date.now())<0 && users[i].dataValues.children_list[j].status!=1 && Date.parse(users[i].dataValues.children_list[j].expiredate)!=0 ){%>
+                                                        <div class="tips"><span class="badge">已过期</span><span data-id="<%=users[i].dataValues.children_list[j].id%>" class="badge status">不再提醒</span></div>
+                                                    <%}else if((Date.parse(users[i].dataValues.children_list[j].expiredate)-Date.now())<=15*24*3600*1000 && users[i].dataValues.children_list[j].status!=1 && Date.parse(users[i].dataValues.children_list[j].expiredate)!=0 ){%>
+                                                        <div class="tips"><span class="badge">即将过期</span><span data-id="<%=users[i].dataValues.children_list[j].id%>" class="badge status">不再提醒</span></div>
+                                                    <%}%>
+                                                </td>
+                                                <td class="align-right">
+                                                    <div class="btn-bind" data-userid="<%=users[i].dataValues.children_list[j].id%>" data-deviceid="<%=users[i].dataValues.children_list[j].itcmstertel%>"><i class="icon-wrench"></i>绑定设备</div>
+                                                    <div class="btn-glow" data-userid="<%=users[i].dataValues.children_list[j].id%>" data-username="<%=users[i].dataValues.children_list[j].name%>"><i class="icon-wrench"></i>账号续费</div>
+                                                    <div class="btn-delcount" data-userid="<%=users[i].dataValues.children_list[j].id%>" data-username="<%=users[i].dataValues.children_list[j].name%>"><i class="icon-wrench"></i>删除账号</div>
+                                                </td>
+                                            </tr>
+                                        <%}%>
+                                    <%}%>
+                                <%}%>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- end users table -->
+                <div class="pagination pull-right">
+                    <ul>
+                        <li><a href="javascript:;" class="btn-pre">&#8249;</a></li>
+                        <li><a class="active" href="javascript:;">第<span id="cur_page">1</span>页</a></li>
+                        <li><a href="javascript:;" class="btn-next">&#8250;</a></li>
+                    </ul>
+                </div>
+                <!-- end users table -->
+            </div>
+        </div>
+    </div>
+    <!-- end main container -->
+    <!-- start template -->
+    <script id="users-template" type="text/html">
+        <#for(i in users){#>
+            <tr class="first fatherlist">
+                <td>
+                    <input class="checkbox" type="checkbox" data-id="<%=users[i].id%>" />
+                    <img src="/images/supermaster/contact-img<#=(i%2+1)#>.jpg" class="img-circle avatar hidden-phone" />
+                    <a href="javascript:;" class="name"><#=users[i].name#></a>
+                    <span class="subtext"><#=users[i].createdAt#></span>
+                </td>
+                <td>
+                    <div>
+                        <p><#=users[i].company#>&nbsp;&nbsp;</p>
+                        <span data-id="<#=users[i].id#>" data-company="<#=users[i].company#>" class="badge company">更改</span>
+                    </div>
+                </td>
+                <td>
+                    <div>
+                        <p><#=users[i].itcmail#>&nbsp;&nbsp;</p>
+                        <span data-id="<#=users[i].id%>" data-telephone="<#=users[i].itcmail#>" class="badge telephone">更改</span>
+                    </div>
+                </td>
+                <td class="expiredate">
+                    <#=users[i].expiredate#>
+                    <#if( (users[i].expiredates-users[i].now )<0 && users[i].status!=1 && users[i].expiredates!=0 ){#>
+                        <div class="tips"><span class="badge">已过期</span><span data-id="<#=users[i].id#>" class="badge status">不再提醒</span></div>
+                    <#}else if( (users[i].expiredates-users[i].now )<=15*24*3600*1000 && users[i].status!=1 && users[i].expiredates!=0 ){#>
+                        <div class="tips"><span class="badge">即将过期</span><span data-id="<#=users[i].id#>" class="badge status">不再提醒</span></div>
+                    <#}#>
+                </td>
+                <td class="align-right">
+                    <div class="btn-bind" data-userid="<#=users[i].id#>" data-deviceid="<#=users[i].itcmstertel#>"><i class="icon-wrench"></i>绑定设备</div>
+                    <div class="btn-glow" data-userid="<#=users[i].id#>" data-username="<#=users[i].name#>"><i class="icon-wrench"></i>账号续费</div>
+                    <div class="btn-delcount" data-userid="<#=users[i].id#>" data-deviceid="<#=users[i].name%>"><i class="icon-wrench"></i>删除账号</div>
+                </td>
+            </tr>
+
+            <#if(users[i].children_list){#>
+                <#for(j in users[i].children_list){#>
+                    <tr class="first childlist childlist<#=i#>" style="background:#eee;">
+                        <td style="padding-left:40px;">
+                            <input class="checkbox" type="checkbox" data-id="<#=users[i].id#>" />
+                            <img src="/images/supermaster/contact-img<#=(i%2+1)#>.jpg" class="img-circle avatar hidden-phone" />
+                            <a href="javascript:;" class="name" style="color: red;"><#=users[i].children_list[j].name#></a>
+                            <span class="subtext"><#=users[i].children_list[j].createdAt#></span>
+                        </td>
+                        <td>
+                            <div>
+                                <p><#=users[i].children_list[j].founder||users[i].children_list[j].company||users[i].children_list[j].prefix||'空'#>&nbsp;&nbsp;</p>
+                                <span data-id="<#=users[i].children_list[j].id#>" data-company="<#=users[i].children_list[j].founder||users[i].children_list[j].company||users[i].children_list[j].prefix||'空'#>" class="badge company">更改</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                <p><#=users[i].children_list[j].itcmail?users[i].children_list[j].itcmail:'空'#>&nbsp;&nbsp;</p>
+                                <span data-id="<#=users[i].children_list[j].id#>" data-telephone="<#=users[i].children_list[j].itcmail#>" class="badge telephone">更改</span>
+                            </div>
+                        </td>
+                        <td class="expiredate">
+                            <#=users[i].children_list[j].expiredate#>
+                            <#if( (users[i].children_list[j].expiredates-users[i].children_list[j].now)<0 && users[i].children_list[j].status!=1 && users[i].children_list[j].expiredates!=0 ){#>
+                                <div class="tips"><span class="badge">已过期</span><span data-id="<#=users[i].children_list[j].id#>" class="badge status">不再提醒</span></div>
+                            <#}else if((users[i].children_list[j].expiredates-users[i].children_list[j].now)<=15*24*3600*1000 && users[i].children_list[j].status!=1 && users[i].children_list[j].expiredates!=0 ){#>
+                                <div class="tips"><span class="badge">即将过期</span><span data-id="<#=users[i].children_list[j].id#>" class="badge status">不再提醒</span></div>
+                            <#}#>
+                        </td>
+                        <td class="align-right">
+                            <div class="btn-bind" data-userid="<#=users[i].children_list[j].id#>" data-deviceid="<#=users[i].children_list[j].itcmstertel#>"><i class="icon-wrench"></i>绑定设备</div>
+                            <div class="btn-glow" data-userid="<#=users[i].children_list[j].id#>" data-username="<#=users[i].children_list[j].name#>"><i class="icon-wrench"></i>账号续费</div>
+                            <div class="btn-delcount" data-userid="<#=users[i].children_list[j].id#>" data-username="<#=users[i].children_list[j].name#>"><i class="icon-wrench"></i>删除账号</div>
+                        </td>
+                    </tr>
+                <#}#>
+            <#}#>
+        <#}#>
+    </script>
+    <!-- end template -->
+
+    <!-- scripts -->
+    <script>
+        $(function(){
+
+            var lastdate = new Date().valueOf();
+
+            function bindEquipment(event){
+                event.stopPropagation();
+                var _this = this;
+                var deviceid = $(this).attr('data-deviceid');
+                $('.alert-wrap').css('visibility','visible');
+                initAlert('',{
+                    title: '请输入设备号',
+                    content:'<input class="bindEquipment" placeholder="请输入设备号" value="'+deviceid+'" style="border:1px solid #dae3e9;" type="text" />',
+                    buttons:[
+                    {
+                        text:'取消'
+                    },{
+                        text:'确定',
+                        color:'red',
+                        callBack:function(){
+                            // if(!$('.bindEquipment').val()){
+                            //     alert('设备号不能为空');
+                            //     return;
+                            // }
+                            if(confirm('确定绑定设备号为：'+$('.bindEquipment').val())){
+                                $.ajax({
+                                    url:'/supermaster/bindequit',
+                                    type:'post',
+                                    data:{
+                                        userid:$(_this).attr('data-userid'),
+                                        deviceid:$('.bindEquipment').val()
+                                    },
+                                    async:false,
+                                    success:function(r){
+                                        alert(r.msg);
+                                        if(r.code!=0)return;
+                                        $(_this).attr('data-deviceid', $('.bindEquipment').val());
+                                        $('.alert-wrap').css('visibility','hidden');
+                                    }
+                                });
+                            }
+                        }
+                    }]
+                });
+            }
+            var offset=1;
+            var no_more=false;
+
+            function preClick(){
+                if(no_more){
+                    offset--;
+                }
+                if(offset==1){
+                    return alert('当前页已经是第一页');
+                }
+                offset--;
+                no_more=false;
+                loadMore(offset);
+            }
+            function nextClick(){
+                if(!no_more){
+                    offset++;
+                }else{
+                    alert('没有了哦。。。');
+                    return;
+                }
+                loadMore(offset);
+            }
+            function showchildlist(){
+                var index = $(".fatherlist").index(this);
+                $(this).siblings('.fatherlist').toggle();
+                $(this).nextAll('.childlist'+index).toggle();
+            }
+
+            function loadMore(offset){
+                $('.btn-glow').off('click',setexpire);
+                $('.btn-bind').off('click',bindEquipment);
+
+                $('.company').off('click',setcompany);
+                $('.telephone').off('click',setphone);
+                $('.status').off('click',changestatus);
+                $('.allcheck').off('click',allcheck);
+                $('.notips').off('click',notips);
+                $('.btn-delcount').off('click', delcount);
+
+                $('.fatherlist').off('click',showchildlist);
+                if(new Date().valueOf()-lastdate>300){
+                    // loadedpage[offset]=true;
+
+                    lastdate = new Date().valueOf();
+                    var _key = $('.search').val()?'&key='+$('.search').val():'';
+                    $.get('/supermaster/father?type=json&offset='+offset+_key,function(res){
+
+                        if(res.users.length==0){
+                            no_more=true;
+                            return alert('没有了哦。。');
+                        }
+                        for(var i in res.users){
+                            if(res.users[i].children_list){
+                                for(var j in res.users[i].children_list){
+                                    var t=new Date(res.users[i].children_list[j].createdAt);
+                                    res.users[i].children_list[j].expiredate=(new Date(res.users[i].children_list[j].expiredate)).toLocaleDateString();
+                                    res.users[i].children_list[j].now = Date.now();
+                                    res.users[i].children_list[j].expiredates = Date.parse(new Date(res.users[i].children_list[j].expiredate));
+                                    res.users[i].children_list[j].createdAt=(new Date(res.users[i].children_list[j].createdAt)).toLocaleDateString();
+                                    res.users[i].children_list[j].company=res.users[i].children_list[j].founder||res.users[i].children_list[j].company||res.users[i].children_list[j].prefix||'空';
+                                    res.users[i].children_list[j].itcmail=res.users[i].children_list[j].itcmail||res.users[i].children_list[j].telephone||'空';
+                                }
+                            }
+                            var t=new Date(res.users[i].createdAt);
+                            res.users[i].expiredate=(new Date(res.users[i].expiredate)).toLocaleDateString();
+                            res.users[i].now = Date.now();
+                            res.users[i].expiredates = Date.parse(new Date(res.users[i].expiredate));
+                            res.users[i].createdAt=(new Date(res.users[i].createdAt)).toLocaleDateString();
+                            res.users[i].company=res.users[i].founder||res.users[i].company||res.users[i].prefix||'空';
+                            res.users[i].itcmail=res.users[i].itcmail||res.users[i].telephone||'空';
+                        }
+                        // return;
+                        $('#list_content').html(template('users-template',res));
+                        $('#cur_page').html(offset);
+                        $('.btn-glow').on('click',setexpire);
+                        $('.btn-bind').on('click',bindEquipment);
+
+                        $('.company').on('click',setcompany);
+                        $('.telephone').on('click',setphone);
+                        $('.status').on('click',changestatus);
+                        $('.allcheck').on('click',allcheck);
+                        $('.notips').on('click',notips);
+                        $('.btn-delcount').on('click', delcount);
+                        $('.fatherlist').on('click',showchildlist);
+                    });
+                }
+            }
+            function findname(){
+                $('.btn-glow').off('click',setexpire);
+                $('.btn-bind').off('click',bindEquipment);
+
+                $('.company').off('click',setcompany);
+                $('.telephone').off('click',setphone);
+                $('.status').off('click',changestatus);
+                $('.allcheck').off('click',allcheck);
+                $('.notips').off('click',notips);
+                $('.btn-delcount').off('click', delcount);
+                $('.fatherlist').on('click',showchildlist);
+                $.get('/supermaster?type=json&key='+$('.search').val(),function(res){
+
+                    if(res.users.length==0){
+                        no_more=true;
+                        return alert('没有了哦。。');
+                    }
+                    searchkey = $('.search').val();
+                    for(var i in res.users){
+                        var t=new Date(res.users[i].createdAt);
+                        res.users[i].expiredate=(new Date(res.users[i].expiredate)).toLocaleDateString();
+                        res.users[i].now = Date.now();
+                        res.users[i].expiredates = Date.parse(new Date(res.users[i].expiredate));
+                        res.users[i].createdAt=(new Date(res.users[i].createdAt)).toLocaleDateString();
+                        res.users[i].company=res.users[i].founder||res.users[i].company||res.users[i].prefix||'空';
+                        res.users[i].itcmail=res.users[i].itcmail||res.users[i].telephone||'空';
+                    }
+                    // return;
+                    $('#list_content').html(template('users-template',res));
+                    $('#cur_page').html(offset);
+                    $('.btn-glow').on('click',setexpire);
+                    $('.btn-bind').on('click',bindEquipment);
+
+                    $('.company').on('click',setcompany);
+                    $('.telephone').on('click',setphone);
+                    $('.status').on('click',changestatus);
+                    $('.allcheck').on('click',allcheck);
+                    $('.notips').on('click',notips);
+                    $('.btn-delcount').on('click', delcount);
+                    $('.fatherlist').on('click',showchildlist);
+                });
+            }
+
+            function setcompany(event){
+                event.stopPropagation();
+                var _this = this;
+                var company = $(this).attr('data-company');
+                $('.alert-wrap').css('visibility','visible');
+                initAlert('',{
+                    title: '请输入公司名称',
+                    content:'<input class="setcompany" placeholder="请输入公司名称" value="'+company+'" style="border:1px solid #dae3e9;" type="text" />',
+                    buttons:[
+                    {
+                        text:'取消'
+                    },{
+                        text:'确定',
+                        color:'red',
+                        callBack:function(){
+                            if(confirm('确定更改公司名称为：'+$('.setcompany').val())){
+                                $.ajax({
+                                    url:'/supermaster/update',
+                                    type:'post',
+                                    data:{
+                                        idStr:$(_this).attr('data-id'),
+                                        company:$('.setcompany').val()?$('.setcompany').val():'empty'
+                                    },
+                                    async:false,
+                                    success:function(r){
+                                        if(r.code!=0)return;
+                                        $(_this).attr('data-company', $('.setcompany').val());
+                                        $('.alert-wrap').css('visibility','hidden');
+                                        location.reload();
+                                    }
+                                });
+                            }
+                        }
+                    }]
+                });
+            }
+            function setphone(event){
+                event.stopPropagation();
+                var _this = this;
+                var telephone = $(this).attr('data-telephone');
+                $('.alert-wrap').css('visibility','visible');
+                initAlert('',{
+                    title: '请输入联系方式',
+                    content:'<input class="setphone" placeholder="请输入联系方式" value="'+telephone+'" style="border:1px solid #dae3e9;" type="text" />',
+                    buttons:[
+                    {
+                        text:'取消'
+                    },{
+                        text:'确定',
+                        color:'red',
+                        callBack:function(){
+                            if(confirm('确定更改联系方式为：'+$('.setphone').val())){
+                                $.ajax({
+                                    url:'/supermaster/update',
+                                    type:'post',
+                                    data:{
+                                        idStr:$(_this).attr('data-id'),
+                                        telephone:$('.setphone').val()?$('.setphone').val():'empty'
+                                    },
+                                    async:false,
+                                    success:function(r){
+                                        if(r.code!=0)return;
+                                        $(_this).attr('data-telephone', $('.setphone').val());
+                                        $('.alert-wrap').css('visibility','hidden');
+                                        location.reload();
+                                    }
+                                });
+                            }
+                        }
+                    }]
+                });
+            }
+            function setexpire(event){
+                event.stopPropagation();
+                var _this = this;
+                $('.alert-wrap').css('visibility','visible');
+                initAlert('',{
+                    title: '账号 ('+$(this).attr('data-username')+') 账号续费',
+                    content:'<input class="newdate" id="datetimepicker" placeholder="点击选择日期" />\
+                            <input class="adminpsw" type="password" placeholder="管理员密码" />',
+                    buttons:[
+                    {
+                        text:'取消'
+                    },{
+                        text:'确定',
+                        color:'red',
+                        callBack:function(){
+
+                            if($('#datetimepicker').val()==""){
+                                alert('请选择日期');
+                                return;
+                            }
+                            if($('.adminpsw').val()==""){
+                                alert('密码不能为空');
+                                return;
+                            }
+                            $.ajax({
+                                url:'/supermaster/setexpire',
+                                type:'post',
+                                data:{
+                                    newdate:$('#datetimepicker').val(),
+                                    password:$('.adminpsw').val(),
+                                    userid:$(_this).attr('data-userid'),
+                                    username:$(_this).attr('data-username')
+                                },
+                                async:false,
+                                success:function(r){
+                                    if(r.code!=0){
+                                        alert(r.msg);
+                                        return;
+                                    }else{
+                                        alert('修改成功');
+                                        $(_this).parents('.first').find('.expiredate').html($('#datetimepicker').val());
+                                        $('.alert-wrap').css('visibility','hidden');
+                                    }
+                                }
+                            });
+                        }
+                    }]
+                });
+
+                $('#datetimepicker').datetimepicker({
+                        startDate:new Date(),
+                        autoclose: 1,
+                        todayHighlight: 1,
+                        startView: 2,
+                        minView: 2,
+                        forceParse: 0
+                });
+                $('#datetimepicker').on('change', function(){
+                    $('#datetimepicker').val($('#datetimepicker').val().split(' ')[0]);
+                });
+            }
+
+            function changestatus(){
+                var data = {
+                    idStr:$(this).attr('data-id'),
+                    status:1
+                }
+                if(confirm('是否取消提醒？')){
+                    $.post('/supermaster/update',data,function(req,res){
+                        console.log(res);
+                        location.reload();
+                    });
+                }
+            }
+            function allcheck(){
+                $('#list_content .checkbox').prop('checked')?$('#list_content .checkbox').prop('checked',false):$('#list_content .checkbox').prop('checked',true);
+            }
+            function notips(){
+                var checks = $('#list_content input.checkbox:checked');
+                var len = checks.length;
+                if(len<1){
+                    alert('请选择要取消提醒的用户！');
+                    return;
+                }
+                var idArr = [];
+                var data = {};
+                for(var i=0;i<len;i++){
+                    idArr.push(checks.eq(i).attr('data-id'))
+                }
+                console.log(idArr);
+                data.idStr = idArr.toString();
+                data.status = 1;
+                if(confirm('是否不提醒过期')){
+                    $.post('/supermaster/update',data,function(req,res){
+                        console.log(res);
+                        location.reload();
+                    })
+                }
+            }
+
+            function delcount(event){
+                event.stopPropagation();
+                var _this = this;
+                var username = $(_this).attr('data-username');
+                var userid = $(_this).attr('data-userid');
+                // console.log(userid);
+                // return;
+                $('.alert-wrap').css('visibility','visible');
+                initAlert('',{
+                    title: '删除账号'+username,
+                    content:'<p>该操作将永久性删除账号 '+username+'，账号的一切信息都会一起删除</p><input id="psw" placeholder="请输入管理员密码" value="" style="border:1px solid #dae3e9;" type="password" />',
+                    buttons:[
+                    {
+                        text:'取消'
+                    },{
+                        text:'确定',
+                        color:'red',
+                        callBack:function(){
+                            if(!$('#psw').val()){
+                                alert('密码不能为空');
+                                return;
+                            }
+                            if(confirm('确定永久性删除账号 '+username+'?')){
+                                $.ajax({
+                                    url:'/supermaster/delcount',
+                                    type:'post',
+                                    data:{
+                                        idStr:parseInt(userid),
+                                        password:$('#psw').val()
+                                    },
+                                    async:false,
+                                    success:function(r){
+                                        if(r.code!=0){
+                                            alert(r.msg);
+                                            return;
+                                        };
+                                        location.reload();
+                                    }
+                                });
+                            }
+                        }
+                    }]
+                });
+            }
+            $('.btn-delcount').on('click', delcount);
+
+            $('.btn-glow').on('click',setexpire);           
+            $('.btn-bind').on('click',bindEquipment);
+            $('.btn-bindchild').on('click',function(){
+                alertClick('bind');
+            });
+            $('.btn-search').on('click', findname);
+            
+
+            $('.btn-pre').on('click',preClick);
+            $('.btn-next').on('click',nextClick);
+            $('.company').on('click',setcompany);
+            $('.telephone').on('click',setphone);
+            $('.status').on('click',changestatus);
+            $('.allcheck').on('click',allcheck);
+            $('.notips').on('click',notips);
+            $('.fatherlist').on('click',showchildlist);
+        });
+    </script>
+</body>
+</html>

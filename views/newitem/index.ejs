@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>STi 速腾聚创 后台</title>
+		<meta charset="utf-8">
+        <meta name="format-detection" content="telephone=no">
+		<meta name="viewport" content="width=device-width, user-scalable=no">
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <link rel="stylesheet" type="text/css" href="/css/newitem/suteng.css">
+        <link rel="stylesheet" type="text/css" href="/css/newitem/reset.css">
+        <link rel="stylesheet" type="text/css" href="/css/newitem/common.css">
+        <link href="/css/newitem/icons.css" rel="stylesheet" type="text/css" />
+        <script src="/js/newitem/vue.min.js"></script>
+        <script src="/js/newitem/qrcode.min.js"></script>
+        <script src="/js/newitem/jquery-2.2.4.min.js"></script>
+        <script src="/js/template-native.js?v=<%=version%>"></script>
+        <script src="/js/pdfobject.js"></script>
+        <style type="text/css">
+            .btn-navbar {
+                display: none;
+            }
+            @media screen and (max-width: 640px){
+                #index .nav-item.show{
+                    display: block !important;
+                }
+                html, body {
+                    height: auto; 
+                }
+                .btn-navbar {
+                    display: block;
+                }
+                #index .sti-container{
+                    min-width: 0;
+                    width: 100%;
+                }
+                #index .nav{
+                    margin-top: 55px;
+                }
+                #index .menu{
+                    padding-top: 30px;
+                    margin-bottom: 30px;
+                }
+                #index .logo{
+                    width: 80%;
+                    margin: 0 auto;
+                    display: block;
+                    background: url(../images/newitem/rlogo.png) no-repeat;
+                    background-size: 100%;
+                }
+                #lists{
+                    position: fixed;
+                    right: 0;
+                }
+                #index .menu a{
+                    width: 98%;
+                    margin-bottom: 20px;
+                    height: 200px;
+                }
+                .toast-content-half .toast-center-wrapper {
+                    width: 90%;
+                }
+                .toast-content-half .toast-body .videowrap{
+                    padding: 30px 5px;
+                }
+                #index .nav-item {
+                    top: -15px;
+                    right: 10px;
+                    border: 1px solid #1b1a1a;
+                    border-bottom: none;
+                    background-color: #3d3c3c;
+                    -webkit-box-shadow: -4px 4px 0px rgba(0, 0, 0, 0.3) !important;
+                    -moz-box-shadow: -4px 4px 0px rgba(0, 0, 0, 0.3) !important;
+                    box-shadow: -4px 4px 0px rgba(0, 0, 0, 0.3) !important;
+                    display: none;
+                }
+                #index .nav-item a{
+                    display: block;
+                    border-right: none;
+                    border-bottom: 1px solid #1b1a1a;
+                    line-height: 20px;
+                    font-size: 14px;
+                    color: #fff;
+                    padding: 10px 20px;
+                }
+                #qrcoder .qrcodeBox img{
+                    display: block;
+                    margin: 7% auto;
+                    height: 43%;
+                    width: auto;
+                }
+                .toast-content .toast-center-wrapper{
+                    width: auto;
+                    position: relative;
+                     transform: translate(0,0); 
+                    -webkit-transform: translate(0,0);
+                    -ms-transform: translate(0,0);
+                    -moz-transform: translate(0,0);
+                    top: 0;
+                    left: 0;
+                    height: 100%;
+                }
+                .qr-container{
+                    height: 100%;
+                }
+                .toast-content .toast-body{
+                    height: calc( 100% - 120px );
+                    padding-top: 20px;
+                }
+                .toast-content .m-footer{
+                    padding-top: 0;
+                    padding-bottom: 30px;
+                }
+                .qrcodeBox{
+                    height: 100%;
+                }
+            }
+            @media screen and (max-width: 640px){
+                a.goOld{display: none;}
+            }
+            a.goOld:hover{
+                text-decoration: none;
+            }
+            a.goOld{
+                border: 1px solid red;
+                padding: 6px 10px;
+                font-size: 18px;
+                font-weight: 600;
+                border-radius: 4px;
+                background-color: red;
+                color: #fff !important;
+                text-decoration: none;
+                margin-left: 25px;
+                position: relative;
+                bottom: 44px;
+            }
+            #pdfview {
+                position: fixed;
+                width: 100%;
+                height: 100%;
+                background-color: #fff;
+                z-index: 9999999;
+                top: 0;
+                left: 0;
+                box-sizing: border-box;
+                padding: 70px 50px;
+            }
+            .pdfwrap{
+                cursor: pointer;
+            }
+            #index .nav-item .readnotice {
+                position: absolute;
+                width: 16px;
+                height: 16px;
+                line-height: 16px;
+                top: -8px;
+                text-align: center;
+                font-size: 10px;
+                border-radius: 50%;
+                background-color: #df0024;
+                color: #fff;
+                font-weight: 600;
+            }
+        </style>
+	</head>
+<body id="index">
+
+    <%include toast%>
+    <%include trash%>
+    <!-- 计费弹窗 start -->
+    <div class="a_alert" id="exprieAlert">
+        <div class="alert_left">
+            <i class="alert_icon"></i>
+        </div>
+        <div class="alert_right">
+            <div class="alert_close">
+                <span>&nbsp; 关闭&nbsp; </span>
+                <span class="line"></span>
+                <span>x&nbsp;&nbsp;</span>
+            </div>
+            <div class="alert_msg">
+                <p class="alert_title">系统提示：</p>
+                <p class="alert_content" v-text="expirecontent"></p>
+            </div>
+        </div>
+    </div>
+    <!-- 计费弹窗 end -->
+
+    <div class="sti-container" id="sti-container">
+
+        <div class="nav">
+
+            <button id="menu-toggler" type="button" class="btn btn-navbar visible-phone">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <div class="logo icon"></div>
+            <a class="goOld" href="http://wx.sz-sti.com">回到旧版</a>
+            <div class="nav-item">
+                <a href="https://www.robopano.com">官网链接</a>
+                <a href="javascript:;" class="download" @click="appdownload">APP下载</a>
+                <a href="/newitem/logout">账号注销</a>
+                <a href="javascript:;" @click="shownotice" class="notice">消息<span class="readnotice" v-if="readcount" v-text="readcount"></span></a>
+            </div>
+        </div>
+
+        <div class="menu">
+            <a href="/panoitem" class="romaing"><span class="icon romaingbg"></span><span class="title">作品列表</span></a>
+            <a href="/setitem" class="globalset"><span class="icon searchbg"></span><span class="title">全局设置</span></a>
+            <a href="/appitem" class="appdownload"><span class="icon setallbg"></span><span class="title">APP下载</span></a>
+            <a href="/useritem#/index" class="personal-center"><span class="icon managementbg"></span><span class="title">个人中心</span></a>
+        </div>
+
+        <ul id="lists">
+            <li><a href="javascript:;" class="video-course" @click="showvideo"></a></li>
+            <li><a href="tencent://message/?uin=3327837004&Site=&menu=yes" class="contact-service"></a></li>
+        </ul>
+    </div>
+
+    <div id="noticetoast" :style="styleZindex" class="toast-content-half z-index" transition="qrtoast" v-show="shownotice" @click="hide">
+        <!-- <span><i class="close-pop ico-close" @click="hide"></i></span> -->
+        <div class="notice-wrapper" @click.stop>
+            <div class="tiptop" transition="qrtoast" v-show="showtiptop">
+                <div class="toast-center-wrapper">
+                    <div class="m-header">
+                        <h6 class="toast-title">{{dealobj.title}}提示</h6>
+                    </div>
+                    <div>
+                        <div class="toast-body">
+                            <p class="text-center">{{dealobj.content}}</p>
+                        </div>
+                        <div class="m-footer">
+                            <div class="text-center">
+                                <button class="btn btn-cancel btn-lg" type="button" @click="showtiptop = false">取消</button>
+                                <button class="btn btn-primary btn-setter btn-lg" type="submit" @click="dealcopy">确定</button> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="header">通知公告</div>
+            <div class="noticeLists">
+
+                <div v-for="notice in notices | orderBy 'order' | limitBy limit offset" :class="{'grouplist':notice.isgroup,'list':!notice.isgroup}" @click.stop="checknotice(notice.createdAt, !notice.isgroup)">
+                    <div v-if="notice.isgroup">
+                        <span class="pull-left title">
+                            <img style="position:relative;top:5px;left:2px;" width="20" src="/images/newitem/notice.png" />
+                            {{notice.createdAt}}
+                        </span>
+                        <span class="pull-left content">{{notice.copyfrom}}&nbsp;&nbsp;给你发送了全景&nbsp;&nbsp;<a href="javascript:;" @click="openurl(notice.id)" v-text="notice.title"></a></span>
+                        <span class="pull-right time">
+                            <a class="btn-flat" @click="delcopy(notice.id)">删除</a>
+                            <a class="btn-flat" @click="insertcopy(notice.id)">插入列表</a>
+                        </span>
+                    </div>
+                    <div v-else>
+                        <span class="pull-left title">
+                            <img style="position:relative;" width="35" :src="notice.read?'/images/newitem/read.png':'/images/newitem/noread.png'" />
+                            <span>{{notice.title}}</span>
+                        </span>
+                        <span class="pull-left content" v-text="notice.noticetext"></span>
+                        <span class="pull-right time" v-text="notice.settime"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pagination pull-right" v-if="count>limit">
+                <ul>
+                    <li :class="{'disabled': 1 == pagindex}"><a href="javascript:;" @click="load(1)">&#8249;&#8249;</a></li>
+                    <li :class="{'disabled': 1 == pagindex}" class="child"><a href="javascript:;" @click="load(pagindex-1)">&#8249;</a></li>
+                    <li v-for="cur in pages" v-if="pagindex>3&&pages-2>pagindex?(cur+1<=pagindex+2&&cur+1>=pagindex-2):(pagindex<=3?cur+1<=5:cur+1>=pages-4)" :class="{'active': cur+1 == pagindex}">
+                        <a href="javascript:;" @click="load(cur+1)" v-text="cur+1"></a>
+                    </li>
+                    <li :class="{'disabled': pages == pagindex}" class="child"><a href="javascript:;" @click="load(pagindex+1)">&#8250;</a></li>
+                    <li :class="{'disabled': pages == pagindex}"><a href="javascript:;" @click="load(pages)">&#8250;&#8250;</a></li>
+                </ul>
+            </div> 
+            
+        </div>  
+    </div>
+    <div id="preview" style="overflow: auto;" class="toast-content" transition="qrtoast" v-show="showpreview">
+        <span @click="hide"><i class="ico-close close-pop fixed"></i></span>
+        <div class="previewcontent">
+            <h4 class="title" v-text="previewTitle"></h4>
+            <div class="notice"></div>
+        </div>
+    </div>
+
+    <div id="pdfview" v-show="showpdfview" transition="qrtoast"></div>
+    <!--二维码弹窗 start-->
+    <div id="qrtoast" :style="styleZindex" class="toast-content z-index" transition="qrtoast" v-show="showqrtoast">
+        <span><i class="close-pop ico-close" @click="hide"></i></span>
+        <div class="toast-center-wrapper">
+            <div class="qr-container">
+                <div id="qrcoder" class="toast-body">
+                    <!-- <p>
+                        <a href="javascript:;" class="qrcode iosQrcode" @click="changetoF"></a>
+                        <a href="javascript:;" class="qrcode andriodQrcode" @click="changetoS"></a>
+                    </p> -->
+                    <div class="qrcodeBox">
+                        <img :src="iosURL" />
+                        <img :src="andriodURL" />
+                    </div>
+                </div>
+                <div class="m-footer">
+                    <h6 class="text-center" v-text="panoname"></h6>
+                    <p class="text-center">用手机 “扫一扫”，即可下载该APP</p>
+                </div>
+            </div>
+        </div>   
+    </div>
+    <!--二维码弹窗 end-->
+
+    <!--视频教程弹窗 start-->
+    <div id="videotoast" :style="styleZindex" class="toast-content-half z-index" transition="qrtoast" v-show="showvideo" @click="hide">
+        <!-- <span><i class="close-pop ico-close" @click="hide"></i></span> -->
+        <div class="toast-center-wrapper" @click.stop>
+            <div>
+                <div id="vediocoder" class="toast-body">
+                    <div class="videowrap clearfix" v-show="showwrap">
+                        <div class="videobox" @click="handleurl">
+                            <img src="../images/newitem/icons/handle.png" />
+                            <p>IPANO操作视频演绎</p>
+                        </div>
+                        <div class="videobox" @click="mobileurl">
+                            <img src="../images/newitem/icons/mobile.png" />
+                            <p>IPANO各项功能介绍<br/>（手机版）</p>
+                        </div>
+                        <div class="videobox" @click="cpturl">
+                            <img src="../images/newitem/icons/computer.png" />
+                            <p>IPANO各项功能介绍<br/>（电脑版）</p>
+                        </div>
+                    </div>
+                    <div class="youkubox" v-show="showyouku">
+                        <iframe height="300" width="100%" :src="videourl" style="background:#fff;" frameborder=0 allowfullscreen></iframe>
+                        <a class="cancel" href="javascript:;" @click="show">取消</a>
+                    </div>
+                </div>
+            </div>
+        </div>   
+    </div>
+    <!--视频教程弹窗 end-->
+
+    <script>
+        $('#menu-toggler').on('click', function(e){
+            e.stopPropagation();
+            $('.nav-item').toggleClass('show');
+        });
+        $(document).on('click', function(){
+            $('.nav-item').removeClass('show');
+        })
+        var preview = new Vue({
+            el: '#preview',
+            data: {
+                showpreview: false,
+                previewTitle: ''
+            },
+            methods: {
+                hide: function(){
+                    this.showpreview = false;
+                }
+            }
+        });  
+        var pdfview = new Vue({
+            el: '#pdfview',
+            data: {
+                showpdfview: false
+            }
+        });
+        var noticetoast = new Vue({
+            el: '#noticetoast',
+            data: {
+                shownotice: false,
+                styleZindex:{
+                    zIndex:'-9999'
+                },
+                notices: [],
+                showtiptop: false,
+                count:0,
+                pagindex:1,
+                limit:6,
+                pages:0,
+                cgroups: <%-cgs%>,
+                dealtype: false,
+                dealobj: {
+                    type: 0,
+                    title: '',
+                    content: ''
+                }
+            },
+            computed: {
+                offset: function(){
+                    return (this.pagindex-1)*this.limit;
+                },
+                pages: function(){
+                    return Math.ceil(this.count/this.limit);
+                }
+            },
+            methods: {
+                checknotice: function(create, bool){
+                    if(!bool)return;
+                    var createdAt = create;
+                    var list = stiContainer.readnotice;
+                    var _this = this;
+                    var index;
+                    for(var i in _this.notices){
+                        if(create == _this.notices[i].createdAt){
+                            index = i;
+                        }
+                    }
+                    if(list.indexOf(JSON.stringify(createdAt))==-1){
+                        list.push(JSON.stringify(createdAt));
+                        var data = {
+                            readnotice: list,
+                            userid: '<%=user.id%>'
+                        }
+                        $.post('/supermaster/updateread',data,function(res){
+                            if(res.code!=0){
+                                return;
+                            }
+                            list.push(JSON.stringify(createdAt));
+                            _this.notices[index].read = true;
+                            stiContainer.readnotice = list;
+                            stiContainer.readcount--;
+                        });
+                    }
+                    preview.showpreview = true;
+                    preview.previewTitle = this.notices[index].title;
+                    $('#preview .previewcontent .notice').html(this.notices[index].noticehtml);
+                    $('.pdfwrap').on('click',function(){
+                        pdfview.showpdfview = true;
+                        var src = $(this).attr('data-src');
+                        PDFObject.embed(src, "#pdfview");
+                        $('#pdfview').append('<span class="closepdf"><i class="close-pop ico-close"></i></span>');
+                        $('.closepdf').on('click',function(){
+                            pdfview.showpdfview = false;
+                            $(this).remove();
+                        });
+                    });
+                },
+                openurl: function(groupid){
+                    window.open(location.origin+'/scene/'+groupid+'?preview=4');
+                },
+                hide: function(){
+                    this.shownotice = false;
+                },
+                delcopy: function(groupid){
+                    this.showtiptop = true;
+                    this.dealobj = {
+                        type: 0,
+                        groupid: groupid,
+                        title: '删除',
+                        content: '确定是否删除？'
+                    }
+                },
+                insertcopy: function(groupid){
+                    var _this = this;
+                    $.get('/panoitem/check/'+groupid, function(res){
+                        _this.dealobj = {
+                            type: 1,
+                            groupid: groupid,
+                            title: '插入',
+                            content: '检测到列表中已存在相同房源，是否多复制一套？'
+                        }
+                        if(res.code == 0){
+                            _this.dealcopy();
+                            return;
+                        }
+                        if(res.code == 1){
+                            _this.showtiptop = true;
+                            return;
+                        }
+                        toast.showmsg(res.msg);
+                    });
+                },
+                dealcopy: function(){
+                    var _this = this;
+                    $.post('/panoitem/deal/'+this.dealobj.groupid, {confirm: this.dealobj.type}, function(res){
+                        toast.showmsg(res.msg);
+                        if(res.code == 0){
+                            var index;
+                            for(var i in _this.notices){
+                                if(_this.notices[i].id&&_this.notices[i].id == _this.dealobj.groupid)index = i;
+                            }
+                            _this.notices.splice(index, 1);
+                            stiContainer.readcount--;
+                            _this.showtiptop = false;
+                        }
+                    });
+                },
+                load: function(cur){
+                    if(cur!=this.pagindex){
+                        if(cur<1){
+                            toast.showmsg('当前就是首页了！', true);
+                            return;
+                        }
+                        if(cur>this.pages){
+                            toast.showmsg('没有下一页了', true);
+                            return;
+                        }
+                        this.pagindex = cur;
+                    }
+                },
+                init: function(){
+                    var _this = this;
+                    $.get('/supermaster/notice/data',function(res){
+                        var count = 0;
+                        var readnoticearr = stiContainer.readnotice;
+                        var lists = [];
+                        for(var i in res){
+                            lists.unshift(JSON.stringify(res[i].createdAt));
+                            if(readnoticearr.indexOf(JSON.stringify(res[i].createdAt))==-1){
+                                count++;
+                            }
+                            stiContainer.readcount = count+_this.cgroups.length;
+                            var createdAt;
+                            var time = new Date(res[i].createdAt);
+                            // createdAt = time.getFullYear();
+                            createdAt = (parseInt(time.getMonth())+1<10?'0':'')+(parseInt(time.getMonth())+1);
+                            createdAt += '-'+(time.getDate()<10?'0':'')+time.getDate();
+                            createdAt += ' '+(time.getHours()<10?'0':'')+time.getHours();
+                            createdAt += ':'+(time.getMinutes()<10?'0':'')+time.getMinutes();
+                            // createdAt += ':'+(time.getSeconds()<10?'0':'')+time.getSeconds();
+                            res[i].settime = createdAt; 
+                            res[i].read = false;//默认未读
+                            res[i].isgroup = false;
+                            _this.notices.unshift(res[i]);
+                        }
+                        for(var i in _this.cgroups){
+                            var time = new Date(_this.cgroups[i].createdAt);
+                            _this.cgroups[i].createdAt = (parseInt(time.getMonth())+1<10?'0':'')+(parseInt(time.getMonth())+1);
+                            _this.cgroups[i].createdAt += '-'+(time.getDate()<10?'0':'')+time.getDate();
+                            _this.cgroups[i].createdAt += ' '+(time.getHours()<10?'0':'')+time.getHours();
+                            _this.cgroups[i].createdAt += ':'+(time.getMinutes()<10?'0':'')+time.getMinutes();
+                            _this.cgroups[i].isgroup = true;
+                            _this.notices.unshift(_this.cgroups[i]);
+                            lists.unshift(JSON.stringify(_this.cgroups[i].createdAt));
+                        }
+                        var len = readnoticearr.length;
+                        for(var i=0;i<len;i++){
+                            var index = lists.indexOf(readnoticearr[i]);
+                            if(index==-1){
+                                readnoticearr.splice(index,1);
+                                len--;
+                                i--;
+                            }else{
+                                _this.notices[index].read = true; //更改为已读
+                            }
+                        }
+                        _this.count = _this.notices.length;
+                    })
+                }
+            }
+        })
+        noticetoast.init();
+        var qrtoast = new Vue({
+            el: '#qrtoast',
+            data: {
+                showqrtoast: false,
+                panoname:'IPANO最新版APP',
+                count:1,
+                andriodURL:'/images/newitem/android.png',
+                iosURL:'/images/newitem/ios.png',
+                styleZindex:{
+                    zIndex:'-9999'
+                }
+            },
+            methods: {
+                hide: function(){
+                    this.showqrtoast = false;
+                }
+            }
+        });
+        var videotoast = new Vue({
+            el:'#videotoast',
+            data:{
+                showvideo:false,
+                showwrap:true,
+                showyouku:false,
+                videourl:'',
+                styleZindex:{
+                    zIndex:'-9999'
+                }
+            },
+            methods:{
+                hide: function(){
+                    this.showvideo = false;
+                },
+                show: function(){
+                    this.showwrap = true;
+                    this.showyouku = false;
+                },
+                changebox: function(){
+                    this.showwrap = false;
+                    this.showyouku = true;
+                },
+                handleurl: function(){
+                    this.changebox();
+                    this.videourl = 'http://player.youku.com/embed/XMTUxODM5MTgxMg==';
+                },
+                mobileurl: function(){
+                    this.changebox();
+                    this.videourl = 'http://player.youku.com/embed/XMTUxODIzNDAwMA==';
+                },
+                cpturl: function(){
+                    this.changebox();
+                    this.videourl = 'http://player.youku.com/embed/XMTUxODIxNTcwOA==';
+                }
+            }
+        })
+        var stiContainer = new Vue({
+            el:'#sti-container',
+            data: {
+                // showread: false,
+                readnotice: <%-user.readnotice%>,
+                readcount: 0
+            },
+            methods:{
+                appdownload: function(){
+                    qrtoast.showqrtoast = true;
+                    qrtoast.styleZindex.zIndex = '5555';
+                },
+                showvideo: function(){
+                    videotoast.showvideo = true;
+                    videotoast.styleZindex.zIndex = '5555';
+                },
+                shownotice: function(){
+                    noticetoast.shownotice = true;
+                    noticetoast.styleZindex.zIndex = '5555';
+                }
+            }
+        });
+        var exprieAlert = new Vue({
+            el: '#exprieAlert',
+            data: {
+                expire: '<%=user.expiredate%>',
+                expirecontent: ''
+            },
+            methods: {
+                init: function(){
+                    var expiredate = Date.parse(new Date(this.expire));
+                    var now = Date.parse(new Date());
+                    var expire = Math.ceil((expiredate-now)/(24*60*60*1000));
+                    var _this = this;
+                    setTimeout(function(){
+                        if( expire<7 && expire>0 ){
+                            _this.expirecontent = '您好，您的VIP会员功能将于'+expire+'天后到期，为保障您的正常使用，请您及时充值';
+                            $('.a_alert').addClass('show');
+                        }
+                        if(expire<0){
+                            _this.expirecontent = '您好，您的VIP会员功能已过期'+(-expire)+'天，为保障您的正常使用，请您及时充值';
+                            $('.a_alert').addClass('show');
+                        }
+                        setTimeout(function(){
+                            if($('.a_alert').is('.show')){
+                                $('.a_alert').removeClass('show');
+                            }
+                        }, 4000);
+                        $('.alert_close').on('click', function(){
+                            $('.a_alert').removeClass('show');
+                        });
+                    }, 500);
+                }
+            }
+        });
+        exprieAlert.init();
+    </script>
+    
+</body>
+</html>

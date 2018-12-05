@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" class="login">
+	<head>
+		<title>sti 账户管理 登陆</title>
+		<meta charset="utf-8">
+        <meta name="format-detection" content="telephone=no">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="/css/suteng.css?v=<%=version%>">
+	</head>
+	<body id="login">
+    <script src="js/sti-common.min.js?<%=version%>"></script>
+    <script src="/js/jquery-latest.js"></script>
+    <div class="sti-container h100 center">
+        <div class="top">
+            <div class="icon slogan"></div>
+            <div class="icon icon-rlogo rlogo" style="cursor:pointer" onclick="window.open('http://www.sz-sti.com')"></div>
+        </div>
+        <div class="bottom">
+            <div class="login-container center">
+                <div class="acount">
+                    <div class="icon icon-acount"></div>
+                    <input id="username" name="username" placeholder="请输入账号">
+                </div>
+                <div class="password">
+                    <div class="icon icon-password"></div>
+                    <input id="password" type="password" name="password" placeholder="请输入密码">
+                </div>
+                <div class="buttons">
+                    <button class="btn-login">登&nbsp;&nbsp;&nbsp;录</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+    $(function(){
+        $(document).on('keydown',function(e){
+            if(e.keyCode==13){
+                $('.btn-login').click();
+            }
+        })
+        $('.btn-login').click(function(){
+            $.post('/supermaster',{username:$('#username').val(),password:$('#password').val()},function(result){
+                if(result.code==0){
+                    location.href="/supermaster";
+                }else{
+                    alert(result.msg);
+                }
+            });
+        });
+        $('body').on('touchmove',function(e){
+            e.preventDefault();
+        });
+    });
+    </script>
+    </body>
+</html>

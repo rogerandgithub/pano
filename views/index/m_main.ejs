@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>深圳速腾聚创科技有限公司</title>
+    <link rel="stylesheet" href="/index/css/m_common.css" type="text/css"> 
+    <link rel="stylesheet" href="/index/css/m_main.css" type="text/css"> 
+    <link rel="stylesheet" href="/index/css/swiper-3.4.1.min.css" type="text/css">
+    <script src="/index/js/swiper-3.4.1.min.js"></script>
+    <script src="/index/js/Vue.min.js"></script>
+    <style type="text/css">
+        /*.apollo{
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: 999;
+            background: rgba(0, 0, 0, 1);
+            -webkit-transition: all 0.5s;
+            -moz-transition: all 0.5s;
+            -ms-transition: all 0.5s;
+        }
+        .apollo img{
+            display: block;
+            width: 100%;
+            position: relative;
+            top: 50%;
+            transform: translateY(-50%);
+            -webkit-transform: translateY(-50%);
+            -moz-transform: translateY(-50%);
+            -ms-transform: translateY(-50%);
+        }
+        .apollo .prograss{
+            position: absolute;
+            background: linear-gradient(right,transparent,#e72420,transparent);
+            background: -webkit-linear-gradient(right,transparent,#e72420,transparent);
+            background: -ms-linear-gradient(right,transparent,#e72420,transparent);
+            width: 2rem;
+            height: 3px;
+            bottom: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .apollo .prograss span{
+            position: relative;
+            display: block;
+            width: 6px;
+            height: 5px;
+            background: #e72420;
+            position: relative;
+            left: 0;
+            top: -1px;
+            box-shadow: 0 0 15px 5px rgba(231, 36, 32, 0.5);
+            animation:mymove 4s linear forwards;
+            -webkit-animation:mymove 4s linear forwards;
+        }
+        @keyframes mymove
+        {
+            from {left: 0;}
+            to {left: 100%;}
+        }
+
+        @-webkit-keyframes mymove
+        {
+            from {left: 0;}
+            to {left: 100%;}
+        }
+        .fade-transition{
+            transform: translate3d(0,0,0);
+            -webkit-transform: translate3d(0,0,0);
+            -moz-transform: translate3d(0,0,0);
+            -ms-transform: translate3d(0,0,0);
+        }
+        .fade-enter,.fade-leave{
+            transform: translate3d(100%,0,0);
+            -webkit-transform: translate3d(100%,0,0);
+            -moz-transform: translate3d(100%,0,0);
+            -ms-transform: translate3d(100%,0,0);
+        }*/
+    </style>
+</head>
+<body>
+    <%include m_nav%>
+    <!-- <div class="apollo" id="apollo" v-show="showapollo" transition="fade">
+        <img src="http://qncdn.sz-sti.com/apolo.jpg?v=1" />
+        <div class="prograss"><span></span></div>
+    </div> -->
+    <div id="wrapper">
+        <div class="swiper-container" id="main">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide slide3">
+                    <h4 class="sildepic"></h4>
+                    <div class="textinfo">
+                        <h3 class="title" v-text="datas.main.slide_3.h2"></h3>
+                        <p v-text="datas.main.slide_3.p"></p>
+                        <a class="btn" href="/mobile/rslidar/platform/<%=lang%>" v-text="datas.main.slide_3.checkbtn"></a>
+                    </div>
+                </div>
+                <div class="swiper-slide slide1">
+                    <h4 class="sildepic"></h4>
+                    <div class="textinfo">
+                        <h3 class="title" v-text="datas.main.slide_1.h2"></h3>
+                        <p v-text="datas.main.slide_1.p"></p>
+                        <a class="btn" href="/mobile/rslidar/<%=lang%>" v-text="datas.main.slide_1.checkbtn"></a>
+                    </div>
+                </div>
+                <div class="swiper-slide slide2">
+                    <h4 class="sildepic"></h4>
+                    <div class="textinfo">
+                        <h3 class="title" v-text="datas.main.slide_2.h2"></h3>
+                        <p>{{datas.main.slide_2.p1}}<br/>{{datas.main.slide_2.p2}}</p>
+                        <a class="btn" href="/mobile/threedimensional/<%=lang%>" v-text="datas.main.slide_2.checkbtn"></a>
+                    </div>
+                </div>
+            </div>
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div>
+        </div>
+    </div>
+
+    <script type="text/javascript"> 
+        // var apollo = new Vue({
+        //     el: '#apollo',
+        //     data: {
+        //         showapollo: true
+        //     }
+        // })
+        var main = new Vue({
+            el: '#main',
+            data: {
+                datas: <%-include("mobile_lang_"+lang, {lang: lang})%>
+            }
+        });
+        var mySwiper = new Swiper('.swiper-container', {
+            autoplay: 5000,  //自动滑动
+            pagination: '.swiper-pagination',  //分页
+            loop: true,  //循环
+            effect: 'flip', //切换效果
+            prevButton:'.swiper-button-prev',
+            nextButton:'.swiper-button-next'
+        })
+        // setTimeout(function(){
+        //     apollo.showapollo = false;
+        // }, 3000)
+    </script>
+</body>
+</html>

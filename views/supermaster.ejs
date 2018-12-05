@@ -1,0 +1,1295 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>超级管理员账户</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
+<link href="/css/supermaster/common.css" rel="stylesheet" />
+<link href="/css/supermaster/supermaster.css" rel="stylesheet" />
+<link href="/css/supermaster/lib/font-awesome.css" type="text/css" rel="stylesheet" />
+<link href="/css/supermaster/icons.css" rel="stylesheet" type="text/css" />
+<link href="/css/supermaster/bootstrap-datetimepicker.min.css" rel="stylesheet">
+<script src="/js/supermaster/jquery-2.2.4.min.js"></script>
+<script src="/js/supermaster/bootstrap.min.js"></script>
+<script src="/js/bootstrap/bootstrap-datetimepicker.min.js"></script>
+<script src="/js/supermaster/vue.min.js"></script>
+<style type="text/css">
+    #renewBox .wrapper{
+        width: 90%;
+        max-width: 640px;
+        margin: 100px auto;
+    }
+    #renewBox .wrapper h4.title{
+        text-align: center;
+        font-size: 24px;
+        margin-bottom: 40px;
+    }
+    #renewBox .wrapper .lists{
+        font-size: 0;
+    }
+    #renewBox .wrapper .lists .user{
+        position: relative;
+        font-size: 14px;
+        display: inline-block;
+        background: #ccc;
+        padding: 10px 20px;
+        margin-right: 15px;
+        margin-bottom: 15px;
+    }
+    #renewBox .wrapper .lists .user span{
+        position: absolute;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        top: 0;
+        right: 0;
+    }
+    #renewBox .wrapper .lists .user span img{
+        display: block;
+        width: 100%;
+        cursor: pointer;
+    }
+    #renewBox .toast-body{
+        margin-top: 40px;
+    }
+    #renewBox .form-control{
+        display: inline-block;
+        height: 40px !important;
+    }
+</style>
+<body>
+    <%include newitem/loading%>
+    <%include newitem/toast%>
+    <div id="sidebar-nav">
+        <div class="logo-wrapper">
+            <a href="/indexitem"><img class="logo-img" src="/images/newitem/icons/logo.png" /></a>
+        </div>
+        <ul id="dashboard-menu">
+            <li @click="user('user')">
+                <div class="active" v-if="current.user"></div>
+                <a>用户列表</a>
+            </li>
+            <li @click="permission('permission')">
+                <div class="active" v-if="current.permission"></div>
+                <a>权限设置</a>
+            </li>
+            <li @click="hidecurrent('new','新建用户')">
+                <div class="active" v-if="current.new"></div>
+                <a>新建用户</a>
+            </li>
+            <li @click="hidecurrent('appid','创建APPid账户')">
+                <div class="active" v-if="current.appid"></div>
+                <a>APPID账户</a>
+            </li>
+            <li @click="hidecurrent('father','关联子母')">
+                <div class="active" v-if="current.father"></div>
+                <a>关联子母</a>
+            </li>
+            <li @click="hidecurrent('addchild','添加子账户')">
+                <div class="active" v-if="current.addchild"></div>
+                <a>添加子账户</a>
+            </li>
+            <li @click="batchRenew">
+                <a>批量续费</a>
+            </li>
+        </ul>
+    </div>
+    <div id="user-content">
+        <div class="contentmenu">
+            <div class="pull-left filterfather">
+                <span @click="showfilterlist=!showfilterlist">查看母账号<i class="icon-sort-down"></i></span>
+                <div class="filterlist" transition="qrtoast" v-show="showfilterlist">
+                    <p @click="filterfather">查看母账号</p>
+                    <p @click="filterall">查看全部</p>
+                </div>
+            </div>
+            <div class="searchbox pull-right">
+                <input v-model="filterinput" type="text" class="textinput" @keyup="filteraccount | debounce 500"  placeholder="请输入搜索的账号" />
+                <button class="btn btn-primary" @click="filteraccount">搜索</button>
+            </div>
+        </div>
+        <div class="wrapper">
+            <loading2 :isshowload2="isshowload2"></loading2>
+            <table class="table table-hover" v-if="showuser">
+                <thead>
+                    <tr>
+                        <th class="align-left span2">账户</th>
+                        <th class="align-left span1">昵称</th>
+                        <th class="align-left span1">母账号</th>
+                        <th class="align-left span2">公司名称</th>
+                        <th class="align-left span2">联系方式</th>
+                        <th class="align-left span2">到期时间</th>
+                        <th class="align-right span4">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="user in users | accountfilter filtername | fatherfilter children | limitBy limit offset">
+                        <td>
+                            <span v-text="user.name"></span><i class="icon-edit pull-right" @click="changename(user.name,user.id)"></i>
+                            <br/>
+                            <small style="font-size:12px;" v-text="'('+user.createdAt+')'"></small>
+                        </td>
+                        <td>
+                            <span v-text="user.nickname?user.nickname:'空'"></span>
+                        </td>
+                        <td>
+                            <span v-text="user.fathername?user.fathername:'空'"></span>
+                        </td>
+                        <td>
+                            <span v-text="user.founder||user.company||user.prefix||'空'"></span><i class="icon-edit pull-right" @click="changecompany(user.name,user.id,user.company)"></i>
+                        </td>
+                        <td>
+                            <span v-text="user.itcmail?user.itcmail:user.telephone?user.telephone:'空'"></span><i class="icon-edit pull-right" @click="changeitcmai(user.name,user.id,user.itcmail)"></i>
+                        </td>
+                        <td>
+                            <span v-text="user.expiredate"></span>
+                            <span title="不再提醒" @click="changestatus(user.id)" class="expire" v-if="user.noexpire?true:false" v-text="user.noexpire&&!user.isexpire?'即将过期':'已过期'"></span>
+                        </td>
+                        <td>
+                            <button class="btn btn-primary pull-right" @click="addRenew(user.name,user.id)">添加续费</button>
+                            <button class="btn btn-primary pull-right" @click="resetpsw(user.name,user.id)">重置密码</button>
+                            <button class="btn btn-primary pull-right" @click="delaccount(user.name,user.id)">删除账号</button>
+                            <button class="btn btn-primary pull-right" @click="setexpire(user.name,user.id)">账号续费</button>
+                            <button class="btn btn-primary pull-right" @click="bindequipment(user.name,user.id,user.itcmstertel)">绑定设备</button>
+                            <button v-if="user.children_list" class="btn btn-primary pull-right" @click="checkchild(user.children_list)">子账号</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-hover" v-if="showpermission">
+                <thead>
+                    <tr>
+                        <th class="align-left">账户</th>
+                        <th class="align-left">商标</th>
+                        <th class="align-left">前缀</th>
+                        <th class="align-left">标识</th>
+                        <th class="align-left">生成子账号</th>
+                        <th class="align-left">技术支持</th>
+                        <th class="align-left">接口设置</th>
+                        <th class="align-left">删除</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="user in users | accountfilter filtername | fatherfilter children | limitBy limit offset">
+                        <td>
+                            <span v-text="user.name"></span>
+                        </td>
+                        <td>
+                            <p class="mt_7"> 
+                                <span class="toggle-btn" :class="{'on':user.permission_trademark}" @click="setpermission('trademark',user.id,user.permission_trademark)">
+                                    <label>
+                                        <span class="switcher-wrapper"><span class="switcher"></span></span>
+                                    </label>
+                                </span>
+                            </p>
+                        </td>
+                        <td>
+                            <p class="mt_7"> 
+                                <span class="toggle-btn" :class="{'on':user.permission_prefix}" @click="setpermission('prefix',user.id,user.permission_prefix)">
+                                    <label>
+                                        <span class="switcher-wrapper"><span class="switcher"></span></span>
+                                    </label>
+                                </span>
+                            </p>
+                        </td>
+                        <td>
+                            <p class="mt_7"> 
+                                <span class="toggle-btn" :class="{'on':user.permission_logo}" @click="setpermission('logo',user.id,user.permission_logo)">
+                                    <label>
+                                        <span class="switcher-wrapper"><span class="switcher"></span></span>
+                                    </label>
+                                </span>
+                            </p>
+                        </td>
+                        <td>
+                            <p class="mt_7"> 
+                                <span class="toggle-btn" :class="{'on':user.permission_hidetitle}" @click="setpermission('hidetitle',user.id,user.permission_hidetitle)">
+                                    <label>
+                                        <span class="switcher-wrapper"><span class="switcher"></span></span>
+                                    </label>
+                                </span>
+                            </p>
+                        </td>
+                        <td>
+                            <p class="mt_7"> 
+                                <span class="toggle-btn" :class="{'on':user.permission_support}" @click="setpermission('support',user.id,user.permission_support)">
+                                    <label>
+                                        <span class="switcher-wrapper"><span class="switcher"></span></span>
+                                    </label>
+                                </span>
+                            </p>
+                        </td>
+                        <td>
+                            <p class="mt_7"> 
+                                <span class="toggle-btn" :class="{'on':user.permission_api}" @click="setpermission('api',user.id,user.permission_api)">
+                                    <label>
+                                        <span class="switcher-wrapper"><span class="switcher"></span></span>
+                                    </label>
+                                </span>
+                            </p>
+                        </td>
+                        <td>
+                            <p class="mt_7"> 
+                                <span class="toggle-btn" :class="{'on':user.permission_delete}" @click="setpermission('delete',user.id,user.permission_delete)">
+                                    <label>
+                                        <span class="switcher-wrapper"><span class="switcher"></span></span>
+                                    </label>
+                                </span>
+                            </p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="pagination pull-right" v-if="!isshowload2&&count>limit">
+                <ul>
+                    <li :class="{'disabled': 1 == pagindex}"><a href="javascript:;" @click="load(1)">&#8249;&#8249;</a></li>
+                    <li :class="{'disabled': 1 == pagindex}" class="child"><a href="javascript:;" @click="load(pagindex-1)">&#8249;</a></li>
+                    <li v-for="cur in pages" v-if="pagindex>3&&pages-2>pagindex?(cur+1<=pagindex+2&&cur+1>=pagindex-2):(pagindex<=3?cur+1<=5:cur+1>=pages-4)" :class="{'active': cur+1 == pagindex}">
+                        <a href="javascript:;" @click="load(cur+1)" v-text="cur+1"></a>
+                    </li>
+                    <li :class="{'disabled': pages == pagindex}" class="child"><a href="javascript:;" @click="load(pagindex+1)">&#8250;</a></li>
+                    <li :class="{'disabled': pages == pagindex}"><a href="javascript:;" @click="load(pages)">&#8250;&#8250;</a></li>
+                </ul>
+            </div>
+        </div>    
+    </div>
+    <!--更改用户名，公司名称，联系方式等等公共弹框-->
+    <div id="commonbox" class="toast-content" transition="qrtoast" v-show="showbox">
+        <span><i class="close-pop ico-close" @click="hide"></i></span>
+        <div class="toast-center-wrapper">
+            <div class="m-header">
+                <h1 class="text-center"><i class="icon-bell-alt"></i></h1>
+                <h6 class="toast-title text-center" v-text="title"></h6>
+            </div>
+            <div>
+                <div class="toast-body">
+                    <div class="form-group"> 
+                        <input v-model="datetime" class="form-control" v-show="datetimepicker" id="datetimepicker" placeholder="点击选择日期" />
+                        <input v-model="newdata" class="form-control" v-show="textinput" :type="inputtype" autocomplete="off" :value="inputvalue" :placeholder="placeholder">
+                    </div>
+                    <small v-if="delwarning">该操作将永久性删除账号的一切信息</small>
+                </div>
+                <div class="m-footer">
+                    <div class="text-center">
+                        <button class="btn btn-cancel btn-lg" type="button" @click="hide">取消</button>
+                        <button class="btn btn-primary btn-lg" @keyup.enter="submit" @click="submit">确定</button> 
+                    </div>
+                </div>
+            </div>
+        </div> 
+    </div>
+    <!--新建用户，APPID，关联子母，添加子账号-->
+    <div id="settoast" class="toast-content" transition="qrtoast" v-show="showsettoast">
+        <span><i class="close-pop ico-close" @click="hide"></i></span>
+        <div class="toast-center-wrapper">
+            <div class="m-header">
+                <h1 class="text-center"><i class="icon-bell-alt"></i></h1>
+                <h6 class="toast-title text-center" v-text="title"></h6>
+            </div>
+            <div>
+                <div class="toast-body">
+                    <div class="form-group"> 
+                        <input v-model="username" type="text" class="form-control" :placeholder="holderusername">
+                        <input v-model="password" :type="inputtype" class="form-control" placeholder="密码">
+                        <input v-if="showitcmstertel" v-model="itcmstertel" type="text" class="form-control" placeholder="绑定设备">
+                        <input v-if="showcompany" v-model="company" type="text" class="form-control" placeholder="公司名称">
+                        <!-- <select class="form-control" v-model="father" v-show="fatherselect">
+                            <option selected value="0">父账号(可选)</option>
+                            <option v-for="father in fathers" :value="father.id" v-text="father.name"></option>
+                        </select> -->
+                        <input class="form-control" type="text" list="url_list" name="fathername" v-model="father" v-show="fatherselect" placeholder="请填写父账号" />
+                        <datalist id="url_list">
+                            <!-- <option label="W3School" value="http://www.w3school.com.cn" /> -->
+                            <option v-for="father in fathers" :value="father.name" />
+                        </datalist>
+                        <div v-show="togglenav">
+                            <select class="form-control" v-model="expire" v-if="showdateselect">
+                                <option selected value="0">选择有效期</option>
+                                <option value="1">一个月</option>
+                                <option value="3">三个月</option>
+                                <option value="6">半年</option>
+                                <option value="9">九个月</option>
+                                <option value="12">一年</option>
+                                <option value="18">一年半</option>
+                                <option value="-1">手动选择</option>
+                            </select>
+                            <div class="clearfix" v-show="showdatepicker" transition="qrtoast">
+                                <input class="form-control" id="datepicker" type="text" v-model="handexpire">
+                                <span class="dataicon"><i class="icon-calendar"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="m-footer">
+                    <div class="text-center">
+                        <button class="btn btn-cancel btn-lg" type="button" @click="hide">取消</button>
+                        <button class="btn btn-primary btn-lg" @keyup.enter="submit" @click="submit">确定</button> 
+                    </div>
+                </div>
+            </div>
+        </div> 
+    </div>
+    <!--子账号管理-母账号管理-->
+    <div id="accountbox" class="toast-content" transition="qrtoast" v-show="showaccountbox">
+        <span><i class="close-pop ico-close" @click="hide"></i></span>
+        <div class="wrapper">
+            <h4 v-text="accounttitle"></h4>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th class="align-left span1">账户</th>
+                        <th class="align-left span1">昵称</th>
+                        <th class="align-left span2">公司名称</th>
+                        <th class="align-left span1">联系方式</th>
+                        <th class="align-left span1">到期时间</th>
+                        <th class="align-right span4">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="user in children_list | limitBy limit offset ">
+                        <td>
+                            <span v-text="user.name"></span><i class="icon-edit pull-right" @click="changename(user.name,user.id)"></i>
+                            <br/>
+                            <small style="font-size:12px;" v-text="'('+user.createdAt+')'"></small>
+                        </td>
+                        <td>
+                            <span v-text="user.nickname?user.nickname:'空'"></span>
+                        </td>
+                        <td>
+                            <span v-text="user.founder||user.company||user.prefix||'空'"></span><i class="icon-edit pull-right" @click="changecompany(user.name,user.id,user.company)"></i>
+                        </td>
+                        <td>
+                            <span v-text="user.itcmail?user.itcmail:user.telephone?user.telephone:'空'"></span><i class="icon-edit pull-right" @click="changeitcmai(user.name,user.id,user.itcmail)"></i>
+                        </td>
+                        <td>
+                            <span v-text="user.expiredate"></span>
+                            <span title="不再提醒" @click="childchangestatus(user.id)" class="expire" v-if="user.noexpire?true:false" v-text="user.noexpire&&!user.isexpire?'即将过期':'已过期'"></span>
+                        </td>
+                        <td>
+                            <button class="btn btn-primary pull-right" @click="resetpsw(user.name,user.id)">重置密码</button>
+                            <button class="btn btn-primary pull-right" @click="delaccount(user.name,user.id)">删除账号</button>
+                            <button class="btn btn-primary pull-right" @click="setexpire(user.name,user.id)">账号续费</button>
+                            <button class="btn btn-primary pull-right" @click="bindequipment(user.name,user.id,user.itcmstertel)">绑定设备</button>
+                            <button v-if="user.itcmstertel!='inherit'" class="btn btn-primary pull-right" @click="unbindaccount(user.id,user.father,user.name)">解绑账号</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="pagination pull-right" v-if="count>limit">
+                <ul>
+                    <li :class="{'disabled': 1 == pagindex}"><a href="javascript:;" @click="load(1)">&#8249;&#8249;</a></li>
+                    <li :class="{'disabled': 1 == pagindex}" class="child"><a href="javascript:;" @click="load(pagindex-1)">&#8249;</a></li>
+                    <li v-for="cur in pages" v-if="pagindex>3&&pages-2>pagindex?(cur+1<=pagindex+2&&cur+1>=pagindex-2):(pagindex<=3?cur+1<=5:cur+1>=pages-4)" :class="{'active': cur+1 == pagindex}">
+                        <a href="javascript:;" @click="load(cur+1)" v-text="cur+1"></a>
+                    </li>
+                    <li :class="{'disabled': pages == pagindex}" class="child"><a href="javascript:;" @click="load(pagindex+1)">&#8250;</a></li>
+                    <li :class="{'disabled': pages == pagindex}"><a href="javascript:;" @click="load(pages)">&#8250;&#8250;</a></li>
+                </ul>
+            </div>
+        </div> 
+    </div>
+    <!--批量续费-->
+    <div id="renewBox" class="toast-content" transition="qrtoast" v-show="showrenewBox">
+        <span><i class="close-pop ico-close" @click="hide"></i></span>
+        <div class="wrapper">
+            <h4 class="title">批量续费的用户</h4>
+            <div class="lists">
+                <div class="user" v-for="item in renewArr"><span class="delete" @click="delete(item)"><img src="/images/newitem/icons/delete.png"></span>{{ item.name }}</div>
+            </div>
+            <div class="toast-body">
+                <div class="form-group"> 
+                    <input class="form-control" id="datetimepickerRenew" placeholder="点击选择日期" />
+                    <input class="form-control" type="password" autocomplete="off" v-model="password" placeholder="请输入管理员密码">
+                </div>
+            </div>
+            <div class="m-footer">
+                <div class="text-center">
+                    <button class="btn btn-cancel btn-lg" type="button" @click="hide">取消</button>
+                    <button class="btn btn-primary btn-lg" @click="submit">确定</button> 
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        var renewBox = new Vue({
+            el: '#renewBox',
+            data: {
+                showrenewBox: false,
+                handexpire: '',
+                password: '',
+                renewArr: []
+            },
+            methods: {
+                hide: function(){
+                    this.showrenewBox = false;
+                },
+                delete: function(item){
+                   this.renewArr.$remove(item);
+                   toast.showmsg('删除成功');
+                    if(this.renewArr.length == 0){
+                        this.showrenewBox = false;
+                        return;
+                    }
+                },
+                submit: function(){
+                    if(!this.password || !this.handexpire){
+                        toast.showmsg('管理员密码跟有效期不能为空', true);
+                        return;
+                    }
+                    var userids = [];
+                    for(var i in this.renewArr){
+                        userids.push(this.renewArr[i].id);
+                    }
+                    var data = {
+                        password: this.password,
+                        newdate:  this.handexpire,
+                        userids: userids
+                    }
+                    console.log(data);
+                    var _this = this;
+                    $.post('/supermaster/renewsetexpire', data, function(res){
+                        if(res.code != 0){
+                            toast.showmsg('续费失败，请重新操作', true);
+                            return;
+                        }
+                        toast.showmsg('续费成功');
+                        _this.handexpire = '';
+                        _this.password = '';
+                        _this.renewArr = [];
+                        _this.showrenewBox = false;
+                    })
+                }
+            }
+        })
+        //新建用户，APPID，关联子母，添加子账号
+        var settoast = new Vue({
+            el: '#settoast',
+            data: {
+                showsettoast: false,
+                title: '',
+                fathers: [],
+                password: '',
+                username: '',
+                father: '',
+                father_id: '',
+                expire: '',
+                handexpire: '',
+                company: '',
+                itcmstertel: '',
+                showitcmstertel: false,
+                showcompany: false,
+                togglenav: false,
+                fatherselect: true,
+                type: '',
+                holderusername: '',
+                inputtype: 'password'
+            },
+            computed: {
+                showdatepicker: function(){
+                    return this.expire == '-1'?true:false;
+                },
+                showdateselect: function(){
+                    return this.expire == '-1'?false:true;
+                }
+            },
+            methods: {
+                hide: function(){
+                    this.showsettoast = false;
+                    this.title = '';
+                    this.password = '';
+                    this.username = '';
+                    this.expire = 0;
+                    this.company = '';
+                    this.itcmstertel = '';
+                    this.showitcmstertel = false;
+                    this.showcompany = false;
+                    this.togglenav = false;
+                    this.fatherselect = true;
+                    this.father = 0;
+                    this.handexpire = '';
+                    this.inputtype = 'password';
+                },
+                getfathers: function(){
+                    var _this = this;
+                    $.get('/supermaster/getfathers', function(res){
+                        if(res.code!=0){
+                            toast.showmsg(res.msg,true);
+                            return;
+                        }
+                        for(var i in res.fathers){
+                            _this.fathers.push(res.fathers[i])
+                        }
+                    });
+                },
+                addnewuser: function(){
+                    var _this = this;
+                    var expire, date = new Date();
+                    var month = (date.getMonth()+parseInt(this.expire)+1);
+                    var year = date.getFullYear() + parseInt(month/12-0.01);
+                    expire = this.expire!=-1?year+'-'+(month==12?month:(month%12))+'-'+date.getDate():this.handexpire;
+                    if(!expire){
+                        toast.showmsg('请选择有效期',true);
+                        return;
+                    }
+                    for(var i in this.fathers){
+                        if(this.fathers[i].name == this.father){
+                            this.father_id = this.fathers[i].id;
+                        }
+                    }
+                    var data = {
+                        username: _this.username,
+                        password: _this.password,
+                        father: _this.father_id,
+                        expire: expire? expire:'1970-01-01 08:00:00',
+                        company: _this.company,
+                        itcmstertel: _this.itcmstertel
+                    }
+                    $.post('/supermaster/newuser',data,function(res){
+
+                        console
+                        if(res.code!=0){
+                            toast.showmsg(res.msg,true);
+                            return;
+                        }
+                        for(var i in res.newuser){
+
+                            res.newuser[i].expiredate = (new Date(res.newuser[i].expiredate)).toLocaleDateString();
+                            res.newuser[i].createdAt = (new Date(res.newuser[i].createdAt)).toLocaleDateString();
+                            res.newuser[i].isexpire = (Date.parse(res.newuser[i].expiredate)-Date.now())<0 && res.newuser[i].status!=1;
+                            res.newuser[i].noexpire = (Date.parse(res.newuser[i].expiredate)-Date.now())<=15*24*3600*1000 && res.newuser[i].status!=1;
+                            usercontent.users.unshift(res.newuser[i]);
+                        }
+                        toast.showmsg('用户'+_this.username+'新建成功');
+                        _this.hide();
+                    });
+                },
+                appiduser: function(){
+                    var _this = this;
+                    var data = {
+                        username: _this.username,
+                        password: _this.password
+                    }
+                    $.post('/supermaster/newappiduser',data,function(res){
+                        if(res.code!=0){
+                            toast.showmsg(res.msg,true);
+                            return;
+                        }
+                        _this.inputtype = 'text';
+                        toast.showmsg(res.msg);
+                        _this.title = res.msg;
+                        _this.username = res.appid;
+                        _this.password = res.appsecret;
+                    });
+                },
+                father_or_addchild: function(){
+                    var _this = this;
+                    if(this.father == 0){
+                        toast.showmsg('请选择父账号', true);
+                        return;
+                    }
+
+                    for(var i in this.fathers){
+                        if(this.fathers[i].name == this.father){
+                            this.father_id = this.fathers[i].id;
+                        }
+                    }
+                    var data = {
+                        username: this.username,
+                        password: this.password,
+                        father: this.father_id || undefined
+                    };
+                    var postUrl;
+                    this.type == 'father'?postUrl = '/supermaster/bindfather':postUrl = '/supermaster/addchild';
+                    $.post(postUrl,data,function(res){
+                        if(res.code!=0){
+                            toast.showmsg(res.msg,true);
+                            return;
+                        }
+                        _this.type == 'father' ? toast.showmsg('关联成功') : toast.showmsg('添加成功');
+                        for(var i in usercontent.users){
+                            if(usercontent.users[i].id == _this.father){
+                                usercontent.users[i].children_list.push(res.newuser);
+                            }
+                        }
+                        _this.hide();
+                    });
+                },
+                submit: function(){
+                    if(this.username == "" || this.password == ""){
+                        toast.showmsg('用户名和密码不能为空',true);
+                        return;
+                    }
+                    if(this.type == 'new'){//新建用户
+                        this.addnewuser();
+                    }
+                    if(this.type == 'appid'){//创建appid用户
+                        this.appiduser();
+                    }
+                    if(this.type == 'father' || this.type == 'addchild'){//关联子母
+                        this.father_or_addchild(); 
+                    }     
+                }
+            }
+        })
+        //侧边栏
+        var nav = new Vue({
+            el:'#sidebar-nav',
+            data:{
+                name: '',
+                timer: null,
+                display: false,
+                active: false,
+                showchildren: false,
+                current: {
+                    user: false,
+                    permission: false,
+                    new: false,
+                    appid: false,
+                    father: false,
+                    addchild: false
+                }
+            },
+            methods: {
+                init: function(){
+                    this.current.user = true;
+                    usercontent.init();
+                },
+                batchRenew: function(){
+                    if(renewBox.renewArr.length == 0){
+                        toast.showmsg('请先添加需要批量续费的用户', true);
+                        return;
+                    }
+                    //初始化日期插件
+                    $('#datetimepickerRenew').datetimepicker({
+                        startDate:new Date(),
+                        autoclose: 1,
+                        todayHighlight: 1,
+                        startView: 2,
+                        minView: 2,
+                        forceParse: 0
+                    });
+                    $('#datetimepickerRenew').on('change', function(){
+                        renewBox.handexpire = $('#datetimepickerRenew').val().split(' ')[0];
+                    }); 
+                    renewBox.showrenewBox = true;
+                },
+                hidecurrent: function(type,title){
+                    for(var i in this.current){
+                        this.current[i] = false;
+                    }
+                    this.current[type] = true;
+                    if(type != 'user' && type != 'permission'){
+                        settoast.showsettoast = true;
+                        settoast.title = title;
+                        settoast.type = type;
+                        if(type=='new'){//创建新用户
+                            this.addnew();
+                        }else if(type == 'appid'){//创建appid 用户
+                            settoast.fatherselect = false;
+                            settoast.holderusername = '绑定用户名';
+                        }else if(type == 'father' || type == 'addchild'){//关联子母   添加子账号
+                            settoast.getfathers();//获取所有的父账号
+                            settoast.holderusername = '子账号用户名';
+                        }
+                    }
+                },
+                user: function(type){
+                    if(this.current[type]){return;}
+                    this.hidecurrent(type);
+                    usercontent.showpermission = false;
+                    usercontent.isshowload2 = true;
+                    setTimeout(function(){
+                        usercontent.showuser = true;
+                        usercontent.pagindex = 1;
+                        usercontent.isshowload2 = false;
+                    },500)
+                },
+                permission: function(type){
+                    if(this.current[type]){return;}
+                    this.hidecurrent(type);
+                    usercontent.showuser = false;
+                    usercontent.isshowload2 = true;
+                    setTimeout(function(){
+                        usercontent.showpermission = true;
+                        usercontent.pagindex = 1;
+                        usercontent.isshowload2 = false;
+                    },500)
+                },
+                addnew: function(){
+                    settoast.showitcmstertel = true;
+                    settoast.showcompany = true;
+                    settoast.togglenav = true;
+                    settoast.holderusername = '用户名';
+                    settoast.getfathers();//获取所有的父账号
+                    //初始化日期插件
+                    $('#datepicker').datetimepicker({
+                        startDate:new Date(),
+                        autoclose: 1,
+                        todayHighlight: 1,
+                        startView: 2,
+                        minView: 2,
+                        forceParse: 0
+                    });
+                    $('#datepicker').on('change', function(){
+                        settoast.handexpire = $('#datepicker').val().split(' ')[0];
+                    }); 
+                }
+            }
+        });
+        var accountbox = new Vue({
+            el: '#accountbox',
+            data: {
+                count:0,
+                pagindex:1,
+                limit:7,
+                pages:0,
+                showaccountbox: false,
+                children_list: [],
+                title: '',
+                username: '',
+                newdata: '',
+                datetime: '',
+                changeid: '',
+                type: '',
+                inputvalue: '',
+                placeholder: '',
+                delwarning: false,
+                datetimepicker: false,
+                accounttitle: ''
+            },
+            computed: {
+                offset: function(){
+                    return (this.pagindex-1)*this.limit;
+                },
+                pages: function(){
+                    return Math.ceil(this.count/this.limit);
+                }
+            },
+            methods: {
+                hide: function(){
+                    var _this = this;
+                    this.showaccountbox = false;
+                    this.delwarning = false;
+                    this.newdata = '';
+                    this.placeholder = '';
+                    this.children_list = [];
+                    setTimeout(function(){
+                        _this.permission = true;
+                    },300)
+                },
+                load: function(cur){
+                    if(cur!=this.pagindex){
+                        if(cur<1){
+                            toast.showmsg('当前就是首页了！', true);
+                            return;
+                        }
+                        if(cur>this.pages){
+                            toast.showmsg('没有下一页了', true);
+                            return;
+                        }
+                        this.pagindex = cur;
+                    }
+                },
+                changename: function(name,id){
+                    usercontent.changename(name,id);
+                    commonbox.changechild = true;
+                },
+                changecompany: function(name,id,company){
+                    usercontent.changecompany(name,id,company);
+                    commonbox.changechild = true;
+                },
+                changeitcmai: function(name,id,itcmai){
+                    usercontent.changeitcmai(name,id,itcmai);
+                    commonbox.changechild = true;
+                },
+                bindequipment: function(name,id,itcmstertel){
+                    usercontent.bindequipment(name,id,itcmstertel);
+                    commonbox.changechild = true;
+                    console.log(name);
+                    console.log(id);
+                    console.log(itcmstertel);
+                },
+                delaccount: function(name,id){
+                    usercontent.delaccount(name,id);
+                },
+                resetpsw: function(name,id){
+                    usercontent.resetpsw(name,id);
+                },
+                setexpire: function(name,id){
+                    usercontent.setexpire(name,id);
+                },
+                unbindaccount: function(children_id,father_id,username){
+                    var _this = this;
+                    commonbox.showbox = true;
+                    commonbox.textinput = false;
+                    commonbox.title = '是否解除用户 '+ username +' 与母账号的绑定';
+                    commonbox.type = 'unbindaccount';
+                    commonbox.unbinduserid = children_id;
+                    commonbox.unbindfatherid = father_id;
+                },
+                childchangestatus: function(userid){
+                    var _this = this;
+                    var data = {
+                        idStr: userid,
+                        status: 1
+                    }
+                    $.post('/supermaster/update',data,function(res){
+                        if(res.code!=0){
+                            toast.showmsg(res.msg,true);
+                            return;
+                        }
+                        toast.showmsg(res.msg);
+                        for(var i in _this.children_list){
+                            if(_this.children_list[i].id == userid){
+                                var index = i;
+                            }
+                        }
+                        console.log();
+                        _this.children_list[index].noexpire = false;
+                    });
+                }
+            }
+        });
+        var commonbox = new Vue({
+            el: '#commonbox',
+            data: {
+                showbox: false,
+                title: '',
+                username: '',
+                newdata: '',
+                datetime: '',
+                changeid: '',
+                type: '',
+                inputvalue: '',
+                placeholder: '',
+                delwarning: false,
+                datetimepicker: false,
+                changechild: false,
+                textinput: true,
+                unbinduserid: '',
+                unbindfatherid: '',
+                postUrl: '',
+                data: {},
+                inputtype: 'text'
+            },
+            methods: {
+                hide: function(){
+                    var _this = this;
+                    this.showbox = false;
+                    this.delwarning = false;
+                    this.newdata = '';
+                    this.placeholder = '';
+                    this.datetimepicker = false;
+                    this.inputtype = 'password';
+                    setTimeout(function(){
+                        _this.textinput = true;
+                    },300);
+                
+                },
+                changename: function(){
+                    this.data ={
+                        name: this.newdata,
+                        userid: this.changeid
+                    }
+                    this.postUrl = '/supermaster/change_name';
+                },
+                changecompany: function(){
+                    this.data ={
+                        company: this.newdata?this.newdata:'empty',
+                        idStr: this.changeid
+                    }
+                    this.postUrl = '/supermaster/update';
+                },
+                changeitcmai: function(){
+                    this.data ={
+                        itcmail: this.newdata?this.newdata:'empty',
+                        idStr: this.changeid
+                    }
+                    this.postUrl = '/supermaster/update';
+                },
+                bindequipment: function(){
+                    this.data ={
+                        userid: this.changeid,
+                        deviceid: this.newdata
+                    }
+                    this.postUrl = '/supermaster/bindequit';
+                },
+                delaccount: function(){
+                    this.data ={
+                        idStr: this.changeid,
+                        password: this.newdata
+                    }
+                    console.log(this.data);
+                    this.postUrl = '/supermaster/delcount';
+                },
+                resetpsw: function(){
+                    this.data ={
+                        idStr: this.changeid,
+                        password: this.newdata
+                    }
+                    console.log(this.data);
+                    this.postUrl = '/supermaster/resetpsw';
+                },
+                setexpire: function(){
+                    this.data ={
+                        newdate: this.datetime,
+                        password: this.newdata,
+                        userid: this.changeid,
+                        username: this.username
+                    }
+                    this.postUrl = '/supermaster/setexpire';
+                },
+                unbindaccount: function(){
+                    var _this = this;
+                    var index;
+                    var data = {
+                        userid: this.unbinduserid,
+                        father: this.unbindfatherid
+                    }
+                    $.post('/supermaster/unbindaccount',data,function(res){
+                        if(res.code != 0){
+                            toast.showmsg('解绑失败',true);
+                            return;
+                        }
+                        for(var i in accountbox.children_list){
+                            if(_this.unbinduserid == accountbox.children_list[i].id){
+                                index = i;
+                            }
+                        }
+                        _this.showbox = false;
+                        _this.textinput = true;
+                        toast.showmsg('解绑成功');
+                        accountbox.children_list.splice(index,1);
+                    })
+                },
+                submit: function(){
+                    console.log(1);
+                    var _this = this;
+                    var index;
+                    if(this.type == 'changename'){  //更改用户名
+                        if(this.newdata == ''){
+                            toast.showmsg('用户名不能为空',true);
+                            return;
+                        }
+                        this.changename();
+                    };  
+                    if(this.type == 'changecompany'){this.changecompany()};  //更改公司名称
+                    if(this.type == 'changeitcmai'){this.changeitcmai()};  //更改联系方式
+                    if(this.type == 'bindequipment'){this.bindequipment()};  //绑定设备
+                    if(this.type == 'delaccount'){   //删除账号
+                        if(this.newdata == ''){
+                            toast.showmsg('管理员密码不能为空',true);
+                            return;
+                        }
+                        this.delaccount();
+                    };
+                    if(this.type == 'resetpsw'){  //重置密码
+                        if(this.newdata == ''){
+                            toast.showmsg('管理员密码不能为空',true);
+                            return;
+                        }
+                        this.resetpsw();
+                    }  
+                    if(this.type == 'setexpire'){  //账号续费
+                        if(this.datetime == ''){
+                            toast.showmsg('日期不能为空',true);
+                            return;
+                        }
+                        if(this.newdata == ''){
+                            toast.showmsg('管理员密码不能为空',true);
+                            return;
+                        }
+                        this.setexpire()
+                    };
+                    if(this.type == 'unbindaccount'){this.unbindaccount()};  //解绑账号
+                    $.post(this.postUrl,this.data,function(res){
+                        if(res.code!=0){
+                            toast.showmsg(res.msg,true);
+                            return;
+                        }
+                        if(_this.changechild){//更改子账号成功后的数据更新
+                            for(var i in accountbox.children_list){
+                                if(accountbox.children_list[i].id == _this.changeid){
+                                    index = i;
+                                }
+                            }
+                        }else{
+                            for(var i in usercontent.users){
+                                if(usercontent.users[i].id == _this.changeid){
+                                    index = i;
+                                }
+                            }
+                        }
+                        toast.showmsg(res.msg);
+                        _this.showbox = false;
+                        switch (_this.type){
+                            case 'changename' : //更改成功后更改用户名
+                                _this.changechild?accountbox.children_list[index].name = _this.newdata:usercontent.users[index].name = _this.newdata;
+                                break;
+                            case 'changecompany' : //更改成功后更改公司名称
+                                _this.changechild?accountbox.children_list[index].company = _this.newdata:usercontent.users[index].company = _this.newdata;
+                                break;
+                            case 'changeitcmai' : //更改成功后更改联系方式
+                                _this.changechild?accountbox.children_list[index].itcmail = _this.newdata:usercontent.users[index].itcmail = _this.newdata;
+                                break;
+                            case 'bindequipment' : //更改成功后更改绑定的设备
+                                _this.changechild?accountbox.children_list[index].itcmstertel = _this.newdata:usercontent.users[index].itcmstertel = _this.newdata;
+                                break;
+                            case 'delaccount' : //删除账号成功后更改账号列表
+                                _this.changechild?accountbox.children_list.splice(index,1) :usercontent.users.splice(index,1);
+                                _this.delwarning = false;
+                                break;
+                            case 'setexpire' : //账号成功后更改
+                                _this.changechild?accountbox.children_list[index].expiredate = _this.datetime:usercontent.users[index].expiredate = _this.datetime;
+                                _this.datetime = '';
+                                break;
+                        }
+                        _this.newdata = '';
+                    });
+                }
+            }
+        })
+        var usercontent = new Vue({
+            el: '#user-content',
+            data: {
+                users: [],
+                count:0,
+                pagindex:1,
+                limit:10,
+                pages:0,
+                filtername: '',
+                filterinput: '',
+                children: '',
+                showfilterlist: false,
+                showuser: true,
+                showpermission: false,
+                isshowload2: false
+            },
+            computed: {
+                offset: function(){
+                    return (this.pagindex-1)*this.limit;
+                },
+                pages: function(){
+                    return Math.ceil(this.count/this.limit);
+                }
+            },
+            methods: {
+                init: function(){
+                    var _this = this;
+                    $.get('/supermaster/getusers',function(res){
+                        for(var i in res.user){
+                            res.user[i].expiredate = (new Date(res.user[i].expiredate)).toLocaleDateString();
+                            res.user[i].createdAt = (new Date(res.user[i].createdAt)).toLocaleDateString();
+                            res.user[i].isexpire = (Date.parse(res.user[i].expiredate)-Date.now())<0 && res.user[i].status!=1;
+                            res.user[i].noexpire = (Date.parse(res.user[i].expiredate)-Date.now())<=15*24*3600*1000 && res.user[i].status!=1;
+                           _this.users.push(res.user[i]);
+                        }
+                        _this.count = _this.users.length;
+                        loading1.hideloading();
+                    });
+                },
+                load: function(cur){
+                    if(cur!=this.pagindex){
+                        if(cur<1){
+                            toast.showmsg('当前就是首页了！', true);
+                            return;
+                        }
+                        if(cur>this.pages){
+                            toast.showmsg('没有下一页了', true);
+                            return;
+                        }
+                        this.pagindex = cur;
+                    }
+                },
+                getdata: function(name,id,arg){
+                    commonbox.showbox = true;
+                    commonbox.changeid = id;
+                    arg ? commonbox.inputvalue = arg : '';
+                },
+                changename: function(name,id){
+                    this.getdata(name,id);
+                    commonbox.inputvalue = name;
+                    commonbox.title = '修改 '+ name +' 用户名';
+                    commonbox.type = 'changename';
+                    commonbox.inputtype = 'text';
+                },
+                changecompany: function(name,id,company){
+                    this.getdata(name,id,company);
+                    console.log(111111111111)
+                    commonbox.title = '修改 '+ name +' 的公司名称';
+                    commonbox.type = 'changecompany';
+                    commonbox.inputtype = 'text';
+                },
+                changeitcmai: function(name,id,itcmai){
+                    this.getdata(name,id,itcmai);
+                    commonbox.title = '修改 '+ name +' 的联系方式';
+                    commonbox.type = 'changeitcmai';
+                },
+                resetpsw: function(name,id){
+                    this.getdata(name,id);
+                    commonbox.title = '重置 '+ name +' 的登录密码';
+                    commonbox.type = 'resetpsw';
+                    commonbox.inputtype = 'password';
+                    commonbox.placeholder = '请输入管理员密码';
+                },
+                addRenew: function(name,id){
+                    for(var i in renewBox.renewArr){
+                        if(renewBox.renewArr[i].id == id && renewBox.renewArr[i].name == name){
+                            toast.showmsg('该用户已经在批量续费列表中，请不要重复添加', true);
+                            return;
+                        }
+                    }
+                    renewBox.renewArr.push({
+                        name: name,
+                        id: id
+                    });
+                    toast.showmsg('添加成功');
+                },
+                bindequipment: function(name,id,itcmstertel){
+                    this.getdata(name,id,itcmstertel);
+                    commonbox.title = '绑定 '+ name +' 的设备';
+                    commonbox.type = 'bindequipment';
+                    commonbox.inputtype = 'type';
+                    console.log(name);
+                    console.log(id);
+                    console.log(itcmstertel);
+                },
+                delaccount: function(name,id){
+                    this.getdata(name,id);
+                    commonbox.title = '删除 '+ name +' 账号';
+                    commonbox.type = 'delaccount';
+                    commonbox.inputtype = 'password';
+                    commonbox.delwarning = true;
+                    commonbox.placeholder = '请输入管理员密码';
+                },
+                setexpire: function(name,id){
+                    this.getdata(name,id);
+                    commonbox.title = name +' 账号续费';
+                    commonbox.type = 'setexpire';
+                    commonbox.username = name;
+                    commonbox.placeholder = '请输入管理员密码';
+                    commonbox.inputtype = 'password';
+                    commonbox.datetimepicker = true;
+                    //初始化日期插件
+                    $('#datetimepicker').datetimepicker({
+                        startDate:new Date(),
+                        autoclose: 1,
+                        todayHighlight: 1,
+                        startView: 2,
+                        minView: 2,
+                        forceParse: 0
+                    });
+                    $('#datetimepicker').on('change', function(){
+                        commonbox.datetime = $('#datetimepicker').val().split(' ')[0];
+                    });
+                },
+                setpermission: function(name,id){
+                    this.getdata(name,id);
+                    commonbox.permission = false;
+                    commonbox.title = '设置 '+ name +' 的权限';
+                },
+                checkchild: function(children_list){
+                    console.log(children_list);
+                    accountbox.showaccountbox = true;
+
+                    for(var i in children_list){
+                        children_list[i].expiredate = (new Date(children_list[i].expiredate)).toLocaleDateString();
+                        children_list[i].isexpire = (Date.parse(children_list[i].expiredate)-Date.now())<0 && children_list[i].status!=1;
+                        children_list[i].noexpire = (Date.parse(children_list[i].expiredate)-Date.now())<=15*24*3600*1000 && children_list[i].status!=1;
+                        accountbox.children_list.push(children_list[i]);
+                    }
+                    accountbox.count = accountbox.children_list.length;
+                },
+                filteraccount: function(){
+                    this.filtername = (this.filterinput).toLowerCase();
+                },
+                filterfather: function(){
+                    this.children = '[]';
+                    this.showfilterlist = false;
+                },
+                filterall: function(){
+                    this.children = '';
+                    this.showfilterlist = false;
+                },
+                setpermission: function(type,userid,permission){
+                    var _this = this;
+                    var index;
+                    var data = {
+                        kind: 'permission_' + type,
+                        permission: permission?0:1,
+                        userid: userid
+                    };
+                    $.post('/supermaster/setpermission',data,function(res){
+                        if(res.code!=0){
+                            toast.showmsg(res.msg,true);
+                            return;
+                        }
+                        for(var i in _this.users){
+                            if(_this.users[i].id == userid){
+                                index = i;
+                                break;
+                            }
+                        }
+                        toast.showmsg('设置成功');
+                        _this.users[index]['permission_' + type] = !_this.users[index]['permission_' + type];
+                    })
+                },
+                changestatus: function(userid){
+                    var _this = this;
+                    var data = {
+                        idStr: userid,
+                        status: 1
+                    }
+                    $.post('/supermaster/update',data,function(res){
+                        if(res.code!=0){
+                            toast.showmsg(res.msg,true);
+                            return;
+                        }
+                        toast.showmsg(res.msg);
+                        for(var i in _this.users){
+                            if(_this.users[i].id == userid){
+                                var index = i;
+                            }
+                        }
+                        console.log(index);
+                        _this.users[index].noexpire = false;
+                    });
+                }
+            }
+        })
+        //自定义筛选账号的过滤器
+        Vue.filter('accountfilter', function(val, account){
+            if(!account)return val;
+            var result = [];
+            for(var i in val){
+                var name = val[i].name;
+                var nickname = val[i].nickname;
+                var companyname = val[i].company;
+                if( name && name.toLowerCase().indexOf(account.toLowerCase()) != -1 || (nickname && (nickname.toLowerCase()).indexOf(account.toLowerCase()) != -1) || companyname.indexOf(account) != -1){
+                    result.push(val[i]);
+                }
+            }
+            Vue.nextTick(function(){
+                usercontent.count = result.length;
+                usercontent.pagindex = 1;
+            });
+            return result;
+        });
+        //自定义筛选母账号的过滤器
+        Vue.filter('fatherfilter', function(val, children){
+            var result = [];
+            for(var i in val){
+                if(val[i].children!=children){
+                    result.push(val[i]);
+                }
+            }
+            Vue.nextTick(function(){
+                usercontent.count = result.length;
+            });
+            return result;
+        });
+        nav.init();
+    </script>
+</body>
+</html>

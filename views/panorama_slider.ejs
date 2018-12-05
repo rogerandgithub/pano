@@ -1,0 +1,44 @@
+<script id="template-slider" type="text/html">
+        <div class="slider-wrap show">
+            <div class="slider-btn">
+                <div class="slider-arrow"></div>
+            </div>
+            <div class="sliders">
+                <div class="slider-scroller">
+                <#for(var i in romaing){#>
+                    <div class="slider" data-key="<#=romaing[i].key#>">
+                        <img width=80 height=80 src="<#=cdnImagesPath#>/scenes/<#=romaing[i].key#>/allinone.jpg?imageMogr2/gravity/NorthWest/crop/!1024x1024a0a0/interlace/0/thumbnail/!10p">
+                        <div class="slider-title hcenter f14"><#=romaing[i].name#></div>
+                    </div>
+                <#}#>
+                </div>
+            </div>
+        </div>
+</script>
+
+<script>
+function initSlider(config){
+    $('body').append(template('template-slider',config));
+    $('.slider-scroller').width($('.slider').size()*90);
+    if(checkMobile()){
+            bindClick($('.slider-btn'),sliderSwitch);
+            bindClick($('.slider'),sliderClick);
+    }else{
+            $('.slider-btn').on('click',sliderSwitch);
+            $('.slider').on('click',sliderClick);
+    }
+}
+function sliderSwitch(){
+    if($('.slider-wrap').hasClass('show')){
+        $('.slider-wrap').removeClass('show');
+    }else{
+        $('.slider-wrap').addClass('show');
+    }
+}
+
+function sliderClick(){
+    //location.href='/scene?key='+$(this).attr('data-key')+(config.permission_hidetitle?'&hideheader=1':'');
+    changeScene($(this).attr('data-key'));
+}
+
+</script>

@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>STi 速腾聚创-后台</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <meta property="qc:admins" content="7713503706325341637570167" />
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- bootstrap -->   
+    <link href="/css/newitem/bootstrap.css" rel="stylesheet" />
+    <link href="/css/newitem/bootstrap-responsive.css" rel="stylesheet" />
+    <link href="/css/newitem/bootstrap-overrides.css" type="text/css" rel="stylesheet" />
+
+    <!-- libraries -->
+    <link href="/css/newitem/font-awesome.css" type="text/css" rel="stylesheet" />
+    
+    <!-- global styles -->
+    <link href="/css/newitem/layout.css" rel="stylesheet" type="text/css" />
+    <link href="/css/newitem/elements.css" rel="stylesheet" type="text/css" />
+    <link href="/css/newitem/icons.css" rel="stylesheet" type="text/css" />
+    <link href="/css/newitem/common.css" rel="stylesheet" type="text/css" /> 
+    <link href="/css/newitem/reset.css" rel="stylesheet" type="text/css" />  
+
+    <!-- this page specific styles -->
+    <link href="/css/newitem/index.css" type="text/css" rel="stylesheet" media="screen" />
+    <script src="/js/newitem/vue.min.js"></script>
+</head>  
+<body @click="hidepopt">
+
+    <%include loading%>
+    <%include toast%>
+
+    <div id="wrapper">
+        <!-- sidebar -->
+        <%include nav%>
+        <%include menu%>
+        <!-- end sidebar -->
+
+        <!-- main container -->
+        <div class="content">
+    
+            <div id="menubox">
+                <menulist gorouter="3"></menulist>
+            </div>
+
+            <div class="container-fluid">
+
+                <div id="pad-wrapper" class="gallery">
+
+                    <div id="search-container">
+                        <div class="row-fluid header">
+                            <a class="btn-flat icon edit" @click="isshow = !isshow">查找作品</a>
+                            <a class="orderbtn" @click.stop="open=!open"><span></span><span></span><span></span></a>
+                            <ul class="scene-menu" transition="onehalf" v-show="open">
+                                <li><a @click.stop="orderby('updatedAt')"><i class="icon-time"></i>按 时间 排列</a></li>
+                                <li><a @click.stop="orderby()"><i class="icon-adjust"></i>按 默认 排列</a></li>
+                            </ul>
+                        </div>
+                        
+                        <div class="row-fluid condition" v-show="isshow" transition="onehalf">
+                            <div class="clearfix">
+                                <div id="reservation" class="showRange pull-left">
+                                    <div class="btn">
+                                        <span class="rangeData1" v-text="selected.start"></span>
+                                         - 
+                                        <span class="rangeData2" v-text="selected.end"></span>
+                                        <span class="caret"></span>
+                                    </div>
+                                </div>
+                                <div class="showRange pull-right">
+                                    <a class="btn-flat icon mt_20" @click="mapconfirm">确定</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row-fluid profile">
+                        <div id="panolist">
+                            <loading2 :isshowload2="isshowload2"></loading2>
+                            <div class="clearfix">
+                                <!-- blank state -->
+                                 <div class="no-gallery" v-show="!isshow2&&count==0">
+                                    <div class="center">
+                                        <img src="/images/new/no-img-gallery.png" />
+                                        <h6>OOP！你还没有多项目作品</h6>
+                                        <p>You don't have any panorama. You can buy our equitment and download the app then you can take a beautiful ipano panorama!</p>
+                                    </div>
+                                </div>
+                                <!-- end blank state -->
+
+                                <!-- gallery wrapper -->
+                                <div class="gallery-wrapper" v-show="!isshowload2&&count>0">
+                                    <div class="gallery-row clearfix">
+                                        <!-- single image -->
+                                        <div class="img-container" v-for="item in panolist | timefilter searchobj.start searchobj.end | orderBy createdAt | limitS limit offset">
+                                            
+                                            <div class="img-box"  @mouseover="editboxup(item.id)">
+                                                <img :src="item.thumburl" />
+                                                <div class="editbox">
+                                                    <ul>
+                                                        <li @click="previewsence(item.id)"><a><img src="../images/newitem/icons/previem.png" />预览多项目</a></li>
+                                                        <li @click="editscene(item.id)"><a><img src="../images/newitem/icons/edit.png" />编辑多项目</a></li>
+                                                        <li @click="qrsence(item.id)"><a><img src="../images/newitem/icons/code.png" />查看二维码</a></li>
+                                                        <li @click="deletesence(item.id)"><a><img src="../images/newitem/icons/delete.png" />删除多项目</a></li>
+                                                        <li class="copyurl-container" @click="copyurl(item.id)"><a class="copyurl"><img src="../images/newitem/icons/links.png" />复制该链接</a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="title">
+                                                <p v-text="'标题：'+item.title"></p>
+                                                <p class="iteminfo"></span><span v-text="'日期：'+item.createdAt"></span></p>
+                                            </div>
+                                            <div class="mark" @click="markscene(item.id, item.name)" v-if="showmark&&(item.name == username)">
+                                                <img src="/images/newitem/mark.png" alt="点击进行共享标记" />
+                                            </div>
+                                            <div class="markbox" :class="{share: item.isshare}" v-if="showmarkbox" @click="addshare(item.id, item.name)"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- end gallery wrapper -->
+
+                            </div>
+
+                            <div class="container-fluid" v-if="!isshowload2&&count>limit" style="margin-top:30px;">
+                                <div class="pagination pull-right">
+                                    <ul>
+                                        <li :class="{'disabled': 1 == pagindex}"><a href="javascript:;" @click="load(1)">&#8249;&#8249;</a></li>
+                                        <li :class="{'disabled': 1 == pagindex}" class="child"><a href="javascript:;" @click="load(pagindex-1)">&#8249;</a></li>
+                                        <li v-for="cur in pages" v-if="pagindex>3&&pages-2>pagindex?(cur+1<=pagindex+2&&cur+1>=pagindex-2):(pagindex<=3?cur+1<=5:cur+1>=pages-4)" :class="{'active': cur+1 == pagindex}">
+                                            <a href="javascript:;" @click="load(cur+1)" v-text="cur+1"></a>
+                                        </li>
+                                        <li :class="{'disabled': pages == pagindex}" class="child"><a href="javascript:;" @click="load(pagindex+1)">&#8250;</a></li>
+                                        <li :class="{'disabled': pages == pagindex}"><a href="javascript:;" @click="load(pages)">&#8250;&#8250;</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="editpano" class="popup" transition="popup" v-show="showbox">
+
+                        <div class="oprater clearfix" transition="set">
+
+                            <div class="thumber clearfix">
+                                <h5>EDIT PANO</h5>
+                                <i class="close-pop ico-close" @click="hide"></i>
+                                <div class="thumb">
+                                    <iframe class="secnebox" :src="secneurl"></iframe>
+                                </div>
+                                <div class="title mt_20">
+                                    <p class="italic mt_20" v-text="'上传日期：'+created"></p>
+                                    <p class="italic mt_20" v-text="'最后更新：'+updated"></p>
+                                </div>
+
+                                <ul class="description mt_20 border">
+                                    <li class="fullscreen" @click="fullscreen">
+                                        <a class="menu" href="javascript:;">
+                                            <i class="icon-fullscreen"></i>
+                                            <span>打开多项目</span>
+                                        </a>
+                                    </li>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="qrtoast" class="toast-content" transition="qrtoast" v-show="showqrtoast">
+                <span @click="hide"><i class="close-pop ico-close"></i></span>
+                <div class="toast-center-wrapper">
+                    <div>
+                        <div id="qrcoder" class="toast-body"></div>
+                        <div class="m-footer">
+                            <h6 class="text-center" v-text="panoname"></h6>
+                            <p class="text-center">打开微信 “扫一扫”，即可打开该场景</p>
+                        </div>
+                    </div>
+                </div>   
+            </div>
+            <!--删除多项目多项目-->
+            <div id="delmerge" class="toast-content" transition="qrtoast" v-show="showtptoast">
+                <span @click="hide"><i class="close-pop ico-close"></i></span>
+                <div class="toast-center-wrapper">
+                    <div class="m-header">
+                        <h1 class="text-center"><i class="icon-lock"></i></h1>
+                        <h6 class="toast-title text-center">密码认证</h6>
+                    </div>
+                    <div>
+                        <div class="toast-body" v-if="!expire">
+                            <p class="text-center">请输入您的删除密码</p>
+                            <div class="form-group"> 
+                                <input id="deletepsw" class="form-control" type="password" autocomplete="off" placeholder="请输入您的删除密码" @keyup.enter="submit" v-model="delepsw" />
+                            </div>
+                        </div>
+                        <div class="m-footer">
+                            <div class="text-center">
+                                <button class="btn btn-cancel btn-lg" type="button" @click="hide">取消</button>
+                                <button class="btn btn-primary btn-setter btn-lg" :disabled="disabled" type="submit" @click="submit">确定</button> 
+                            </div>
+                        </div>
+                    </div>
+                </div>   
+            </div>
+            <!--编辑多项目多项目-->
+            <div id="editmerge" class="toast-content" transition="qrtoast" v-show="showeditmerge">
+                <span @click="hide"><i class="close-pop ico-close"></i></span>
+                <div class="toast-center-wrapper">
+                    <div>
+                        <div class="toast-body">
+                            <div class="merge" v-for="merger in mergeList">
+                                <span class="title" v-text="merger.title"></span><i class="icon-remove-sign" @click="delgroup(merger.id)"></i>
+                            </div>
+                        </div>
+                        <div class="m-footer">
+                            <h6 class="text-center" v-text="panoname"></h6>
+                            <p class="text-center"><i class="icon-exclamation-sign"></i>无需验证密码，请谨慎删除</p>
+                        </div>
+                    </div>
+                </div>   
+            </div>
+        </div>
+        <!-- end main container -->
+    </div>
+
+    <script src="/js/newitem/moment.js"></script>
+    <script src="/js/newitem/daterangepicker.js"></script>
+    <script src="/js/newitem/cityJson.js"></script>
+    <script src="/js/newitem/qrcode.min.js"></script>
+    <script src="/js/newitem/copylink.js"></script> 
+    <script type="text/javascript">
+        var timer;
+        var editmerge = new Vue({
+            el: '#editmerge',
+            data: {
+                showeditmerge: false,
+                mergeList: [],
+                mergeid: ''
+            },
+            methods: {
+                hide: function(){
+                    this.showeditmerge = false;
+                    this.mergeList = [];
+                },
+                delgroup: function(groupid){
+                    var _this = this;
+                    for(var i in this.mergeList){
+                        if(this.mergeList[i].id == groupid){
+                            var index = i;
+                            break;
+                        };
+                    }
+                    var data = {
+                        mergeid: this.mergeid,
+                        groupid: groupid
+                    }
+                    $.post('/mergeitem/delgroup',data,function(res){
+                        if(res.code != 0){
+                            toast.showmsg('删除失败，请重新再试',true);
+                            return;
+                        }
+                        _this.mergeList.splice(index,1);
+                        for(var i in panolist.panolist){
+                            if(panolist.panolist[i].id == _this.mergeid){
+                                var index = i;
+                                break;
+                            }
+                        }
+                        if(_this.mergeList.length<1){
+                            panolist.panolist.splice(index,1);
+                        }
+                        toast.showmsg('删除成功');
+                        setTimeout(function(){
+                            _this.hide();
+                        },400)
+                    })
+                }
+            }
+        })
+        var delmerge = new Vue({
+            el: '#delmerge',
+            data: {
+                showtptoast: false,
+                delepsw: '',
+                callback: null,
+                global: true,
+                id: 0,
+                expire: false
+            },
+            computed: {
+                disabled: function(){
+                    return !this.delepsw&&!this.expire;
+                }
+            },
+            methods: {
+                show: function(expire, fun, id){
+                    this.expire = expire;
+                    if(!id||isNaN(id)){
+                        toast.showmsg('I need a id-value');
+                        return;
+                    }
+                    this.id = id;
+                    this.showtptoast = true;
+                    this.$nextTick(function(){
+                        $('#deletepsw').focus();
+                    });
+                    if(fun&&typeof fun == 'function')this.fun = fun;
+                },
+                hide: function(){
+                    this.showtptoast = false;
+                    this.delepsw = '';
+                },
+                submit: function(){
+                    var data = {
+                        id: this.id,
+                        deletepsw: this.delepsw
+                    };
+                    
+                    var _this = this;
+                    $.post('/mergeitem/delmerge',data,function(res){
+                        if(res.code!=0){
+                            toast.showmsg(res.msg, true);
+                            return;
+                        }
+                        toast.showmsg('删除成功');
+                        _this.fun();
+                        setTimeout(function(){
+                            _this.hide();
+                        }, 300);
+                    });
+                }
+            }
+        });
+        var search = new Vue({
+            el: '#search-container',
+            data: {
+                isshow: false,
+                showcitySel: false,
+                showsharebtn: false,
+                showpro: true,
+                showcity: false,
+                showregion: false,
+                showeditwhere: false,
+                showeditwhich: false,
+                province: province,
+                cities: [],
+                regions: [],
+                open: false,
+                selected: {
+                    start: '2015/01/01',
+                    end: (new Date()).getFullYear()+'/'+(parseInt((new Date()).getMonth())+1)+'/'+(new Date()).getDate()
+                }
+            },
+            methods:{
+                orderby: function(key){
+                    editpano.showsettings = false;
+                    panolist.pagindex = 1;
+                    panolist.orderkey = key?key:'';
+                    this.open = false;
+                }
+            }
+        });
+
+        var panolist = new Vue({
+            el: '#panolist',
+            data: {
+                name: '',
+                username: '',
+                orderkey: '',
+                panolist: [],
+                count: 0,
+                pages: 0,
+                pagindex: 1,
+                isshowload2: true,
+                limit: 12,
+                index: undefined,
+                num:0,
+                showname: false,
+                expire: <%=Date.parse(expire)<Date.now()%>,
+                searchobj: {
+                    start: '2015/01/01',
+                    end: (new Date()).getFullYear()+'/'+(parseInt((new Date()).getMonth())+1)+'/'+(new Date()).getDate()
+                }
+            },
+            computed: {
+                offset: function(){
+                    return (this.pagindex-1)*this.limit;
+                },
+                pages: function(){
+                    return Math.ceil(this.count/this.limit);
+                }
+            },
+            methods: {
+                init: function(){
+                    var _this = this;
+                    $.get('/mergeitem/json',function(res){
+                        _this.count = res.lists.length;
+                        for(var i in res.lists){
+                            res.lists[i].createdAt = (new Date(res.lists[i].createdAt)).toLocaleDateString();
+                            res.lists[i].thumburl = res.lists[i].groups[0].scenes[0].type>=5?'http://qncdn.sz-sti.com/pano/'+res.lists[i].groups[0].scenes[0].key+'.tiles/mobile_f.jpg':'http://qncdn.sz-sti.com/images/scenes/'+res.lists[i].groups[0].scenes[0].key.split('_')[0]+'/allinone.jpg?imageMogr2/crop/!'+(res.lists[i].groups[0].scenes[0].scenestyle==3||res.lists[i].groups[0].scenes[0].scenestyle==4?'1600x1400a1500a700':'1024x897a0a0')+'/thumbnail/!20p';
+                            _this.panolist.push(res.lists[i]);
+                        }
+                        console.log(_this.panolist.length);
+                        _this.pagindex = 1;
+                        _this.$nextTick(function(){
+                            _this.isshowload2 = false;
+                            editpano.init();
+                        });
+                        loading1.hideloading();
+                        nav.issearch2 = true;
+                        nav.current.merge = true;
+                        $('#reservation').daterangepicker(null, function(start, end, label,e) {});
+                        setTimeout(function(){
+                            _this.showname = nav.children.length > 0;
+                        },300);
+                    });
+                },
+                setlimit: function(width){
+                    var _this = this;
+                    clearTimeout(timer);
+                    timer = setTimeout(function(){
+                        if(width>=1798){
+                            _this.limit = 9;
+                        }else if(width>1000){
+                            _this.limit =9;
+                        }else if(width>767){
+                            _this.limit = 9;
+                        }else if(width>640){
+                            _this.limit = 9;
+                        }else{
+                            _this.limit = 10;
+                        }
+                    }, 300);
+                },
+                addshare: function(id, name){
+                    if(name != this.username){
+                        toast.showmsg('不能选择该多项目');
+                        return;
+                    }
+                    var index;
+                    for(var i in search.shareArr){
+                        if(search.shareArr[i].id == id){
+                            index = i;
+                            break;
+                        }
+                    }
+                    var index_id = search.shareid.indexOf(id);
+                    search.shareArr[index].isshare = !search.shareArr[index].isshare;
+                    search.shareArr[index].isshare?search.shareid.push(id):search.shareid.splice(index_id,1);
+                },
+                load: function(cur){
+                    if(cur!=this.pagindex){
+                        if(cur<1){
+                            toast.showmsg('当前就是首页了！', true);
+                            return;
+                        }
+                        if(cur>this.pages){
+                            toast.showmsg('没有下一页了', true);
+                            return;
+                        }
+                        editpano.showedit = true;
+                        editpano.showsettings = false;
+                        this.pagindex = cur;
+                    }
+                },
+                getdata: function(id){
+                    for(var i in this.panolist){
+                        if(this.panolist[i].id == id) this.num = i;
+                    }
+                    this.index = this.num;
+                    editpano.index = this.num;
+                },
+                previewsence: function(id){
+                    this.getdata(id);
+                    editpano.skin(this.panolist[this.num]);
+                    editpano.secneurl = 'http://wx.sz-sti.com/scene/test?prokey=' + this.panolist[this.num].key + '&preview=3';
+                    editpano.showbox = true;
+                },
+                copyurl: function(id){
+                    this.getdata(id);
+                    editpano.prokey = this.panolist[this.num].key;
+                    editpano.copyinit();
+                },
+                qrsence: function(id){
+                    this.getdata(id);
+                    var url = 'http://wx.sz-sti.com/scene/test?prokey='+this.panolist[this.num].prokey;
+                    qrtoast.show(url, this.village);
+                },
+                deletesence: function(id){
+                    this.getdata(id);
+                    delmerge.show(this.expire, function() {
+                        panolist.deletepano();
+                    }, this.panolist[this.num].id, true);
+                },
+                showedit: function(){
+                    editpano.show();
+                },
+                deletepano: function(){
+                    this.panolist.splice(this.index,1);
+                },
+                editboxup: function(id){
+                    this.getdata(id);
+                    editpano.skin(this.panolist[this.num]);
+                },
+                editscene: function(id){
+                    $.get('/mergeitem/getmerge/'+ id,function(res){
+                        for(var i in res.merges){
+                            res.merges[i].title = res.merges[i].city + res.merges[i].region + res.merges[i].community + res.merges[i].building + '栋' + res.merges[i].room + '号';
+                            editmerge.mergeList.push(res.merges[i]);
+                        }
+                    })
+                    editmerge.showeditmerge = true;
+                    editmerge.mergeid = id;
+                }
+            }
+        }); 
+        
+        var editpano = new Vue({
+            el: '#editpano',
+            data: {
+                showedit: false,
+                showsettings: false,
+                region: '',
+                prokey: '',
+                thumb: 2896,
+                updated: '',
+                created: '',
+                isshow: '',
+                showbox:false,
+                index:0,
+                url: 'http://wx.sz-sti.com/scene/test?key='+this.prokey,
+                groupid: 0,
+                secneurl:'',
+                editobj: {
+                    village: '',
+                    business_circle: '',
+                    community: '',
+                    building: '',
+                    room: '',
+                    scenekey: '',
+                    autoplay: true,
+                    recommend: false
+                }
+            },
+            methods: {
+                init: function(){
+                    this.showedit = true;
+                },
+                show: function(){
+                    this.isshow = 'isshow';
+                },
+                hide: function(){
+                    this.showbox = false;
+                },
+                skin: function(obj){
+                    this.showsettings = true;
+                    this.region = obj.city+'市'+obj.region+'区';
+                    this.editobj.village = obj.business_circle + obj.community;
+                    this.editobj.business_circle = obj.business_circle;
+                    this.editobj.community = obj.community;
+                    this.editobj.building = obj.building;
+                    this.editobj.room = obj.room;
+                    this.editobj.autoplay = obj.autoplay;
+                    this.editobj.recommend = obj.recommend;
+                    this.prokey = obj.key;
+                    this.thumb = obj.kind == 2? 1000:2896;
+                    this.updated = obj.updatedAt.slice(0,10);
+                    this.created = obj.createdAt.slice(0,10);
+                    this.groupid = obj.id;
+                    this.copyinit();
+                },
+                preview: function(){
+                    window.open('scene/test?key='+this.prokey);
+                },
+                copyinit: function(){
+                    var _this = this;
+                    this.$nextTick(function(){
+                        clip = new ZeroClipboard($(".copyurl"), {
+                            moviePath: "/js/new/copylink.swf"
+                        });
+                        clip.on('mousedown', function(client) {
+                            clip.setText('http://wx.sz-sti.com/scene/test?prokey='+_this.prokey);
+                        });
+                        clip.on('mouseover', function(client) {
+                            $(this).parent().css('background','rgba(25,25,25,0.81)');
+                            $('ul.description').css('background','rgba(25,25,25,0)');
+                            $(this).parent().parent().parent('.editbox').css('bottom','0');
+                        });
+                        clip.on('mouseout', function(client) {
+                            $(this).parent().parent().parent('.editbox').attr('style','');
+                            $(this).parent().css('background','rgba(25,25,25,0)');
+                        });
+                        clip.on('complete', function(client, args) {
+                            toast.showmsg('该场景外链已复制到剪贴板');
+                        });
+                    });
+                },
+                showqr: function(){
+                    var url = 'http://wx.sz-sti.com/scene/test?prokey='+this.prokey;
+                    qrtoast.show(url, this.village);
+                    qrtoast.showbox = 1;
+                    setTimeout(function(){
+                        this.showbox = false;
+                    },300)
+                },
+                fullscreen: function(){
+                    var url = 'http://wx.sz-sti.com/scene/test?prokey='+this.prokey;
+                    window.open(url);
+                },
+                showtp: function(){
+                    setTimeout(function(){
+                        this.showbox = false;
+                    },300)
+                    var _this = this;
+                    trashpano.showbox = 1;
+                    console.log(this.groupid);
+                    trashpano.show(function() {
+                        panolist.deletepano();
+                        _this.showsettings = false;
+                    }, this.groupid, true);
+                }
+            }
+        });
+
+        panolist.init();
+
+        Vue.filter('timefilter', function(val, start, end){
+            var result = [];
+            for(var i in val){
+                if(Date.parse(val[i].createdAt.replace('年','/').replace('月','/').replace('日',''))<(Date.parse(end)+24*3600*1000)&&Date.parse(val[i].createdAt.replace('年','/').replace('月','/').replace('日',''))>Date.parse(start)){
+                    result.push(val[i]);
+                }
+            }
+            Vue.nextTick(function(){
+                panolist.count = result.length;
+            });
+            return result;
+        });
+        Vue.filter('limitS', function(val, limit, offset){
+            var result = val.slice(offset,limit+offset);
+            search.shareArr = result;
+            return result;
+        });
+
+        var qrcode = new QRCode(document.getElementById("qrcoder"), {width : 220,height : 220});
+        var qrtoast = new Vue({
+            el: '#qrtoast',
+            data: {
+                showqrtoast: false,
+                panoname: '',
+                showbox:0
+            },
+            methods: {
+                show: function(text, panoname){
+                    qrcode.makeCode(text);
+                    this.panoname = panoname;
+                    this.showqrtoast = true;
+                },
+                hide: function(){
+                    this.showqrtoast = false;
+                    if(this.showbox){
+                        editpano.showbox = true;
+                    }
+                }
+            }
+        });
+
+        var body = new Vue({
+            el: 'body',
+            methods: {
+                hidepopt: function(){
+                    search.showcitySel = false;
+                    search.showeditwhere = false;
+                    search.showeditwhich = false;
+                    nav.display = false;
+                    search.oploen = false;
+                }
+            }
+        });
+        window.onresize = function(event){
+            panolist.setlimit(event.target.innerWidth);
+        }
+        window.onload = function(event){
+            panolist.setlimit(event.target.body.clientWidth);
+        }
+    </script>
+</body>
+</html>

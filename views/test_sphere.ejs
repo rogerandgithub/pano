@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>panorama demo</title>
+		<meta charset="utf-8">
+        <meta name="format-detection" content="telephone=no">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<style>
+			body {
+				background-color: #000000;
+				margin: 0px;
+				overflow: hidden;
+                color:#666;
+                font-family:'黑体';
+			}
+            #console{word-break:break-all;position:absolute;top:0;right:0;width:60px;background-color:rgba(255,255,255,0.5);z-index:10}
+            .alert-wrap{width:100%;position:absolute;height:100%;left:0;top:0;z-index:50;visibility:hidden;background-color:rgba(0,0,0,0.5);}
+            .alert-td{}
+            .alert{display:inline-block;background-color:#fff;width:240px;border-radius:5px;}
+            .alert .title{display:-webkit-box;-webkit-box-align:center;-webkit-box-pack:center;min-height:45px;font-size:18px;color:#666;border-bottom:1px solid #eee;}
+            .alert .content{font-size:16px;padding:10px;word-break:break-all;min-height:80px;}
+            .alert .buttons{display:-webkit-box;-webkit-box-orient:horizontal;-webkit-box-pack:center;margin-bottom:10px;}
+            .alert .buttons .btn{margin:0 5px 0 5px;}
+            .alert .buttons :first-child{margin-left:10px;}
+            .alert .buttons :last-child{margin-right:10px;}
+
+            .btn{display:block;height:40px;width:120px;border:0;border-radius:3px;font-size:14px;}
+            .btn.flex1{-webkit-box-flex:1;}
+            .btn.gray{background-color:#aaa;color:#fff;}
+            .btn.red{background-color:#E24A4A;color:#fff;}
+            .input-wrap{box-sizing:border-box;width:100%;background-color:rgba(255,2,255,255,0.4);}
+            input{width:98%;height:30px;border:0;border-bottom:1px solid #eee;border-radius:3px;padding-left:5px;font-size:16px;color:#666;}
+            textarea{width:98%;height:80px;border:0;border-bottom:1px solid #eee;border-radius:3px;padding-left:5px;font-size:16px;color:#666;}
+            .img-hide{width:20px;height:20px;position:absolute;top:-12px;right:-12px;visibility:hidden;}
+            .img-arrow{width:40px;height:40px;position:absolute;visibility:hidden;}
+            #container{z-index:0;}
+
+            .comment{
+                font-size:11px;
+                z-index:5;
+                max-width:80px;
+                word-break:break-all;
+                background-color:rgba(0,0,0,0.3);
+                border:1px solid #eee;
+                border-radius:5px;
+                padding:5px;
+                color:#fff;
+            }
+            .comment:before{
+                content:'';
+                display:inline-block;
+                position:absolute;
+                left:-30px;
+                top:0;
+                width:25px;
+                height:25px;
+                border-radius:15px;
+                background-image:url(<%=cdnImagesPath%>/tools/anonymous_avatar.gif);
+                background-size:100%;
+                margin-right:5px;
+            }
+            .spot{
+                height:55px;
+                color:#fff;
+                font-weight:bold;
+            }
+            .spot:before,.spot:after{
+                content:'';
+                display:block;
+                position:absolute;
+                bottom:0;
+                width:30px;
+                margin-left:-15px;
+                left:50%;
+                height:30px;
+                border-radius:30px;
+                background-color:#67cf22;
+                opacity:0.5;
+                -webkit-animation:spot 2.0s infinite ease-in-out;
+            }
+            .spot:after{
+                -webkit-animation-delay:-1.0s;
+            }
+            @-webkit-keyframes spot {
+                0%, 100% { -webkit-transform: scale(0) }
+                50% { -webkit-transform: scale(1.0) }
+            }
+
+            .loader {
+                position:absolute;
+                height:100%;
+                width:100%;
+                z-index:100;
+                background-color:rgba(0,0,0,0.7);
+            }
+            .loader td{
+                width:100%;
+                height:100%;
+                text-align:center;
+            }
+            .loader span {
+                display: inline-block;
+                width: 20px;
+                height: 20px;
+                margin: 60px auto;
+                background: #fff;
+                border-radius: 50px;
+                -webkit-animation: loader 0.7s infinite alternate;
+            }
+            .loader span:nth-of-type(2) {
+                -webkit-animation-delay: 0.3s;
+            }
+            .loader span:nth-of-type(3) {
+                -webkit-animation-delay: 0.6s;
+            }
+            @-webkit-keyframes loader {
+                0% {
+                    width: 20px;
+                    height: 20px;
+                    opacity: 0.9;
+                    -webkit-transform: translateY(0);
+                }
+                100% {
+                    width: 30px;
+                    height: 30px;
+                    opacity: 0.1;
+                    -webkit-transform: translateY(-21px);
+                }
+            }
+		</style>
+	</head>
+	<body ondrag="return false">
+    <script src="<%=cdnJsPath%>/base.js"></script>
+    <script src="js/CSS3DRenderer.js"></script>
+    <%include alert%>
+    <table class="loader">
+        <tbody>
+        <tr>
+            <td>
+                <span></span>
+                <span></span>
+                <span></span>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div id="console"></div>
+    <div class="arrow" style="display:none"></div>
+    <div>
+        <img class='img-hide' cross-origin="*" src="<%=cdnImagesPath%>/tools/hide.png">
+    </div>
+    <div id="container" style="-webkit-transform: translateZ(0);">
+    </div>
+    <script src="js/xss.min.js"></script>
+        <script>
+            var config={
+                imgUrl:'<%=imgUrl%>',
+                cdnImagesPath:'<%=cdnImagesPath%>',
+                comments_id:'<%=JSON.stringify(comments_id)%>',
+                scene_id:<%=scene_id%>,
+                <%if(comments){%>
+                comments:'<%-JSON.stringify(comments)%>',
+                <%}%>
+                <%if(links){%>
+                links:'<%-JSON.stringify(links)%>',
+                links_position:'<%-JSON.stringify(links_position)%>',
+                <%}%>
+                useCSS3D:true,
+                debug:false,
+                local:false,
+                localImagesPath:'./images/Bridge2'
+            }
+            function unicode2Chr(str) { 
+                if ('' != str) { 
+                    var st, t, i 
+                        st = ''; 
+                    for (i = 1; i <= str.length/4; i ++){ 
+                        t = str.slice(4*i-4, 4*i-2); 
+                        t = str.slice(4*i-2, 4*i).concat(t); 
+                        st = st.concat('%u').concat(t); 
+                    } 
+                    st = unescape(st); 
+                    return(st); 
+                } 
+                else 
+                    return(''); 
+            } 
+            if(!config.local){
+                var preload_comments=JSON.parse(config.comments);
+                for(var i in preload_comments){
+                    preload_comments[i].text=filterXSS(
+                            unicode2Chr(
+                                preload_comments[i].text),
+                                {whiteList:{div:[]}}
+                            );
+                    }
+                var preload_links=JSON.parse(config.links);
+                var links_position=JSON.parse(config.links_position);
+                for(var i in preload_links){
+                    for(var j =0;j<links_position.length;++j){
+                        if(links_position[j].id==preload_links[i].id){
+                            preload_links[i].x=links_position[j].x;
+                            preload_links[i].y=links_position[j].y;
+                            preload_links[i].z=links_position[j].z;
+                            break;
+                        }
+                    }
+                    preload_links[i].text=filterXSS(
+                            unicode2Chr(
+                                preload_links[i].text),
+                                {whiteList:{div:[]}}
+                            );
+                }
+            }
+        </script>
+        <script src="javascripts/utils.js?<%=version%>"></script>
+        <script src="javascripts/test_sphere_myc.js?<%=version%>">
+		</script>
+	</body>
+</html>

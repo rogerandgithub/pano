@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>公司简介</title>
+    <link rel="stylesheet" href="/index/css/common.css" type="text/css"> 
+    <link rel="stylesheet" href="/index/css/about.css" type="text/css"> 
+</head>
+<body>
+    <%include nav%>
+    <%include footer%>
+    <div id="navtop">
+        <navtop>
+            <div class="three-menu" slot="navbottom">
+                <div class="link">
+                    <a href="/web/about/<%=lang%>" class="button active">
+                        <span class="line line-top"></span>
+                        <span class="line line-right"></span>
+                        <span class="line line-bottom"></span>
+                        <span class="line line-left"></span>
+                        <span v-text="threeMenu.about"></span>
+                    </a>
+                </div>
+                <div class="link">
+                    <a href="/web/contact/<%=lang%>" class="button">
+                        <span class="line line-top"></span>
+                        <span class="line line-right"></span>
+                        <span class="line line-bottom"></span>
+                        <span class="line line-left"></span>
+                        <span v-text="threeMenu.contact"></span>
+                    </a>
+                </div>
+                <div class="link">
+                    <a href="/web/service/<%=lang%>" class="button">
+                        <span class="line line-top"></span>
+                        <span class="line line-right"></span>
+                        <span class="line line-bottom"></span>
+                        <span class="line line-left"></span>
+                        <span v-text="threeMenu.service"></span>
+                    </a>
+                </div>
+                <div class="link">
+                    <a href="/web/recruitment/<%=lang%>" target="_blank" class="button">
+                        <span class="line line-top"></span>
+                        <span class="line line-right"></span>
+                        <span class="line line-bottom"></span>
+                        <span class="line line-left"></span>
+                        <span v-text="threeMenu.join"></span>
+                    </a>
+                </div>
+            </div>
+        </navtop>
+    </div>
+    <div class="about-wrap" id="aboutwrap">
+        <div class="banner"></div>
+        <div class="robosense-about">
+            <div class="wrap">
+                <p v-text="aboutdata.about.line_1"></p>
+                <p v-text="aboutdata.about.line_2"></p>
+                <p v-text="aboutdata.about.line_3"></p>
+            </div>
+        </div>
+    </div>
+
+    <div id="footnav">
+        <footnav></footnav>
+    </div>
+
+    <script type="text/javascript">
+        var navtop = new Vue({
+            el: '#navtop',
+            data: {
+                threeMenu: ''
+            }
+        });
+        var footnav = new Vue({
+            el: '#footnav'
+        });
+        var aboutwrap = new Vue({
+            el: '#aboutwrap',
+            data: {
+                aboutdata: <%-include("lang_"+lang, {lang: lang})%>
+            },
+            methods: {
+                init: function(){
+                    navtop.threeMenu = this.aboutdata.contact.threeMenu;
+                }
+            }
+        });
+        aboutwrap.init();
+    </script>
+</body>
+</html>

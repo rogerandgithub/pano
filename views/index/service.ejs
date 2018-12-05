@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>客户服务</title>
+    <link rel="stylesheet" href="/index/css/common.css" type="text/css"> 
+    <link rel="stylesheet" href="/index/css/service.css" type="text/css">
+</head>
+<body>
+    <%include nav%>
+    <%include footer%>
+    <div id="navtop">
+        <navtop>
+            <div class="three-menu" slot="navbottom">
+                <div class="link">
+                    <a href="/web/about/<%=lang%>" class="button">
+                        <span class="line line-top"></span>
+                        <span class="line line-right"></span>
+                        <span class="line line-bottom"></span>
+                        <span class="line line-left"></span>
+                        <span v-text="threeMenu.about"></span>
+                    </a>
+                </div>
+                <div class="link">
+                    <a href="/web/contact/<%=lang%>" class="button">
+                        <span class="line line-top"></span>
+                        <span class="line line-right"></span>
+                        <span class="line line-bottom"></span>
+                        <span class="line line-left"></span>
+                        <span v-text="threeMenu.contact"></span>
+                    </a>
+                </div>
+                <div class="link">
+                    <a href="/web/service/<%=lang%>" class="button active">
+                        <span class="line line-top"></span>
+                        <span class="line line-right"></span>
+                        <span class="line line-bottom"></span>
+                        <span class="line line-left"></span>
+                        <span v-text="threeMenu.service"></span>
+                    </a>
+                </div>
+                <div class="link">
+                    <a href="/web/recruitment/<%=lang%>" target="_blank" class="button">
+                        <span class="line line-top"></span>
+                        <span class="line line-right"></span>
+                        <span class="line line-bottom"></span>
+                        <span class="line line-left"></span>
+                        <span v-text="threeMenu.join"></span>
+                    </a>
+                </div>
+            </div>
+        </navtop>
+    </div>
+    <div class="service-wrap" id="service-wrap">
+        <div class="banner"></div>
+        <div class="robosense-service">
+            <div class="wrap">
+                <div v-for="data in servicedata.service.infolist">
+                    <h3 v-text="data[0]">SEEKER培训板块 Seeker 一直致力于保持产品的高质量</h3>
+                    <p v-for="text in data[1]" v-text="text"></p>
+                </div>
+            </div>
+            <div class="tickling">
+                <h2 v-text="servicedata.service.tickling.title"></h2>
+                <div class="clearfix">
+                    <p class="fl"><label><span>*</span> {{servicedata.service.tickling.name}}</label><input class="name" type="text" v-model="username" :placeholder="holdername" /></p>
+                    <p class="fl"><label><span>*</span> {{servicedata.service.tickling.telphone}}</label><input class="tel" type="text" v-model="telephone" :placeholder="holdertelephone" /></p>
+                </div>
+                <div class="clearfix">
+                    <p class="fl"><label><span>*</span> {{servicedata.service.tickling.mail}}</label><input class="name" type="text" v-model="email" :placeholder="holderemail" /></p>
+                    <p class="fl"><label>&nbsp;&nbsp;{{servicedata.service.tickling.type}}</label><input class="tel" type="text" v-model="type" /></p>
+                </div>
+                <div class="clearfix">
+                    <p class="pos"><label>{{servicedata.service.tickling.content}}</label><textarea :placeholder="holdercontent" v-model.trim="content"></textarea></p>
+                </div>
+                <a class="sumbit" v-text="servicedata.service.tickling.sumbit" @click="submitquestion"></a>
+            </div>
+        </div>
+    </div>
+    
+    <div id="footnav">
+        <footnav></footnav>
+    </div>
+    <script src="/index/js/jquery-2.2.4.min.js"></script>
+    <script type="text/javascript">
+        var navtop = new Vue({
+            el: '#navtop',
+            data: {
+                threeMenu: ''
+            }
+        });
+        var footnav = new Vue({
+            el: '#footnav'
+        });
+        var servicewrap = new Vue({
+            el: '#service-wrap',
+            data: {
+                servicedata: <%-include("lang_"+lang, {lang: lang})%>,
+                username: '',
+                holdername: '姓名(必填项)',
+                telephone: '',
+                holdertelephone: '手机号码(必填项)',
+                email: '',
+                holderemail: '邮箱地址(必填项)',
+                type: '',
+                content: '',
+                holdercontent: '咨询内容(必填项)'
+            },
+            computed:{
+                checkusername: function(){
+                    return this.username != '' && this.telephone != '' && this.email != '' && this.content != '';
+                }
+            },
+            methods: {
+                init: function(){
+                    navtop.threeMenu = this.servicedata.service.threeMenu;
+                },
+                submitquestion: function(){
+                    var _this = this;
+                    var data = {
+                        username: this.username,
+                        telephone: this.telephone,
+                        email: this.email,
+                        type: this.type,
+                        content: this.content
+                    }
+                    if(!this.checkusername){
+                        return false;
+                    }
+                    $.post('/supermaster/feedback/add',data,function(res){
+                        if(res.code!=0){
+                            alert('请重新提交');
+                        }
+                        _this.username = _this.telephone = _this.email = _this.type = _this.content = '';
+                        alert('我们尽快为您解决问题');
+                    });
+                }
+            }
+        });
+        servicewrap.init();
+    </script>
+</body>
+</html>

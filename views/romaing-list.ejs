@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+        <title><%=title%></title>
+		<meta charset="utf-8">
+        <meta name="format-detection" content="telephone=no">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="/css/common.css">
+        <style>
+            .romaing-title{height:40px;font-size:15px;text-align:center;line-height:40px;}
+            .table-info td{min-width:40px;}
+            .btn-setintroduction{-webkit-box-flex:1}
+            @media screen and (min-width:700px){
+            }
+        </style>
+        <script src="/js/template-native.js?v=<%=version%>"></script>
+	</head>
+	<body ondrag="return false">
+        <script src="<%=cdnJsPath%>/zepto.min.js"></script>
+        <script src="/js/sti-common.min.js"></script>
+        <%include alert%>
+        <div class="vertical h100">
+            <%include header%>
+            <div class="scene-list flex1 overflow">
+                <div class="loading"></div>
+                <%for(var i in scenes){%>
+                <div class="item lightgray"  data-id="<%=scenes[i].id%>" data-key="<%=scenes[i].key%>" data-introduction="<%=scenes[i].introduction%>" id="scene<%=i%>">
+                    <img width=80 height=80 src="<%=cdnImagesPath%>/scenes/<%=scenes[i].key.split('_')[0]%>/allinone.jpg?v=<%=serverDate%>&imageMogr2/gravity/NorthWest/crop/!1024x1024a0a0/thumbnail/!20p" style="margin:10px 0 10px 0;" ontouchend="location.href='/scene?key=<%=scenes[i].key%>&groupkey=<%=groupkey%>&track=scene<%=i%><%if(platform=='ios-app'||platform=='android-app'){%>&platform=<%=platform%><%}%>&preview=1';">
+                    <div class="flex1 tcenter" style="font-size:16px;margin:8px;">
+                        <div><%=scenes[i].name%></div>
+                    </div>
+                    <div style="width:190px;padding:10px 0px 10px 10px">
+                        <div class="buttons">
+                            <button class="btn bloodred tiny btn-edit flex1" onclick="location.href='/scene/edit?type=edit&key=<%=scenes[i].key%>&groupkey=<%=groupkey%>&track=scene<%=i%><%if(platform=='android-app'||platform=='ios-app'){%>&platform=<%=platform%><%}%>'">编辑场景</button>
+                            <button class="btn bloodred tiny btn-preview flex1" onclick="location.href='/scene?key=<%=scenes[i].key%>&preview=1';">预览</button>
+                        </div>
+                        <div class="buttons">
+                            <button class="btn bloodred tiny btn-delete-scene flex1">永久删除</button>
+                            <button class="btn bloodred tiny btn-setcover flex1">设置封面</button>
+                        </div>
+                        <div class="buttons" style="margin:0">
+                            <button class="btn bloodred tiny btn-setintroduction">设置语音播报</button>
+                        </div>
+                    </div>
+                </div>
+                <%}%>
+            </div>
+                <div class="buttons" style="margin-top:10px;">
+                    <button class="btn gray flex1 btn-setting-maps" onclick="location.href='/maps?groupkey=<%=groupkey%>&platform=<%=platform%>'">
+                        设置户型图
+                    </button>
+                    <%if(title.indexOf('外景')==-1){%>
+                    <button class="btn gray flex1 btn-setting-info">
+                        设置房源信息
+                    </button>
+                    <%}%>
+                </div>
+                <div class="buttons">
+                    <button class="btn gray flex1 btn-setting-ad">
+                        设置底部广告
+                    </button>
+                    <button class="btn gray flex1 btn-setting-tel">
+                        设置联系电话
+                    </button>
+                </div>
+                <div class="buttons">
+                    <button class="btn gray flex1 btn-set-trademark">
+                        设置顶部商标
+                    </button>
+                    <button class="btn gray flex1 btn-setting-prefix">
+                        设置标题前缀
+                    </button>
+                </div>
+                <div class="buttons" style="margin-bottom:60px;<%if(platform=='android-app'||platform=='ios-app'){%>display:none;<%}%>">
+                    <button class="btn bloodred flex1 btn-finish" onclick="location.href='/romaing'">
+                        完成漫游编辑
+                    </button>
+                </div>
+        </div>
+        <script>
+        $(function(){
+            var callSettingTelephone=function(e){
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                var scene_ids=[];
+                $('.item').each(function(){
+                    scene_ids.push($(this).attr('data-id'));
+                });
+                $('.alert-wrap').css('visibility','visible');
+                initAlert('',{
+                    title:'设置联系电话',
+                    content:'<textarea class="input-tel" type="tel" placeholder="请输入6位以上电话号码"><%=scenes[0].telephone%></textarea>',
+                    buttons:[
+                    {
+                        text:'取消'
+                    },{
+                        text:'确定',
+                        color:'red',
+                        callBack:function(){
+                            $.ajax({
+                                url:'/romaing/telephone-post',
+                                type:'POST',
+                                async:false,
+                                data:{
+                                    telephone:$('.input-tel').val(),
+                                    scene_ids:JSON.stringify(scene_ids)
+                                },
+                                timeout:1000,
+                                success:function(result){
+                                    if(result.code!=0){
+                                        alert(result.msg);
+                                    }
+                                    window.location.reload();
+                                },
+                                error:function(e){
+                                    alert(e);
+                                }
+                            })
+                        }
+                    }
+                    ]
+                });
+            }
+
+            var callSettingAd=function(e){
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                var scene_ids=[];
+                $('.item').each(function(){
+                    scene_ids.push($(this).attr('data-id'));
+                });
+                <%
+                    var ad=scenes[0].advertisement?scenes[0].advertisement.split('</div>'):[''];
+                    var ad1,ad2,ad3;
+                    if( ad.length>0){
+                        ad1= ad[0].split('<div>').length>1 ? (ad[0].split('<div>'))[1] : ad[0];
+                    }
+                    if( ad.length>1){
+                        ad2= ad[1].split('<div>').length>1 ? (ad[1].split('<div>'))[1] : ad[1];
+                    }
+                    if( ad.length>2){
+                        ad3= ad[2].split('<div>').length>1 ? (ad[2].split('<div>'))[1] : ad[2];
+                    }
+                %>
+                $('.alert-wrap').css('visibility','visible');
+                initAlert('',{
+                    title:'设置底部广告',
+                    content:'<div style="padding:20px;">\
+                    <div>联系人：<input class="input-ad-1" placeholder="联系人" value="<%=ad1%>"></div>\
+                    <div style="margin-top:5px">电话：<input class="input-ad-2" placeholder="电话" value="<%=ad2%>"></div>\
+                    <div style="margin-top:5px">其他：<input class="input-ad-3" placeholder="其他" value="<%=ad3%>"></div></div>',
+                    buttons:[
+                    {
+                        text:'取消'
+                    },{
+                        text:'确定',
+                        className:'btn-confirm',
+                        color:'red',
+                        callBack:function(){
+                            $.ajax({
+                                url:'/romaing/set_advertisements',
+                                type:'POST',
+                                async:false,
+                                data:{
+                                    advertisement:$('.input-ad-1').val()+$('.input-ad-2').val()+$('.input-ad-3').val()==''?'':'<div>'+$('.input-ad-1').val()+'</div>'+
+                                    '<div>'+$('.input-ad-2').val()+'</div>'+
+                                    '<div>'+$('.input-ad-3').val()+'</div>',
+                                    scene_ids:JSON.stringify(scene_ids)
+                                },
+                                timeout:1000,
+                                success:function(result){
+                                    if(result.code!=0){
+                                        alert(result.msg);
+                                    }
+                                    window.location.reload();
+                                },
+                                error:function(e){
+                                    alert(e);
+                                }
+                            })
+                        }
+                        }
+                    ]
+                });
+            }
+
+            var callSettingInfo=function(e){
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                $('.alert-wrap').css('visibility','visible');
+                initAlert('',{
+                    title:'设置房源信息',
+                    content:'<div style="height:200px;overflow:scroll;"><table class="table-info">\
+                                <tbody>\
+                                    <tr>\
+                                        <td>城市</td>\
+                                        <td><input class="table-info-city" value="<%=group.city%>"></td>\
+                                    </tr>\
+                                    <tr>\
+                                        <td>区域</td>\
+                                        <td><input class="table-info-region" value="<%=group.region%>"></td>\
+                                    </tr>\
+                                    <tr>\
+                                        <td>商圈</td>\
+                                        <td><input class="table-info-business" value="<%=group.business_circle%>"></td>\
+                                    </tr>\
+                                    <tr>\
+                                        <td>小区</td>\
+                                        <td><input class="table-info-community" value="<%=group.community%>"></td>\
+                                    </tr>\
+                                    <tr>\
+                                        <td>栋</td>\
+                                        <td><input class="table-info-building" value="<%=group.building%>"></td>\
+                                    </tr>\
+                                    <tr>\
+                                        <td>房号</td>\
+                                        <td><input class="table-info-room" value="<%=group.room%>"></td>\
+                                    </tr>\
+                                    <tr>\
+                                        <td>厅数</td>\
+                                        <td><input class="table-info-apartmenthalls" value="<%=group.apartment_halls%>"></td>\
+                                    </tr>\
+                                    <tr>\
+                                        <td>卧室数</td>\
+                                        <td><input class="table-info-apartmentrooms" value="<%=group.apartment_rooms%>"></td>\
+                                    </tr>\
+                                    <tr>\
+                                        <td>卫生间数</td>\
+                                        <td><input class="table-info-apartmentbathrooms" value="<%=group.apartment_bathrooms%>"></td>\
+                                    </tr>\
+                                    <tr>\
+                                        <td>面积</td>\
+                                        <td><input class="table-info-area" value="<%=group.area%>"></td>\
+                                    </tr>\
+                                    <tr>\
+                                        <td>楼层</td>\
+                                        <td><input class="table-info-floor" value="<%=group.floor%>"></td>\
+                                    </tr>\
+                                    <tr>\
+                                        <td>总楼层</td>\
+                                        <td><input class="table-info-totalfloor" value="<%=group.total_floor%>"></td>\
+                                    </tr>\
+                                    <tr>\
+                                        <td>朝向</td>\
+                                        <td><input class="table-info-face" value="<%=group.face%>"></td>\
+                                    </tr>\
+                                </tbody>\
+                            </table></div>',
+                    buttons:[
+                    {
+                        text:'取消'
+                    },
+                    {
+                        text:'确定',
+                        color:'red',
+                        callBack:function(){
+                            var data={
+                            	city:$('.table-info-city').val(),
+                            	region:$('.table-info-region').val(),
+                            	business_circle:$('.table-info-business').val(),
+                                community:$('.table-info-community').val(),
+                                building:$('.table-info-building').val(),
+                                room:$('.table-info-room').val(),
+                                apartment_halls:$('.table-info-apartmenthalls').val(),
+                                apartment_rooms:$('.table-info-apartmentrooms').val(),
+                                apartment_bathrooms:$('.table-info-apartmentbathrooms').val(),
+                                area:getFloat($('.table-info-area').val()),
+                                floor:$('.table-info-floor').val(),
+                                total_floor:$('.table-info-totalfloor').val(),
+                                face:$('.table-info-face').val(),
+                                key:'<%=group.key%>'
+                            }
+                            $.ajax({
+                                    url:'/romaing/modify-info',
+                                    type:'POST',
+                                    async:false,
+                                    data:data,
+                                    success:function(r){
+                                        if(r.code!=0){
+                                            alert(r.msg);
+                                            return;
+                                        }
+                                        window.location.reload();
+                                    }
+                            });
+                        }
+                    }]
+                });
+
+            }
+            var setTrademark=function(e){
+                <%if(!permission_trademark){%>
+                $('.alert-wrap').css('visibility','visible');
+                    initAlert('',{
+                        title:'设置顶部商标',
+                        content:'抱歉，你没有此权限，请联系我们销售经理',
+                        buttons:[
+                        {
+                            text:'确定',
+                            color:'red',
+                            className:'btn-trademark-finish',
+                            callBack:function(){
+                                setTimeout(function(){$('.alert-wrap').css('visibility','hidden');},100);
+                            }
+                        }]
+                    });
+                <%}else{%>
+                    location.href='/trademarks?groupkey=<%=groupkey%><%if(platform=='android-app'||platform=='ios-app'){%>&platform=<%=platform%><%}%>';
+                <%}%>
+            }
+
+            var callSettingCover=function(e){
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                var id=($(this).closest('.item').attr('data-id'));
+
+                $.ajax({
+                        url:'/romaing/setcover',
+                        async:false,
+                        type:'POST',
+                        data:{
+                            id:id,
+                            groupkey:'<%=groupkey%>'
+                        },
+                        success:function(r){
+                            if(r.code!=0){
+                                alert(r.msg);
+                            }
+                            $('.alert-wrap').css('visibility','visible');
+                            initAlert('',{
+                                title:'提示',
+                                content:'设置封面成功',
+                                buttons:[
+                                {
+                                    text:'确定',
+                                    color:'red',
+                                    className:'btn-setcover-finish',
+                                    callBack:function(){
+                                        setTimeout(function(){$('.alert-wrap').css('visibility','hidden');},100);
+                                    }
+                                }]
+                            });
+
+                        }
+                });
+            }
+
+            function deleteScene(e){
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                var key=$(this).closest('.item').attr('data-key');
+                $('.alert-wrap').css('visibility','visible');
+                initAlert('',{
+                    title:'提示',
+                    content:'<div>确定要删除吗？其他场景中跳转到此场景的漫游点不会同时删除,请记得手动删除</div><div class="input-wrap"><input type="password" style="border:1px solid #666;margin:20px auto;width:80%" placeholder="请输入管理员密码" id="deletepsw"></div>',
+                    buttons:[
+                    {
+                        text:'取消'
+                    },{
+                        text:'确定',
+                        className:'btn-confirm',
+                        color:'red',
+                        callBack:function(){
+                            var deletepsw = $('#deletepsw').val();
+                            if(!deletepsw){
+                                alert('删除密码不能为空');
+                                $('#deletepsw').focus();
+                                return;
+                            }
+                            $.ajax({
+                                type:'POST',
+                                url:'/works/delete',
+                                data:{
+                                    scene_key:key,
+                                    deletepsw:deletepsw
+                                },
+                                async:false,
+                                success:function(result){
+                                    alert(result.msg);
+                                    if(result.code!=0){
+                                        return;
+                                    }
+                                    window.location.reload();
+                                },
+                                error:function(e){
+                                alert(e);
+                                }
+                            });
+                        }
+                    }]
+                });
+            }
+
+            function callIntroduction(e){
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                var scene_key=$(this).closest('.item').attr('data-key');
+                $('.alert-wrap').css('visibility','visible');
+                initAlert('',{
+                    title:'设置语音播报',
+                    content:'<textarea class="input-introduction">'+$(this).closest('.item').attr('data-introduction')+'</textarea>',
+                    buttons:[
+                    {
+                        text:'取消'
+                    },{
+                        text:'确定',
+                        className:'btn-title-confirm',
+                        color:'red',
+                        callBack:function(){
+                            $.ajax({
+                                url:'/romaing/set-introduction',
+                                type:'POST',
+                                async:false,
+                                data:{
+                                    introduction:$('.input-introduction').val(),
+                                    scene_key:scene_key
+                                },
+                                timeout:1000,
+                                success:function(result){
+                                    if(result.code!=0){
+                                        alert(result.msg);
+                                    }
+                                    setTimeout(function(){$('.alert-wrap').css('visibility','hidden');},100);
+                                },
+                                error:function(e){
+                                    alert(e);
+                                }
+                            })
+                        }
+                        }
+                    ]
+                });
+            }
+            function setPrefix(e){
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                $('.alert-wrap').css('visibility','visible');
+                <%if(!permission_prefix){%>
+                    initAlert('',{
+                        title:'设置标题前缀',
+                        content:'抱歉，你没有此权限，请联系我们销售经理',
+                        buttons:[
+                        {
+                            text:'确定',
+                            color:'red',
+                            className:'btn-trademark-finish',
+                            callBack:function(){
+                                setTimeout(function(){$('.alert-wrap').css('visibility','hidden');},100);
+                            }
+                        }]
+                    });
+                <%}else{%>
+                initAlert('',{
+                    title:'设置标题前缀',
+                    content:'<textarea class="input-prefix" placeholder="例如:某某地产"><%=scenes[0].prefix%></textarea>',
+                    buttons:[
+                    {
+                        text:'取消'
+                    },{
+                        text:'确定',
+                        className:'btn-title-confirm',
+                        color:'red',
+                        callBack:function(){
+                            $.ajax({
+                                url:'/romaing/set-prefix',
+                                type:'POST',
+                                async:false,
+                                data:{
+                                    prefix:$('.input-prefix').val(),
+                                    groupkey:'<%=groupkey%>'
+                                },
+                                timeout:1000,
+                                success:function(result){
+                                    if(result.code!=0){
+                                        alert(result.msg);
+                                    }
+                                    setTimeout(function(){$('.alert-wrap').css('visibility','hidden');},100);
+                                },
+                                error:function(e){
+                                    alert(e);
+                                }
+                            })
+                        }
+                        }
+                    ]
+                });
+                <%}%>
+            }
+
+            if ( checkMobile() ) {
+                bindClick($('.btn-setcover'),callSettingCover);
+                bindClick($('.btn-setting-tel'),callSettingTelephone);
+                bindClick($('.btn-setting-info'),callSettingInfo);
+                bindClick($('.btn-setting-ad'),callSettingAd);
+                bindClick($('.btn-delete-scene'),deleteScene);
+                bindClick($('.btn-setting-prefix'),setPrefix);
+                bindClick($('.btn-set-trademark'),setTrademark);
+                bindClick($('.btn-setintroduction'),callIntroduction);
+
+            } else {
+
+                $('.btn-setcover').      on('mouseup',callSettingCover);
+                $('.btn-setting-tel').   on('mouseup',callSettingTelephone);
+                $('.btn-setting-info').  on('mouseup',callSettingInfo);
+                $('.btn-setting-ad').    on('mouseup',callSettingAd);
+                $('.btn-delete-scene').  on('mouseup',deleteScene);
+                $('.btn-setting-prefix').on('mouseup',setPrefix);
+                $('.btn-set-trademark').on('mouseup',setTrademark);
+                $('.btn-setintroduction').on('mouseup',callIntroduction);
+            }
+        });
+        </script>
+    </body>
+</html>

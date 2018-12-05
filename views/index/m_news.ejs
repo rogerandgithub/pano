@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>深圳速腾聚创科技有限公司</title>
+    <link rel="stylesheet" href="/index/css/m_common.css" type="text/css"> 
+    <link rel="stylesheet" href="/index/css/m_news.css" type="text/css"> 
+    <script type="text/javascript" src="/index/js/Vue.min.js"></script>
+</head>
+<body>
+    <%include m_nav%>
+    <div id="wrapper">
+        <div class="section_1"></div>
+        <div class="searchbox">
+            <p class="count">共<span v-text="count"></span>条信息</p>
+        </div>
+        <div class="section_3">
+            <div class="newlist" v-for="list in lists">
+                <div class="content">
+                    <h3 class="title" v-text="list.title"></h3>
+                    <div class="clearfix"><span class="source" v-text="list.edit"></span><time class="time" v-text="list.edittime"></time></div>
+                    <p class="introduction" v-text="list.content"></p>
+                    <a class="checkAll" href="javascript:;" @click.prevent="checkall($index)">阅读全文</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        var wrapper = new Vue({
+            el: '#wrapper',
+            data: {
+                datas: <%include article%>,
+                lists:'',
+                count: ''
+            },
+            methods: {
+                init: function(){
+                    this.count = this.datas.news.newslist.length;
+                    this.lists = this.datas.news.newslist;
+                },
+                checkall: function(index){
+                    if(this.lists[index].newinfo == "false"){
+                        location.href = this.lists[index].link; 
+                    }else{
+                        location.href = '/mobile/newinfo/' + index + '/' + '<%=lang%>';
+                    }
+                }
+            }
+        });
+        wrapper.init();
+    </script>
+</body>
+</html>

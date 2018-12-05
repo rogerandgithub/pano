@@ -1,0 +1,79 @@
+    <table class="alert-wrap">
+        <tbody>
+        <tr style="text-align:center;">
+            <td class="alert-td">
+                <div class="alert">
+                    <div class="alertbox">
+                        <div class="title"></div>
+                        <div class="contentbox"></div>
+                        <div class="buttons clearfix"></div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <script id="hidden-html" type="text/html">
+        <div class="alert">
+            <div class="alertbox">
+                <div class="title"></div>
+                <div class="contentbox"></div>
+                <div class="buttons clearfix"></div>
+            </div>
+        </div>
+    </script>
+        
+    <script>
+        function initAlert(type,data){
+            var title=$('.alert-wrap').find('.title');
+            var content=$('.alert-wrap').find('.contentbox');
+            var buttons=$('.alert-wrap').find('.buttons');
+            if(data.title&&data.title!='筛选'){
+                title.html(data.title);
+            }
+            if(data.content){
+                content.html(data.content);
+            }
+            if(data.buttons){
+                buttons.html('');
+                for(var i in data.buttons){
+                    if(!data.buttons[i].className){
+                        data.buttons[i].className='btn-'+parseInt(Math.random()*100000);
+                    }
+                    buttons.append('<button class="btn '+(data.buttons[i].color?data.buttons[i].color:'gray')+' flex1 '+data.buttons[i].className+'">'+data.buttons[i].text+'</button>');
+
+                    if(data.buttons[i].callBack){
+                        
+                        // if(checkMobile()){
+                        //     bindClick($('.alert-wrap').find('.buttons').children().eq(i),function(){
+                        //         cb();
+                        //     });
+                        // }else{
+                            (function(i){
+                                var cb=data.buttons[i].callBack;
+                                $('.alert-wrap').find('.buttons').children().eq(i).on('click',function(){
+                                    cb();
+                                });
+                            })(i);
+                        // }
+                    }else{
+                        $('.'+data.buttons[i].className).on('click',function(){
+                            $('.alert-wrap').css('visibility','hidden');
+                            $('.alert-td').html(template('hidden-html'));
+                        });
+                    }
+                }
+            }else{
+                buttons.html('');
+                buttons.append('<button class="btn gray flex1 btn-nothing">取消</button>');
+                buttons.append('<button class="btn red flex1 btn-nothing">确定</button>');
+                $('.btn-nothing').on('click',function(){
+                    setTimeout(function(){
+                        $('.alert-wrap').css('visibility','hidden');
+                        $('.alert-td').html(template('hidden-html'));
+                    },100);
+                });
+            }
+        };
+    </script>

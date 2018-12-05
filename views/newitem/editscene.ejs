@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>STi 速腾聚创-后台</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- bootstrap -->   
+    <link href="/css/newitem/bootstrap.css" rel="stylesheet" />
+    <link href="/css/newitem/bootstrap-responsive.css" rel="stylesheet" />
+    <link href="/css/newitem/bootstrap-overrides.css" type="text/css" rel="stylesheet" />
+
+    <!-- libraries -->
+    <link href="/css/newitem/font-awesome.css" type="text/css" rel="stylesheet" />
+
+    <!-- global styles -->
+    <link href="/css/newitem/layout.css" rel="stylesheet" type="text/css" />
+    <link href="/css/newitem/elements.css" rel="stylesheet" type="text/css" />
+    <link href="/css/newitem/icons.css" rel="stylesheet" type="text/css" />
+    <link href="/css/newitem/common.css" rel="stylesheet" type="text/css" /> 
+    <link href="/css/newitem/main.css" rel="stylesheet" type="text/css" />  
+    <link href="/css/newitem/reset.css" rel="stylesheet" type="text/css" /> 
+    <style type="text/css">
+        *{
+            -webkit-tap-highlight-color: transparent;  
+            -webkit-appearance: none; 
+        }
+        #scene-wrapper{position: relative;height: calc(100% - 60px);top: 60px;z-index: 5;}
+        #ictoast .form-group .form-control{
+            width: 100%;
+            max-width: 100%;
+            border: none !important;
+            border-bottom: 1px solid rgba(82,88,102,.4) !important;
+            margin-bottom: 10px;
+            border-radius:0; 
+        }
+        #ictoast .form-group input:focus{
+            outline: none !important;
+            border: none !important;
+            border-bottom: 1px solid rgba(82,88,102,.4) !important;
+            transition: none !important;
+        }
+        #ictoast .imgdesbox{
+            position: relative;
+        }
+        #ictoast .imgdesbox span{
+            position: absolute;
+            right: 0;
+            top: 10px;
+            cursor: pointer;
+        }
+        #ictoast .imgdesbox .imgdes{
+            padding-right: 50px;
+            outline: none;
+        }
+        .showcomments{
+            position: absolute;
+            z-index: 9999;
+            max-width: 600px;
+            max-height: 1000px;
+            background: rgba(255,255,255,0.5);
+            box-shadow: 0 0 10px rgba(0,0,0,0.5) !important;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%,-50%);
+            padding:10px;
+            color: #000;
+            cursor: pointer;
+            text-align: center;
+        }
+        .showcomments .imgname{
+            height: 30px;
+            text-align: center;
+            line-height: 30px;
+        }
+        .showcomments .hotimg{
+            display: block;
+            width: 100%;
+            margin: 0 auto;
+        }
+        .showcomments .imgdes{margin-top: 10px;max-height: 300px;overflow-y: auto;}
+        .showcomments .imgdes a{
+            color: #000;
+        }
+        .scene-wrapper{
+            max-width: inherit;
+        }
+        .imageMogr{
+            position: absolute;
+            z-index: 9999;
+            right: -10px;
+            padding: 5px 10px;
+            background: #F8FAFC;
+            border: 1px solid #e6e9f0;
+            border-right: none;
+            border-radius: 0 0 2px 2px;
+            -webkit-box-shadow: -4px 4px 0px rgba(0, 0, 0, 0.3) !important;
+            -moz-box-shadow: -4px 4px 0px rgba(0, 0, 0, 0.3) !important;
+            box-shadow: -4px 4px 0px rgba(0, 0, 0, 0.3) !important;
+        }
+        .btn-group.pull-right{
+            border-left: 1px solid #e6e9f0;
+        }
+        .imageMogr span{
+            font-size: 14px;
+        }
+        .imageMogr .sureMogr{
+            display: inline-block;
+            padding: 0 15px;
+        }
+        @media screen and (max-width: 767px) {
+            .btn-group.pull-right, .imageMogr{
+                display: none;
+            }
+        }
+        #imageMogrPreview{
+            position: fixed;
+            width: 800px;
+            height: 450px;
+            top: 50%;
+            left: 50%;
+            margin-left: -400px;
+            margin-top: -225px;
+            background: #fff;
+            z-index: 999;
+        }
+    </style>
+    <script src="/js/newitem/vue.min.js"></script>
+</head>  
+<body @click="hidepopt">
+
+    <%include loading%>
+    <%include toast%>
+    <div id="wrapper">
+        <!-- sidebar -->
+        <%include nav%>
+        <%include menu%>
+        <!-- end sidebar -->
+
+        <div class="content scene-content">
+
+            <div id="menubox">
+                <menulist>
+                    <div class="btn-group" slot="orderPano" @click.stop>
+                        <a class="go-back" href="javascript:history.go(-1);"><i class="icon-reply"></i>&nbsp;&nbsp;返回</a>
+                        <a class="scene-lists" @click.prevent="open=!open">{{thescene}}&nbsp;&nbsp;<i class="icon-sort-down"></i></a>
+                        <ul class="scene-menu scenelists" transition="onehalf" v-show="open">
+                            <li v-for="scene in scenes"><a @click.prevent="loadscene($index)">{{scene.name}}</a></li>
+                        </ul>
+                    </div>
+                    <div class="btn-group pull-right" slot="orderPano" @click.stop v-if="rendermogr">
+                        <a class="scene-lists" @click.prevent="openMogr=!openMogr">
+                            图片优化&nbsp;&nbsp;<i class="icon-sort-down"></i>
+                        </a>
+                        <div class="imageMogr" transition="onehalf" v-show="openMogr">
+                            <div class="btn" @click="imageMogr.sharp = !imageMogr.sharp">
+                                <span class="i-cont"><i :class="[imageMogr.sharp?'icon-check':'icon-check-empty']" title="点击切换"></i></span>
+                                <span>锐化</span>
+                            </div>
+                            <div class="btn" @click="imageMogr.despeck = !imageMogr.despeck">
+                                <span class="i-cont"><i :class="[imageMogr.despeck?'icon-check':'icon-check-empty']" title="点击切换"></i></span>
+                                <span>降噪</span>
+                            </div>
+                            <div class="btn" @click="imageMogr.equalize = !imageMogr.equalize">
+                                <span class="i-cont"><i :class="[imageMogr.equalize?'icon-check':'icon-check-empty']" title="点击切换"></i></span>
+                                <span>HDR</span>
+                            </div>
+                            <!-- <div class="sureMogr">
+                                <a class="btn-flat icon" @click="sureMogr">确定</a>
+                            </div> -->
+                        </div>
+                    </div>
+                    <span slot="readcount" v-text="readcount" v-if="readcount>0"></span>
+                </menulist>
+
+                <div id="imageMogrPreview" v-show="openMogr">
+                    <h5>预览</h5>
+                    <div>
+                        <img :src="'http://qncdn.sz-sti.com/images/scenes/'+skey+'/allinone.jpg'+mogrstring"/>
+                    </div>
+                </div>
+            </div>
+
+            
+
+            <div id="scene-wrapper" class="scene-wrapper">
+                <div id="sti-pano" style="z-index:-10000" class="scene-one"></div>
+                <div class="showcomments" transition="onehalf" v-show="showcomments" @click="showcomments=!showcomments">
+                    <h4 v-if="!!imgname" class="imgname" v-text="imgname"></h4>
+                    <img class="hotimg" :src="imgsrc" />
+                    <p class="imgdes" v-if="!!imgdes" v-html="imgdes"></p>
+                </div>
+            </div>
+
+            <div id="ictoast" class="toast-content" transition="onehalf" v-show="showictoast" style="overflow: auto;">
+                <input id="file_input" type="file" v-on:change="filechange">
+                <span @click="cancel"><i class="close-pop ico-close"></i></span>
+                <div class="toast-center-wrapper">
+                    <div>
+                        <div class="m-header">
+                            <h6 class="toast-title text-center">预览</h6>
+                        </div>
+                        <div id="qrcoder" class="toast-body">
+                            <img :src="src"/>
+                            <div class="mask" :style="{width: maskwidth}"></div>
+                        </div>
+                        <div class="form-group hotimg">
+                            <input v-model="imgname" type="text" class="form-control" placeholder="输入图片名字" />
+                            <div class="imgdesbox">
+                                <input v-model="imgdes"  type="text" class="form-control imgdes" placeholder="输入图片说明" />
+                                <span @click="imgdesinput=!imgdesinput"><img width="20" src="/images/newitem/addlinks.png" /></span>
+                            </div>
+                            
+                            <div class="imgdesbox" v-if="imgdesinput">
+                                <input v-model="alink" type="text" class="form-control imgdes" placeholder="为图片说明添加跳转链接" />
+                                <span @click="removelink"><img width="20" src="/images/newitem/no.png" /></span>
+                            </div>
+                        </div>
+                        <div class="m-footer">
+                            <div class="text-center">
+                                <button class="btn btn-cancel btn-lg" type="button" @click="cancel">取消</button>
+                                <button class="btn btn-primary btn-setter btn-lg" type="submit" @click="upload">确定</button> 
+                            </div>
+                        </div>
+                    </div>
+                </div>   
+            </div>
+        </div>
+    </div>
+    <script src="/js/sti-tour.js"></script>
+    <script src="/js/qnuploader.js"></script>
+    <script type="text/javascript">
+
+        loading1.isshow = false;    
+
+        function createpano(key){
+            embedpano({swf:"/tour.swf", xml:"/scenesitem/editxml?key="+key+"&width=<%=infowidth%>&ie="+parseInt(Math.random()*1000000), target:"sti-pano", html5:"<%=platform.indexOf('ie')==-1?'prefer':'never'%>", id:"stipano", passQueryParameters:true});
+        }
+
+        // var imageMogrPreview = new Vue({
+        //     er: 'imageMogrPreview',
+        //     data: {
+        //         mogr: []
+        //     },
+        //     computed: {
+        //         showpreview: function(){
+        //             return menubox.openMogr
+        //         },
+        //         mogrstring: function(){
+        //             var string = '';
+        //             for(var i in this.mogr){
+        //                 string += '/'+this.mogr[i];
+        //             }
+        //             if(string)
+        //                 string = '?qson'+string;
+        //             return string?string:'';
+        //         }
+        //     }
+        // });
+
+        var menubox = new Vue({
+            el: '#menubox',
+            data: {
+                open: false,
+                scenes: [],
+                openMogr: false,
+                imageMogr: {
+                    sharp: false,
+                    despeck: false,
+                    equalize: false
+                },
+                imageMogrback: {
+                    sharp: false,
+                    despeck: false,
+                    equalize: false
+                },
+                skey: '',
+                readcount: ''
+            },
+            computed: {
+                thescene: function(){
+                    for(var i in this.scenes){
+                        if(ictoast.scene.id == this.scenes[i].id)return this.scenes[i].name;
+                    }
+                },
+                imageMogr_disabled: function(){
+                    return this.imageMogr.sharp!=this.imageMogrback.sharp||this.imageMogr.despeck!=this.imageMogrback.despeck||this.imageMogr.equalize!=this.imageMogrback.equalize;
+                },
+                mogrstring: function(){
+                    var string = '';
+                    for(var i in this.imageMogr){
+                        if(this.imageMogr[i])string += '/'+i;
+                    }
+                    if(string)
+                        string = '?qson02'+string;
+                    return string?string:'';
+                },
+                rendermogr: function(){
+                    return nav.user.name == 's033'||nav.user.name == 'beauty'||nav.user.name == 'yoohi';
+                }
+            },
+            methods: {
+                hidepopt: function(){
+                    nav.display = false;
+                    menubox.open = false;
+                },
+                loadscene: function(index){
+                    this.open = false;
+                    ictoast.krpano.call('loadscene("scene'+this.scenes[index].name+this.scenes[index].id+'",null,MERGE,BLEND(0.5))');
+                    ictoast.scene.key = this.scenes[index].key;
+                    ictoast.scene.id = this.scenes[index].id;
+                },
+                sureMogr: function(){
+                    var _this = this;
+                    if(!this.imageMogr_disabled){
+                        toast.showmsg('点击要更换的数据处理');
+                        return;
+                    }
+                    $.post('/scenesitem/setimgor/'+ictoast.scene.id, this.imageMogr, function(res){
+                        if(res.code != 0){
+                            toast.showmsg(res.msg, true);
+                            return;
+                        }
+                        createpano(ictoast.scene.key);
+                    });
+                },
+                init: function(){
+                    createpano('<%=scene.key%>');
+                    var _this = this;
+                    $.get('/panoitem/scenes/<%=group.id%>', function(scenes){
+                        for(var i in scenes){
+                            _this.scenes.push(scenes[i]);
+                        }
+                        nav.current.pano = true;
+                        _this.skey = ictoast.scene.key.split('_')[0];
+                    });
+                }
+            }
+        });
+
+        menubox.init();
+
+        var scenewrapper = new Vue({
+            el: '#scene-wrapper',
+            data: {
+                showcomments: false,
+                imgname: '',
+                imgsrc: '',
+                imgdes: ''
+            }
+        })
+        var ictoast = new Vue({
+            el: '#ictoast',
+            data: {
+                showictoast: false,
+                panoname: '',
+                src: '',
+                atv: 0, 
+                ath: 0,
+                ishtml5: true,
+                group: {
+                    key: '<%=group.key%>',
+                    id: '<%=group.id%>'
+                },
+                scene: {
+                    key: '<%=scene.key%>',
+                    id: '<%=scene.id%>'
+                },
+                krpano: document.getElementById('stipano'),
+                newspot: {},
+                addspotname: '',
+                imgname: '',
+                imgdes: '',
+                imgdesinput: false,
+                alink: 'http://',
+                imgdeslink: ''
+            },
+            methods: {
+                show: function(){
+                    this.showictoast = true;
+                },
+                cancel: function(){
+                    this.showictoast = false;
+                    this.krpano.call("add_img_cancel();");
+                    document.getElementById("file_input").value = '';
+                },
+                selfile: function(atv, ath){
+                    $("#file_input").click();
+                    this.atv = atv;
+                    this.ath = ath;
+                },
+                getobj: function (){
+                    var file = document.getElementById("file_input").files[0];
+                    var url = undefined;
+                    if (window.createObjectURL) {
+                        url = createObjectURL(file);
+                    }else if(window.URL){
+                        url = URL.createObjectURL(file);
+                    }else if(window.webkitURL){
+                        url = webkitURL.createObjectURL(file);
+                    }
+                    return {
+                        url: url,
+                        size: file.size,
+                        type: file.type,
+                        imgname: file.name
+                    };
+                },
+                filechange: function(){
+                    var obj = this.getobj();
+                    if(obj.type.split('/')[0]!='image'){
+                        toast.showmsg('仅支持图片类型的文件', true);
+                        this.krpano.call("add_img_cancel();");
+                        return;
+                    }
+                    if(obj.size>307200){
+                        toast.showmsg('图片大小不得大于300k', true);
+                        this.krpano.call("add_img_cancel();");
+                        return;
+                    }
+                    this.src = obj.url;
+                    // this.imgname = obj.imgname;
+                    this.show();
+                    this.krpano.call('add_img();');
+                },
+                upload: function(){
+                    if(this.imgname == ''){
+                        toast.showmsg('图片名字不能为空',true);
+                        return;
+                    }
+                    if(this.imgdesinput){
+                        if(this.imgdes == '' || this.alink == ''){
+                            toast.showmsg('图片说明和跳转链接不能为空',true);
+                            return;
+                        }
+                        this.imgdeslink = '<a target=_blank href='+this.alink+'>'+this.imgdes+'</a>';
+                    }
+                    var data = {
+                        position_x: this.ath,
+                        position_y: this.atv,
+                        scene_key: this.scene.key,
+                        groupid: this.group.id,
+                        hotimg_name: this.imgname,
+                        hotimg_des: this.imgdes?(this.imgdeslink?this.imgdeslink:this.imgdes):''
+                    };
+                    var _this = this;
+                    $.post('/tokenitem/slogan', data, function(res){
+
+                        var token = res.token;
+                        var key = res.key;
+                        var id = res.id;
+                        Q.addEvent("progress", function(p, s) {
+                            _this.maskwidth = (p==100?99:p)+'%';
+                        });
+                        Q.addEvent("putFinished", function(fsize, res, taking){
+                            var url = 'http://qncdn.sz-sti.com/'+key;
+                            var name = 'imgcomment'+id;
+                            _this.krpano.call("add_img_sure("+url+", "+data.hotimg_name+", "+data.hotimg_des+");");
+                            _this.showictoast = false;
+                            _this.alink = 'http://'
+                            toast.showmsg('上传成功');
+                        });
+                        Q.SetToken(token);
+                        Q.AddParams('hotimg_name',this.imgname);
+                        Q.AddParams('hotimg_des',this.imgdes);
+                        Q.Upload(document.getElementById('file_input').files[0], key)
+                    });
+                },
+                add_comment: function(ath, atv, size){
+                    var _this = this;
+                    $.post('/scenesitem/set-comment',{
+                        position_x: ath,
+                        position_y: atv,
+                        position_z: 0,
+                        reply_id: 0,
+                        scene_key: _this.scene.key,
+                        group_key: _this.group.key,
+                        is_new: 1,
+                        type: 7,//7表示马赛克
+                        is_description: 0,
+                        is_mosaic: size
+                    },
+                    function(res){
+                        if(res.code==0){
+                            toast.showmsg('添加成功');
+                            _this.newspot[_this.addspotname] = parseInt(res.id);
+                        }else{
+                            toast.showmsg(res.msg, true);
+                        }
+                    });
+                },
+                showcomments: function(url,hotimg_name,hotimg_des){
+                    scenewrapper.showcomments = true;
+                    scenewrapper.imgname = hotimg_name;
+                    scenewrapper.imgdes = hotimg_des;
+                    scenewrapper.imgsrc = url;
+                    var width = $('.showcomments').width();
+                    var height = $('.showcomments').height();
+                    console.log(width);
+                    console.log(height);
+                },
+                deleteComment: function(id,name){
+
+                    if(isNaN(id))id = this.newspot[id];
+                    var _this = this;
+
+                    $.post('/scenesitem/del-comment',
+                        {
+                            group_key: _this.group.key,
+                            scene_id: _this.scene.key,
+                            comment_id: id
+                        },
+                        function(res){
+                            if(res.code==0){
+                                toast.showmsg('删除成功');
+                                if(_this.ishtml5)_this.krpano.call('set(hotspot['+name+'].visible, false)');
+                            }else{
+                                toast.showmsg(res.msg);
+                            }
+                        }
+                    );
+                },
+                setView: function(ath, atv){
+                    var _this = this;
+                    $.post('/scenesitem/set-view',
+                        {
+                            key: _this.scene.key,
+                            rx:-ath,
+                            ry:-atv,
+                            is_new:1
+                        },
+                        function(res){
+                            res.code==0?toast.showmsg('设置成功'):toast.showmsg(res.msg, true);
+                        }
+                    );
+                },
+                newaddSpot: function(ath, atv, arrow_type, go_scene, text){
+
+                    var data={
+                        text: text,
+                        position_x: ath,
+                        position_y: atv,
+                        position_z: 0,
+                        scene_id: this.scene.id,
+                        is_new: 1,
+                        type: arrow_type,
+                        groupkey: this.group.key,
+                        go_scene: go_scene
+                    },
+                    _this = this;
+
+                    $.post('/scenesitem/set-spot',data,function(res){
+                        if(res.code==0){
+                            toast.showmsg('添加指引点成功');
+                            _this.newspot[_this.addspotname] = parseInt(res.id);
+                        }else{
+                           toast.showmsg(res.msg, true); 
+                        }
+                    });
+                },
+                deleteSpot: function(linkid,name){
+                    
+                    if(isNaN(linkid))linkid=this.newspot[linkid];
+                    var _this = this;
+
+                    $.post('/scenesitem/del-spot',
+                        {
+                            link_id:linkid,
+                            scene_id:_this.scene.id,
+                            scene_key:_this.scene.key,
+                            groupkey:_this.group.key
+                        },
+                        function(res){
+                            if(res.code==0){
+                                toast.showmsg('删除成功');
+                                if(_this.ishtml5)_this.krpano.call('set(hotspot['+name+'].visible, false)');
+                            }else{
+                                toast.showmsg(res.msg, true);
+                            }
+                        }
+                    );
+                },
+                removelink: function(){
+                    this.alink = 'http://';
+                    this.imgdesinput = false;
+                }
+            }
+        });
+
+        var body = new Vue({
+            el: 'body',
+            methods: {
+                hidepopt: function(){
+                    nav.display = false;
+                    menubox.open = false;
+                    menubox.openMogr = false;
+                }
+            }
+        });
+
+        //krpano注册函数
+        function add_comment(ath, atv, size){
+            ictoast.add_comment(ath, atv, size);
+        }
+        function callcomment(atv, ath){
+            ictoast.selfile(atv, ath);
+        }
+        function showcomments(url,id,name,hotimg_name,hotimg_des){
+            ictoast.showcomments(url,id,name,hotimg_name,hotimg_des);
+        }
+        function deleteComment(id,name){
+            ictoast.deleteComment(id,name);
+        }
+        function setView(ath, atv){
+            ictoast.setView(ath, atv);
+        }
+        function newaddSpot(ath, atv, arrow_type, go_scene, text){
+            ictoast.newaddSpot(ath, atv, arrow_type, go_scene, text);
+        }
+        function deleteSpot(linkid, name){
+            ictoast.deleteSpot(linkid, name);
+        }
+        function savename(newname) {
+            ictoast.addspotname = newname;
+        }
+        function showtips(){
+            // setTimeout(function(){
+            //     ictoast.ishtml5 = true;
+            //     toast.showmsg('图片热点功能无法使用');
+            // }, 3000);
+        }
+        function showmsg(){
+            toast.showmsg('该功能为商业版功能，开通请联系销售经理');
+        }
+    </script>
+</body>
+</html>

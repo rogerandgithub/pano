@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+	<meta charset="utf-8" />
+	<meta name="description" content="" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0 user-scalable=yes" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<title><%=lang=='cn'?'多线激光雷达-解决方案':'RS-LiDAR Solutions'%></title>
+	<link rel="stylesheet" href="/index/css/common.css">
+	<link rel="stylesheet" href="/index/css/rs_solution.css">
+	<script src="/index/js/modernizr.js"></script>
+	<script src="/index/js/Vue.min.js"></script>
+	<%if(lang=='en'){%>
+		<style type="text/css">
+			.scenario-carousel__desc {
+				color: #fff;
+				line-height: 40px;
+				text-align: center;
+			}
+		</style>
+	<%}%>
+	
+</head>
+<body>
+    <div id="navtop">
+        <div id="header">                        
+        	<div id="nav">                            
+		    	<h2 class="logo fl"><a href="/web/main/<%=lang%>"><img src="http://qncdn.sz-sti.com/images/icon/logo.png" alt="速腾聚创logo"></a></h2>
+                <p class="menu">                               
+	                <a href="/web/rslidar/<%=lang%>"><%=lang=='cn'?'多线激光雷达':'RS-LiDAR'%></a>                                
+	                <a href="/web/three-dimensional/<%=lang%>"><%=lang=='cn'?'静态激光雷达':'SEEKER'%></a>                                
+	                <a href="/web/company/<%=lang%>"><%=lang=='cn'?'企业介绍':'About'%></a>                                
+	                <a href="/web/contact/<%=lang%>"><%=lang=='cn'?'联系我们':'Contact'%></a>                                
+	                <a href="/web/news/<%=lang%>"><%=lang=='cn'?'新闻中心':'Media'%></a>                                
+	                <a href="/web/resource/<%=lang%>"><%=lang=='cn'?'资源中心':'Downloads'%></a>                                
+	                <a href="/web/recruitment/<%=lang%>"><%=lang=='cn'?'人才招聘':'Careers'%></a>  
+	                <a target="_blank" href="http://robopano.com/"><%=lang=='cn'?'旗下子公司':'Subsidiary'%></a>                          
+                </p>
+                <div class="fr changeLang" @mouseover="showlangover()" @mouseout="hidelangout()">
+                    <a href="javascript:;"><img :src="langlist.<%=lang%>" /></a>
+                    <div id="langlist" transition="lang" v-show="showlang" @mouseover="showlangover()" @mouseout="hidelangout()">
+                        <a class="lang" @click.stop="togglelang()"><img :src="langlist.<%=lang=="cn"?"en":"cn"%>" /></a>
+                    </div>
+                </div>                      
+            </div>                                                
+            <div class="three-menu" slot="navbottom">
+	            <div class="link">
+	                <a href="/web/rslidar/<%=lang%>" class="button">
+	                    <span><%=lang=='cn'?'产品介绍':'Products'%></span>
+	                </a>
+	            </div>
+	            <div class="link">
+	                <a href="http://www.robosense.cn/pillar/2?lang=<%=lang%>" class="button active">
+	                    <span><%=lang=='cn'?'解决方案':'Solutions'%></span>
+	                </a>
+	            </div>
+	        </div>                    
+	    </div>
+    </div>
+	<div class="app" id="app-container"></div>
+
+
+
+	<%if(lang=='cn'){%>
+		<script src="/index/js/bundle.js"></script>
+	<%}else{%>
+		<script src="/index/js/bundle-en.js"></script>
+	<%}%>
+	<script src="/index/js/jquery-2.2.4.min.js"></script>
+	<script src="/index/js/move.js"></script>
+	<script type="text/javascript">
+		var navtop = new Vue({
+			el: '#navtop',
+			data: {
+                showlang: false,
+				langlist: {'cn':'/index/images/icon/chinese.png','en':'/index/images/icon/english.png'},
+                timer: null,
+                key: '<%=lang%>'
+			},
+			methods: {
+	            togglelang: function(){
+	                this.showlang = false;
+	                if(this.key == 'cn'){
+	                	if(location.href.indexOf('?lang=cn')==-1){
+	                		console.log(1111)
+	                	}
+	                }else{
+	                	if(location.href.indexOf('?lang=en')==-1){
+	                		console.log(2222)
+	                	}
+	                }
+	                if(location.href.indexOf('?lang=cn')!=-1){
+	                    location.href = location.href.replace('?lang=cn','?lang=en');
+	                }else{
+	                    location.href = location.href.replace('?lang=en','?lang=cn');
+	                }
+	            },
+	            showlangover: function(){
+	                clearTimeout(this.timer);
+	                this.showlang = true;
+	                this.timer = null;
+	            },
+	            hidelangout: function(){
+	                clearTimeout(this.timer);
+	                var _this = this;
+	                this.timer = setTimeout(function(){
+	                    _this.showlang = false;
+	                },600); 
+	            },
+	            setCookie: function(value){
+	                var Days = 30;
+	                var exp = new Date();
+	                exp.setTime(exp.getTime() + Days*24*60*60*1000);
+	                document.cookie = "language="+ escape (value) + ";expires=" + exp.toGMTString();
+	            },
+	            getCookie: function(name){
+	                var arr,reg=new RegExp("(^| )language=([^;]*)(;|$)");
+	                if(arr=document.cookie.match(reg)){
+	                    return unescape(arr[2]);
+	                }else{
+	                    return null;
+	                }
+	            }
+	        }
+		})
+	</script>
+	<script type="text/javascript">
+	    $(function(){
+	        window.onscroll = function () { 
+	            var t = document.documentElement.scrollTop || document.body.scrollTop;
+	            if (t > 69) { 
+	                move(".app-main .page--node__header--detail").ease('snap').set('top',0).end();
+	            }else{ 
+	                move(".app-main .page--node__header--detail").ease('snap').set('top','60px').end(); 
+	            } 
+	            console.log(1111)
+	        }
+	    })
+	</script>
+</html>

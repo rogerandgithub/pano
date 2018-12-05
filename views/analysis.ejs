@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>不上传全景的渣渣用户</title>
+    <link rel="stylesheet" href="/css/feedback.css" type="text/css">
+    <link href="/css/new/common.css" rel="stylesheet" type="text/css" /> 
+    <script src="/js/new/vue.min.js"></script> 
+    <script src="/js/jquery-1.8.3.min.js"></script>
+    <script src="/js/qnuploader.js"></script>
+    <style type="text/css">
+    	#analysis .wrapper {
+		    padding: 10px 30px;
+		}
+		#analysis .wrapper .table{
+		    width: 100%;
+		    margin-bottom: 20px;
+		    margin-top: 5px;
+		    background-color: #ffffff;
+		    max-width: 100%;
+		    background-color: transparent;
+		    border-collapse: collapse;
+		    border-spacing: 0;
+		}
+		#analysis .wrapper .table thead{
+		    background-color: #e00025;
+		}
+		#analysis .wrapper .table tr{
+		    border-bottom: 1px solid #dee3ea;
+		    border-left: 1px solid #dee3ea;
+		    border-right: 1px solid #dee3ea;
+		}
+		#analysis .wrapper .table thead th{
+		    padding: 10px 8px;
+		    color: #fff;
+		    font-weight: 600;
+		}
+		#analysis .wrapper .table th, #analysis .wrapper .table td{
+		    padding: 8px 10px;
+		    white-space: nowrap;
+		    text-overflow: ellipsis;
+		    -o-text-overflow: ellipsis;
+		    overflow: hidden;
+		}
+		#analysis .wrapper .table .span1{
+		    width: 6.382978723404255%;
+		}
+		.pagination ul > li:last-child > a, .pagination ul > li:last-child > span, .pagination ul > li:first-child > a, .pagination ul > li.child > a, .pagination ul > li:first-child > span{
+			font-size: 12px;
+		}
+		.pagination ul > li > a, .pagination ul > li > span{
+			padding: 2px 12px;
+		}
+		.pagination{
+			text-align: center;
+			margin-top: 50px;
+		}
+    </style>
+</head>
+<body>
+    <%include toast%>
+    <div id="analysis">    
+        <header id="header" class="clearfix">
+            <img width="35" src="/images/robologo.png" />
+            <%if(name=='admin'&&token){%>
+                <button class="btn btn-primary pull-right" style="margin-left:10px;" @click="logout">退出登录</button>
+            <%}%>
+        </header>
+        <div class="wrapper">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th class="align-left">用户名</th>
+                        <th class="align-left">公司名称</th>
+                        <th class="align-left">联系方式</th>
+                        <th class="align-right">最近上传的时间</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="analysis in analysiss | limitBy limit offset">
+                        <td>
+                            <span v-text="analysis.username"></span>
+                        </td>
+                        <td>
+                            <span v-text="analysis.company?analysis.company:'空'"></span>
+                        </td>
+                        <td>
+                            <span v-text="analysis.telephone?analysis.telephone:'空'"></span>
+                        </td>
+                        <td class="align-right">
+                        	<span v-text="analysis.createdAt"></span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="pagination" v-if="count>limit">
+                <ul>
+                    <li :class="{'disabled': 1 == pagindex}"><a href="javascript:;" @click="load(1)">首页</a></li>
+                    <li :class="{'disabled': 1 == pagindex}" class="child"><a href="javascript:;" @click="load(pagindex-1)">上一页</a></li>
+                    <li v-for="cur in pages" v-if="pagindex>3&&pages-2>pagindex?(cur+1<=pagindex+2&&cur+1>=pagindex-2):(pagindex<=3?cur+1<=5:cur+1>=pages-4)" :class="{'active': cur+1 == pagindex}">
+                        <a href="javascript:;" @click="load(cur+1)" v-text="cur+1"></a>
+                    </li>
+                    <li :class="{'disabled': pages == pagindex}" class="child"><a href="javascript:;" @click="load(pagindex+1)">下一页</a></li>
+                    <li :class="{'disabled': pages == pagindex}"><a href="javascript:;" @click="load(pages)">尾页</a></li>
+                </ul>
+            </div>
+        </div> 
+    </div>
+    <script type="text/javascript">
+        var analysis = new Vue({
+            el: '#analysis',
+            data: {
+                count:0,
+                pagindex:1,
+                limit:10,
+                pages:0,
+                analysiss: []
+            },
+            computed: {
+                offset: function(){
+                    return (this.pagindex-1)*this.limit;
+                },
+                pages: function(){
+                    return Math.ceil(this.count/this.limit);
+                }
+            },
+            methods: {
+                <%if(name=='admin'&&token){%> 
+                logout: function(){
+                    location.href = '/supermaster/analysis/logout';
+                },
+                <%}%>
+                load: function(cur){
+                    if(cur!=this.pagindex){
+                        if(cur<1){
+                            toast.showmsg('当前就是首页了！', true);
+                            return;
+                        }
+                        if(cur>this.pages){
+                            toast.showmsg('没有下一页了', true);
+                            return;
+                        }
+                        this.pagindex = cur;
+                    }
+                },
+                init: function(){
+                    var _this = this;
+                    $.get('/supermaster/analysis/data', function(res){
+                        for(var i in res){
+                        	var createdAt;
+                            var time = new Date(res[i].createdAt);
+                            createdAt = time.getFullYear();
+                            createdAt += '-'+(parseInt(time.getMonth())+1<10?'0':'')+(parseInt(time.getMonth())+1);
+                            createdAt += '-'+(time.getDate()<10?'0':'')+time.getDate();
+                            createdAt += ' '+(time.getHours()<10?'0':'')+time.getHours();
+                            createdAt += ':'+(time.getMinutes()<10?'0':'')+time.getMinutes();
+                            createdAt += ':'+(time.getSeconds()<10?'0':'')+time.getSeconds();
+                            res[i].createdAt = createdAt;
+                            _this.analysiss.push(res[i]);
+                        }
+                        _this.count = _this.analysiss.length;
+                    });
+                }
+            }
+        });
+        analysis.init();
+    </script>
+</body>
+</html>

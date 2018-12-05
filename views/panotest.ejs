@@ -1,0 +1,562 @@
+<html>
+    <meta charset="utf-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport" content=" user-scalable=no, initial-scale=1.0,minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="author" content="Calculon 0x00111111@gmail.com">
+    <head>
+        <link rel="stylesheet" type="text/css" href="css/common.css">
+        <link rel="stylesheet" type="text/css" href="css/sti-pano.css">
+        <link rel="stylesheet" type="text/css" href="/css/font-awesome-4.3.0/css/font-awesome.min.css?v=<%=libVersion%>">
+        <style>
+            .header{position:absolute;top:0;left:0;z-index:25;width:100%;background-color:rgba(255,255,255,0.5);}
+            .header-list-wrap{opacity:0.9;}
+
+            .tips{
+                line-height:40px;height:40px;font-size:16px;text-align:center;background-color:rgba(0,0,0,0.5);color:#fff;position:absolute;bottom:0;left:0;z-index:20;width:100%;
+            }
+
+            .btn-finish{
+                background-color:rgba(255,0,0,0.5);color:#fff;display:block;width:85px;font-size:12px;line-height:36px;height:36px;position:absolute;right:25px;top:25px;z-index:20;border-radius:5px;text-align:center;
+            }
+            .btn-view{
+                background-color:rgba(100,100,100,0.5);color:#fff;display:block;width:85px;font-size:12px;line-height:36px;height:36px;position:absolute;left:25px;top:25px;z-index:20;border-radius:5px;text-align:center;
+            }
+            .btn-mode-wrap{width:200px;position:absolute;bottom:55px;left:25px;}
+            .btn-mode-add,.btn-mode-del{
+                -webkit-box-flex:1;background-color:rgba(244,244,244,0.3);color:#fff;display:block;font-size:12px;line-height:36px;height:36px;z-index:20;border-radius:5px;text-align:center;
+            }
+            .btn-mode-add{border-radius: 3px 0px 0px 3px;}
+            .btn-mode-del{border-radius: 0px 3px 3px 0px;}
+            .btn-mode-add.selected,.btn-mode-del.selected{background-color:rgba(255,0,0,0.5);box-shadow: 1px 1px 15px #fff;}
+
+            .maps-wrap{
+                position:absolute;
+                height:100%;
+                width:100%;
+                z-index:25;
+                top:0;
+                display:none;
+                background-color:rgba(0,0,0,0.7);
+            }
+            .map-spot{position:absolute;padding:5px 10px 5px 10px;display:block;background-color:rgba(255,255,255,0.5);box-shadow:0px 0px 3px #000;font-size:12px;z-index:26;border-radius:10px;width:20px;height:20px;}
+            .map-spot:before{position:absolute;display:block;content:'';width:100%;height:100%;background-color:rgba(242,32,32,0.8);margin-left:-50%;margin-top:-50%;-webkit-transform:scale(0.5);border-radius:10px;}
+            .map-spot.current:before{background-color:rgba(14,211,99,0.8);}
+            .map-item{position:relative;margin-top:20%;width:70%;margin-left:auto;margin-right:auto;}
+
+            .visited-wrap{position:absolute;z-index:25;bottom:28px;left:20px;background-color:rgba(255,255,255,0.5);border-radius:5px;padding:5px 10px 5px 10px;font-size:12px;}
+
+            .options-wrap{z-index:26;}
+
+        </style>
+    </head>
+    <script src="js/min.js"></script>
+    <body>
+        <%include alert%>
+        <%if(mode=='viewer'){%>
+            <%include header%>
+            <audio id="audio" src='<%=cdnImagesPath%>/tools/785.mp3' autoplay="autoplay" loop="loop"></audio>
+            <div class="options-wrap">
+                <div class="item" style="display:none">
+                    <div class="icon comment-switch on" id="switch-comments"></div>
+                </div>
+                <div class="item">
+                    <div class="icon music-switch on" id="switch-audio"></div>
+                </div>
+                <%if(maps.length!=0){%>
+                <div class="item">
+                    <div class="icon map-switch on" id="switch-maps"></div>
+                </div>
+                <%}%>
+                <div class="item">
+                    <div class="icon rotate-switch off" id="switch-rotation"></div>
+                </div>
+            </div>
+            <%if(telephone.length>5){%>
+            <a href='tel:<%=telephone%>' class="icon telephone"></a>
+            <%}%>
+        <div class="maps-wrap">
+            <%for(var i in maps){%>
+            <div class="map-item">
+                <img src="<%=cdnImagesPath%>/maps/<%=maps[i].key%>.jpg" style="width:100%;position:relative;border-radius:3px;">
+                <%for(var j in maps[i].links){%>
+                <button class="btn map-spot <%if(maps[i].links[j].sceneKey==sceneKey){%>current<%}%>" style="top:<%=maps[i].links[j].position_y%>%;left:<%=maps[i].links[j].position_x%>%;" type="map-spot" key="<%=maps[i].links[j].sceneKey%>"></button>
+                <%}%>
+            </div>
+            <%}%>
+        </div>
+        <div class="visited-wrap horizontal">
+            <i class="fa fa-eye"></i><div id="visited" style="margin-left:5px"><%=visited%></div>
+        </div>
+        <%}%>
+
+        <!-- Loading Animation -->
+        <table class="loader">
+            <tbody>
+            <tr>
+                <td>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <!-- Essential -->
+        <div id="sti-pano">
+            <div id="container">
+                <div id="camera">
+                    <img class="cube front">
+                    <img class="cube left">
+                    <img class="cube right">
+                    <img class="cube back">
+                    <img class="cube top">
+                    <img class="cube bottom">
+                </div>
+            </div>
+        </div>
+
+        <!-- Debug -->
+        <div id="logger"></div>
+
+        <%if(mode=='editor'){%>
+        <!-- Editor -->
+        <div id="sti-editor" class="vertical h100">
+            <div class="flex1 overflow">
+            <div class="scene-list">
+                <%for(var i in romaing){%>
+                <div class="item" data-id="<%=romaing[i].id%>" data-scene="<%=romaing[i].key%>" data-name="<%=romaing[i].name%>">
+                    <div class="flex1">
+                        <%=romaing[i].name%>
+                    </div>
+                    <div class="icon check hide"></div>
+                </div>
+                <%}%>
+            </div>
+            <div class="horizontal padding10 marginbottom10 vcenter">
+                <div>漫游点名称:</div>
+                <div class="input-wrap flex1">
+                    <input class="romaing-input" placeholder="">
+                </div>
+            </div>
+            <div class="padding10">
+                <div>选择图标:</div>
+                <div class="iselector vertical vcenter hcenter checked" data-icon-type='0'>
+                    <div class="icon spot0"></div>
+                </div>
+                <div class="iselector vertical vcenter hcenter" data-icon-type='1'>
+                    <div class="icon spot1"></div>
+                </div>
+                <div class="iselector vertical vcenter hcenter" data-icon-type='2'>
+                    <div class="icon spot2"></div>
+                </div>
+                <div class="iselector vertical vcenter hcenter" data-icon-type='3'>
+                    <div class="icon spot3"></div>
+                </div>
+                <div class="iselector vertical vcenter hcenter" data-icon-type='4'>
+                    <div class="icon spot4"></div>
+                </div>
+                <div class="iselector vertical vcenter hcenter" data-icon-type='5'>
+                    <div class="icon spot5"></div>
+                </div>
+                <div class="iselector vertical vcenter hcenter" data-icon-type='6'>
+                    <div class="icon spot6"></div>
+                </div>
+                <div class="iselector vertical vcenter hcenter" data-icon-type='7'>
+                    <div class="icon spot7"></div>
+                </div>
+                <div class="iselector vertical vcenter hcenter" data-icon-type='8'>
+                    <div class="icon spot8"></div>
+                </div>
+                <div class="iselector vertical vcenter hcenter" data-icon-type='9'>
+                    <div class="icon spot9"></div>
+                </div>
+            </div>
+            </div>
+            <div class="buttons margintop10">
+                <button class="btn gray flex1" id="sti-editor-cancel">取消</button>
+                <button class="btn red flex1" id="sti-editor-add">新增</button>
+            </div>
+        </div>
+        <div class="btn-finish" onClick="location.href='/romaing/list?groupkey=<%=groupKey%><%if(platform=='android-app'){%>&platform=android-app<%}%>'" >
+            完成编辑
+        </div>
+        <div class="btn-view">
+            设置默认视角
+        </div>
+        <div class="btn-mode-wrap horizontal">
+            <div class="btn-mode-add selected">
+                添加模式
+            </div>
+            <div class="btn-mode-del">
+                删除模式
+            </div>
+        </div>
+        <div class="tips">
+            点击任意位置开始放置漫游点
+        </div>
+        <%}%>
+
+    </body>
+    <script>
+        function setview(){
+            $.ajax({
+                type:'post',
+                url:'/setview',
+                data:{
+                    key:sti.sceneKey,
+                    view:sti.ry
+                },
+                success:function(r){
+                    if(r.code!=0){
+                        alert(r.msg);
+                        return;
+                    }
+                    $('.alert-wrap').css('visibility','visible');
+                    initAlert('alert',{
+                        content:'设置默认视角成功'
+                    });
+                }
+            });
+        }
+
+
+        function getSceneInfo(sceneKey){
+            if(sti.loaderDom){
+                sti.loaderDom.show();
+            }
+            <%if(mode=='viewer'&&maps.length!=0){%>
+                $('.map-spot').removeClass('current');
+                $('.map-spot[key="'+sceneKey+'"]').addClass('current');
+            <%}%>
+
+            $.ajax({
+                type:'GET',
+                url:'/scene_info',
+                data:{
+                    scene_key:sceneKey,
+                    group_key:sti.groupKey,
+                    type:'json'
+                },
+                async:false,
+                timeout:3000,
+                success:function(r){
+                    if(r.code!=0){
+                        alert(r.msg);
+                        return;
+                    }
+
+                    r.spots=JSON.parse(filterXSS(unicode2Chr(r.spots),{whiteList:{div:[]}}));
+                    r.advertisement=JSON.parse(filterXSS(unicode2Chr(r.advertisement),{whiteList:{div:[]}}));
+                    r.comments=JSON.parse(filterXSS(unicode2Chr(r.comments),{whiteList:{div:[]}}));
+                    r.top_ad=filterXSS(unicode2Chr(r.top_ad),{whiteList:{div:[]}});
+
+                    $('#visited').html(r.visited);
+
+                    sti.init(r,true);
+                },
+                error:function(r){
+                    alert('error');
+                }
+            });
+        }
+
+        var editor={
+            dom:$('#sti-editor'),
+            btnAdd:$('#sti-editor-add'),
+            btnCancel:$('#sti-editor-cancel'),
+            mode:'add',
+            data:{type:0}
+        };
+        editor.show=function(dom){
+            // Hide all checks
+            editor.dom.find('.item').removeClass('checked');
+            editor.dom.find('.iselector').removeClass('checked');
+
+            if(dom){
+                var matrix=text2Matrix(dom.closest('.sprite').css('-webkit-transform'));
+                editor.data={
+                    id:dom.attr('data-id'),
+                    scene:dom.attr('data-scene'),
+                    type:dom.attr('data-type'),
+                    text:dom.attr('data-text'),
+                    x:sti.cubeSize/2-matrix[12],
+                    y:sti.cubeSize/2-matrix[13],
+                    z:-matrix[14]
+                }
+
+                editor.dom.find('.item[data-scene="'+sti.editor.data.scene+'"]').each(function(){
+                        $(this).addClass('checked');
+                        editor.dom.find('.romaing-input').val(editor.data.text);
+                        editor.dom.find('.iselector[data-icon-type="'+editor.data.type+'"]').addClass('checked');
+                });
+            }else{
+                editor.dom.find('.item').eq(0).addClass('checked');
+                editor.dom.find('.romaing-input').val(editor.dom.find('.item').attr('data-name'));
+                editor.dom.find('.iselector').eq(0).addClass('checked');
+            }
+            editor.dom.css('visibility','visible');
+        }
+        editor.hide=function(){
+            sti.pauseAnimation=false;
+            editor.dom.find('.item').removeClass('checked');
+            editor.dom.css('visibility','hidden');
+        }
+        editor.addSpot=function(){
+            $('.iselector').each(function(){
+                if($(this).hasClass('checked')){
+                    editor.data.type=$(this).attr('data-icon-type');
+                }
+            });
+            editor.data.text=editor.dom.find('.romaing-input').val();
+            editor.data.position_x=editor.data.x;
+            editor.data.position_y=editor.data.y;
+            editor.data.position_z=editor.data.z;
+            editor.data.scene_id=sti.scene_id;
+            editor.data.groupkey=sti.groupKey;
+            editor.data.go_scene=editor.dom.find('.item.checked').attr('data-id');
+
+            $.ajax({
+                type:'post',
+                url:'/spot-post',
+                data:editor.data,
+                timeout:3000,
+                async:false,
+                success:function(r){
+                    if(r.code!=0){
+                        alert(r.msg);
+                        return;
+                    }
+                    sti.loadSpots([
+                        {
+                            text:editor.data.text,
+                            position_x:editor.data.x,
+                            position_y:editor.data.y,
+                            position_z:editor.data.z,
+                            type:editor.data.type,
+                            id:r.id
+                        }
+                    ]);
+                    editor.hide();
+                },
+                error:function(){
+                    alert('Time out');
+                }
+            });
+        }
+        editor.deleteSpot=function(){
+            $.ajax({
+                type:'post',
+                url:'/spot-delete',
+                data:{
+                    link_id:editor.data.id,
+                    scene_id:sti.scene_id,
+                    scene_key:sti.sceneKey,
+                    groupkey:sti.groupKey
+                },
+                async:false,
+                timeout:3000,
+                success:function(r){
+                    if(r.code!=0){
+                        alert(r.msg);
+                        return;
+                    }
+                    $('#spot_'+editor.data.id).closest('.sprite').remove();
+                    editor.hide();
+                },
+                error:function(){
+                    alert('连接超时');
+                }
+            });
+        }
+        editor.changeScene=function(){
+            // Hide all checks
+            editor.dom.find('.item').removeClass('checked');
+            editor.dom.find('.iselector').removeClass('checked');
+
+            var self=$(this);
+            self.addClass('checked');
+            editor.dom.find('.romaing-input').val(self.attr('data-name'));
+            editor.dom.find('.iselector').eq(0).addClass('checked');
+
+        }
+        editor.changeIcon=function(){
+            editor.dom.find('.iselector').removeClass('checked');
+            $(this).addClass('checked');
+        }
+
+        function switchMode(){
+            $('.btn-mode-add').removeClass('selected');
+            $('.btn-mode-del').removeClass('selected');
+            $(this).addClass('selected');
+            editor.mode=$(this)[0].className.indexOf('add')>=0?'add':'del';
+        }
+        function switchAudio(){
+            if($(this).hasClass('on')){
+                $(this).removeClass('on');
+                $(this).addClass('off');
+                document.getElementById( 'audio' ).pause();
+            }else{
+                $(this).removeClass('off');
+                $(this).addClass('on');
+                document.getElementById( 'audio' ).play();
+            }
+        }
+        function switchMaps(){
+            if($(this).hasClass('on')){
+                $(this).removeClass('on');
+                $(this).addClass('off');
+                $('.maps-wrap').show();
+            }else{
+                $(this).removeClass('off');
+                $(this).addClass('on');
+                $('.maps-wrap').hide();
+            }
+        }
+        function switchRotation(){
+            if($(this).hasClass('on')){
+                $(this).removeClass('on');
+                $(this).addClass('off');
+                sti.autoRotate=0;
+            }else{
+                $(this).removeClass('off');
+                $(this).addClass('on');
+                sti.autoRotate=0.1;
+            }
+        }
+        function switchComments(){
+            if($(this).hasClass('on')){
+                $(this).removeClass('on');
+                $(this).addClass('off');
+            }else{
+                $(this).removeClass('off');
+                $(this).addClass('on');
+            }
+        }
+
+        function changeScene(){
+            $('#switch-maps').removeClass('off');
+            $('#switch-maps').addClass('on');
+            $('.maps-wrap').hide();
+            sti.sceneKey=$(this).attr('key');
+            $('.map-spot').removeClass('current');
+            $(this).addClass('current');
+            getSceneInfo(sti.sceneKey);
+        }
+
+        if(checkMobile()){
+            editor.btnCancel.on('touchend',editor.hide);
+            editor.btnAdd.on('touchend',editor.addSpot);
+            editor.dom.find('.item').on('touchend',editor.changeScene);
+            editor.dom.find('.iselector').on('touchend',editor.changeIcon);
+            $('.btn-mode-add').on('touchend',switchMode);
+            $('.btn-mode-del').on('touchend',switchMode);
+            $('.btn-view').on('touchend',setview);
+
+            $('#switch-audio').on('touchend',switchAudio);
+            $('#switch-maps').on('touchend',switchMaps);
+            $('#switch-rotation').on('touchend',switchRotation);
+            $('.map-spot').on('touchend',changeScene);
+        }else{
+            editor.btnCancel.on('mouseup',editor.hide);
+            editor.btnAdd.on('mouseup',editor.addSpot);
+            editor.dom.find('.item').on('mouseup',editor.changeScene);
+            editor.dom.find('.iselector').on('mouseup',editor.changeIcon);
+            $('.btn-mode-add').on('mouseup',switchMode);
+            $('.btn-mode-del').on('mouseup',switchMode);
+            $('.btn-view').on('mouseup',setview);
+            $('#switch-audio').on('mouseup',switchAudio);
+            $('#switch-maps').on('mouseup',switchMaps);
+            $('#switch-rotation').on('mouseup',switchRotation);
+            $('.map-spot').on('mouseup',changeScene);
+        }
+
+        var advertisement=JSON.parse(filterXSS(unicode2Chr('<%-advertisement%>'),{whiteList:{div:[]}}));
+        var spots=JSON.parse(filterXSS(unicode2Chr('<%-spots%>'),{whiteList:{div:[]}}));
+        var comments=JSON.parse(filterXSS(unicode2Chr('<%-comments%>'),{whiteList:{div:[]}}));
+        var top_ad=filterXSS(unicode2Chr('<%-top_ad%>'),{whiteList:{div:[]}});
+
+        sti.init({
+
+            ///////////////////////////
+            /////// By Default ////////
+
+            dom   : $('#sti-pano'), // Panorama dom
+            debug : false,          // Debug mode
+            ry    : 0,              // Rotation around Y axis with degree
+            rx    : 0,              // Rotation around X axis with degree
+            maxfov: 120,            // Max field of view
+            minfov: 60,             // Min field of view
+            fov   : 90,             // Default field of view
+            autoRotate: 0,          // Auto rotate 0 degree
+            mode  : 'viewer',       // viewer OR editor
+
+            ///////////////////////////
+            /////// Optional  /////////
+
+            loaderDom : $('.loader'), // loader will call .hide() when finished
+            autoRotate: 0,      // Auto rotate
+
+            fov       : 90,
+            minfov    : 90,
+            debug     : false,
+
+            mode      : '<%=mode%>',
+            editor    : editor,
+            ry        : <%=ry%>,
+
+            /*
+            spots:[{                // Spots details
+                id:654,
+                position_x:68,
+                position_y:-58,
+                position_z:102,
+                type:1,
+                text:'厨房',
+                sceneKey:'ea1029db19713829a6bb3fe371410ccb742878f4' // Scene key
+            },{
+                id:653,
+                position_x:-30,
+                position_y:-64,
+                position_z:-116,
+                type:2,
+                text:'卧室',
+                sceneKey:'2fbfcc9df6697e1d9124f0574bd59f89f6bc28b4'
+            },{
+                id:652,
+                position_x:110,
+                position_y:-22,
+                position_z:-76,
+                type:0,
+                text:'走廊',
+                sceneKey:'fe904377cfb98cc507574e727fc2cfcf1d10996f'
+            }],
+
+            comments:[{
+                id:123,
+                position_x:68,
+                position_y:-58,
+                position_z:102,
+                text:'dfwef',
+                avatar_url:'http://qncdn.sz-sti.com/images/scenes/723400ec33c5606a29820cbd51ab13deca03ec9a/allinone.jpg?imageMogr2/gravity/NorthWest/crop/!1024x1024a0a1024/interlace/0/thumbnail/!50p'
+            }],
+            */
+
+            spots:spots,
+            advertisement:advertisement,
+            top_ad:top_ad,
+
+
+            ///////////////////////////
+            /////// Essential /////////
+
+            scene_id:'<%=scene_id%>',
+            getSceneInfo:getSceneInfo,
+            //sceneKey:'723400ec33c5606a29820cbd51ab13deca03ec9a',
+            //groupKey:'477dbf85392294e411eb10a2a593f3f40ca7aa9e5'
+            sceneKey:'<%=sceneKey%>',
+            groupKey:'<%=groupKey%>'
+
+        });
+    </script>
+</html>

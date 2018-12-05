@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+    <title><%=title%></title>
+		<meta charset="utf-8">
+        <meta name="format-detection" content="telephone=no">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="/css/common.css?v=<%=version%>">
+        <style>
+        </style>
+	</head>
+	<body ondrag="return false" class="overflow">
+    <script src="<%=cdnJsPath%>/zepto.min.js?v=<%=libVersion%>"></script>
+    <script src="/js/sti-common.min.js?<%=version%>"></script>
+    <script src="/js/template-native.js?v=<%=version%>"></script>
+    <%include alert%>
+    
+
+<div class="vertical h100">
+    <%include header%>
+    <div class="scene-list flex1 overflow">
+        <%for(var i in scenes){%>
+        <div class="item lightgray" data-key="<%=scenes[i].key%>" data-groupkey="<%=scenes[i].groupkey%>">
+            <img width=120 height=120 src="<%=cdnImagesPath%>/scenes/<%=scenes[i].key%>/allinone.jpg?v=<%=serverDate%>&imageMogr2/gravity/NorthWest/crop/!1024x1024a0a0/thumbnail/!20p" style="margin:10px 0 10px 0;">
+            <div class="flex1 vertical" style="height:120px !important;font-size:14px;margin:8px;">
+                <div class="flex1">
+                    <%=scenes[i].groupname%> <%=scenes[i].place%>
+                </div>
+                <div>
+                    <%var t=new Date(scenes[i].createdAt);function pad(num, n) {
+return Array(n-(''+num).length+1).join(0)+num; 
+}%><%=t.getFullYear()+' '+pad(t.getMonth()+1,2)+'-'+pad(t.getDate(),2)+' '+pad(t.getHours(),2)+':'+pad(t.getMinutes(),2)%></div>
+            </div>
+            <div class="vertical">
+                <button class="btn gray tiny marginbottom10 btn-delete">删除</button>
+                <button class="btn gray tiny marginbottom10 btn-edit" style="display:none">编辑漫游</button>
+                <button class="btn bloodred tiny btn-preview">预览</button>
+            </div>
+        </div>
+        <%}%>
+    </div>
+</div>
+    <script id='scene-template' type="text/html">
+        <#for(var i in scenes){#>
+        <div class="item lightgray" data-key="<#=scenes[i].key#>" data-groupkey="<#=scenes[i].groupkey#>">
+            <img width=120 height=120 src="<%=cdnImagesPath%>/scenes/<#=scenes[i].key#>/allinone.jpg?v=<#=serverDate#>&imageMogr2/gravity/NorthWest/crop/!1024x1024a0a0/thumbnail/!20p" style="margin:10px 0 10px 0;">
+            <div class="flex1 vertical" style="height:120px !important;font-size:14px;margin:8px;">
+                <div class="flex1">
+                    <#=scenes[i].groupname#> <#=scenes[i].place#>
+                </div>
+                <div>
+                    <#=scenes[i].createdAt#>
+                </div>
+            </div>
+            <div class="vertical">
+                <button class="btn gray tiny marginbottom10 btn-delete">删除</button>
+                <button class="btn gray tiny marginbottom10 btn-edit" style="display:none">编辑漫游</button>
+                <button class="btn bloodred tiny btn-preview">预览</button>
+            </div>
+        </div>
+        <#}#>
+    </script>
+
+    <script>
+    $(function(){
+            template.config('openTag','<#');
+            template.config('closeTag','#>');
+            var body=$('body');
+            body.delegate('.btn-preview','click',function(){
+                var papa=$(this).closest('.item');
+                location.href='/scene?key='+papa.attr('data-key');
+            });
+            body.delegate('.btn-delete','click',function(){
+                if(confirm('确定要删除吗?')){
+                    var papa=$(this).closest('.item');
+                    $.ajax({
+                        type:'POST',
+                        url:'/works/delete',
+                        data:{
+                            scene_key:papa.attr('data-key')
+                        },
+                        async:false,
+                        success:function(result){
+                            if(result.code!=0){
+                                alert(result.msg);
+                                return;
+                            }
+                            window.location.reload();
+                        },
+                        error:function(e){
+                        alert(e);
+                        }
+                    });
+                }
+            });
+
+            var cur_page=<%=cur_page%>;
+            var no_more=false;
+            var loadedpage={};
+            var lastdate=0;
+            $('.scene-list').on('scroll',function(e){
+                    var innerh=$(this)[0].scrollHeight;
+                    var h=$(this).height();
+                    if(innerh-h>0&&e.srcElement.scrollTop+h+50>innerh){
+                        if(!loadedpage[cur_page]&&!no_more&&new Date().valueOf()-lastdate>300){
+                            loadedpage[cur_page]=true;
+
+                            lastdate=new Date().valueOf();
+                            cur_page++;
+                            $.get('/works?type=json&cur_page='+cur_page,function(res){
+                                if(res.scenes.length==0){
+                                    no_more=true;
+                                }
+                                for(var i in res.scenes){
+                                    var t=new Date(res.scenes[i].createdAt);
+                                    res.scenes[i].createdAt=t.getFullYear()+' '+pad(t.getMonth()+1,2)+'-'+pad(t.getDate(),2)+' '+pad(t.getHours(),2)+':'+pad(t.getMinutes(),2);
+                                }
+                                $('.scene-list').append(template('scene-template',res));
+                            });
+                        }
+                    }
+            });
+    });
+    </script>
+    </body>
+</html>

@@ -1,0 +1,293 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<title>应用领域</title>
+	<link type="text/css" rel="stylesheet" href="/index/css/application.css" />
+</head>
+<body>
+    <%include nav%>
+    <%include footer%>
+    <div id="navtop" class="header">
+        <navtop>
+		    <ul id="item-menu" slot="item-menu">
+				<li class="back">&#215;</li>
+				<li class="next-btn icon-angle-right">></li>
+				<li class="prev-btn icon-angle-left"><</li>
+			</ul>
+          	<div class="three-menu" slot="navbottom">
+	            <div class="link">
+	                <a href="/web/three-dimensional/<%=lang%>" class="button">
+	                    <span class="line line-top"></span>
+	                    <span class="line line-right"></span>
+	                    <span class="line line-bottom"></span>
+	                    <span class="line line-left"></span>
+	                    <span v-text="threeMenu.introduction"></span>
+	                </a>
+	            </div>
+	            <div class="link">
+	                <a href="/web/application/<%=lang%>#portfolio" class="button active">
+	                    <span class="line line-top"></span>
+	                    <span class="line line-right"></span>
+	                    <span class="line line-bottom"></span>
+	                    <span class="line line-left"></span>
+	                    <span v-text="threeMenu.applications"></span>
+	                </a>
+	            </div>
+	            <div class="link">
+	                <a href="/web/software/<%=lang%>" class="button">
+	                    <span class="line line-top"></span>
+	                    <span class="line line-right"></span>
+	                    <span class="line line-bottom"></span>
+	                    <span class="line line-left"></span>
+	                    <span v-text="threeMenu.service"></span>
+	                </a>
+	            </div>
+          	</div>
+        </navtop>
+    </div>
+	<div id="pages">
+		<div id="portfolio" class="page">
+			<div class="item bigswordfish">		
+				<div class="bg"></div>
+				<div class="info">
+					<h2 v-text="portfoliodata.application.content1.header[0]"></h2>
+					<p class="transformen" v-text="portfoliodata.application.content1.header[1]"></p>
+					<p class="robosensethin" v-text="portfoliodata.application.content1.header[2]"></p>
+					<div class="btn-group">
+						<button class="viewdetails" v-text="portfoliodata.application.content1.header[3]"></button>
+						<button class="scrolldown" v-text="portfoliodata.application.content1.header[4]"></button>
+					</div>
+				</div>
+				<div class="content">
+					<div class="wrapper clearfix">
+						<div class="content-pic fl"><img src="http://qncdn.sz-sti.com/images/application/geography-pic.jpg" /></div>
+						<div class="content-info fr">
+			                <p class="first" v-text="portfoliodata.application.content1.content[0]"></p>
+			                <div v-for="data in portfoliodata.application.content1.content[1]">
+			                	<h4 v-text="data[0]"></h4>
+				                <p class="mt_10" v-text="data[1]"></p>
+			                </div>
+			            </div>
+					</div>
+				</div>
+			</div>
+			<div class="item formstudio delay-1">
+				<div class="bg"></div>
+				<div class="info">
+					<h2 v-text="portfoliodata.application.content2.header[0]"></h2>
+					<p class="transformen" v-text="portfoliodata.application.content2.header[1]"></p>
+					<p class="robosensethin" v-text="portfoliodata.application.content2.header[2]"></p>
+					<div class="btn-group">
+						<button class="viewdetails" v-text="portfoliodata.application.content2.header[3]"></button>
+						<button class="scrolldown" v-text="portfoliodata.application.content2.header[4]"></button>
+					</div>
+				</div>
+				<div class="content">
+					<div class="wrapper clearfix">
+					<div class="content-pic fl"><img src="http://qncdn.sz-sti.com/images/application/home-decoration-pic.jpg" /></div>
+			            <div class="content-info fr">
+			                <p class="first">{{portfoliodata.application.content2.content[0]}}<br/>{{portfoliodata.application.content2.content[1]}}</p>
+			               	<div v-for="data in portfoliodata.application.content2.content[2]">
+			               		<h4 class="jiacolor" v-text="data[0]"></h4>
+				                <p class="mt_10" v-text="data[1]"></p>
+			               	</div>
+			            </div>
+					</div>
+				</div>
+			</div>
+			<div class="item logosoftheworld delay-2">
+				<div class="bg"></div>
+				<div class="info">
+					<h2 v-text="portfoliodata.application.content3.header[0]"></h2>
+					<p class="transformen" v-text="portfoliodata.application.content3.header[1]"></p>
+					<p class="robosensethin" v-text="portfoliodata.application.content3.header[2]"></p>
+					<div class="btn-group">
+						<button class="viewdetails" v-text="portfoliodata.application.content3.header[3]"></button>
+						<button class="scrolldown" v-text="portfoliodata.application.content3.header[4]"></button>
+					</div>
+				</div>
+				<div class="content content3">
+					<div class="wrapper clearfix">
+						<div class="content-pic fl"><img src="http://qncdn.sz-sti.com/images/application/building-pic.jpg" /></div>
+			            <div class="content-info fr">
+			                <p class="first" v-text="portfoliodata.application.content3.content[0]"></p>
+			                <p class="mt_10" v-for="data in portfoliodata.application.content3.content[1]" v-text="data"></p>
+			            </div>
+					</div>
+				</div>
+			</div>
+			<div class="item revoltcms delay-3">
+				<div class="bg"></div>
+				<div class="info">
+					<h2 v-text="portfoliodata.application.content4.header[0]"></h2>
+					<p class="transformen" v-text="portfoliodata.application.content4.header[1]"></p>
+					<p class="robosensethin" v-text="portfoliodata.application.content4.header[2]"></p>
+					<div class="btn-group">
+						<button class="viewdetails" v-text="portfoliodata.application.content4.header[3]"></button>
+						<button class="scrolldown" v-text="portfoliodata.application.content4.header[4]"></button>
+					</div>
+				</div>
+				<div class="content content4">
+					<div class="wrapper clearfix">
+						<div class="content-pic fl"><img src="http://qncdn.sz-sti.com/images/application/diggings-pic.jpg" /></div>
+			            <div class="content-info fr">
+			                <p class="first">{{portfoliodata.application.content4.content[0]}}<br/>{{portfoliodata.application.content4.content[1]}}</p>
+			                <p class="mt_10" v-for="data in portfoliodata.application.content4.content[2]" v-text="data"></p>
+			            </div>
+					</div>
+				</div>
+			</div>
+			<div class="item culture delay-4">
+				<div class="bg"></div>
+				<div class="info">
+					<h2 v-text="portfoliodata.application.content5.header[0]"></h2>
+					<p class="transformen" v-text="portfoliodata.application.content5.header[1]"></p>
+					<p class="robosensethin" v-text="portfoliodata.application.content5.header[2]"></p>
+					<div class="btn-group">
+						<button class="viewdetails" v-text="portfoliodata.application.content5.header[3]"></button>
+						<button class="scrolldown" v-text="portfoliodata.application.content5.header[4]"></button>
+					</div>
+				</div>
+				<div class="content content5">
+					<div class="wrapper clearfix">
+						<div class="content-pic fl"><img src="http://qncdn.sz-sti.com/images/application/culture-pic.jpg" /></div>
+			            <div class="content-info fr">
+			                <p class="first">{{portfoliodata.application.content5.content[0]}}<br/>{{portfoliodata.application.content5.content[1]}}</p>
+			                <div v-for="data in portfoliodata.application.content5.content[2]">
+			                	<h4 class="culturecolor" v-text="data[0]">1.扫描古建筑</h4>
+				                <p class="mt_10">{{data[1]}}<br/>{{data[2]}}</p>
+			                </div>
+			            </div>
+					</div>
+				</div>
+			</div>
+			<div class="item environment delay-5">
+				<div class="bg"></div>
+				<div class="info">
+					<h2 v-text="portfoliodata.application.content6.header[0]"></h2>
+					<p class="transformen" v-text="portfoliodata.application.content6.header[1]"></p>
+					<p class="robosensethin" v-text="portfoliodata.application.content6.header[2]"></p>
+					<div class="btn-group">
+						<button class="viewdetails" v-text="portfoliodata.application.content6.header[3]"></button>
+						<button class="scrolldown" v-text="portfoliodata.application.content6.header[4]"></button>
+					</div>
+				</div>
+				<div class="content">
+					<div class="wrapper clearfix">
+						<div class="content-pic fl"><img src="http://qncdn.sz-sti.com/images/application/environment-pic.jpg" /></div>
+			            <div class="content-info fr">
+			                <p class="first" v-text="portfoliodata.application.content6.content[0]"></p>
+			                <div v-for="data in portfoliodata.application.content6.content[1]">
+				                <h4 class="environmentcolor" v-text="data[0]"></h4>
+				                <p class="mt_10" v-text="data[1]"></p>
+				            </div>
+			            </div>
+					</div>
+				</div>
+			</div>
+			<div class="item electricity delay-6">
+				<div class="bg"></div>
+				<div class="info">
+					<h2 v-text="portfoliodata.application.content7.header[0]"></h2>
+					<p class="transformen" v-text="portfoliodata.application.content7.header[1]"></p>
+					<p class="robosensethin" v-text="portfoliodata.application.content7.header[2]"></p>
+					<div class="btn-group">
+						<button class="viewdetails" v-text="portfoliodata.application.content7.header[3]"></button>
+						<button class="scrolldown" v-text="portfoliodata.application.content7.header[4]"></button>
+					</div>
+				</div>
+				<div class="content content8">
+					<div class="wrapper clearfix">
+						<div class="content-pic fl"><img src="http://qncdn.sz-sti.com/images/application/electricity-pic.jpg" /></div>
+			            <div class="content-info fr">
+			                <p class="mt_10" v-for="data in portfoliodata.application.content7.content" v-text="data"></p>
+			            </div>
+					</div>
+				</div>
+			</div>
+			<div class="item law delay-7">
+				<div class="bg"></div>
+				<div class="info">
+					<h2 v-text="portfoliodata.application.content8.header[0]"></h2>
+					<p class="transformen" v-text="portfoliodata.application.content8.header[1]"></p>
+					<p class="robosensethin" v-text="portfoliodata.application.content8.header[2]"></p>
+					<div class="btn-group">
+						<button class="viewdetails" v-text="portfoliodata.application.content8.header[3]"></button>
+						<button class="scrolldown" v-text="portfoliodata.application.content8.header[4]"></button>
+					</div>
+				</div>
+				<div class="content content6">
+					<div class="wrapper clearfix">
+						<div class="content-pic fl"><img src="http://qncdn.sz-sti.com/images/application/law-pic.jpg" /></div>
+			            <div class="content-info fr">
+			                <p class="mt_10 mt_p" v-text="portfoliodata.application.content8.content[0]"></p>
+			                <div v-for="data in portfoliodata.application.content8.content[1]">
+				                <h4 class="lawcolor" v-text="data[0]"></h4>
+				                <p class="mt_10">
+				                	<p v-for="list in data[1]" v-text="list"></p>
+				                </p>
+					        </div>
+			            </div>
+					</div>
+				</div>
+			</div>
+			<div class="item human-body delay-8">
+				<div class="bg"></div>
+				<div class="info">
+					<h2 v-text="portfoliodata.application.content9.header[0]"></h2>
+					<p class="transformen" v-text="portfoliodata.application.content9.header[1]"></p>
+					<p class="robosensethin" v-text="portfoliodata.application.content9.header[2]"></p>
+					<div class="btn-group">
+						<button class="viewdetails" v-text="portfoliodata.application.content9.header[3]"></button>
+						<button class="scrolldown" v-text="portfoliodata.application.content9.header[4]"></button>
+					</div>
+				</div>
+				<div class="content content7">
+					<div class="wrapper clearfix">
+						<div class="content-pic fl"><img src="http://qncdn.sz-sti.com/images/application/human-body-pic.jpg" /></div>
+			            <div class="content-info fr">
+			               <p class="mt_10" v-for="data in portfoliodata.application.content9.content" v-text="data"></p>
+			            </div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript" src="/index/js/aaa.js"></script>
+	<script type="text/javascript" src="/index/js/bbb.js"></script>
+	<script type="text/javascript">
+        var navtop = new Vue({
+            el: '#navtop',
+            data: {
+                threeMenu: ''
+            }
+        });
+        var footnav = new Vue({
+            el: '#footnav'
+        });
+        var portfolio = new Vue({
+            el: '#portfolio',
+            data: {
+                portfoliodata: <%-include("lang_"+lang, {lang: lang})%>
+            },
+            methods: {
+                init: function(){
+                    navtop.threeMenu = this.portfoliodata.application.threeMenu;
+                }
+            }
+        });
+        portfolio.init();
+		var flag = false;
+        $(window).load(function() {
+        	init_homepage();
+        	$(window).hashchange(); 
+        	flag = true;	
+        })
+	</script>
+</body>
+</html>

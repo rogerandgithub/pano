@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>重置密码</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <meta property="qc:admins" content="7713503706325341637570167" />
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link type="text/css" rel="stylesheet" href="http://qncdn.sz-sti.com/robosensecss/bootstrap.min.css" />  
+    <link type="text/css" rel="stylesheet" href="http://qncdn.sz-sti.com/robosensecss/normalize.min.css" />  
+    <link type="text/css" rel="stylesheet" href="http://qncdn.sz-sti.com/robosensecss/font-awesome.min.css">
+    <script src="http://qncdn.sz-sti.com/robosensejs/jquery-2.2.4.min.js"></script>
+    <script src="http://qncdn.sz-sti.com/robosensejs/bootstrap.min.js?v=1"></script>
+    <script src="http://qncdn.sz-sti.com/robosensejs/vue.min.js"></script>
+    <style type="text/css">
+        #toast{
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            text-align: center;
+            font-weight: 600;
+            height: 60px;
+            border-radius:0;
+            line-height: 3;
+            z-index: 99999;
+        }
+        .alert {
+            padding: 8px 35px 8px 14px;
+            margin-bottom: 20px;
+        }
+        #toast.success{
+            color:#fff;
+            background-color:#e00025;
+        }
+        #toast.warning{
+            color:#993d3d;
+            background-color:#FAD7D7;
+        }
+        .toast-transition {
+            transition: all 1.2s ease;
+            -webkit-transition: all 1.2s ease;
+            display: block;
+        }
+        .toast-enter{
+            opacity: 1;
+        }
+        .toast-leave{
+          opacity: 0;
+        }
+    </style>
+</head>  
+<body>
+
+    <%include toast%>
+    <div class="panel panel-primary" id="resetpwd">
+        <div class="panel-heading">Robosense</div>
+        <div class="panel-body">
+            <input  v-model="filterinput" type="text" class="form-control" @keyup="filteraccount | debounce 500"  placeholder="请输入搜索的账号" />
+        </div>
+        <!-- <div class="table-responsive"> -->
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>账户</th>
+                        <th>昵称</th>
+                        <th class="hidden-xs">母账号</th>
+                        <th class="hidden-xs">公司名称</th>
+                        <th class="text-right">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="user in users | accountfilter filtername">
+                        <td>
+                            <span v-text="user.name">
+                        </td>
+                        <td>
+                            <span v-text="user.nickname ? user.nickname : '空'"></span>
+                        </td>
+                        <td class="hidden-xs">
+                            <span v-text="user.fathername ? user.fathername : '空'"></span>
+                        </td>
+                        <td class="hidden-xs">
+                            <span v-text="user.itcmail ? user.itcmail : user.telephone ? user.telephone : '空'"></span>
+                        </td>
+                        <td>
+                            <button class="btn btn-primary pull-right" @click="resetpsw(user.name, user.id)">重置密码</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        <!-- </div> -->
+    </div>
+
+    <div class="modal fade" id="myModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">重置 {{accountname}} 密码</h4>
+                </div>
+                <div class="modal-body">
+                    <input v-model="password" type="password" class="form-control" placeholder="请输入密码" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" @click="submit">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var myModal = new Vue({
+            el: '#myModal',
+            data:{
+                accountname:'',
+                accountid:'',
+                password: ''
+            },
+            methods: {
+                submit: function(){
+                    var resetData ={
+                        idStr: this.accountid,
+                        password: this.password
+                    }
+                    if(!this.password){
+                        toast.showmsg('请输入密码', true);
+                        return;
+                    }
+                    $.post('/supermaster/resetpsw', resetData, function(res){
+                        if(res.code != 0){
+                            toast.showmsg(res.msg, true);
+                            return;
+                        }
+                        $('#myModal').modal('hide');
+                        toast.showmsg(res.msg);
+                    })
+                }
+            }
+        })
+        var resetpwd = new Vue({
+            el: '#resetpwd',
+            data: {
+                users: [],
+                filtername: '',
+                filterinput: ''
+            },
+            created: function(){
+                var _this = this;
+                $.get('/supermaster/getusers',function(res){
+                    for(var i in res.user){
+                        res.user[i].nickname = res.user[i].nickname ? res.user[i].nickname : '空';
+                        res.user[i].fathername = res.user[i].fathername ? res.user[i].fathername : '空';
+                        res.user[i].expiredate = (new Date(res.user[i].expiredate)).toLocaleDateString();
+                        res.user[i].createdAt = (new Date(res.user[i].createdAt)).toLocaleDateString();
+                        res.user[i].isexpire = (Date.parse(res.user[i].expiredate) - Date.now()) < 0 && res.user[i].status!=1;
+                        res.user[i].noexpire = (Date.parse(res.user[i].expiredate) - Date.now()) <= 15*24*3600*1000 && res.user[i].status!=1;
+                       _this.users.push(res.user[i]);
+                    }
+                });
+            },
+            methods:{
+                filteraccount: function(){
+                    this.filtername = this.filterinput.toLowerCase();
+                },
+                resetpsw: function(name, id){
+                    $('#myModal').modal();
+                    myModal.accountname = name;
+                    myModal.accountid = id;
+                }
+            }
+        })
+
+        //自定义筛选账号的过滤器
+        Vue.filter('accountfilter', function(val, account){
+            if(!account)return val;
+            var result = [];
+            for(var i in val){
+                var name = val[i].name;
+                var nickname = val[i].nickname;
+                var companyname = val[i].company;
+                if( name && name.toLowerCase().indexOf(account.toLowerCase()) != -1 || (nickname && (nickname.toLowerCase()).indexOf(account.toLowerCase()) != -1) || companyname.indexOf(account) != -1){
+                    result.push(val[i]);
+                }
+            }
+            return result;
+        });
+    </script>
+
+</body>
+</html>

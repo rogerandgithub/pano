@@ -1,0 +1,905 @@
+<krpano version="1.19" onstart="startup();" showerrors="false">
+
+	<include url="/skin/skin<%if(jz.is_jz){%>_jz<%}%>.xml?v=6" />
+
+	<!-- set skin settings: bingmaps? gyro? thumbnails? tooltips? -->
+	<skin_settings maps="false"
+					 maps_zoombuttons="false"
+					 gyro="true"
+					 title="true"
+					 thumbs="true"
+					 thumbs_width="122" thumbs_height="82" thumbs_padding="16" thumbs_crop="0|40|250|210"
+					 thumbs_opened="false"
+					 thumbs_text="true"
+					 littleplanetintro="true"
+					 thumbs_dragging="true"
+					 thumbs_onhoverscrolling="true"
+					 thumbs_scrollbuttons="false"
+					 thumbs_scrollindicator="false"
+					 thumbs_loop="false"
+					 tooltips_thumbs="true"
+					 tooltips_hotspots="false"
+					 tooltips_mapspots="false"
+					 loadscene_flags="MERGE"
+					 loadscene_blend="NOBLEND"
+					 controlbar_offset="40"
+					 background_music="<%=bgmusic%>"
+					 bgmusicstatus="<%=!!user.permission_bgsnd%>"
+					 telephone_state="<%=!!telephone%>"
+					 maps_state="<%=!!groups[0].maps%>"
+					 telephone="tel:<%=telephone%>"
+					 broadcast_init="<%=!!user.permission_introduction%>"
+					 autocircle="<%=autoplay!=0%>"
+					 map_init="false"
+					 menu_name="<%=company%>"
+					 menu_url="http://<%=itcwebsite%>"
+	/>
+
+	<!-- set optional skin logo url -->
+	<layer name="skin_logo" url="" scale="0.25" opened_onclick="openurl('...',_blank);" />
+	<action name="startup">
+		<%if(user.permission_bgsnd&&preview!=2){%>playsound(bgsnd,'<%=bgmusic%>',0);<%}%>
+		if(device.mobile, set(stagescale,0.5););
+		if(startscene === null, copy(startscene,scene[0].name));
+		set(control.mousetype, drag2d);
+		copy(isrotate, true);
+
+		if(rotate == no || <%=rotate=='no'%>, set(layer[toggle_rotate].state, 'paused');,  set(layer[toggle_rotate].state, 'opened'););
+
+		loadscene(get(startscene), null, MERGE); 
+		<%allviews=groups[0].scenes[0].visited%>
+
+		<%if(jz.is_jz){%>
+		set(modetxt, mode);
+		set(ismode, false);
+		getarr(<%=jz.s_obj[jz.arr[0]]%>);
+		<%}%>
+	</action>
+
+	<style name="btngroup" url="http://qncdn.sz-sti.com/images/btngroup.png?v=5" visible="false" />
+
+	<layer name="groups_thumbss_container" keep="true" type="container" align="leftbottom" y="79" width="100%" height="102">
+		<%if(isMultipro){%>
+			<layer name="groups_thumbs_container" keep="true" type="container" align="lefttop" y="0" width="100%" height="25">
+				<layer name="groups_scroll_container" keep="true" type="container" align="leftbottom" y="0" width="100%" height="100%" bgcolor="0x000000" bgalpha="0.3">
+					<layer name="groups_thumbs" state="closed" url="http://qncdn.sz-sti.com/document/plugins/scrollarea.swf" alturl="http://qncdn.sz-sti.com/document/plugins/scrollarea.js" align="center" height="100%" x="0" direction="h" onhover_autoscrolling="true">
+						<%for(var i in groups){%>
+						<layer name="groups_text_<%=i%>" style="groups_thumbs_text_style" html="<%=groups[i].community+groups[i].building+groups[i].room%>" onclick="skin_groups_thumbs(<%=i%>)"/>
+						<%}%>
+					</layer>
+				</layer>
+			</layer>
+		<%}%>
+
+	
+		//缩略图
+		<%for(var i in groups){%>
+			<layer name="nav_thumbs_container_<%=i%>" <%if(i==0){%>visible="true"<%}else{%>visible="false"<%}%> keep="true" type="container" align="lefttop" y="25" width="100%" height="77">
+				<layer name="nav_scroll_container_<%=i%>" keep="true" type="container" align="lefttop" y="0" width="100%" height="100%" bgcolor="0x000000" bgalpha="0.3">
+					<layer name="nav_thumbs_<%=i%>" state="opened" url="http://qncdn.sz-sti.com/document/plugins/scrollarea.swf" alturl="http://qncdn.sz-sti.com/document/plugins/scrollarea.js" align="center" width="<%=groups[i].scenes.length*95+10%>" height="100%" direction="h" onhover_autoscrolling="false">
+						<%for(var j in groups[i].scenes){%>
+							<layer name="nav_thumb_<%=i%><%=j%>" style="skin_tooltips" align="lefttop" keep="true" width="85" height="57" x="<%=j*95+10%>" type="<%=groups[i].scenes[j].type%>" y="10" linkedscene="scene<%=groups[i].scenes[j].id%>" onclick="looktocenter(get(view.hlookat), get(view.vlookat)); loadscene(get(linkedscene),null,get(skin_settings.loadscene_flags),get(skin_settings.loadscene_blend));" <%if(groups[i].scenes[j].type==7){%>url="http://qncdn.sz-sti.com/images/tools/2501.jpg"<%}else if(groups[i].scenes[j].type>=5){%> url="http://qncdn.sz-sti.com/pano/<%=groups[i].scenes[j].key%>.tiles/mobile_f.jpg"<%}else{%>url="http://qncdn.sz-sti.com/images/scenes/<%=groups[i].scenes[j].key.split('_')[0]%>/allinone.jpg?imageMogr2/gravity/NorthWest/crop/!1024x1024a0a<%if(groups[i].scenes[j].scenestyle==3||groups[i].scenes[j].scenestyle==4){%>70<%}%>0/thumbnail/!25p"<%}%> crop="<%if(groups[i].scenes[j].type>=5){%>0|0|1024|680<%}else{%>0|40|250|210<%}%>" tooltip="<%=groups[i].scenes[j].name%>" onloaded="setname('<%=i%><%=j%>','<%=groups[i].scenes[j].name%>')"/>
+						<%}%>
+					</layer>
+				</layer>
+			</layer>
+		<%}%>
+
+	</layer>
+
+	<action name="setname">
+		js(console.log(%1));
+		txtadd(nav_thumbname, 'nav_thumb_', %1);
+		txtadd(nav_thumbtext, 'nav_thumbtext_', %1);
+		addlayer(get(nav_thumbtext));
+		layer[get(nav_thumbtext)].loadstyle(skin_thumbtext_style);
+		set(layer[get(nav_thumbtext)].keep, true);
+		set(layer[get(nav_thumbtext)].parent, get(nav_thumbname));
+		set(layer[get(nav_thumbtext)].html, %2);
+	</action>
+
+	<%if(isMultipro){%>
+
+		<style name="groups_thumbs_text_style" align="leftbottom" edge="leftbottom" autoheight="true" oy="0" keep="true" background="true" backgroundcolor="0x000000" backgroundalpha="0.3" borderalpha="1" roundedge="4" shadow="0.0" shadowrange="4.0" shadowangle="45" shadowcolor="0x000000" shadowalpha="1.0" textshadow="1" textshadowangle="90" textshadowcolor="0x000000" textshadowalpha="1.0" url="http://qncdn.sz-sti.com/document/plugins/textfield.swf" css="text-align:center; margin:0 10px; color:#FFFFFF; line-height:24px; font-family:黑体; font-weight:500; font-size:12px;"/>
+
+		<action name="set_groups_thumbs">
+			wait(0.01);
+			if(device.mobile, set(thumbs_padding, 20);,set(thumbs_padding, 10););
+			set(groups_thumbs_width, 0);
+			for(set(i,0);set(j,0), i LT layer.count, inc(i), 
+				if(layer[get(i)].parent == 'groups_thumbs', 
+					txtadd(groups_text_name, 'groups_text_', get(j));
+					inc(j);
+					copy(layer[get(groups_text_name)].x, groups_thumbs_width);
+					add(groups_thumbs_width, layer[get(i)].pixelwidth);
+					add(groups_thumbs_width, thumbs_padding);
+				);
+			);
+			sub(layer[groups_thumbs].width, groups_thumbs_width, thumbs_padding);
+			ifnot(groups_thumbs_index, 
+				set(groups_thumbs_index, 0);groups_updatescroll(0);
+				set(layer[groups_text_0].backgroundcolor, '0xe00025');
+			);
+		</action>
+
+		<action name="skin_groups_thumbs">
+			if(groups_thumbs_index != %1,
+				txtadd(groups_thumbs_index_name, 'nav_thumbs_container_', get(groups_thumbs_index));
+				set(layer[get(groups_thumbs_index_name)].visible, false);
+				txtadd(groups_thumbs_name, 'nav_thumbs_container_', %1);
+				set(layer[get(groups_thumbs_name)].visible, true);
+				groups_updatescroll(%1);
+				set(backgroundcolor, '0xe00025');
+				txtadd(groups_text_name, 'groups_text_', get(groups_thumbs_index));
+				set(layer[get(groups_text_name)].backgroundcolor, '0x000000');
+				set(groups_thumbs_index, %1);
+				txtadd(scene0name, 'nav_thumb_', %1);
+				txtadd(scene0name, 0);
+				callwith(layer[get(scene0name)], onclick);
+			);
+		</action>
+	<%}%>
+
+
+
+	<action name="groups_updatescroll">
+		txtadd(groups_thumb_name, 'nav_thumbs_', %1);
+		if(layer[get(groups_thumb_name)].loaded,
+			set(cursceneindex, 0);
+			if(xml.scene, copy(cursceneindex, scene[get(xml.scene)].index));
+			layer[get(groups_thumb_name)].setcenter(get(scene[get(cursceneindex)].thumbx), get(scene[get(cursceneindex)].thumby));
+		);
+	</action>
+
+
+	<krpano devices="mobile">
+
+		<style name="groups_thumbs_text_style" css="text-align:center; margin:0 10px; color:#FFFFFF; line-height:40px; font-family:黑体; font-weight:500; font-size:19px;"/>
+
+		<layer name="groups_thumbss_container" keep="true" type="container" align="leftbottom" y="120" width="100%" height="155">
+			<%if(isMultipro){%>
+				<layer name="groups_thumbs_container" y="0" height="40">
+					<layer name="groups_scroll_container">
+						<layer name="groups_thumbs">
+							<%for(var i in groups){%>
+							<layer name="groups_text_<%=i%>" style="groups_thumbs_text_style" html="<%=groups[i].community+groups[i].building+groups[i].room%>"
+								 />
+							<%}%>
+						</layer>
+					</layer>
+				</layer>
+			<%}%>
+
+			<%for(var i in groups){%>
+				<layer name="nav_thumbs_container_<%=i%>" y="40" height="115">
+					<layer name="nav_scroll_container_<%=i%>">
+						<layer name="nav_thumbs_<%=i%>" width="<%=groups[i].scenes.length*152+20%>">
+							<%for(var j in groups[i].scenes){%>
+							<layer name="nav_thumb_<%=i%><%=j%>" width="136" height="91" x="<%=j*152+20%>" y="12"/>
+							<%}%>
+						</layer>
+					</layer>
+				</layer>
+			<%}%>
+		</layer>
+
+	</krpano>
+
+
+				
+
+
+
+
+
+
+
+	<%if(lists.length>0){%>
+	<style name="rec_thumb_style" align="left" edge="center" width="100" height="66" />
+
+	<layer name="rec_thumbss_container" keep="true" type="container" visible="false" align="leftbottom" y="79" width="100%">
+		<layer name="rec_thumbs_container" keep="true" type="container" align="lefttop" y="0" width="100%" bgcolor="0x000000" bgalpha="0.3" height="80">
+			<layer name="rec_thumbs" state="closed" url="http://qncdn.sz-sti.com/document/plugins/scrollarea.swf" alturl="http://qncdn.sz-sti.com/document/plugins/scrollarea.js" align="center" width="<%=230+(lists.length-1)*110%>" height="100%" direction="h" onhover_autoscrolling="true" onloaded="rec_thumbs_init">
+				<%for(var i in lists){%>
+				<layer name="thumb<%=1+parseInt(i)%>" url="http://qncdn.sz-sti.com/images/scenes/<%=lists[i].sceneKey%>/allinone.jpg?imageMogr2/gravity/NorthWest/crop/!1000x660a0a800/thumbnail/!10p" style="rec_thumb_style" x="<%=i*110+60%>" onclick="hit(<%=lists[i].sceneKey%>)"/>
+				<%}%>
+				<layer name="thumb<%=2+parseInt(i)%>" url="/images/morebg.jpg" style="rec_thumb_style" x="<%=i*110+170%>" onclick="openurl('/scene/lists/<%=user.id%>',_blank);"/>
+			</layer>
+		</layer>
+	</layer>
+
+	<layer name="rec_thumbborder" parent="thumb<%=2+parseInt(i)%>" keep="true" url="/skin/vtourskin_thumbborder.png" enabled="false" align="lefttop" width="100%" height="100%" />
+
+	<action name="hit">
+		ifnot(sc1, copy(sc1, scale););
+		mul(sc09, scale, 0.9);
+		tween(scale, get(sc09), 0.1, default, tween(scale, get(sc1), 0.1, easeOutBounce));
+		ifnot(%1 == null, txtadd(surl, 'http://wx.sz-sti.com/scene?key=', %1);openurl(get(surl),_blank););
+	</action>
+
+	<action name="rec_thumbs_init">
+		
+		for(set(i,0);set(j,0), j LT layer.count, inc(j), if(layer[get(j)].parent == 'rec_thumbs', inc(i)); );
+		for(set(k,1), k LE i, inc(k),
+			if(skin_settings.thumbs_text,
+				txtadd(rec_thumbname, 'thumb', get(k));
+				txtadd(rec_thumbtext, 'rec_thumbtext_', get(k));
+				txtadd(thumbtitle, '推荐房源', get(k));
+				addlayer(get(rec_thumbtext));
+				layer[get(rec_thumbtext)].loadstyle(skin_thumbtext_style);
+				set(layer[get(rec_thumbtext)].keep, true);
+				set(layer[get(rec_thumbtext)].parent, get(rec_thumbname));
+				set(layer[get(rec_thumbtext)].html, get(thumbtitle));
+			);
+		);
+		set(layer[get(rec_thumbtext)].html, '查看更多');
+		if(device.mobile, mul(width, 1.8););
+		setcenter(0,0);
+	</action>
+	<%}%>
+
+
+
+
+	//<style name="set_bar_btn" url="/images/newBtn.png" align="top" width="40" height="40"  />
+	<style name="set_bar_btn" url="/images/leftnavbar.png?v=1" align="top" width="50" height="50" />
+
+	<style name="set_bar_text" align="bottom" width="100%" handcursor="true" url="http://qncdn.sz-sti.com/document/plugins/textfield.swf" autoheight="true" y="5" enabled="false" background="false" border="false" css="text-align:center; font-family:黑体; color:#EEEEEE; font-family:黑体; font-size:12px;" textshadow="1"  />
+
+	<style name="maps_link" url="http://qncdn.sz-sti.com/images/tool/sprites.png" crop="73|196|50|50" keep="true" width="7%" height="prop" align="lefttop" />
+
+	<style name="maps_link_text" css="text-align:center; color:#eee; font-family:黑体; font-size:14px;" onloaded="txtadd(tooltip, '跳转至 ', get(html));" autoheight="true" handcursor="true" background="false" textshadow="1" />
+
+	<style name="maps_link_to" onclick="if(linkedscene, skin_hidetooltips(); looktohotspot(); loadscene(get(linkedscene),null,get(skin_settings.loadscene_flags),get(skin_settings.loadscene_blend)); skin_updatescroll();callwith(layer[open_house_maps], onclick););callwith(layer[toggle_map], onclick);" />
+
+
+	//toast common
+	<layer name="toast_text" keep="true"
+			 url="http://qncdn.sz-sti.com/document/plugins/textfield.swf"
+			 align="center" edge="bottom" oy="-2" autoheight="true"
+			 visible="false" alpha="0"
+			 background="true" backgroundcolor="0x000000" backgroundalpha="0.5"
+			 border="true" bordercolor="0xFFFFFF" borderalpha="1" borderwidth="2" roundedge="4"
+			 shadow="0.0" shadowrange="4.0" shadowangle="45" shadowcolor="0x000000" shadowalpha="1.0"
+			 textshadow="1" textshadowrange="6.0" textshadowangle="90" textshadowcolor="0x000000" textshadowalpha="1.0"
+			 css="text-align:center; margin:5px 10px;; color:#FFFFFF; line-height:26px; font-family:黑体; font-weight:500; font-size:14px;overflow: hidden;"
+			 html=""
+			 />
+
+
+	<%if(preview!=2 && preview!=3){%>
+	<layer name="toggle_logo_container" type="container" zorder="100" keep="true" align="lefttop" x="0" y="35" width="80" height="80" state="opened">
+
+		<layer name="toggle_logo" url="<%=logo%>" style="skin_tooltips" align="center" width="80%" height="prop" tooltip="" onloaded="copy(tooltip, html);" onclick="if(skin_settings.menu_url != 'http://', openurl(get(skin_settings.menu_url)));" html="<%=company%>" />
+	</layer>
+
+
+	//the pano_set_bar in the left
+	<layer name="toggle_icon_container" type="container" keep="true" align="lefttop" x="0" y="120" width="80" height="30" bgcolor="0x000000" bgalpha="0.25">
+		<layer name="toggle_icon" url="http://qncdn.sz-sti.com/toggle_menu_icon.png" crop="" crop_opened="0|0|200|200" crop_closed="0|200|200|200" align="center" width="18" height="18" alpha="0.6" onloaded="copy(crop, crop_opened);" onclick="toggle_menu" />
+	</layer>
+	<%if(preview!=5){%>
+	<layer name="pano_set_bar" type="container" keep="true" zorder="10" align="lefttop" x="0%" y="150" width="80" height="0" autoheight="true" bgcolor="0x000000" bgalpha="0.15">
+
+		<layer name="toggle_info_container" type="container" keep="true" align="lefttop" x="8" y="20" width="65" height="75">
+
+			<layer name="toggle_info" style="set_bar_btn|skin_tooltips" tooltip="" crop="9|1079|92|93" onloaded="copy(tooltip, layer[toggle_info_text].html);" onclick="js(tabsidebar(show));js(tabsidebar(show));ifnot(layer[toggle_logo_container].state == 'opened',toggle_menu(true),toggle_menu(false));" />
+
+			<layer name="toggle_info_text" style="set_bar_text|skin_tooltips" tooltip="" onloaded="copy(tooltip, html);" html="简介" onclick="js(tabsidebar(show));js(tabsidebar(show));ifnot(layer[toggle_logo_container].state == 'opened',toggle_menu(true),toggle_menu(false));" />
+		</layer>
+
+		<layer name="toggle_support_container" visible="false" type="container" keep="true" align="lefttop" x="8" y="100" width="65" height="75">
+
+			<layer name="toggle_support" style="set_bar_btn|skin_tooltips" tooltip="" crop="9|972|92|93" onloaded="copy(tooltip, layer[toggle_support_text].html);" />
+
+			<layer name="toggle_support_text" style="set_bar_text|skin_tooltips" tooltip="" onloaded="copy(tooltip, html);" html="技术支持" />
+		</layer>
+
+		<%if(groups[0].maps){%>
+		<layer name="toggle_map_container" type="container" keep="true" align="lefttop" x="8" y="100" width="65" height="75">
+
+			<layer name="toggle_map" style="set_bar_btn|skin_tooltips" tooltip="" crop="9|865|92|93" state="closed" onclick="toggle_maps" onloaded="set_bar_push_map();ifnot(skin_settings.telephone_state, copy(layer[house_maps_container].y, layer[phone_container].y););copy(layer[house_maps_container].visible, skin_settings.maps_state);copy(tooltip, layer[toggle_map_text].html);" />
+
+			<layer name="toggle_map_text" style="set_bar_text|skin_tooltips" tooltip="" html="户型图" onloaded="copy(tooltip, html);" onclick="callwith(layer[toggle_map], onclick);" />
+		</layer>
+		<%}%>
+
+		<layer name="toggle_bgmusic_container" type="container" keep="true" align="lefttop" x="8" y="105" width="65" height="65">
+
+			<layer name="toggle_bgmusic" style="set_bar_btn|skin_tooltips" tooltip="" crop_opened="9|9|92|93" crop_closed="9|116|92|93" state="" onloaded="toggle_bgmusic" onclick="onloaded();" />
+
+			<layer name="toggle_bgmusic_text" visible="false" style="set_bar_text|skin_tooltips" tooltip="" html_opened="开启音乐" html_closed="关闭音乐" onloaded="if(skin_settings.bgmusicstatus, set(layer[toggle_bgmusic].state, 'opened');, set(layer[toggle_bgmusic].state, 'paused'););if(layer[toggle_bgmusic].state == 'opened', copy(tooltip, html_closed);copy(html, html_closed);, copy(tooltip, html_opened);copy(html, html_opened););" onclick="callwith(layer[toggle_bgmusic],onloaded(););" />
+		</layer>
+
+		<layer name="toggle_rotate_container" type="container" keep="true" align="lefttop" x="8" y="170" width="65" height="65">
+
+			<layer name="toggle_rotate" style="set_bar_btn|skin_tooltips" tooltip="" crop_opened="9|437|92|93" crop_closed="9|544|92|93" state="" onloaded="toggle_rotate" onclick="onloaded();" />
+
+			<layer name="toggle_rotate_text" visible="false" style="set_bar_text|skin_tooltips" tooltip="" html_opened="继续播放" html_closed="停止播放" onloaded="if(layer[toggle_rotate].state == 'opened', copy(tooltip, html_closed);copy(html, html_closed);, copy(tooltip, html_opened);copy(html, html_opened););set(layer[pano_set_bar].height, 0);add(layer[pano_set_bar].height, layer[toggle_rotate_container].y);addheight();" onclick="callwith(layer[toggle_rotate],onloaded(););" />
+		</layer>
+
+		<%if(introduction){%>
+		<layer name="toggle_broadcast_container" type="container" keep="true" align="lefttop" x="8" y="235" width="65" height="65">
+
+			<layer name="toggle_broadcast" style="set_bar_btn|skin_tooltips" tooltip="" crop_opened="10|223|92|92" crop_closed="10|330|92|92" state="" onclick="toggle_broadcast();" html_opened="继续播放" html_closed="停止播放" onloaded="if(device.mobile, set(state, 'paused'));toggle_broadcast();addheight();if(skin_settings.broadcast_init, set(layer[toggle_broadcast].state, 'opened');, set(layer[toggle_broadcast].state, 'paused'););if(layer[toggle_broadcast].state == 'opened', copy(tooltip, html_closed);copy(html, html_closed);, copy(tooltip, html_opened);copy(html, html_opened););" />
+
+			<layer name="toggle_broadcast_text" visible="false" style="set_bar_text|skin_tooltips" tooltip="" />
+		</layer>
+		<%}%>
+
+		<layer name="toggle_gyro_container" type="container" devices="mobile" keep="true" align="lefttop" x="8" y="235" width="60" height="64">
+
+			<layer name="toggle_gyro" style="set_bar_btn" align="top" crop_opened="9|651|92|93" crop_closed="9|758|92|93" state="paused" onloaded="toggle_gyro();if(device.mobile, addheight();add(layer[toggle_broadcast_container].y, oh););" onclick="onloaded();" />
+
+			<layer name="toggle_gyro_text" visible="false" style="set_bar_text" html_opened="打开体感" html_closed="关闭体感" onloaded="if(layer[toggle_gyro].state == 'opened', copy(html, html_closed);, copy(html, html_opened););" onclick="callwith(layer[toggle_gyro],onloaded(););" />
+		</layer>
+	</layer>
+	<%}%>
+
+
+	//the pano_more_bar in the bottom
+	<layer name="pano_more_bar" type="container" keep="true" align="bottom" x="0" y="0" width="100%" height="80" bgcolor="0x000000" bgalpha="0.8">
+
+		<layer name="sel_scene_container" type="container" keep="true" align="leftcenter" x="20" y="0" width="65" height="60">
+
+			<layer name="sel_scene" style="set_bar_btn|skin_tooltips" scale="0.8" tooltip="" crop="10|1515|92|93" onloaded="copy(tooltip, layer[sel_scene_text].html);" onclick="groups_showthumbs" />
+
+			<layer name="sel_scene_text" style="set_bar_text|skin_tooltips" tooltip="" onloaded="copy(tooltip, html);" onclick="groups_showthumbs" html="选择场景" />
+		</layer>
+		<layer name="enter_webvr_container" type="container" keep="true" align="leftcenter" x="94" y="0" width="65" height="60">
+
+			<layer name="enter_webvr" style="set_bar_btn|skin_tooltips" scale="0.8" tooltip="" crop="10|1622|92|93" onloaded="copy(tooltip, layer[enter_webvr_text].html_init);" onclick="webvr.enterVR();js(enterVr());" />
+
+			<layer name="enter_webvr_text" style="set_bar_text|skin_tooltips" tooltip="" html_init="进入VR" onloaded="copy(html, html_init);copy(tooltip, html_init);" onclick="webvr.enterVR();js(enterVr());" />
+		</layer>
+		<%if(itcwebsite){%>
+		<layer name="open_link_container" type="container" keep="true" align="leftcenter" x="168" y="0" width="65" height="60">
+			<layer name="open_link" style="set_bar_btn|skin_tooltips" scale="0.8" tooltip="" crop="10|2054|92|93" onloaded="copy(tooltip, layer[open_link_text].html);" onclick="if(skin_settings.menu_url != 'http://', openurl(get(skin_settings.menu_url)))" />
+
+			<layer name="open_link_text" style="set_bar_text|skin_tooltips" tooltip="" onloaded="copy(tooltip, html);" onclick="if(skin_settings.menu_url != 'http://', openurl(get(skin_settings.menu_url)))" html="打开官网" />
+		</layer>
+		<%}%>
+		<%if(lists.length){%>
+		<layer name="more_scene_container" type="container" keep="true" align="leftcenter" x="<%if(itcwebsite){%>242<%}else{%>168<%}%>" y="0" width="65" height="60">
+			<layer name="more_scene" style="set_bar_btn|skin_tooltips" scale="0.8" tooltip="" crop="10|1837|92|93" onloaded="copy(tooltip, layer[more_scene_text].html);" onclick="rec_showthumbs" />
+
+			<layer name="more_scene_text" style="set_bar_text|skin_tooltips" tooltip="" onloaded="copy(tooltip, html);" onclick="rec_showthumbs" html="更多推荐" />
+		</layer>
+		<%}%>
+	</layer>
+
+	//the pano_info_bar in the right
+	<layer name="pano_info_bar" type="container" keep="true" zorder="10" align="righttop" x="0" y="60" width="65" height="65">
+
+		<layer name="phone_container" type="container" keep="true" align="right" x="20" y="0" width="50" height="50">
+
+			<layer name="call_phone" style="set_bar_btn|skin_tooltips" tooltip="" crop="10|1943|92|93" onclick="if(device.mobile, openurl('tel:<%=telephone.replace("转",",")%>',_self););" onloaded="copy(layer[phone_container].visible, skin_settings.telephone_state);copy(tooltip, skin_settings.telephone);" />
+		</layer>
+	</layer>
+
+	
+	<%if(groups[0].maps){%>
+	<layer name="house_maps_content" type="container" width_opened="400" paddingbottom="40" keep="true" align="lefttop" width="0" height="0" x="0" y="25" bgcolor="0x000000" bgalpha="0.2">
+
+		<layer name="closed_maps" style="set_bar_btn" crop="0|1295|107|107" align="righttop" x="10" y="10" width="20" height="20" handcursor="true" onclick="callwith(layer[toggle_map], onclick);" />
+
+		<layer name="house_maps_box" visible="false" width_opened="80%" type="container" alpha="0" align="top" y="100" onloaded="set(width, width_opened);">
+
+			<layer name="house_maps_img" align="center" url="http://qncdn.sz-sti.com/images/maps/<%=groups[0].maps.key%>.jpg" height="prop" handcursor="false" onloaded="copy(box_height, pixelheight);copy(box_width, pixelwidth);set(width,100%);" />
+
+			<% for(var d in groups[0].maps.links_id){%>
+			<layer name="maps_links_<%=d%>" tooltip="" style="maps_link|skin_tooltips|maps_link_to" x="<%=groups[0].maps.links_id[d].position_x%>%" y="<%=groups[0].maps.links_id[d].position_y%>%" linkedscene="scene<%=groups[0].maps.links_id[d].scene_id%>" onloaded="txtadd(tooltip, '跳转至 ', get(layer[maps_text_<%=d%>].html));" />
+
+			<layer name="maps_text_<%=d%>" url="http://qncdn.sz-sti.com/document/plugins/textfield.swf" tooltip="" x="<%=groups[0].maps.links_id[d].position_x-3%>%" y="<%=groups[0].maps.links_id[d].position_y-10%>%" style="maps_link_text|skin_tooltips|maps_link_to" linkedscene="scene<%=groups[0].maps.links_id[d].scene_id%>" html="<%=groups[0].maps.links_id[d].text%>" />
+			<%}%>
+		</layer>
+	</layer>
+	<%}%>
+
+
+
+	<krpano devices="mobile">
+	
+		<style name="rec_thumb_style" scale="1.4" onloaded="mul(x, 1.4)" />
+
+		<style name="set_bar_btn" scale="1.3" />
+
+		<layer name="rec_thumbss_container" y="120" width="100%">
+			<layer name="rec_thumbs_container" height="115">
+			</layer>
+		</layer>
+
+
+		<style name="set_bar_btn" scale="1.3" />
+
+	
+		<layer name="toggle_logo_container" width="120" x="0">
+
+			<layer name="toggle_logo" scale="1" y="20" />
+		</layer>
+
+		//the pano_set_bar in the left in mobile device
+		<layer name="toggle_icon_container" y="150" scale="1.5">
+			<layer name="toggle_icon" scale="1.5" />
+		</layer>
+
+		<layer name="pano_set_bar" width="120" y="195">
+
+			<layer name="toggle_info_container" x="16" y="20" scale="1.3"></layer>
+
+			<layer name="toggle_support_container" x="16" y="130" scale="1.3"></layer>
+
+			<layer name="toggle_map_container" x="16" y="130" scale="1.3"></layer>
+
+			<layer name="toggle_bgmusic_container" x="16" y="130" scale="1.3"></layer>
+
+			<layer name="toggle_rotate_container" x="16" y="210" scale="1.3"></layer>
+
+			<layer name="toggle_gyro_container" x="16" y="290" scale="1.3"></layer>
+
+			<layer name="toggle_broadcast_container" x="16" y="290" scale="1.3"></layer>
+		</layer>
+
+		<style name="set_bar_text" height="30" border="false" css="text-align:center; color:#eee; font-family:黑体; font-size:18px;" />
+
+		<style name="maps_link_text" css="text-align:center; color:#eee; font-family:黑体; font-size:22px;" />
+
+
+		//the pano_more_bar in the bottom
+		<layer name="pano_more_bar" height="120">
+			<layer name="sel_scene_container" x="0" y="0" width="<%if(itcwebsite&&lists.length){%>25%<%}else if(!itcwebsite&&!lists.length){%>50%<%}else{%>33.33%<%}%>" height="80">
+
+				<layer name="sel_scene" scale="1"/>
+			</layer>
+			<layer name="enter_webvr_container" x="<%if(itcwebsite&&lists.length){%>25%<%}else{%>0<%}%>" y="0" align="<%if(!itcwebsite&&!lists.length){%>rightcenter<%}else if(itcwebsite&&lists.length){%>left<%}else{%>center<%}%>" width="<%if(itcwebsite&&lists.length){%>25%<%}else if(!itcwebsite&&!lists.length){%>50%<%}else{%>33.33%<%}%>" height="80">
+
+				<layer name="enter_webvr" scale="1" />
+			</layer>
+
+			<%if(itcwebsite){%>
+			<layer name="open_link_container" x="<%if(lists.length){%>50%<%}else{%>0<%}%>" y="0" align="<%if(lists.length){%>left<%}else{%>rightcenter<%}%>" width="<%if(lists.length){%>25%<%}else{%>33.33%<%}%>" height="80">
+				<layer name="open_link" scale="1" />
+			</layer>
+			<%}%>
+			<%if(lists.length){%>
+			<layer name="more_scene_container" align="rightcenter" x="0" y="0" width="<%if(itcwebsite){%>25%<%}else{%>33.33%<%}%>" height="80">
+
+				<layer name="more_scene" scale="1" />
+			</layer>
+			<%}%>
+		</layer>
+
+
+		//the pano_info_bar in the bottom on mobile devices
+		<layer name="pano_info_bar">
+
+			<layer name="phone_container">
+
+				<layer name="call_phone" scale="1.3"/>
+			</layer>
+		</layer>
+
+		<layer name="house_maps_content" width_opened="70%"></layer>
+	</krpano>
+
+	<action name="set_bar_push_map">
+		for(set(i,0), i LT layer.count, inc(i),
+			copy(lr, layer[get(i)]);
+			if(lr.parent == 'pano_set_bar',
+				if(lr.name != 'toggle_map_container' AND lr.name != 'toggle_info_container' AND lr.name != 'house_broadcast_container', 
+					if(device.mobile, add(lr.y, 114), add(lr.y, 94););
+				);
+			);
+		);
+		if(device.mobile, add(layer[pano_set_bar].height, 114), add(layer[pano_set_bar].height, 94););
+	</action>
+
+	<action name="toggle_menu">
+		if(%1 === false, 
+			tween(layer[toggle_icon_container].alpha, 0, 0.25, easeOutQuad);
+			tween(layer[toggle_logo_container].alpha, 0, 0.25, easeOutQuad);
+		);
+		if(%1 === true, 
+			tween(layer[toggle_icon_container].alpha, 1, 0.25, easeOutQuad);
+			tween(layer[toggle_logo_container].alpha, 1, 0.25, easeOutQuad);
+			);
+		if(layer[toggle_logo_container].state == 'opened',
+			set(layer[toggle_logo_container].state, 'closed');
+			copy(layer[toggle_icon].crop, layer[toggle_icon].crop_closed);
+			mul(lx, get(layer[pano_set_bar].width), -1);
+			tween(layer[pano_set_bar].x, get(lx), 0.25, easeOutQuad);
+			add(lx, get(layer[toggle_icon].width));
+			tween(layer[toggle_icon_container].x, get(lx), 0.25, easeOutQuad);
+			mul(hw, get(lx), -0.5);
+			tween(layer[toggle_icon].x, get(hw), 0.25, easeOutQuad);
+			,
+			copy(layer[toggle_icon].crop, layer[toggle_icon].crop_opened);
+			set(layer[toggle_logo_container].state, 'opened');
+			tween(layer[pano_set_bar].x, 0, 0.25, easeOutQuad);
+			tween(layer[toggle_icon_container].x, 0, 0.25, easeOutQuad);
+			set(layer[toggle_icon].align, 'center');
+			tween(layer[toggle_icon].x, 0, 0.25, easeOutQuad);
+		);
+	</action>
+
+	<action name="toggle_bgmusic">
+		if(state == 'opened',
+			copy(tooltip, layer[toggle_bgmusic_text].html_closed);
+			copy(crop, crop_closed);
+			playsound(bgsnd,'<%=bgmusic%>',0);
+			set(state,paused);
+			copy(layer[toggle_bgmusic_text].html, layer[toggle_bgmusic_text].html_closed);
+			copy(layer[toggle_bgmusic_text].tooltip, layer[toggle_bgmusic_text].html_closed);
+			copy(layer[skin_tooltip].html, layer[toggle_bgmusic_text].html_closed);
+			, 
+			copy(tooltip, layer[toggle_bgmusic_text].html_opened);
+			copy(crop, crop_opened);
+			pausesoundtoggle(bgsnd);
+			set(state,opened);
+			copy(layer[toggle_bgmusic_text].html, layer[toggle_bgmusic_text].html_opened);
+			copy(layer[toggle_bgmusic_text].tooltip, layer[toggle_bgmusic_text].html_opened);
+			copy(layer[skin_tooltip].html, layer[toggle_bgmusic_text].html_opened);
+		)
+	</action>
+
+	<action name="toggle_rotate">  
+		if(state == 'opened',
+			copy(tooltip, layer[toggle_rotate_text].html_closed);
+			copy(crop, crop_closed);
+			set(state,paused);
+			set(autorotate.enabled, true);
+			copy(isrotate, autorotate.enabled);
+			copy(layer[toggle_rotate_text].html, layer[toggle_rotate_text].html_closed);
+			copy(layer[toggle_rotate_text].tooltip, layer[toggle_rotate_text].html_closed);
+			copy(layer[skin_tooltip].html, layer[toggle_rotate_text].html_closed);
+			, 
+			copy(tooltip, layer[toggle_rotate_text].html_opened);
+			copy(crop, crop_opened);
+			set(state,opened);
+			set(autorotate.enabled, false);
+			copy(isrotate, autorotate.enabled);
+			copy(layer[toggle_rotate_text].html, layer[toggle_rotate_text].html_opened);
+			copy(layer[toggle_rotate_text].tooltip, layer[toggle_rotate_text].html_opened);
+			copy(layer[skin_tooltip].html, layer[toggle_rotate_text].html_opened);
+		)
+	</action>
+
+	<action name="toggle_gyro">  
+		if(state == 'opened',
+			copy(crop, crop_closed);
+			set(plugin[skin_gyro].enabled,true);
+			set(state,'paused');
+			copy(layer[toggle_gyro_text].html, layer[toggle_gyro_text].html_closed);
+			, 
+			copy(crop, crop_opened);
+			set(plugin[skin_gyro].enabled,false);
+			set(state,'opened');
+			copy(layer[toggle_gyro_text].html, layer[toggle_gyro_text].html_opened);
+		);
+	</action>
+
+	<action name="toggle_broadcast">
+		js(speech('<%=introduction%>'));
+		if(state == 'opened',
+			copy(crop, crop_closed);
+			copy(tooltip, html_closed);
+			set(state,'paused');
+			, 
+			copy(crop, crop_opened);
+			copy(tooltip, html_closed);
+			set(state,'opened');
+		);
+	</action>
+
+	<action name="toggle_maps">
+		if(state == 'opened',
+			tween(layer[house_maps_content].width, 0, 0.25,  easeOutQuad);
+			tween(layer[house_maps_box].width, 0, 0.25,  easeOutQuad);
+			tween(layer[house_maps_box].height, 0, 0.25, easeOutQuad);
+			tween(layer[house_maps_box].alpha, 0, 0.25,  easeOutQuad, set(state,closed);set(layer[house_maps_box].visible, false););
+
+			ifnot(layer[toggle_logo_container].state == 'opened', toggle_menu(););
+			,
+			if(layer[toggle_logo_container].state == 'opened', toggle_menu(););
+			copy(layer[house_maps_box].width, layer[house_maps_box].width_opened);
+			tween(layer[house_maps_content].width, get(layer[house_maps_content].width_opened), 1,  easeOutBounce);
+			set(layer[house_maps_box].visible, true);
+			if(device.mobile, mul(bw, get(stagewidth), get(layer[house_maps_content].width_opened));mul(bw, 0.01);, copy(bw, layer[house_maps_content].width_opened));
+			mul(bw, get(layer[house_maps_box].width));mul(bw, 0.01);
+			
+			div(bw_times, bw, box_width);
+			mul(bh, box_height, bw_times);
+			if(layer[house_maps_content].height == 0, 
+				add(layer[house_maps_content].height, get(bh), get(layer[house_maps_box].y));
+				add(layer[house_maps_content].height, get(layer[house_maps_content].paddingbottom));
+			);
+			tween(layer[house_maps_box].height, get(bh), 1, easeOutBounce);
+			tween(layer[house_maps_box].alpha, 1, 1,  easeOutBounce, set(state,opened););
+		);
+	</action>
+
+	<action name="like">
+		if(liked, 
+			toast(get(tooltip));
+			,
+			js(like());
+			toast(谢谢你的点赞);
+			set(liked, true);
+			onloaded();
+		);
+	</action>
+
+	<action name="toast">
+		set(layer[toast_text].html, %1);
+		set(layer[toast_text].width, prop);
+		delayedcall(0.1, 
+			copy(toast_w, layer[toast_text].pixelwidth);
+			set(layer[toast_text].width, 0);
+			set(layer[toast_text].visible, true);
+			tween(layer[toast_text].width, get(toast_w), 0.5, easeOutBounce);
+			tween(layer[toast_text].alpha, 1, 1.5, easeOutQuad);
+			delayedcall(2,
+				tween(layer[toast_text].alpha, 0, 0.5, easeOutQuad, set(layer[toast_text].visible, false););
+			);
+		);
+	</action>
+	<%}%>
+
+	<hotspot name="botimg" distorted="true" keep="true" handcursor="false" ath="0" atv="90" rx="0.0" ry="0.0" rz="0.0" width="250" height="250" enabled="false" url="<%=bottrademark%>" />
+
+	<hotspot name="topimg" distorted="true" keep="true" handcursor="false" ath="0" atv="-90" rx="0.0" ry="0.0" rz="0.0" width="150" height="prop" enabled="false" url="<%=trademark%>" />
+
+	<contextmenu fullscreen="true" native="false" enterfs="全屏查看" exitfs="退出全屏" touch="true" versioninfo="false" >
+		<item name="company"
+				caption="<%=company%>"
+				separator="true"
+				showif="skin_settings.menu_name != ''"
+				onclick="if(skin_settings.menu_url != 'http://', openurl(get(skin_settings.menu_url)));"
+				/>
+	</contextmenu>
+
+	<autorotate enabled="false" waittime="0.5" accel="1.0" speed="6.0" horizon="0.0" tofov="off" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<%if(jz.is_jz){%>
+	<%var jz_btn_width=(100/jz.len)%>
+	//装修阶段
+	<layer name="modebtncontainer" keep="true" type="container" width="100%" height="50" <%if(preview==2){%>y="10"<%}else{%>y="60"<%}%>>
+		<%for(var i in jz.arr){%>
+			<layer name="modebtn<%=jz.arr[i]-1%>container" keep="true" type="container" width="<%=jz_btn_width%>%" height="50" x="<%=jz_btn_width*i%>%" y="0">
+				<layer name="modebtn<%=jz.arr[i]-1%>" modebtnindex="<%=jz.arr[i]-1%>" style="modebtnstyle" crop="0|<%if(i==0){%><%=120*(jz.arr[i]-1)+60%><%}else{%><%=120*(jz.arr[i]-1)%><%}%>|205|60" width="100" height="30" align="center" x="0" y="0" onclick="modebtn();getarr(<%=jz.s_obj[jz.arr[i]]%>);refreash();" />
+			</layer>
+		<%}%>
+	</layer>
+	<action name="getarr">
+		set(arrtxt, %1);
+		txtsplit(%1, '|', arr);
+	</action>
+	<%}%>
+
+
+	<%flagnum=0;%>
+	<%for(i in groups){%>
+	<%for(j in groups[i].scenes){%>
+	<%flagnum++;%>
+
+
+	
+	<scene name="scene<%=groups[i].scenes[j].id%>" <%if((flagnum-1)<jz.s_len){%>thumb="true"<%}%> title="<%=groups[i].scenes[j].name%>" lat="" lng="" i="<%=i%>" j="<%=j%>" heading="" onstart="" <%if(groups[i].scenes[j].type==7){%>thumburl="http://qncdn.sz-sti.com/images/tools/2501.jpg"<%}else if(groups[i].scenes[j].type>=5){%>thumburl="http://qncdn.sz-sti.com/pano/<%=groups[i].scenes[j].key%>.tiles/mobile_f.jpg"<%}else{%>thumburl="http://qncdn.sz-sti.com/images/scenes/<%=groups[i].scenes[j].key.split('_')[0]%>/allinone.jpg?imageMogr2/gravity/NorthWest/crop/!1024x1024a0a<%if(groups[i].scenes[j].scenestyle==3||groups[i].scenes[j].scenestyle==4){%>70<%}%>0/thumbnail/!25p"<%}%> selfthumb="<%=groups[i].scenes[j].type>=5%>">
+	
+		<%if(groups[i].scenes[j].type!=5&&groups[i].scenes[j].type!=6){%>
+		<view hlookat="<%=groups[i].scenes[j].is_new==1?-groups[i].scenes[j].rx:-groups[i].scenes[j].ry%>" vlookat="0" fovtype="MFOV" fov="120.000" maxpixelzoom="" fovmin="60" fovmax="130" limitview="auto" />
+
+		<%if(groups[i].scenes[j].type==7){%>
+			<image type="SPHERE">
+				<sphere url="http://120.76.27.228/pano/<%=groups[i].scenes[j].key.split('_')[0]%>.jpg" flip="" />
+			</image>
+		<%}else{%>
+			<%if(groups[i].scenes[j].scenestyle==3||groups[i].scenes[j].scenestyle==4){%>//电脑端上传的一比二全景
+			<image type="SPHERE">
+					<sphere url="http://qncdn.sz-sti.com/images/scenes/<%=groups[i].scenes[j].key.split('_')[0]%>/allinone.jpg<%if(user.id!=2943){%>?imageMogr2/thumbnail/!80p<%}%>" flip="" />
+			</image>
+			<%}else{%>
+			<image type="CUBE" ss="<%=groups[i].scenes[j].scenestyle%>" stereo="true" stereolabels="l|r" tilesize="512">
+					<% towards=['front','down','left','back','up','right'];%>
+					<% rotates=[0,90,0,0,270,0];%>
+					<%for(var s in towards){%>
+						<<%=towards[s]%> url="http://qncdn.sz-sti.com/images/scenes/<%=groups[i].scenes[j].key.split('_')[0]%>/allinone.jpg?imageMogr2/gravity/NorthWest/crop/!<%=width%>x<%=width%>a0a<%=s*width%>/thumbnail/!100p/rotate/<%=rotates[s]%>" flip="" />
+					<%}%>
+			</image>
+			<%}%>
+		<%}%>
+
+
+		<%}else{%>
+		<view hlookat="<%=groups[i].scenes[j].is_new==1?-groups[i].scenes[j].rx:-groups[i].scenes[j].ry%>" vlookat="0" fovtype="MFOV" fov="120.000" maxpixelzoom="" fovmin="60" fovmax="130" limitview="auto" />
+		
+		<preview url="http://qncdn.sz-sti.com/pano/<%=groups[i].scenes[j].key%>.tiles/preview.jpg" />
+
+		<image type="CUBE" multires="true" tilesize="512">
+			<level tiledimagewidth="<%=groups[i].scenes[j].width.split('|')[0]%>" tiledimageheight="<%=groups[i].scenes[j].width.split('|')[0]%>">
+			<cube url="<%if(groups[i].scenes[j].type==6){%>http://qncdn.sz-sti.com<%}%>/pano/<%=groups[i].scenes[j].key%>.tiles/mres_%s/l2/%v/l2_%s_%v_%h.jpg" />
+			</level>
+			<level tiledimagewidth="<%=groups[i].scenes[j].width.split('|')[1]%>" tiledimageheight="<%=groups[i].scenes[j].width.split('|')[1]%>">
+			<cube url="<%if(groups[i].scenes[j].type==6){%>http://qncdn.sz-sti.com<%}%>/pano/<%=groups[i].scenes[j].key%>.tiles/mres_%s/l1/%v/l1_%s_%v_%h.jpg" />
+			</level>
+
+			<mobile>
+			<cube url="http://qncdn.sz-sti.com/pano/<%=groups[i].scenes[j].key%>.tiles/mobile_%s.jpg?imageMogr2/thumbnail/!100p" />
+			</mobile>
+		</image>
+		<%}%>
+
+		<%for(var ic in groups[i].scenes[j].imgcomments){%>
+		<hotspot name="imgc<%=groups[i].scenes[j].imgcomments[ic].id%>" url="http://qncdn.sz-sti.com/images/tools/addimg.png?v=2" width="50" height="prop" atv="<%=groups[i].scenes[j].imgcomments[ic].position_y%>" ath="<%=groups[i].scenes[j].imgcomments[ic].position_x%>" onclick="js(showcomments('http://qncdn.sz-sti.com/images/slogan/<%=groups[i].scenes[j].key%>/<%=groups[i].scenes[j].imgcomments[ic].id%>/allinone.jpg',<%=groups[i].scenes[j].imgcomments[ic].hotimg_name%>,<%=groups[i].scenes[j].imgcomments[ic].hotimg_des%>));"/> 
+		<layer name="imgcomments<%=groups[i].scenes[j].imgcomments[ic].id%>" state="hide" url="http://qncdn.sz-sti.com/images/slogan/<%=groups[i].scenes[j].key%>/<%=groups[i].scenes[j].imgcomments[ic].id%>/allinone.jpg" width="0" zorder="200" height="prop" align="center" onclick="ifnot(state == 'open', tween(width, <%if(platform.indexOf('pc')==-1){%>'100%'<%}else{%>'500'<%}%>, 0.5);set(state, 'open') , tween(width, 0, 0.5);set(state, 'hide'););" />
+		<%}%>
+
+
+
+
+
+
+
+
+		<%if(!introduction && preview!=2 && preview!=3 && isexpire){%>
+		<%if(groups[i].scenes[j].introduction!=0&&groups[i].scenes[j].introduction!=null&&preview!=3){%>
+		<layer name="house_broadcast_container" type="container" align="lefttop" x="8" y="235" width="65" height="65" parent="pano_set_bar">
+
+			<layer name="open_house_broadcast<%=i%>" style="set_bar_btn|skin_tooltips" state="paused" tooltip="语音播报" align="top" crop_opened="10|223|92|92" crop_closed="10|330|92|92" onloaded="if(skin_settings.broadcast_init, set(state, opened);copy(crop, crop_opened);,copy(crop, crop_closed););" onclick="toggle_broadcast_<%=i%>" />
+		</layer>
+
+		<action name="toggle_broadcast_<%=i%>">
+			js(speech('<%=groups[i].scenes[j].introduction%>',<%=i%>));
+			if(state == 'paused',
+				copy(crop, crop_opened);
+				set(state, opened);
+				,
+				copy(crop, crop_closed);
+				set(state, paused);
+			);
+		</action>
+
+		<events name="broadcast_event<%=i%>" keep="false" onnewscene="if(skin_settings.broadcast_init, callwith(layer[open_house_broadcast<%=i%>], onclick));ifnot(hadaddinit === true, set(hadaddinit, true);addheight();, if(hadsub === true, addheight();set(hadsub, false);););if(device.mobile, set(layer[house_broadcast_container].y, 370);set(layer[house_broadcast_container].x, 24););if(skin_settings.maps_state, mul(ay, 95, layer[toggle_map_container].scale);add(layer[house_broadcast_container].y, ay););"/>
+		<%}else{%>
+		<events name="broadcast_event<%=i%>" keep="false" onnewscene="ifnot(hadaddinit, set(hadaddinit, true);set(hadsub, false);addheight(););ifnot(hadsub, addheight(false);set(hadsub, true));"/>
+		<%}%>
+		<%}%>
+
+
+
+
+
+
+
+		<%for(var k in groups[i].scenes[j].links){%>
+			<hotspot name="spot<%=flagnum%><%=k%>" url="http://qncdn.sz-sti.com/images/tools/spot<%=groups[i].scenes[j].links[k].type%>.png?imageMogr2/crop/!128x85a0a30/thumbnail/!200p" style="skin_hotspotstyle" <%if(groups[i].scenes[j].links[k].is_new==1){%> ath="<%=groups[i].scenes[j].links[k].position_x%>" atv="<%=groups[i].scenes[j].links[k].position_y%>"  <%}else{%> ath="<%=groups[i].scenes[j].links[k].ry%>" atv="<%=groups[i].scenes[j].links[k].rx%>"  <%}%> scale="0.6" linkedscene="scene<%=groups[i].scenes[j].links[k].scene_id%>" onloaded="loadstyle(hotspot_arrow<%=groups[i].scenes[j].links[k].type%>);add_all_the_time_tooltip();" />
+		<%}%> 
+
+		<%for(var k in groups[i].scenes[j].comments){%>
+			<%if(groups[i].scenes[j].comments[k].is_new==1){%>
+			<hotspot name="comments<%=k%>" url="http://qncdn.sz-sti.com/images/tools/smile.png" ath="<%=groups[i].scenes[j].comments[k].position_x%>" atv="<%=groups[i].scenes[j].comments[k].position_y%>"  handcursor="false" distorted="true" commentnew="<%=groups[i].scenes[j].comments[k].is_new%>" enabled="false" commentid="<%=groups[i].scenes[j].comments[k].id%>" <%if(groups[i].scenes[j].comments[k].is_mosaic==3){%> scale="0.8" <%}else if(groups[i].scenes[j].comments[k].is_mosaic==2){%> scale="0.6" <%}else{%> scale="0.4" <%}%> />
+			<%}%>
+		<%}%> 
+	</scene>
+	<%}%>
+	<%}%>
+
+
+	<action name="addheight">
+		mul(oh, layer[toggle_rotate_container].height, layer[toggle_rotate_container].scale);
+		ifnot(%1 === false, add(layer[pano_set_bar].height, oh);, sub(layer[pano_set_bar].height, oh););
+	</action>
+
+	<action name="bombtimer">
+		if(autorotate.enabled,
+			set(bt, %1); add(bt, 1); delayedcall(1, bombtimer(get(bt)));
+			copy(bt_1, autorotate.speed);
+			div(bt_2, 360, bt_1);Math.abs(bt_2); 
+			if(bt GE bt_2, set(bt,0);skin_nextscene_loop(+1););
+		);
+	</action>
+
+	<%if(jz.is_jz){%>
+	<action name="modebtn">            
+		for(set(i,0), i LT 6, inc(i),
+			txtadd(thumbname,'modebtn',get(i));
+			mul(cropnum1, 120, get(i));
+			txtadd(croptxt1, '0|', get(cropnum1), '|205|60');
+			set(layer[get(thumbname)].crop, get(croptxt1));
+		);
+
+		mul(cropnum2, 120, get(modebtnindex));
+		add(cropnum2, 60);
+		txtadd(croptxt2, '0|', get(cropnum2), '|205|60');
+		set(crop, get(croptxt2));
+	</action>
+
+	<action name="refreash">
+		txtadd(thumbname2,'nav_thumb_',get(parentindex));
+		copy(layer[skin_thumbborder].parent, layer[get(thumbname2)].name);
+
+		looktocenter(get(view.hlookat), get(view.vlookat));
+
+		copy(sceneid, arr[get(parentindex)].value);
+		txtadd(scenename,scene,get(sceneid));
+
+		ifnot(get(xml.scene) == scenename, 
+			loadscene(get(scenename),null,get(skin_settings.loadscene_flags),get(skin_settings.loadscene_blend));
+		);
+	</action>
+
+	<style name="modebtnstyle" url="http://qncdn.sz-sti.com/images/modelBtns.png?v=2"/>
+	<%}%>
+
+
+	<events keep="true"
+			onclick="js(tabsidebar(hide));ifnot(layer[toggle_logo_container].state == 'opened',toggle_menu(true));groups_showthumbs();"
+			onviewchange="js(rotateView(get(view.hlookat), get(view.vlookat)));"
+			onloadcomplete="
+				js(hideloading());
+				if(device.mobile, set(stagescale,0.5););
+				set(autorotate.enabled, get(isrotate));
+				set(bt, 0);
+				ifnot(is_circle, if(autorotate.enabled, if(skin_settings.autocircle, bombtimer(0)));set(is_circle, true););
+				<%if(preview==3||preview==2){%>copy(layer[skin_scroll_window].y,-40);<%}%>
+				<%if(isMultipro){%>set_groups_thumbs();<%}%>
+				groups_updatescroll(0);
+				"
+			/>
+
+	<krpano devices="mobile">
+
+		<%if(jz.is_jz){%>
+		<layer name="modebtncontainer" keep="true" type="container" width="100%" height="50" y="100">
+			<layer name="modebtn0container">
+				<layer name="modebtn0" width="108" height="38"/>
+			</layer>
+			<layer name="modebtn1container">
+				<layer name="modebtn1" width="108" height="38"/>
+			</layer>
+			<layer name="modebtn2container">
+				<layer name="modebtn2" width="108" height="38"/>
+			</layer>
+			<layer name="modebtn3container">
+				<layer name="modebtn3" width="108" height="38"/>
+			</layer>
+			<layer name="modebtn4container">
+				<layer name="modebtn4" width="108" height="38"/>
+			</layer>
+			<layer name="modebtn5container">
+				<layer name="modebtn5" width="108" height="38"/>
+			</layer>
+		</layer><%}%>
+	</krpano>
+</krpano>

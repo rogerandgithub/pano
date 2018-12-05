@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>STi 速腾聚创-后台</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <link href="/css/supermaster/bootstrap/bootstrap.css" rel="stylesheet" />
+    <link href="/css/supermaster/bootstrap/bootstrap-responsive.css" rel="stylesheet" />
+    <link href="/css/supermaster/bootstrap/bootstrap-overrides.css" type="text/css" rel="stylesheet" />
+    <link href="/css/font-awesome.css" type="text/css" rel="stylesheet" />   
+    <link href="/css/supermaster/layout.css" rel="stylesheet" type="text/css" />
+    <!-- <link href='http://fonts.useso.com/css?family=Varela' rel='stylesheet' type='text/css'> -->
+    <script src="/js/Vue.min.js"></script>
+    <style type="text/css">
+        body{font-size: 14px;}
+        .navbar-inverse .brand{padding:5px;margin-left: 0px;}
+        .loading{position: fixed;width:100%;height:100%;top: 0;left: 0;background: url(http://qncdn.sz-sti.com/images/tools/loading.gif) center no-repeat;display: none;z-index: 100;}
+        .setnickname{width: 80px;margin-bottom: 0 !important;margin-right: 10px;}
+        .icon_box{display: inline-block;width: 20px;height: 20px;cursor: pointer;background: #ffffff;background: -moz-linear-gradient(top, #ffffff 0%, #eef0f1 100%);background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#eef0f1));background: -webkit-linear-gradient(top, #ffffff 0%,#eef0f1 100%);background: -o-linear-gradient(top, #ffffff 0%,#eef0f1 100%);background: -ms-linear-gradient(top, #ffffff 0%,#eef0f1 100%);background: linear-gradient(to bottom, #ffffff 0%,#eef0f1 100%);filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#eef0f1',GradientType=0 );border: 1px solid #ccc;border-radius: 3px;}
+        .btn-box {min-width: 120px;font-size: 13px;border-radius: 4px;color: #333;padding: 5px 10px;text-align: center;box-shadow: 0px 1px 0px 0px rgba(255, 255, 255,0.2) inset, 0px 1px 0px 0px rgb(204, 204, 204);display: inline-block;border: 1px solid #e5e5e5;vertical-align: middle;}
+        .debug-content table td{word-break: break-all; word-wrap:break-word;}
+        .debug-content table th{font-size: 14px;}
+        .debug-content .publicInput{border:1px solid rgba(35,142,250,.4);height: 30px;width: 100%;border-radius: 4px;text-indent: 5px;font-size: 14px;padding-right:30px;margin:0;box-sizing:border-box;-webkit-box-sizing:border-box;-ms-box-sizing:border-box;-moz-box-sizing:border-box;}
+        .debug-content .addSelect{width: 40%;}
+        .debug-content .addSelect select{border:1px solid rgba(35,142,250,.4);height: 30px;width: 100%;border-radius: 4px;text-indent: 5px;font-size: 14px;}
+        .debug-content i{color: #067cf4;padding-right: 10px;}
+        .debug-content pre{
+            padding: 10px!important;
+            height: 350px;
+            overflow: auto;
+            text-align: left;
+        }
+        .debug-content .debugTitle{font-size: 16px;font-weight: 600;text-align: center;margin-bottom: 20px;}
+        #outer{width:100%;margin-top:30px;clear: both;}
+        .port-table i{font-size: 24px;position: absolute;padding: 0!important;right: 14px;top: 11px;}
+        .port-table .posRe{position: relative;}
+        .fadeToggle-transition {transition: all 0.3s ease;}
+        .fadeToggle-enter,.fadeToggle-leave {opacity: 0;}
+        #tab {overflow:hidden;zoom:1;background:#067cf4;border:1px solid #067cf4;border-bottom: none;margin:0;}
+        #tab li {float:left;color:#fff;height:40px; cursor:pointer; line-height:40px;padding:0 20px;}
+        #tab li.current {color:#067cf4;background:#fff;}
+        #content {border:1px solid #067cf4;border-top-width:0;}
+        #content ul {line-height:30px;display:none; margin:0 30px;padding:10px 0;}
+        .port-title{margin-bottom: 20px;font-weight: 500px;}
+        button.debug{display: inline-block;text-align: center;-ms-touch-action: manipulation;touch-action: manipulation;cursor: pointer;-webkit-user-select: none;border-radius: 4px;-webkit-transition: all .15s;transition: all .15s;color: #238efa;background-color: rgba(35,142,250,.04);border: 1px solid rgba(35,142,250,.4);font-weight: 500;padding: 0 15px;font-size: 14px;line-height: 30px;}
+        button.debug:hover{background-color: #067cf4;color: #fff;}
+        .bor-bottom{border-bottom: 1px solid #067cf4;margin-bottom: 30px;}
+        .port-table{border: 1px solid #0769cd;}
+        .port-table thead{background-color: #067cf4;}
+        .port-table thead tr{height: 35px;line-height: 35px;}
+        .port-table thead tr th{padding:0!important;height: 40px;line-height: 40px;}
+        .port-table thead th{text-align: center;color: #fff;}
+        .port-table tbody td{text-align: center;}   
+        body {font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;}
+        .post-wrapper{width: 80%;margin:40px auto 80px auto;}
+    </style>
+</head>  
+<body>
+    <div class="loading"></div>
+    <div class="post-wrapper">
+        <div class="container-fluid">
+            <div id="pad-wrapper" class="debug-content">
+                <div class="row-fluid">
+                    <div class="span12 bor-bottom">
+                        <div class="profile-box">
+                            <table class="table table-hover">
+                                <tbody>
+                                    <tr>
+                                        <td>API调试</td>
+                                        <td><button class="debug" @click="alertboxshow">{{msg}}</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>接口地址</td>
+                                        <td>http://wx.sz-sti.com/api/fatherauth</td>
+                                    </tr>
+                                    <tr>
+                                        <td>请求方法</td>
+                                        <td>GET</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="row-fluid" v-show="show" transition="fadeToggle">
+                    <div class="span12">
+                        <h6 class="debugTitle">API调试</h6>
+                        <div>
+                            <table class="table table-hover port-table" border="1">
+                                <tbody>
+                                    <tr class="first">
+                                        <td>GET</td>
+                                        <td>http://wx.sz-sti.com/api/fatherauth</td>
+                                        <td><button class="debug" @click="setRequset">发送</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div>
+                            <h6 class="port-title"><i class="icon-edit"></i>填写请求参数</h6>
+                            <table class="table table-hover port-table" border="1">
+                                <thead>
+                                    <tr>
+                                        <th>URL Parameter Key</th>
+                                        <th>Value</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="first">
+                                        <td>appid</td>
+                                        <td>
+                                            <input type="text" class="publicInput" v-model="appid" />
+                                        </td>
+                                    </tr>
+                                    <tr class="first">
+                                        <td>appsecret</td>
+                                        <td>
+                                            <input type="text" class="publicInput" v-model="appsecret" />
+                                        </td>
+                                    </tr>
+                                    <tr class="first" v-for="tr in trs">
+                                        <td class="addSelect">
+                                            <select v-model="tr.selected">
+                                                <option v-for="option in options" :value="option.parameter" selected>{{ option.parameter }}</option>
+                                            </select>
+                                        </td>
+                                        <td class="posRe"><input type="text" class="publicInput" v-model="tr.value" /><i class="icon-remove-sign" @click="removeTr($index)"></i></td>
+                                    </tr>
+                                    <tr class="first">
+                                        <td colspan="2"><button class="debug" @click="addTr">添加</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div>
+                            <table class="table table-hover port-table" border="1">
+                                <thead>
+                                    <tr>
+                                        <th>Response Body</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="first">
+                                        <td>
+                                            <pre>{{parameterRes | json 4}}</pre>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row-fluid">
+                    <div class="span12">
+                        <div class="profile-box">
+                            <h5 class="port-title"><i class="icon-sitemap"></i>请求参数</h5>
+                            <table class="table table-hover port-table" border="1">
+                                <thead>
+                                    <tr>
+                                        <th>参数名</th>
+                                        <th>类型</th>
+                                        <th>必填</th>
+                                        <th>参数位置</th>
+                                        <th>描述</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="first" v-for="parameter in parameters">
+                                        <td>{{parameter.parameter}}</td>
+                                        <td>{{parameter.type}}</td>
+                                        <td>{{parameter.required}}</td>
+                                        <td>{{parameter.location}}</td>
+                                        <td>{{parameter.describe}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="profile-box">
+                            <h5 class="port-title"><i class="icon-sitemap"></i>使用方法</h5>
+                            <div><h6>漫游的云端链接为:</h6> <p style="text-indent:2em">wx.sz-sti.com/scene?key=<span>{{</span>换成romaing中任一项的key}}</p></div>
+                            <br>
+                            <p>如果romaing的type==18 || type==19的时候：</p>
+                            <div><h6 style="text-indent: 2em">该漫游的场景的预览图:</h6> 
+                            <p style="text-indent:2em">http://qncdn.sz-sti.com/pano/<span>{{</span>换成key}}.jpg?imageMogr2/thumbnail/!40p</p>
+                            <p>如果romaing的type>=5的时候：</p>
+                            <div><h6 style="text-indent: 2em">该漫游的场景的预览图:</h6> 
+                            <p style="text-indent:2em">http://qncdn.sz-sti.com/pano/<span>{{</span>换成key}}.tiles/mobile_f.jpg</p>
+                            <p>如果romaing的type<span><</span>5的时候：</p>
+                            <div><h6 style="text-indent: 2em">该漫游的场景的预览图:</h6> 
+                            <p style="text-indent:2em">http://qncdn.sz-sti.com/images/scenes/<span>{{</span>换成key}}/allinone.jpg?imageMogr2/crop/!1024x1024a0a0/thumbnail/!20p</p>
+
+                            <p><h6 style="text-indent:2em">( 调节参数可调节图片裁切位置和大小，如将 !1024x1024a0a0/thumbnail/!20p 换成 !512x1024a0a500/thumbnail/!50p )</h6></p></div>
+                        </div>
+                        <div id="outer">
+                            <h5 class="port-title"><i class="icon-sitemap"></i>请求示例</h5>
+                            <ul id="tab">
+                                <li class="current">php示例</li>
+                                <li>python示例</li>
+                                <li>java示例</li>
+                                <li>C#示例</li>
+                                <li>ObjectC示例</li>
+                                <li>Swift示例</li>
+                            </ul>
+                            <div id="content">
+                                <ul style="display:block;">.urlencode('广州')
+                                    <li>
+                                        <pre><<span></span>?php <br/>    $ch = curl_init();<br/>    // 请求参数值为中文时，对参数值进行编码，如：urlencode('广州')<br/>    $url = 'http://wx.sz-sti.com/api/fatherauth?appid=你自己的appid&appsecret=你自己的appsecret';<br/>    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);<br/>    // 执行HTTP请求<br/>    curl_setopt($ch,CURLOPT_URL,$url);<br/>    $res = curl_exec($ch);<br/>    var_dump(json_decode($res));<br/>?>
+                                        </pre>
+                                    </li>
+                                </ul>
+                                <ul>
+                                    <li>
+                                        <pre># -*- coding: utf-8 -*-<br/>import sys, urllib, urllib2, json<br/>url = 'http://wx.sz-sti.com/api/fatherauth'<br/>req = urllib2.Request(url)<br/>req.add_header("appid", "您自己的appid")<br/>req.add_header("appsecret", "您自己的appsecret")<br/>resp = urllib2.urlopen(req)<br/>content = resp.read()<br/>if(content):<br/>    print(content)</pre>
+                                    </li>
+                                </ul>
+                                <ul>
+                                    <li>
+                                        <pre>String httpUrl = "http://wx.sz-sti.com/api/fatherauth";<br/>String jsonResult = request(httpUrl, httpArg);<br/>System.out.println(jsonResult);<br/>/**<br/> * @param urlAll<br/> *            :请求接口<br/> * @param httpArg<br/> *            :参数<br/> * @return 返回结果<br/> */<br/>public static String request(String httpUrl, String httpArg) {<br/>    BufferedReader reader = null;<br/>    String result = null;<br/>    StringBuffer sbf = new StringBuffer();<br/>    httpUrl = httpUrl + "?" + httpArg;<br/>    try {<br/>        URL url = new URL(httpUrl);<br/>        HttpURLConnection connection = (HttpURLConnection) url<br/>                .openConnection();<br/>        connection.setRequestMethod("GET");<br/>        // 填入appid到HTTP header<br/>        connection.setRequestProperty("appid","您自己的appid");<br/>        connection.setRequestProperty("appsecret","您自己的appsecret");<br/>        connection.connect();<br/>        InputStream is = connection.getInputStream();<br/>        reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));<br/>        String strRead = null;<br/>        while ((strRead = reader.readLine()) != null) {<br/>            sbf.append(strRead);<br/>            sbf.append("\r\n");<br/>        }<br/>        reader.close();<br/>        result = sbf.toString();<br/>    } catch (Exception e) {<br/>        e.printStackTrace();<br/>    }<br/>    return result;<br/>}
+                                        </pre>
+                                    </li>
+                                </ul>
+                                <ul>
+                                    <li>
+                                        <pre>string url = "http://wx.sz-sti.com/api/fatherauth";<br/>string result = request(url,param);<br/>public static string request(string url, string param)<br/>{<br/>    string strURL = url + '?' + param;<br/>    System.Net.HttpWebRequest request;<br/>    request = (System.Net.HttpWebRequest)WebRequest.Create(strURL);<br/>    request.Method = "GET";<br/>    // 添加header<br/>    request.Headers.Add("appid","您自己的appid");<br/>    request.Headers.Add("appsecret","您自己的appsecret");<br/>    System.Net.HttpWebResponse response;<br/>    response = (System.Net.HttpWebResponse)request.GetResponse();<br/>    System.IO.Stream s;<br/>    s = response.GetResponseStream();<br/>    string StrDate = "";<br/>    string strValue = "";<br/>    StreamReader Reader = new StreamReader(s, Encoding.UTF8);<br/>    while ((StrDate = Reader.ReadLine()) != null)<br/>    {<br/>        strValue += StrDate + "\r\n";<br/>    }<br/>    return strValue;<br/>}
+                                        </pre>
+                                    </li>
+                                </ul>
+                                <ul>
+                                    <li>
+                                        <pre>NSString *httpUrl = @"http://wx.sz-sti.com/api/fatherauth";<br/>[self request: httpUrl withHttpArg: httpArg];<br/>-(void)request: (NSString*)httpUrl withHttpArg: (NSString*)HttpArg  {<br/>    NSString *urlStr = [[NSString alloc]initWithFormat: @"%@?%@", httpUrl, HttpArg];<br/>    NSURL *url = [NSURL URLWithString: urlStr];<br/>    NSMutableURLRequest *request = [[NSMutableURLRequest alloc]initWithURL: url cachePolicy: <br/>NSURLRequestUseProtocolCachePolicy timeoutInterval: 10];<br/>    [request setHTTPMethod: @"GET"];<br/>    [request addValue: @"您自己的appid" forHTTPHeaderField: @"appid"];<br/>    [request addValue: @"您自己的appsecret" forHTTPHeaderField: @"appsecret"];<br/>    [NSURLConnection sendAsynchronousRequest: request<br/>        queue: [NSOperationQueue mainQueue]<br/>        completionHandler: ^(NSURLResponse *response, NSData *data, NSError *error){<br/>            if (error) {<br/>                NSLog(@"Httperror: %@%ld", error.localizedDescription, error.code);<br/>            } else {<br/>                NSInteger responseCode = [(NSHTTPURLResponse *)response statusCode];<br/>                NSString *responseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];<br/>                NSLog(@"HttpResponseCode:%ld", responseCode);<br/>                NSLog(@"HttpResponseBody %@",responseString);<br/>            }<br/>        }];<br/>}
+                                        </pre>
+                                    </li>
+                                </ul>
+                                <ul>
+                                    <li>
+                                        <pre>var url = "http://wx.sz-sti.com/api/fatherauth"<br/>request(url, httpArg: httpArg)<br/>func  request(httpUrl: String, httpArg: String) {<br/>    var req = NSMutableURLRequest(URL: NSURL(string: httpUrl + "?" + httpArg)!)<br/>    req.timeoutInterval = 6<br/>    req.HTTPMethod = "GET"<br/>    req.addValue("您自己的appid", forHTTPHeaderField: "appid")<br/>    req.addValue("您自己的appsecret", forHTTPHeaderField: "appsecret")<br/>    NSURLConnection.sendAsynchronousRequest(req, queue: NSOperationQueue.mainQueue()) {<br/>        (response, data, error) -> Void in<br/>        let res = response as! NSHTTPURLResponse<br/>        println(res.statusCode)<br/>        if let e = error{<br/>            println("请求失败")<br/>        }<br/>        if let d = data {<br/>            var content = NSString(data: d, encoding: NSUTF8StringEncoding)<br/>            println(content)<br/>        }<br/>    }<br/>}
+                                        </pre>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript">
+        $(function(){    
+            $('#tab li').on('click',function(){
+                var $t = $(this).index();
+                $('#tab li').removeClass();
+                $(this).addClass('current');
+                $('#content ul').css('display','none');
+                $('#content ul').eq($t).css('display','block');
+            })
+        });
+        var debug = new Vue({
+            el:'#pad-wrapper',
+            data:{
+                msg:'调试',
+                showhide:false,
+                show:false,
+                options:[
+                    {parameter:'children_id'},
+                    {parameter:'start_created_time'},
+                    {parameter:'end_created_time'},
+                    {parameter:'tart_updated_time'},
+                    {parameter:'end_updated_time'},
+                    {parameter:'min_area'},
+                    {parameter:'max_area'},
+                    {parameter:'min_rooms'},
+                    {parameter:'area'},
+                    {parameter:'apartment_halls'},
+                    {parameter:'apartment_bathrooms'},
+                    {parameter:'apartment_rooms'},
+                    {parameter:'room'},
+                    {parameter:'building'},
+                    {parameter:'face'},
+                    {parameter:'community'},
+                    {parameter:'business_circle'},
+                    {parameter:'region'},
+                    {parameter:'city'},
+                    {parameter:'page'}
+                ],
+                trs:[],
+                appid:'',
+                appsecret:'',
+                parameterRes:'',
+                parameterURL:'',
+                str:'',
+                parameters:[
+                    {parameter:'appid',type:'string',required:'是',location:'header',describe:'API密钥'},
+                    {parameter:'appsecret',type:'string',required:'是',location:'header',describe:'API密钥'},
+                    {parameter:'children_id',type:'string',required:'否',location:'header',describe:'筛选指定子账户的全景数据，格式如\'b074|s074|a074\''},
+                    {parameter:'city',type:'string',required:'否',location:'header',describe:'筛选城市为该值的漫游*'},
+                    {parameter:'region',type:'string',required:'否',location:'header',describe:'筛选区域（如南山区）为该值的漫游*'},
+                    {parameter:'business_circle',type:'string',required:'否',location:'header',describe:'筛选商圈为该值的漫游*'},
+                    {parameter:'community',type:'string',required:'否',location:'header',describe:'筛选小区为该值的漫游'},
+                    {parameter:'building',type:'string',required:'否',location:'header',describe:'筛选栋数为该值的漫游'},
+                    {parameter:'room',type:'string',required:'否',location:'header',describe:'筛选房间号为该值的漫游'},
+                    {parameter:'start_created_time',type:'string',required:'否',location:'header',describe:'筛选创建日期在此之后的漫游'},
+                    {parameter:'end_created_time',type:'string',required:'否',location:'header',describe:'筛选创建日期在此之前的漫游'},
+                    {parameter:'start_updated_time',type:'string',required:'否',location:'header',describe:'筛选更新日期在此之后的漫游'},
+                    {parameter:'end_updated_time',type:'string',required:'否',location:'header',describe:'筛选更新日期在此之前的漫游'},
+                    {parameter:'min_area',type:'string',required:'否',location:'header',describe:'筛选面积在此之上的漫游'},
+                    {parameter:'max_area',type:'string',required:'否',location:'header',describe:'筛选面积在此之下的漫游'},
+                    {parameter:'min_rooms',type:'string',required:'否',location:'header',describe:'筛选房间数在此之上的漫游'},
+                    {parameter:'area',type:'string',required:'否',location:'header',describe:'筛选面积为该值的漫游'},
+                    {parameter:'apartment_halls',type:'string',required:'否',location:'header',describe:'筛选客厅数为该值的漫游'},
+                    {parameter:'apartment_bathrooms',type:'string',required:'否',location:'header',describe:'筛选卫生间数为该值的漫游'},
+                    {parameter:'apartment_rooms',type:'string',required:'否',location:'header',describe:'筛选卧室数为该值的漫游'},
+                    {parameter:'face',type:'string',required:'否',location:'header',describe:'筛选朝向为该值的漫游'},
+                    {parameter:'page',type:'string',required:'否',location:'header',describe:'页数，缺省值为1'},
+                    {parameter:'limit',type:'string',required:'否',location:'header',describe:'每页条数，传0将忽略，page不为空时默认为10*'}
+                ]
+            },
+            methods:{
+                alertboxshow:function(){
+                    this.show?this.show = false:this.show = true;
+                    this.msg == "调试"?this.msg = "关闭调试":this.msg = "调试";
+                },
+                addTr:function(){
+                    this.trs.push({selected:'',value:''});
+                },
+                removeTr:function(index){
+                    this.trs.splice(index, 1)
+                },
+                addStr:function(){
+                    var len = this.trs.length;
+                    var params = '';
+                    for(var i = 0;i < len;i ++){
+                        if(!this.trs[i].value){
+                            alert('请填写信息');
+                            return;
+                        }else{
+                            params += "&" + this.trs[i].selected + "=" + this.trs[i].value;
+                        }
+                    }
+                    console.log(params);
+                    return params;
+                },
+                setRequset:function(){
+                    var _this = this;
+                    var url = "http://wx.sz-sti.com/api/fatherauth?appid="+this.appid+"&appsecret="+this.appsecret+this.addStr();
+                    $.get(url,function(res){
+                        _this.parameterRes = res;
+                    });
+                }
+            }
+        });
+        //         sti37e5c050092c8415
+        //             f1bffcf8b9352e2de6c96254547655d56
+    </script>
+</body>
+</html>

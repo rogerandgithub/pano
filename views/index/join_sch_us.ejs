@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>加入我们</title>
+    <link rel="stylesheet" href="/index/css/joinus.css" type="text/css">
+    <script src="/js/new/vue.min.js"></script> 
+    <script src="/index/js/jquerys.js"></script>
+    <link href="/index/css/common.css" rel="stylesheet" type="text/css" /> 
+    <link href="/css/submitbootstrap.css" rel="stylesheet" type="text/css" /> 
+    <link href="/css/new/font-awesome.css" type="text/css" rel="stylesheet" />
+    <style type="text/css">
+        #campus_talk{
+            margin: 55px auto;
+            width: 1000px
+        }
+        #campus_talk table{
+            width: 100%;
+            text-align: left;
+            margin-top: 45px;
+        }
+        #campus_talk tr th:last-child{
+            width: 270px;
+        }
+        #campus_talk tr.expired td {
+            color: #aaa;
+        }
+        #campus_talk td{
+            color: #526273;
+            vertical-align: middle;
+            padding: 16px 50px 16px 0px;
+            line-height: 20px;
+            font-size: 14px;
+        }
+        #campus_talk td:first-child p{
+            padding-left: 6px;
+            border-left: 3px solid #d40112;
+            min-height: 40px;
+        }
+        #career .description, #career .jobs {
+            margin-bottom: 55px;
+        }
+        .join-sch-banner{width: 100%;height: 270px;background: url('http://qncdn.sz-sti.com/images/about/banner.jpg') center center no-repeat;background-size: cover;}
+    </style>
+</head>
+<body>
+
+    <%include ../new/toast%>
+    <%if(isadmin){%>
+    <div id="trashpano" class="toast-content">
+        <div class="toast-center-wrapper">
+            <div class="m-header">
+                <h1 class="text-center"><i class="icon-lock"></i></h1>
+                <h6 class="toast-title text-center">密码认证</h6>
+            </div>
+            <div>
+                <div class="toast-body">
+                    <p class="text-center">请输入密码</p>
+                    <div class="form-group"> 
+                        <input id="psw" class="form-control" type="password" placeholder="请输入您的密码" autocomplete="off" @keyup.enter="submit" v-model="psw" />
+                    </div>
+                </div>
+                <div class="m-footer">
+                    <div class="text-center">
+                        <button class="btn btn-cancel btn-lg" type="button" @click="hide">取消</button>
+                        <button class="btn btn-primary btn-setter btn-lg" :disabled="disabled" type="submit" @click="submit">确定</button> 
+                    </div>
+                </div>
+            </div>
+        </div>   
+    </div>
+    <script type="text/javascript">
+        var login = new Vue({
+            el: '#trashpano',
+            data: {
+                psw: ''
+            },
+            methods: {
+                hide: function() {
+                    location.href = '/web/web/join_sch_us';
+                },
+                submit: function(){
+                    if(!this.psw){
+                        toast.showmsg('密码不能为空', true);
+                        return;
+                    }
+                    $.post('/web/web/join_sch/login', {
+                        psw: this.psw
+                    }, function(res){
+                        if(res.code!=0){
+                            toast.showmsg(res.msg, true);
+                            return;
+                        }
+                        toast.showmsg('登录成功');
+                        setTimeout(function(){
+                            location.href = '/web/join_sch_us';
+                        }, 1000);
+                    });
+                }
+            }
+        });
+    </script>
+
+    <%}else{%>
+
+
+    <script src="/index/js/bootstrap.min.js"></script>
+
+    <%if(name=='admin'&&token){%>  
+    <link href="/css/new/icons.css" rel="stylesheet" type="text/css" />  
+    <div id="trashpano" style="overflow: auto;" class="toast-content" transition="qrtoast" v-show="showtptoast">
+        <span @click="hide"><i class="ico-close close-pop fixed"></i></span>
+        <div class="require-wrap clearfix">
+            <div class="box clearfix">
+                <div class="half-width fl">
+                    <label>职位：</label>
+                    <input type="text" min="0" v-model="name" />
+                </div>
+                <div class="half-width fr">
+                    <label>部门：</label>
+                    <input type="text" min="0" v-model="department" placeholder="格式：6" />
+                </div>
+            </div>
+            <div class="box clearfix">
+                <div>
+                    <label>职位职责：</label>
+                    <p v-for="duty in dutys"><label>{{$index+1}}、</label><input type="text" min="0" v-model="duty" /></p>
+                </div>
+                <button class="btn btn-primary pull-right" @click="addduty">添加职责</button>
+            </div>
+            <div class="box clearfix">
+                <div>
+                    <label>职位要求：</label>
+                    <p v-for="quality in qualitys"><label>{{$index+1}}、</label><input type="text" min="0" v-model="quality" /></p>
+                </div>
+                <button class="btn btn-primary pull-right" @click="addquality">添加要求</button>
+            </div>
+            <div class="btn-box">
+                <a href="javascript:;" class="submitRequire" @click="submit" v-text="submit_name"></a>
+            </div>
+        </div>
+    </div>
+    <%}%>
+
+
+    <!-- <header class="career-navbar">
+        <a class="nav-close" href="./main">返回主页</a>
+        <a class="brand" href="./main"><img src="/index/images/icon/logo.png" alt="速腾聚创"></a>
+    </header> -->
+    <div id="header">
+        <div class="nav">
+            <h2 class="logo"><img src="http://qncdn.sz-sti.com/images/icon/logo.png" /></h2>
+            <ul id="menu">
+                <li><a href="/web/main/<%=lang%>" v-text="lang_<%=lang%>.home"></a></li>
+                <li><a href="/web/recruitment/<%=lang%>" v-text="lang_<%=lang%>.joinus"></a></li>
+                <li>
+                    <a href="javascript:;" @click="showlang=!showlang" v-text="lang_<%=lang%>.lang"></a>
+                    <div class="langlist" transition="lang" v-show="showlang">
+                        <p @click.stop="togglelang" v-text="'<%=lang%>'=='cn'?lang_en.lang:lang_cn.lang"></p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+
+    <div id="campus_talk">
+        <h1><%=lang=='cn'?'速腾聚创2016年秋季宣讲会':'2016 RoboSense Autumn Recruitment Session'%></h1>
+        <table>
+            <thead>
+                <tr>
+                    <th><%=lang=='cn'?'宣讲院校':'University'%></th>
+                    <th><%=lang=='cn'?'宣讲地点':'Location'%></th>
+                    <th><%=lang=='cn'?'宣讲时间':'Time'%></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><p><%=lang=='cn'?'华南理工大学':'South China University of Technology'%></p></td>
+                    <td><p><%=lang=='cn'?'广州五山校区就业指导中心一号报告厅':'No.1 Lecture Hall of the Employment Guidance Center on Wushan Campus, Guangzhou. '%></p></td>
+                    <td><p><%=lang=='cn'?'2016年9月18日 9:00-10:00':'9:00-10:00, Sept. 18, 2016'%></p></td>
+                </tr>
+                <tr>
+                    <td><p><%=lang=='cn'?'广东工业大学':'Guangdong University of Technology '%></p></td>
+                    <td><p><%=lang=='cn'?'广州大学城校区教学6号楼103':'Room 103, No.6 Building, University Town, Guangzhou.'%></p></td>
+                    <td><p><%=lang=='cn'?'2016年9月18日 7:00-8:00':'7:00-8:00, Sept. 18, 2016'%></p></td>
+                </tr>
+                <tr>
+                    <td><p><%=lang=='cn'?'中科院长春光机所':'Changchun Institute of Optics, China Academy of Science.'%></p></td>
+                    <td><p><%=lang=='cn'?'教学楼512 长春市营口路88号':'Room 512, Lecturing Building, No. 88, Yingkou Road, Changchun.'%></p></td>
+                    <td><p><%=lang=='cn'?'2016年9月21日 13:30-14:30':'13:30-14:00, Sept. 21, 2016'%></p></td>
+                </tr>
+                <tr>
+                    <td><p><%=lang=='cn'?'哈尔滨工业大学':'Harbin Institute of Technology'%></p></td>
+                    <td><p><%=lang=='cn'?'活动中心506课室':'Room 505 of the Activity Center.'%></p></td>
+                    <td><p><%=lang=='cn'?'2016年9月22日 18:30-19:00':'18:30-19:00, Sept. 22, 2016'%></p></td>
+                </tr>
+                <tr>
+                    <td><p><%=lang=='cn'?'华中科技大学':'Huazhong Univeristy of Science and Technology'%></p></td>
+                    <td><p><%=lang=='cn'?'研究生活动中心武汉市洪山区珞喻路1037号':'Post-graduate Center,  No. 1037 Luoyu Road, Hongshan District, Wuhan.'%></p></td>
+                    <td><p><%=lang=='cn'?'2016年11月5日 9:30-10:00':'9:30-10:00, Nov. 5, 2016'%></p></td>
+                </tr>
+                <tr>
+                    <td><p><%=lang=='cn'?'西安交通大学':'Xi’an Jiaotong University'%></p></td>
+                    <td><p><%=lang=='cn'?'就创中心204室西安市咸宁西路28号':'Room 204, Employment Guidance Center, No.28, Xianning West Road, Xi’an. '%></p></td>
+                    <td><p><%=lang=='cn'?'2016年11月9日 19:00-20:00':'19:00-20:00, Nov. 9, 2016'%></p></td>
+                </tr>
+                <tr>
+                    <td><p><%=lang=='cn'?'北京航空航天大学':'Beijing University of Aeronautics and Astronautics'%></p></td>
+                    <td><p><%=lang=='cn'?'待定':'TBD'%></p></td>
+                    <td><p><%=lang=='cn'?'待定':'TBD'%></p></td>
+                </tr>
+                <tr>
+                    <td><p><%=lang=='cn'?'北京大学':'Peking University'%></p></td>
+                    <td><p><%=lang=='cn'?'待定':'TBD'%></p></td>
+                    <td><p><%=lang=='cn'?'待定':'TBD'%></p></td>
+                </tr>
+                <tr>
+                    <td><p><%=lang=='cn'?'清华大学':'Tsinghua University'%></p></td>
+                    <td><p><%=lang=='cn'?'待定':'TBD'%></p></td>
+                    <td><p><%=lang=='cn'?'待定':'TBD'%></p></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="join-sch-banner"></div>
+    <div id="career" class="clearfix career-sch">
+        <article class="description fl">
+            <h1><%=lang=='cn'?'为何加入速腾聚创':'How to join RoboSense?'%></h1>
+            <p v-for="lang in lang_<%=lang%>" v-text="lang"></p>
+        </article>
+        <div class="jobs fl">
+            <div class="jobs-search">
+                <ul class="filter-container">
+                    <li>
+                        <div class="show-div" @click="togglepm">
+                            <label class="show-text active"><%=lang=='cn'?'全部':'All'%></label>
+                            <span class="angle-gray-down"></span>
+                        </div>
+                        <ul class="down-menu" id="depart" transition="onehalf" v-show="showpartment">
+                            <li class="menu-name" @click="sel()"><%=lang=='cn'?'全部':'All'%></li>
+                            <li class="menu-name" v-for="partment in partments" v-text="partment" @click="sel(partment)"></li>
+                        </ul>
+                    </li>
+                    <!-- <li>
+                            <div class="show-div">
+                                <label class="show-text active">地区</label>
+                                <span class="angle-gray-down"></span>
+                            </div>
+                            <ul class="down-menu hide"  id="area">
+                                <li class="menu-name">深圳</li>
+                            </ul>
+                    </li> -->
+                </ul>
+                <%if(name=='admin'&&token){%>
+                <button class="btn btn-primary pull-right" style="margin-left:10px;" @click="logout">退出登录</button>
+                <button class="btn btn-primary pull-right" @click="addnew">发布招聘信息</button>
+                <%}%>
+            </div>
+
+
+
+            <div>
+                <div class="wrap" style="padding-left:30px;">
+                    <section class="jobs-block">
+                        <div>
+                            <dl class="job-dl">
+                                <dt class="job-des fl bold"><%=lang=='cn'?'职位':'POSITIONS'%></dt>
+                                <dd class="job-dept fl bold"><%=lang=='cn'?'部门':'DEPARTMENTS'%></dd>
+                                <dd class="job-icon-down fr bold"><%=lang=='cn'?'查看':'CHECK'%></dd>
+                            </dl>
+                        </div>
+                        <div class="job-list">
+                            <div class="job-item" v-for="job in jobs | filterBy filtername in 'partment'">
+                                <dl class="job-dl clearfix">
+                                    <%if(name=='admin'&&token){%> 
+                                    <dd class="fl job-trash" @click="delete($index)"><i class="icon-trash"></i></dd>
+                                    <%}%>
+                                    <dt class="job-des fl bold" @click="showcontent($index)">{{job.name}}
+                                    <%if(name=='admin'&&token){%> <i class="icon-edit" title="点击修改职位" @click.stop="edit($index)"></i>
+                                    <%}%></dt>
+                                    <dd class="job-dept fl bold" @click="showcontent($index)" v-text="job.partment"></dd>
+                                    <!-- <dd class="job-splace fl"  v-text="job.city"></dd> -->
+                                    <dd class="job-icon-down fr" @click="showcontent($index)">
+                                        <span class="angle-orange-down"></span>
+                                    </dd>
+                                    <dd class="job-description" transition="qrtoast" v-show="showarr[$index]">
+                                        <div class="detail" style="padding-top:20px;">  
+                                            <strong><%=lang=='cn'?'职位职责：':'POSITION DUTIES:'%></strong>
+                                            <p v-if="job.dutys.length">
+                                                <div class="item-list" v-for="duty in job.duty">
+                                                    <p>{{$index+1}}. {{duty}}</p>
+                                                </div>
+                                                <br>
+                                                <br>
+                                            </p>
+                                            <strong><%=lang=='cn'?'职位要求：':'POSITION REQUIREMENTS:'%></strong>
+                                            <p v-if="job.qualitys.length">
+                                                <div class="item-list" v-for="quality in job.quality">
+                                                    <p>{{$index+1}}. {{quality}}</p>
+                                                </div>
+                                                <br>
+                                            </p>
+                                        </div>
+                                    </dd>
+                                </dl>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        var menu = new Vue({
+            el: '#menu',
+            data: {
+                showlang: false,
+                lang_cn:{
+                    home: '首页',
+                    joinus: '加入我们',
+                    lang: '简体中文'
+                },
+                lang_en: {
+                    home: 'HOME',
+                    joinus: 'JOIN US',
+                    lang: 'ENGLISH'
+                },
+                lang: '<%=lang%>'
+            },
+            methods: {
+                togglelang: function(){
+                    if(this.lang == 'cn'){
+                        location.href = location.href.replace('/cn', '/en');
+                    }else{
+                        location.href = location.href.replace('/en', '/cn');
+                    }
+                }
+            }
+        })
+        <%if(name=='admin'&&token){%>   
+        var addnew = new Vue({
+            el: '#trashpano',
+            data: {
+                showtptoast: false,
+                name: '',
+                department: '',
+                dutys: [''],
+                qualitys: [''],
+                ischange: 0,
+                changename: ''
+            },
+            computed: {
+                submit_name: function(){
+                    return this.ischange?'确认修改':'发布职位'
+                },
+                submit_url: function(){
+                    return this.ischange?'/web/join_sch/edit':'/web/join_sch/add'
+                }
+            },
+            methods: {
+                addduty: function(){
+                    if(this.dutys[this.dutys.length-1]==''){
+                        toast.showmsg('请先填写空职责', true);
+                        return;
+                    };
+                    if(this.dutys.slice(0,this.dutys.length-1).indexOf(this.dutys[this.dutys.length-1])!=-1){
+                        toast.showmsg('请勿发布重复职责', true);
+                        return;
+                    }
+                    this.dutys.push('');
+                },
+                hide: function(){
+                    this.showtptoast = false;
+                    this.ischange = 0;
+                    this.reset();
+                },
+                addquality: function(){
+                    if(this.qualitys[this.qualitys.length-1]==''){
+                        toast.showmsg('请先填写空要求', true);
+                        return;
+                    };
+                    if(this.qualitys.slice(0,this.qualitys.length-1).indexOf(this.qualitys[this.qualitys.length-1])!=-1){
+                        toast.showmsg('请勿发布重复要求', true);
+                        return;
+                    }
+                    this.qualitys.push('');
+                },
+                reset: function(obj){
+                    this.name = obj?obj.name:'',
+                    this.department = obj?obj.partment:'',
+                    this.dutys.splice(0);
+                    this.qualitys.splice(0);
+                    if(obj){
+                        for(var i in obj.duty){
+                            this.dutys.push(obj.duty[i]);
+                        }
+                        for(var i in obj.quality){
+                            this.qualitys.push(obj.quality[i]);
+                        }
+                        this.changename = obj?obj.name:'',
+                        this.showtptoast = true;
+                        this.ischange = 1;
+                    }else{
+                        this.dutys.push('');
+                        this.qualitys.push('');
+                    }
+                },
+                submit: function(){
+                    if(!this.name){
+                        toast.showmsg('请填写职位名称');
+                        return;
+                    }
+                    if(!this.department){
+                        toast.showmsg('请填写部门名称');
+                        return;
+                    }
+                    if(this.dutys.slice(0,this.dutys.length-1).indexOf(this.dutys[this.dutys.length-1])!=-1){
+                        toast.showmsg('请勿发布重复职责', true);
+                        return;
+                    }
+                    if(this.qualitys.slice(0,this.qualitys.length-1).indexOf(this.qualitys[this.qualitys.length-1])!=-1){
+                        toast.showmsg('请勿发布重复要求', true);
+                        return;
+                    }
+                    for(var i in career.jobs){
+                        if(career.jobs[i].name == this.name && !this.ischange){
+                            toast.showmsg('该职位已经存在', true);
+                            return;
+                        }
+                    }
+                    if(this.dutys[this.dutys.length-1]=='')this.dutys.pop();
+                    if(this.qualitys[this.qualitys.length-1]=='')this.qualitys.pop();
+                    var job = {
+                        name: this.name,
+                        partment: this.department,
+                        duty: this.dutys,
+                        quality: this.qualitys
+                    };
+                    var _this = this;
+                    $.post(this.submit_url, {
+                        job:JSON.stringify(job), 
+                        token:'<%=token%>', 
+                        changename: this.changename
+                    }, function(res){
+                        toast.showmsg(res.msg, res.code!=0);
+                        if(res.code==0){
+                            if(_this.ischange){
+                                career.jobs[career.changeindex].name = job.name;
+                                career.jobs[career.changeindex].partment = job.partment;
+                                career.jobs[career.changeindex].duty.splice(0);
+                                career.jobs[career.changeindex].quality.splice(0);
+                                for(var i in job.duty){
+                                    career.jobs[career.changeindex].duty.push(job.duty[i]);
+                                }
+                                for(var i in job.quality){
+                                    career.jobs[career.changeindex].quality.push(job.quality[i]);
+                                }
+                            }else{
+                                career.jobs.push(job);
+                                if(career.partments.indexOf(job.partment)==-1)
+                                    career.partments.push(job.partment);
+                            }
+                            _this.hide();
+                        }  
+                    });
+                }
+            }
+        });
+        <%}%>
+
+        var career = new Vue({
+            el: '#career',
+            data: {
+                showarr: [],
+                jobs: [],
+                partments: [],
+                changeindex: -1,
+                showpartment: false,
+                filtername: '',
+                lang_cn: [
+                    '我们在全球范围内寻找顶尖精英人才', 
+                    '只要你敢想敢做，深圳速腾聚创科技有限公司就是你实现梦想的舞台，在这里你可以尽情彰显个性，释放激情。',
+                    '只要你是牛人，只要你对梦想有所执着，深圳速腾聚创科技有限公司就是你的归属。',
+                    '有意者请将个人简历、相关作品等资料发电子邮件至hr@sz-sti.com，合则约见。',
+                    '(注意：作品文件大小请控制在40M内)'
+                ],
+                lang_en: [
+                    'We are looking for top elites from all over the world.', 
+                    'You have dream, we have a place for you! RoboSense is the stage for you to fully release your talent and enthusiasm. ',
+                    'Please send your resume and portfolio to hr@sz-sti.com. We will arrange interviews for suitable candidates.',
+                    '(Please be noted: file size should be managed within 40M.)'
+                ]
+            },
+            methods: {
+                <%if(name=='admin'&&token){%>   
+                addnew: function(){
+                    addnew.showtptoast = true;
+                },
+                addduty: function(){
+                    this.dutys.push('');
+                },
+                delete: function(i){
+                    if(confirm('请确认是否删除该职位？')){
+                        var _this = this;
+                        $.post('/web/join_sch/del', {
+                            name: this.jobs[i].name,
+                            token: '<%=token%>'
+                        }, function(res){
+                            toast.showmsg(res.msg, res.code!=0);
+                            if(res.code == 0){
+                                _this.jobs.splice(i, 1);
+                            }
+                        });
+                    }
+                },
+                edit: function(i){
+                    addnew.reset(this.jobs[i]);
+                    this.changeindex = i;
+                },
+                logout: function(){
+                    location.href = '/web/join_sch/logout';
+                },
+                <%}%>
+                togglepm: function(){
+                    this.showpartment = !this.showpartment;
+                },
+                sel: function(name){
+                    this.filtername = name;
+                    this.showpartment = false;
+                    this.selname = name?name:'全部';
+                },
+                showcontent: function(i){
+                    this.showarr.$set(i,!this.showarr[i]);
+                },
+                init: function(){
+                    var _this = this;
+                    $.get('/web/join_sch/data/<%=lang%>', function(res){
+                        for(var i in res){
+                            _this.jobs.push(res[i]);
+                            if(_this.partments.indexOf(res[i].partment)==-1)
+                                _this.partments.push(res[i].partment);
+                        }
+                    });
+                }
+            }
+        });
+        career.init();
+    </script>
+    <%}%>
+</body>
+</html>

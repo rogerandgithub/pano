@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title v-text="title+'-个人店铺'"></title>
+	<meta charset="utf-8">
+    <meta name="format-detection" content="telephone=no">
+	<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <script src="/js/jquery-1.8.3.min.js"></script>
+    <script src="/js/Vue.min.js"></script>
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing: border-box;
+            -webkit-box-sizing: border-box;-webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            -o-user-select: none;
+            user-select: none;
+        }
+        .clearfix:after{
+            content:".";
+            display:block;
+            height:0;
+            clear:both;
+            visibility:hidden;
+        }
+        .clearfix{*+height:1%;}
+        .fl{float: left;}
+        .fr{float: right;}
+        body{
+            font-family: '黑体';
+            background-color: #fff;
+        }
+        #houselists{
+            max-width: 640px;
+            margin:0 auto;
+        }
+        #houselists .header{
+            height: 50px;
+            line-height: 50px;
+            position: relative;
+            background-color: #666666;
+            color: #fff;
+            text-align: center;
+        } 
+        #houselists .listWrap .title{
+            color: #333;
+            font-weight: normal;
+            margin-bottom: 30px;
+        }
+        #houselists .listWrap .title img{
+            padding-right: 10px;
+        }
+        #houselists .listWrap .title span{
+            position: relative;
+            bottom: 3px;
+        }
+        #houselists .header h2.title{
+            font-weight: 500;
+            font-size: 18px;
+            position: absolute;
+            left: 0;
+            top:0;
+            width:100%; 
+        }
+        #houselists .header a.goback{
+            display: block;
+            position: absolute;
+            z-index: 22;
+            left: 10px;
+            top: 0;
+        }
+        #houselists .header a.check{
+            display: block;
+            position: absolute;
+            right: 10px;
+            top: 0;
+        }
+        #houselists .header a.goback img,#houselists .header a.check img{
+            display: block;
+            margin-top: 12px;
+        }
+        #filter{
+            list-style: none;
+            background-color: #373636;
+            position: absolute;
+            width: 40%;
+            right: 0;
+            top: 50px;
+            border-radius: 0 0 4px 4px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.82);
+        }
+        #filter li{
+            height: 40px;
+            line-height: 40px;
+            border-bottom: 1px solid #151515;
+            cursor: pointer;
+        }
+        #filter li:last-child{
+            border:none;
+        }
+        .onehalf-transition {
+            transition: all 0.15s ease;
+            -webkit-transition: all 0.15s ease;
+            opacity: 1;
+        }
+        .onehalf-enter, .onehalf-leave{
+            opacity: 0;
+        }
+
+
+
+        #houselists .sceneWrap{
+            background: #f3f3f3;
+            width: 100%;
+            padding: 20px 10px 20px 10px;
+        }
+        #houselists .userHeader .avatar{
+            margin: 0 auto 30px auto;
+            width: 100px;
+            height: 100px;
+            background: #fff;
+            overflow: hidden;
+            border-radius: 50%;
+            -webkit-border-radius: 50%;
+            -moz-border-radius: 50%;
+            -ms-border-radius: 50%;
+            cursor: pointer;
+            position: relative;
+        }
+        #houselists .userHeader .avatar img{
+            display: block;
+            height: 100%;
+        }
+        #houselists .userHeader .username{
+            text-align: center;
+            color: #333;
+            padding-bottom: 20px;
+        }
+        #houselists .userHeader .telephone{
+            text-align: center;
+            padding-bottom: 40px;
+        }
+        #houselists .userHeader .telephone span{
+            display: inline-block;
+            position: relative;
+            bottom: 8px;
+            padding-left: 10px;
+        }
+        #houselists a.scenebox{
+            display: block;
+            width:49%;
+            float: left;
+            background-color: #fff;
+            margin-bottom: 20px;
+            color: #fff;
+            box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            -ms-box-sizing: border-box;
+            padding: 8px;
+            border-radius: 6px;
+        }
+        #houselists a.scenebox:nth-child(even){
+            margin-right: 2%;
+        }
+        /*#houselists a.scenebox:hover{
+            text-decoration: none;
+            color: #666;
+        }*/
+        #houselists .scenebox .thumbpic{
+            width:100%; 
+            /*height: 200px;*/
+            position: relative;
+            background: #999;
+            overflow: hidden;
+            border-radius: 5px;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            -ms-border-radius: 5px;
+        }
+        #houselists .scenebox .thumbpic img.picurl{
+            display: block;
+            width: 100%;
+        }
+        #houselists .scenebox .thumbpic .address{
+            position: absolute;
+            text-align: center;
+            /*line-height: 40px;*/
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            /*height: 40px;*/
+            background: rgba(51,51,51,0.8);
+            overflow: hidden;
+            font-size: 10px;
+            padding: 5px 0;
+            text-overflow:ellipsis;
+            white-space: nowrap;
+        }
+        #houselists .scenebox .thumbpic .visited{
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+        #houselists .scenebox .thumbpic .visited span{
+            padding-left: 5px;
+            position: relative;
+            bottom: 2px;
+        }
+        .sceneWrap .checkmore{
+            display: block;
+            color: #e72420;    
+            text-align: center;
+            padding: 20px 0;        
+        }
+    </style>
+</head>
+<body>
+    <div id="houselists">
+        <div class="header">
+            <p class="username" v-text="username+'-个人店铺'"></p>
+        </div>
+        <div class="sceneWrap">
+            <div class="userHeader">
+                <h2 class="avatar"><img :src="logourl" /></h2>
+                <p class="username" v-text="username"></p>
+                <p class="telephone" v-if="telephone"><img class="iconTel" src="/images/iconTel.png" /><span v-text="telephone"></span></p>
+            </div>
+            <div class="listWrap clearfix">
+                <h4 class="title"><img width="28" src="/images/recommend.png" /><span>推荐房源</span></h4>
+                <a :href="'http://wx.sz-sti.com/scene?groupkey='+list.key" class="scenebox clearfix" v-for="list in lists | limitBy limit">
+                    <div class="thumbpic">
+                        <img class="picurl" :src="list.thumbsrc" />
+                        <p class="address">
+                            {{list.address1}}<br/>
+                            {{list.address2}}
+                        </p>
+                        <p class="visited"><img src="/images/scenevisited.png" /><span v-text="list.visited"></span></p>
+                    </div>
+                </a>
+            </div>
+            <a v-if="count>limit" class="checkmore" @click="checkmore">更多房源...</a>
+        </div>
+    </div>  
+
+    <script>
+        var houselists = new Vue({
+            el: '#houselists',
+            data:{
+                lists:[],
+                transform: ["零", "一", "二", "三", "四", "五", "六", "七", "八", "九",'十'],
+                // filtercheck: false,
+                // countlists: ['全部'],
+                list: '',
+                limit: 6,
+                count: '',
+                logourl: "<%=user.logo?user.logo:'http://ipano3.sz-sti.com/images/tools/botimg.png'%>",
+                avatarpic: '<%-user.avatar%>',
+                <%var realname = JSON.parse(user.realname)%>
+                username: "<%=realname.content1?(realname.content1+'-'+realname.content2):user.name%>",
+                telephone: '<%=user.itcregion%>'
+            },
+            methods:{
+                init: function(){
+                    var _this = this;
+                    $.get('/scene/lists/scenes/<%=user.id%>',function(res){
+                        if(res.code!=0){
+                            console.log(res);
+                            return;
+                        };
+                       _this.avatarpic=='null'? _this.avatarurl = 'http://ipano3.sz-sti.com/images/tools/botimg.png':_this.avatarurl = 'http://qncdn.sz-sti.com/avatar/' + _this.avatarpic + '.jpg';
+                            for(var i in res.scenes){
+                                res.scenes[i].address1 = res.scenes[i].city.replace('市','').replace('市','').replace('区','').replace('区','')+'-' + res.scenes[i].region.replace('市','').replace('市','').replace('区','').replace('区','')+'-'+ res.scenes[i].community+' ' ;
+                                res.scenes[i].address2 = _this.transform[res.scenes[i].apartment_rooms]+'房'+_this.transform[res.scenes[i].apartment_halls]+'厅'+' '+res.scenes[i].area+'㎡'+' '+res.scenes[i].price;
+                                _this.lists.push(res.scenes[i]);
+                                console.log(_this.lists);
+                                
+                            }
+                        _this.count = _this.lists.length;
+                    })
+                },
+                checkmore: function(){
+                    this.limit+=6;
+                },
+                transforms: function(value){
+                    value = value.toString();
+                    if(value<10){
+                        return this.transform[value];
+                    }
+                    if(value<100){
+                        var f_str = value.substring(0,1);
+                        var s_str = value.substring(1,2);
+                        return this.transform[f_str]+this.transform[10]+this.transform[s_str];
+                    }
+                },
+                filterBy: function(name){
+                    this.list = name == '全部'? '':name;
+                    this.filtercheck = false;
+                }
+            }
+        })
+        houselists.init();
+    </script>
+
+    <script src='http://res.wx.qq.com/open/js/jweixin-1.0.0.js'></script>
+    <script type="text/javascript">
+        var head = new Vue({
+            el: 'head',
+            data: {
+                title: houselists.username
+            }
+        });
+        (function (){
+            $.post('/wechat/jsapi',{url:location.href.split('#')[0]},function(result){
+                var data = {
+                    debug: false,
+                    appId: 'wxec58fce24188eb77',
+                    timestamp:result.timestamp,
+                    nonceStr: result.noncestr,
+                    signature: result.signature,
+                    jsApiList: ['onMenuShareAppMessage','onMenuShareTimeline','onMenuShareQQ','onMenuShareWeibo','onMenuShareQZone']
+                };
+                wx.config(data);
+                var config = {
+                    title: "<%=realname.content1?(realname.content1+'-'+realname.content2):user.name%>"+" 个人店铺", // 分享标题
+                    desc: '<%=user.itccontacts%>', // 分享描述
+                    imgUrl:"<%=user.logo?user.logo:'http://ipano3.sz-sti.com/images/tools/botimg.png'%>",
+                    link: location.href,
+                    success: function () { 
+                       // 用户确认分享后执行的回调函数
+                       // alert('11111')
+                    },
+                    cancel: function () { 
+                       // 用户取消分享后执行的回调函数
+                    }
+                }
+                wx.ready(function(){
+                    wx.onMenuShareTimeline(config);
+                    wx.onMenuShareAppMessage(config);
+                    wx.onMenuShareQQ(config);
+                    wx.onMenuShareWeibo(config);
+                    wx.onMenuShareQZone(config);
+                });
+                wx.error(function(res){
+                });
+            });
+        })()
+    </script>
+</body>
+</html>

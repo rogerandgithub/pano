@@ -1,0 +1,225 @@
+<krpano onstart="ifnot(haveexternalinterface, error('ExternalInterface (Javascript Interface) not avaiable![br]Check your Flashplayer security settings:[br]http://krpano.com/docu/localusage/'));">
+
+	<!-- preview -->
+
+	<!-- pano (note - to keep this example small the same image as the preview image is used here) -->
+    <image type="CUBE" tilesize="auto">
+        
+        
+        
+        <front  url="http://7xiljm.com1.z0.glb.clouddn.com/images/scenes/e9bb6c580d7a5e53bb8887fc8228bce91d93a20d/allinone.jpg?imageMogr2/gravity/NorthWest/crop/!1024x1024a0a0/interlace/0/thumbnail/!100p" rotate="0" flip="" />
+        
+        <down  url="http://7xiljm.com1.z0.glb.clouddn.com/images/scenes/e9bb6c580d7a5e53bb8887fc8228bce91d93a20d/allinone.jpg?imageMogr2/gravity/NorthWest/crop/!1024x1024a0a1024/rotate/90/interlace/0/thumbnail/!100p" rotate="0" flip="" />
+        
+        <left  url="http://7xiljm.com1.z0.glb.clouddn.com/images/scenes/e9bb6c580d7a5e53bb8887fc8228bce91d93a20d/allinone.jpg?imageMogr2/gravity/NorthWest/crop/!1024x1024a0a2048/interlace/0/thumbnail/!100p" rotate="0" flip="" />
+        
+        <back  url="http://7xiljm.com1.z0.glb.clouddn.com/images/scenes/e9bb6c580d7a5e53bb8887fc8228bce91d93a20d/allinone.jpg?imageMogr2/gravity/NorthWest/crop/!1024x1024a0a3072/interlace/0/thumbnail/!100p" rotate="0" flip="" />
+        
+        <up  url="http://7xiljm.com1.z0.glb.clouddn.com/images/scenes/e9bb6c580d7a5e53bb8887fc8228bce91d93a20d/allinone.jpg?imageMogr2/gravity/NorthWest/crop/!1024x1024a0a4096/rotate/270/interlace/0/thumbnail/!100p" rotate="0" flip="" />
+        
+        <right  url="http://7xiljm.com1.z0.glb.clouddn.com/images/scenes/e9bb6c580d7a5e53bb8887fc8228bce91d93a20d/allinone.jpg?imageMogr2/gravity/NorthWest/crop/!1024x1024a0a5120/interlace/0/thumbnail/!100p" rotate="0" flip="" />
+        
+	</image>
+	
+	<!-- view settings -->
+	<view hlookat="0" vlookat="0" fov="100" fovmax="120" fovmin="80" />
+
+
+<hotspot name="a1166"
+         type="image"
+         url="http://qncdn.sz-sti.com/images/tools/spot3.png?imageMogr2/gravity/NorthWest/crop/!128x128a0a128/interlace/0/thumbnail/!100p"
+         keep="false"
+         devices="all"
+         visible="true"
+         enabled="true"
+         handcursor="true"
+         maskchildren="false"
+         zorder=""
+         style=""
+         ath="108.30085171691906" atv="25.63922956987259"
+         edge="center"
+         zoom="false"
+         distorted="false" rx="0.0" ry="0.0" rz="0.0"
+         width="20" height="20"
+         scale="2.5"
+         rotate="0.0"
+         alpha="1.0"
+         onover=""
+         onhover="showtext('厨房')"
+         onout=""
+         ondown=""
+         onup=""
+         onclick="openurl('/scene?key=721bb561c31917bac5815cf522d17e1a976d042c')"
+         onloaded=""
+         />
+         
+<hotspot name="a1171"
+         type="image"
+         url="http://qncdn.sz-sti.com/images/tools/spot3.png?imageMogr2/gravity/NorthWest/crop/!128x128a0a128/interlace/0/thumbnail/!100p"
+         keep="false"
+         devices="all"
+         visible="true"
+         enabled="true"
+         handcursor="true"
+         maskchildren="false"
+         zorder=""
+         style=""
+         ath="167.23195110445675" atv="27.314848554056606"
+         edge="center"
+         zoom="false"
+         distorted="false" rx="0.0" ry="0.0" rz="0.0"
+         width="20" height="20"
+         scale="2.5"
+         rotate="0.0"
+         alpha="1.0"
+         onover=""
+         onhover="showtext('厕所')"
+         onout=""
+         ondown=""
+         onup=""
+         onclick="openurl('/scene?key=59b1df8d78e271a2a24be42e26ba83af12e74691')"
+         onloaded=""
+         />
+         
+<hotspot name="a1172"
+         type="image"
+         url="http://qncdn.sz-sti.com/images/tools/spot3.png?imageMogr2/gravity/NorthWest/crop/!128x128a0a128/interlace/0/thumbnail/!100p"
+         keep="false"
+         devices="all"
+         visible="true"
+         enabled="true"
+         handcursor="true"
+         maskchildren="false"
+         zorder=""
+         style=""
+         ath="169.66987181839426" atv="17.496851384544826"
+         edge="center"
+         zoom="false"
+         distorted="false" rx="0.0" ry="0.0" rz="0.0"
+         width="20" height="20"
+         scale="2.5"
+         rotate="0.0"
+         alpha="1.0"
+         onover=""
+         onhover="showtext('房间2')"
+         onout=""
+         ondown=""
+         onup=""
+         onclick="openurl('/scene?key=966ab40bbea834c0cabbfd4b5ac2cda287b52359')"
+         onloaded=""
+         />
+         
+<hotspot name="a1177"
+         type="image"
+         url="http://qncdn.sz-sti.com/images/tools/spot4.png?imageMogr2/gravity/NorthWest/crop/!128x128a0a128/interlace/0/thumbnail/!100p"
+         keep="false"
+         devices="all"
+         visible="true"
+         enabled="true"
+         handcursor="true"
+         maskchildren="false"
+         zorder=""
+         style=""
+         ath="-178.57752230010368" atv="23.254322467972347"
+         edge="center"
+         zoom="false"
+         distorted="false" rx="0.0" ry="0.0" rz="0.0"
+         width="20" height="20"
+         scale="2.5"
+         rotate="0.0"
+         alpha="1.0"
+         onover=""
+         onhover="showtext('房间1')"
+         onout=""
+         ondown=""
+         onup=""
+         onclick="openurl('/scene?key=967093ae806c71ab99f85f9ba5726d88ff18d700')"
+         onloaded=""
+         />
+         
+<hotspot name="a1179"
+         type="image"
+         url="http://qncdn.sz-sti.com/images/tools/spot0.png?imageMogr2/gravity/NorthWest/crop/!128x128a0a128/interlace/0/thumbnail/!100p"
+         keep="false"
+         devices="all"
+         visible="true"
+         enabled="true"
+         handcursor="true"
+         maskchildren="false"
+         zorder=""
+         style=""
+         ath="171.9010986685708" atv="8.172434159997854"
+         edge="center"
+         zoom="false"
+         distorted="false" rx="0.0" ry="0.0" rz="0.0"
+         width="20" height="20"
+         scale="2.5"
+         rotate="0.0"
+         alpha="1.0"
+         onover=""
+         onhover="showtext('主卧')"
+         onout=""
+         ondown=""
+         onup=""
+         onclick="openurl('/scene?key=2a2d815e76dc08c90fe53c9b1debc5cc551bd281')"
+         onloaded=""
+         />
+         
+
+<hotspot name="top_trademark"
+         type="image"
+         url="http://7xiljm.com1.z0.glb.clouddn.com/images/trademarks/2b886a910ba10a143002c312b71d1ac44b79210b1_1442981729201.jpg"
+         keep="false"
+         devices="all"
+         visible="true"
+         enabled="true"
+         handcursor="true"
+         maskchildren="false"
+         zorder=""
+         style=""
+         ath="0" atv="-90"
+         edge="center"
+         zoom="false"
+         distorted="false" rx="0.0" ry="0.0" rz="0.0"
+         width="100" height="100"
+         scale="3"
+         rotate="0.0"
+         alpha="1.0"
+         onover=""
+         onout=""
+         ondown=""
+         onup=""
+         onloaded=""
+         />
+<hotspot name="bottom_trademark"
+         type="image"
+         url="http://7xiljm.com1.z0.glb.clouddn.com/images/trademarks/2b886a910ba10a143002c312b71d1ac44b79210b1_1442981729201.jpg"
+         keep="false"
+         devices="all"
+         visible="true"
+         enabled="true"
+         handcursor="true"
+         maskchildren="false"
+         zorder=""
+         style=""
+         ath="0" atv="90"
+         edge="center"
+         zoom="false"
+         distorted="false" rx="0.0" ry="0.0" rz="0.0"
+         width="100" height="100"
+         scale="3"
+         rotate="0.0"
+         alpha="1.0"
+         onover=""
+         onout=""
+         ondown=""
+         onup=""
+         onloaded=""
+         />
+
+    <security>
+        <crossdomainxml url=""/>
+    </security>	
+</krpano>
+
+

@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title><%=title%></title>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+        <link type="image/x-icon" rel="/favicon.ico" rel="icon"/>
+        <link rel="stylesheet" type="text/css" href="/css/swiper-3.3.1.min.css" />
+        <style>
+            #loading{
+                <%if(platform.indexOf('pc')==-1){%>
+                background-size: 10.7%;
+                background-position: 50% 43%;
+                <%}else{%>
+                background-position: 50% 41.25%;
+                <%}%>
+            }
+
+            <%if(user_info.permission_support=='0'){%>
+                #sidebar .tabheader a{
+                    width: 50%;
+                    float: left;
+                }
+            <%}else{%>
+                #sidebar .tabheader a{
+                    width: 100%;
+                }
+            <%}%>
+            .abstractInfo .swiper-container .swiper-wrapper{
+                height: 100% !important;
+            }
+            <%if(platform.indexOf('pc')==-1){user_info.qrcode=1}%>
+            <%if(user_info.qrcode=='0'){%>
+                #qrcode{
+                    position: absolute;
+                    width: 80px;
+                    height: 80px;
+                    padding:5px;
+                    background-color: rgba(255,255,255,0.5);
+                    bottom: 170px;
+                    right: 20px;
+                }
+            <%}else{%>
+                #qrcode{
+                    width: 140px;
+                    height: 140px;
+                    padding:5px;
+                    margin:50px auto;
+                }
+            <%}%>
+            #ipano_wraper{
+                width: 100%;
+                height: 100%;
+                position: relative;
+            }
+            .showcomments{
+                position: absolute;
+                z-index: 99999;
+                max-width: 600px;
+                max-height: 1000px;
+                background: rgba(255,255,255,1);
+                box-shadow: 0 0 10px rgba(0,0,0,0.5) !important;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%,-50%);
+                padding:10px;
+                color: #000;
+                cursor: pointer;
+                text-align: center;
+                display: none;
+            }
+            .showcomments .imgname{
+                text-align: center;
+                line-height: 30px;
+            }
+            .showcomments .hotimg{
+                display: block;
+                margin: 0 auto;
+            }
+            .showcomments .imgdes{margin-top: 10px;max-height: 300px;overflow-y: auto;}
+            .showcomments .imgdes a{
+                color: #000;
+                text-decoration:none; 
+            }
+            <%if(type==5){%>body{background: #000;}<%}%>
+        </style>
+    </head>
+
+    <body>
+        <%if(type!=5){%><div id="loading" style="display:block;"></div><%}%>
+
+        <div id="ipano_wraper">
+            <div id="ipano"></div>
+            <div class="showcomments">
+                <h4 class="imgname"></h4>
+                <img class="hotimg" />
+                <p class="imgdes"></p>
+            </div>
+        </div>
+
+        <!--qrcode -->
+        <%if(user_info.qrcode=='0'){%>
+            <div id="qrcode"></div>
+        <%}%>
+
+        <div class="wrap" id="sidebar">
+            <div class="logo"><img width="40" src="<%=logo%>"></div>
+            <div class="tabs clearfix">
+                <a href="javascript:;" hidefocus="true" class="abstract active"><img style="border-style:none;" src="/images/abstract.png" /><p>简介</p></a>
+                <%if(user_info.permission_support=='0'){%>
+                <a href="javascript:;" hidefocus="true" class="support"><img style="border-style:none;z-index:99999;" src="/images/support.png" /><p>技术支持</p></a>
+                <%}%>
+            </div>    
+            <div class="swiper-container swiper-wrappers">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide slidebox">
+                        <h3 class="address"><%=address%></h3>
+                        <div class="abstractInfo">
+                            <div class="swiper-container">
+                                <div class="swiper-wrapper">
+                                    <div class="swiper-slide">
+                                        <div class="slide-inner">
+                                            <%if(extra!='{}'){%>
+                                                <p><%-extra.replace(/(\n)+|(\r\n)+/g, "")%></p>
+                                            <%}else{%>
+                                                <p>还没有填写简介</p>
+                                            <%}%>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+ 
+                        </div>
+                    </div>
+                    <%if(user_info.permission_support=='0'){%>
+                    <div class="swiper-slide slidebox">
+                        <div class="content-slide">
+                            <ul id="lists_1">
+                                <li><a href="#" id="server_go">技术支持</a></li>
+                                <li><a href="/management/article?id=2">使用条款</a></li>
+                                <li><a href="/management/article?id=1">隐私条款</a></li>
+                            </ul>
+                            <ul id="lists_2">
+                                <li><a href="#" id="server_back">技术支持</a></li>
+                                <li><a href="http://www.robosense.cn/web/panorama/cn">设备ipano</a></li>
+                                <li><a href="http://www.robosense.cn/web/cooperation/cn">合作加盟</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <%}%>
+                    <%if(user_info.qrcode!='0'){%>
+                    <div class="swiper-slide slidebox">
+                        <div id="qrcode"></div>
+                    </div>
+                    <%}%>
+                </div>
+            </div>
+            <div class="likeVisit">
+                <%if(user_info.qrcode!='0'){%>
+                <a class="share" href="javascript:;">
+                    <img width="20" style="border-style:none;" src="/images/share.png" />
+                    <p>二维码</p>
+                </a>
+                <%}%>
+                <a class="addliked" href="javascript:;">
+                    <img width="20" style="border-style:none;" src="/images/liked.png" />
+                    <p><%=group_info.liked%></p>
+                </a>
+                <a href="javascript:;">
+                    <img width="20" style="border-style:none;" src="/images/visited.png" />
+                    <p><%=visited%></p>
+                </a>
+            </div>
+        </div>
+
+
+        <script src="/js/ipano.js"></script>
+
+        <script src="/js/jquery-1.8.3.min.js"></script>
+        <script defer="defer" src="/js/idangerous.swiper.min.js"></script>
+        <script type="text/javascript" src="/js/jquery.qrcode.min.js"></script>  
+        <script>
+            //侧边栏缩进
+            function tabsidebar(type){
+                if(type=='show'){
+                    if($('#sidebar').css('left') != '0px'){
+                        $('#sidebar').animate({
+                            left: '0'
+                        },350);
+                    }
+                }else{
+                    if($('#sidebar').css('left') == '0px'){
+                        var sidebarW = $('#sidebar').width();
+                        $('#sidebar').animate({
+                            left: -sidebarW
+                        },350);
+                    }
+                }
+            }
+            $('.showcomments').on('click',function(){
+                $(this).slideToggle();
+            });
+            function showcomments(url,hotimg_name,hotimg_des){
+                $('.showcomments .hotimg').attr('src',url);
+                $('.showcomments .imgname').text(hotimg_name);
+                $('.showcomments .imgdes').html(hotimg_des);
+                $('.showcomments').slideDown();
+                console.log(hotimg_name);
+                console.log(hotimg_des);
+            }
+            $(function(){
+                
+                <%if(user_info.qrcode=='0'){%>
+                    $('#qrcode').qrcode({
+                        render:'canvas',
+                        width: 80,
+                        height: 80,
+                        correctLevel:1,
+                        typeNumber  :-5,
+                        background:'transparent',
+                        text: 'http://wx.sz-sti.com/scene/<%=group_info.id%>'
+                    }); 
+                <%}else{%>
+                    $('#qrcode').qrcode({
+                        render:'canvas',
+                        width: 140,
+                        height: 140,
+                        correctLevel:1,
+                        typeNumber  :-5,
+                        background:'transparent',
+                        text: 'http://wx.sz-sti.com/scene/<%=group_info.id%>'
+                    });
+                <%}%>
+                var tabsSwiper = new Swiper('.swiper-container',{
+                    speed:500,
+                    onSlideChangeStart: function(swiper){
+                        var size = $('#sidebar .slidebox').size()-1;
+                        if(tabsSwiper.activeIndex != size){
+                            $("#sidebar .tabs a").removeClass('active');
+                            $("#sidebar .tabs a").eq(tabsSwiper.activeIndex).addClass('active');
+                        }
+                    }
+                });
+                var swiperH = $('.abstractInfo .swiper-wrapper').height();
+                var swiperscrollH = $('.abstractInfo .swiper-slide').height();
+                if(swiperscrollH>swiperH){
+                    $('.abstractInfo .swiper-slide').height(swiperscrollH + 250);
+                    $('.abstractInfo .slide-inner').height($('.abstractInfo .swiper-slide').height());
+                }
+                
+                var mySwiper = new Swiper('.abstractInfo .swiper-container', {
+                    scrollContainer:true,
+                    mousewheelControl : true,
+                    mode:'vertical'
+                })
+                $(".tabs a").on('touchstart mousedown',function(e){
+                    e.preventDefault();
+                    $(".tabs .active").removeClass('active');
+                    $(this).addClass('active');
+                    tabsSwiper.swipeTo($(this).index());
+                });
+
+                $(".tabs a").click(function(e){
+                    e.preventDefault();
+                });
+                $('#sidebar .abstractInfo').height( $('#sidebar').height() - $('#sidebar .logo').height() - $('#sidebar .tabs').height() - $('#sidebar .likeVisit').height() - $('.address').height() - 60 );
+                $('#sidebar .swiper-wrappers').height( $('#sidebar').height() - $('#sidebar .logo').height() - $('#sidebar .tabs').height() - $('#sidebar .likeVisit').height() - 50 );
+
+                function checkMobile(){
+                    if(/AppleWebKit.*Mobile/i.test(navigator.userAgent) 
+                    || /Android/i.test(navigator.userAgent) 
+                    || /BlackBerry/i.test(navigator.userAgent) 
+                    || /IEMobile/i.test(navigator.userAgent) 
+                    || (/MIDP|SymbianOS|NOKIA|SAMSUNG|LG|NEC|TCL|Alcatel|BIRD|DBTEL|Dopod|PHILIPS|HAIER|LENOVO|MOT-|Nokia|SonyEricsson|SIE-|Amoi|ZTE/.test(navigator.userAgent))){
+                        if(/iPad/i.test(navigator.userAgent)){
+                            return 2;//平板
+                        }else{
+                            return 1;//手机
+                        }
+                    }else{
+                        return 0;
+                    }
+                } 
+
+                $('#server_go').on('click touchstart',server_go);
+                $('#server_back').on('click touchstart',server_back);
+                $('.likeVisit .share').on('click touchstart',sharecode);
+                $('#sidebar .goback').on('click touchstart',gobackshare);
+
+                function server_go(e){
+                    e.preventDefault();
+                    $('#lists_1').css({'left':'-100%','visibility':'hidden','z-index':-222});
+                    $('#lists_2').css({'left':5,'visibility':'visible','z-index':222});
+                }
+                function server_back(e){
+                    e.preventDefault();
+                    $('#lists_1').css({'left':5,'visibility':'visible','z-index':222});
+                    $('#lists_2').css({'left':'100%','visibility':'hidden','z-index':-222});
+                }
+                function sharecode(e){
+                    var size = $('#sidebar .slidebox').size()-1;
+                    e.preventDefault();
+                    tabsSwiper.swipeTo(size);
+                }
+                function gobackshare(e){
+                    e.preventDefault();
+                    $(".tabs .active").removeClass('active');
+                    $('.tabs a').eq(0).addClass('active');
+                    tabsSwiper.swipeTo(0);
+                }
+
+                var tabSwiper = new Swiper('.swiper-content',{
+                    onSlideChangeStart: function(swiper){
+                        var size = $('#sidebar .slidebox').size()-1;
+                        if(tabSwiper.activeIndex != size){
+                            $("#sidebar .tabheader a").removeClass('active');
+                            $("#sidebar .tabheader a").eq(tabSwiper.activeIndex).addClass('active');
+                        }
+                    },
+                });
+                function tab(){
+                    var index = $(this).index();
+                    $(this).siblings().removeClass('active');
+                    $(this).addClass('active');
+                    tabSwiper.slideTo(index,500,false);
+                }
+
+            })
+
+            function setCookie(name, value)
+            {
+                var Days = 30;
+                var exp = new Date();
+                exp.setTime(exp.getTime() + Days*24*60*60*1000);
+                document.cookie = "<%=sceneKey%>_"+name+"="+ escape (value) + ";expires=" + exp.toGMTString();
+            }
+
+            function getCookie(name){
+
+                var arr,reg=new RegExp("(^| )<%=sceneKey%>_"+name+"=([^;]*)(;|$)");
+                if(arr=document.cookie.match(reg))
+                    return unescape(arr[2]);
+                else
+                    return null;
+            }
+
+            var match,
+                scale,
+                is_360=false,
+                TARGET_WIDTH = 640;
+
+            <%if(platform.indexOf('pc-ie')!=-1){%>
+                if(navigator.userAgent.indexOf('Chrome')!=-1){
+                    is_360=true;
+                }
+            <%}%>
+            var sortid = '<%=sceneKey%>'.substr(0, 6);
+
+            var xml_init = {
+                _xml:"/scene/panoxml/<%=sceneKey%>?width=<%=infowidth%>&preview=<%=preview%>&v=20&cover=<%=cover%>"
+            };
+
+            createiPano(xml_init);
+        
+            var krpano = document.getElementById('stipano');
+
+            function hideloading(){
+                $("#loading").hide();
+            }
+
+            setTimeout(function(){
+                $("#loading").hide();
+            }, 4000);
+
+            var fristflag=1, backtext;
+            function speech(text, i){
+                i = i?i:'';
+                var time = parseInt(text.length/4.5)+4;
+                var loading_time = parseInt(text.length*0.003);
+                if (fristflag) {
+                    backtext = text;
+                    setTimeout(function(){
+                        var src = 'http://tts.baidu.com/text2audio?lan=zh&ie=UTF-8&text=' + text;
+                        $('#audio').attr('src', src);
+                    },2500-loading_time);
+                    fristflag--;
+                    i?closebroadcast(time, i):closebroadcast(time);
+                }else{
+                    if(backtext!=text){
+                        backtext = text;
+                        var src = 'http://tts.baidu.com/text2audio?lan=zh&ie=UTF-8&text=' + text;
+                        $('#audio').attr('src', src);
+                        i?closebroadcast(time, i):closebroadcast(time);
+                    }else{
+                        if ($('#audio')[0].paused) {
+                            $('#audio')[0].play();
+                        }else{
+                            $('#audio')[0].pause();
+                        }
+                    }
+                }
+            } 
+            function closebroadcast(time, i){
+                var jsstring = i?
+                    'copy(layer[open_house_broadcast'+i+'].crop,layer[open_house_broadcast'+i+'].crop_closed);set(layer[open_house_broadcast'+i+'].state, "paused");':
+                    'copy(layer[toggle_broadcast].crop,layer[toggle_broadcast].crop_closed);set(layer[toggle_broadcast].state, "paused");';
+                setTimeout(function(){
+                    krpano.call(jsstring);
+                }, time*1000);
+            }
+            function preload(src){
+                var image = new Image();
+                image.src = src;
+            }
+            function preload2(arr){
+                var arr = JSON.parse(arr);
+
+                function preloadcallback(i){
+                    var image = new Image();
+                    image.src = arr[i];
+                    image.onload = function() {
+                        if(arr[i+1]) preloadcallback(++i);
+                    }
+                }
+                preloadcallback(0);
+            }
+
+            // var _hmt = _hmt || [];
+            // var hm = document.createElement("script");
+            // hm.src = "//hm.baidu.com/hm.js?1a5bb52b8de0e925e226370af18e977d";
+            // var s = document.getElementsByTagName("script")[0]; 
+            // s.parentNode.insertBefore(hm, s);
+
+
+
+            function like(){
+                if(!getCookie('liked_'+sortid)){
+                    $.post('/scene/like/<%=sceneKey%>', {}, function(res){
+                        if(res.code!=0){
+                            alert(res.msg);
+                            return;
+                        }
+                        setCookie('liked_'+sortid, 1);
+                    });
+                }
+            }
+        
+            if(getCookie('liked_'+sortid)){
+                $('.addliked img').attr('src','/images/addliked.png');
+            }
+
+            $('.addliked').on('click',function(){
+                if(!getCookie('liked_'+sortid)){
+                    $.post('/scene/like/<%=sceneKey%>', {}, function(res){
+                        if(res.code!=0){
+                            alert(res.msg);
+                            return;
+                        }
+                        $('.addliked img').attr('src','/images/addliked.png');
+                        $('.addliked p').html(parseInt($('.addliked p').html())+1);
+                        setCookie('liked_'+sortid, 1);
+                    });
+                }else{
+                    alert('已经点赞过了');
+                }
+            });
+
+            function like(){
+                if(!getCookie('liked_'+sortid)){
+                    $.post('/scene/like/<%=sceneKey%>', {}, function(res){
+                        if(res.code!=0){
+                            alert(res.msg);
+                            return;
+                        }
+                        setCookie('liked_'+sortid, 1);
+                    });
+                }
+            }
+        </script>
+
+        <%if(platform.indexOf('pc')==-1){%>
+        <%include panorama_wechat_sharing%>
+        <script type="text/javascript">
+            console.log('<%=shareiconKey%>');
+            configWechatSharing('www.sz-sti.com','<%=shareiconKey%>','<%=group_info.title?group_info.title:title%>','<%=sharead%>');
+            
+            document.addEventListener("WeixinJSBridgeReady", function () { 
+                  document.getElementById('audio').play();
+            }, false);
+        </script>
+        <%}%>
+
+        <audio style='display:none' id='audio' preload="preload" autoplay='autoplay' ></audio>
+    </body>
+</html>

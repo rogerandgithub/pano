@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>后台管理</title>
+    <link rel="stylesheet" href="/css/feedback.css" type="text/css">
+    <link href="/css/new/common.css" rel="stylesheet" type="text/css" /> 
+    <script src="/js/new/vue.min.js"></script> 
+    <script src="/js/jquery-1.8.3.min.js"></script>
+    <script src="/js/qnuploader.js"></script>
+</head>
+<body>
+    <%include toast%>
+
+    <div id="trashpano" class="toast-content">
+        <div class="toast-center-wrapper">
+            <div class="m-header">
+                <h1 class="text-center"><img width="35" src="/images/lock.png" /></h1>
+                <h6 class="toast-title text-center">密码认证</h6>
+            </div>
+            <div>
+                <div class="toast-body">
+                    <div class="form-group"> 
+                        <input id="psw" class="form-control" type="password" placeholder="请输入您的密码" autocomplete="off" @keyup.enter="submit" v-model="psw" />
+                    </div>
+                </div>
+                <div class="m-footer">
+                    <div class="text-center" style="text-align:center;">
+                        <!-- <button class="btn btn-cancel btn-lg" type="button" @click="hide">取消</button> -->
+                        <button class="btn btn-primary btn-setter btn-lg" :disabled="disabled" type="submit" @click="submit">确定</button> 
+                    </div>
+                </div>
+            </div>
+        </div>   
+    </div>
+    <script type="text/javascript">
+        var login = new Vue({
+            el: '#trashpano',
+            data: {
+                psw: ''
+            },
+            methods: {
+                submit: function(){
+                    if(!this.psw){
+                        toast.showmsg('密码不能为空', true);
+                        return;
+                    }
+                    $.post('/supermaster/analysis/login', {
+                        psw: this.psw
+                    }, function(res){
+                        if(res.code!=0){
+                            toast.showmsg(res.msg, true);
+                            return;
+                        }
+                        toast.showmsg('登录成功');
+                        setTimeout(function(){
+                            location.href = '/supermaster/analysis';
+                        }, 1000);
+                    });
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="renderer" content="webkit" /> 
+    <title><%=lang=='cn'?'多线实时激光雷达-产品介绍':'RS-LiDAR Products'%></title>
+    <link rel="stylesheet" href="/index/css/common.css" type="text/css">  
+    <link rel="stylesheet" href="/index/css/jquery.fullPage.css" type="text/css">
+    <link rel="stylesheet" href="/index/css/aos.css" type="text/css"> 
+    <style type="text/css">
+        #backtop{
+            display: none;
+        }
+        #rslidar{
+            transition: all 1s cubic-bezier(0.86, 0, 0.07, 1);
+            -webkit-transition: all 1s cubic-bezier(0.86, 0, 0.07, 1);
+        }
+        #rslidar.header{
+            transform: translate3d(0px, 159px, 0px);
+            -webkit-transform: translate3d(0px, 159px, 0px);
+        }
+        #rslidar.footer{
+            transform: translate3d(0px, -400px, 0px);
+            -webkit-transform: translate3d(0px, -400px, 0px);
+        }
+        #rslidar .page_1{
+            background: url('/index/images/rslidar/platform-carsss.jpg') no-repeat center;
+            background-size: cover;
+        }
+        #rslidar .page_2{
+            background: url('/index/images/rslidar/page_2_bg.jpg') no-repeat center;
+            background-size: cover;
+            text-align: center;
+        }
+        #rslidar .page_2 h2{
+            font-size: 28px;
+            font-weight: 400;
+        }
+        #rslidar .page_2 p{
+            max-width: 1100px; 
+            font-size: 16px;
+            color: #333;
+            line-height: 30px;
+            text-align: left;
+            margin: 20px auto 90px auto;
+        }
+        #rslidar .page_2 img{
+            display: block;
+            margin: 0 auto;
+            max-width: 940px;
+            width: 94%;
+        }
+        #rslidar .page_3 h2{
+            font-size: 28px;
+            font-weight: 400;
+            text-align: center;
+            margin-top: 80px;
+        }
+        #rslidar .page_3 p{
+            text-align: justify;
+            max-width: 1100px; 
+            font-size: 16px;
+            color: #333;
+            line-height: 30px;
+            margin: 20px auto 40px auto;
+        }
+        #rslidar .page_3 .solution_box{
+            margin: 0 auto;
+            max-width: 1100px;
+            display: flex;
+            display: -webkit-flex;
+            display: -ms-flex;
+        }
+        #rslidar .page_3 .solution_box .item{
+            flex: 1;
+            -webkit-flex: 1;
+            -ms-flex: 1;
+        }
+        #rslidar .page_3 .solution_box .item h4{
+            font-size: 18px;
+            color: #666;
+            line-height: 28px;
+            margin: 15px 0 10px 0;
+        }
+        #rslidar .page_3 .solution_box .item p{
+            font-size: 14px;
+            color: #666;
+            line-height: 14px;
+            margin: 0;
+        }
+        #rslidar .page_3 .solution_box .item a{
+            display: block;
+            width: 220px;
+            height: 60px;
+            background: #e72420;
+            border-radius: 3px;
+            float: right;
+            color: #fff;
+            line-height: 60px;
+            text-align: center;
+            margin-top: 40px;
+        }
+        #rslidar .page_3 .solution_box .item:first-child{
+            margin-right: 55px;
+        }
+        #rslidar .page_3 .solution_box .item:last-child{
+            margin-left: 55px;
+        }
+        #rslidar .page_3 .solution_box .item:last-child a{
+            float: left;
+        }
+        #rslidar .page_3 .solution_box .item img{
+            display: block;
+            width: 100%;
+        }
+
+        #rslidar .page_4 h2{
+            font-size: 28px;
+            font-weight: 400;
+            text-align: center;
+        }
+        #rslidar .page_4 p{
+            /*text-align: center;*/
+            max-width: 1100px; 
+            font-size: 16px;
+            color: #333;
+            line-height: 30px;
+            margin: 20px auto 40px auto;
+        }
+        #rslidar .page_4 .header{
+            width: 100%;
+            position: absolute;
+            top: 17%;
+            left: 0; 
+        }
+        #rslidar .page_4 .bg{
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 60%;
+            background: url('/index/images/rslidar/page_4_img.jpg') no-repeat center;
+            background-size: cover; 
+        }
+
+
+        #rslidar .page_5 {
+            background: url(/index/images/rslidar/page5_bg.jpg) no-repeat center;
+            background-size: cover;
+            text-align: center;
+        }
+
+        #rslidar .page_5 h2{
+            text-align: center;
+            font-size: 28px;
+            color: #000;
+            font-weight: 400;
+            margin-bottom: 60px;
+        }
+        #rslidar .page_5 .flex-box{
+            margin: 0 auto;
+            max-width: 1100px;
+            display: flex;
+            display: -webkit-flex;
+            display: -ms-flex;
+        }
+        #rslidar .page_5 .flex-box .item{
+            flex: 1;
+            -webkit-flex: 1;
+            -ms-flex: 1;
+        }
+        #rslidar .page_5 .flex-box .item:first-child img{
+            display: block;
+            width: 100%;
+            border: 10px solid #f3f3f3;
+            border-radius: 3px;
+            box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            -ms-box-sizing: border-box;
+        }
+        #rslidar .page_5 .flex-box .item:first-child p{
+            font-size: 12px;
+            color: #666;
+            padding-top: 20px;
+            text-align: center;
+        }
+        #rslidar .page_5 .flex-box .item:first-child{
+            margin-right: 55px;
+            position: relative;
+        }
+        #rslidar .page_5 .flex-box .item:first-child .absolute{
+            position: absolute;
+            top: 50%;
+            transform: translate3d(0, -50%, 0);
+            -webkit-transform: translate3d(0, -50%, 0);
+            -ms-transform: translate3d(0, -50%, 0);
+        }
+        #rslidar .page_5 .flex-box .item:last-child{
+            margin-left: 55px;
+        }
+        #rslidar .page_5 .flex-box .item:last-child tr td:nth-of-type(2){
+            padding: 0 10px;
+        }
+        #rslidar .page_5 .flex-box .item:last-child tr td{
+            padding: 3px 0;
+        }
+        #rslidar .page_5 .flex-box .item:last-child .parameter{
+            font-size: 16px;
+            color: #666;
+        }
+        #rslidar .page_5 .flex-box .item .download{
+            display: block;
+            width: 220px;
+            height: 60px;
+            background: #e72420;
+            border-radius: 3px;
+            float: right;
+            color: #fff;
+            line-height: 60px;
+            text-align: center;
+            margin-top: 30px;
+            margin-right: 120px;
+        }
+    </style>
+</head>
+<body>
+    <%include nav%>
+    <%include footer%>
+    <div id="navtop">
+        <navtop>
+          <div class="three-menu" slot="navbottom">
+            <div class="link">
+                <a href="/web/rslidar/<%=lang%>" class="button">
+                    <span v-text="threeMenu.rslidar"></span>
+                </a>
+            </div>
+            <div class="link">
+                <a href="/web/rslidar/platform/<%=lang%>" class="button active">
+                    <span v-text="threeMenu.platform"></span>
+                </a>
+            </div>
+            <div class="link">
+                <a href="/web/rslidar/algorithm/<%=lang%>" class="button">
+                    <span v-text="threeMenu.algorithm"></span>
+                </a>
+            </div>
+            <div class="link">
+                <a href="/web/prometheus/<%=lang%>" class="button">
+                    <span v-text="threeMenu.prometheus"></span>
+                </a>
+            </div>
+          </div>
+        </navtop>
+    </div>
+    <div id="rslidar">
+        <div id="panorama">
+            <div>
+                <div class="section page_1">
+                    <div class="wrap clearfix">
+                    </div>
+                </div>
+                <div class="section page_2">
+                    <div class="wrap clearfix">
+                        <h2><%=lang=='cn' ? '自由组合，灵活的线束密度表现' : 'Flexible combination offers diverse beam density choice.'%></h2>
+                        <p><%=lang=='cn' ? 'RS-LiDAR多激光雷达耦合平台方案是指多个混合固态激光雷达经过合理的设计布局，通过激光雷达联合标定以及数据同步处理，达到自由组合混合固态激光雷达点云密度变化的目的。速腾聚创可根据合作伙伴需求提供适当数量的激光雷达耦合方案，标准版为4个激光雷达。' : 'Multi-LiDAR coupling platform combines multiple hybrid solid-state LiDAR, which through sophisticated layout design, joint LiDAR calibration,and simultaneous data processing to achieve varied point-cloud density results. RoboSense provides customized LiDAR coupling solutions to partners according to specific project demands.The standard coupling solution comprises 4 RS-LiDARs.'%></p>
+                        <img src="/index/images/rslidar/page_2_img.png">
+                    </div>
+                </div>
+                <div class="section page_3">
+                    <div class="wrap clearfix">
+                        <h2><%=lang=='cn' ? '全新密集点云方案' : 'Disruptive Point Cloud Solution'%></h2>
+                        <p><%=lang=='cn' ? '相比单个64线激光雷达，标准版耦合方案（4个16线），在1/4价格基础上，实现高速自动驾驶实际使用所需的相同点云密度。同时，多激光雷达耦合方案，可以根据客户不同需求进行拆装组合，适用不同场景。更加令人兴奋的是，多个激光雷达的耦合，更便于检测与维护。即使在更复杂或者面对紧急故障的驾驶场景，也能从容应对，让自动驾驶更加安全。' : 'Compared with individual 64-beam LiDAR, the standard coupling solution (comprises four 16-beam LiDARs), delivers the same point cloud density required by high-speed autonomous driving but at only a quarter of the cost of a 64-beam LiDAR. Meanwhile, individual LiDAR of a coupling solution can be dismantled or re-combined according to diverse needs under different circumstance. More excitingly, testing and maintenance becomes an easier job and the most complicated driving scenarios become easier to handle with. Safer autonomous driving is more likely to be realized.'%></p>
+                        <div class="solution_box">
+                            <div class="item">
+                                <img src="/index/images/rslidar/solution_1.jpg" />
+                                <h4><%=lang=='cn' ? '应用效果展示' : 'Scanning effects'%></h4>
+                                <p><%=lang=='cn' ? '速腾聚创多线耦合方案实际使用更侧重关注前后方的点云密度。' : 'RoboSense multi-LiDAR coupling solutions put emphasis on point cloud density in front of and behind vehicles.'%></p>
+                                <a href="javascript:;" class="movetoslide"><%=lang=='cn' ? '了解参数' : 'Learn Parameters'%></a>
+                            </div>
+                            <div class="item">
+                                <img src="/index/images/rslidar/solution_2.jpg" />
+                                <h4><%=lang=='cn' ? '线束分解' : 'Beam density layout'%></h4>
+                                <p><%=lang=='cn' ? '根据雷达阵列排布，以上是不同角度的雷达线束密度分解。' : 'Beam density layout according to LiDAR configuration of the coupling solution.'%></p>
+                                <a href="/web/buy/<%=lang%>" target="_blank"><%=lang=='cn' ? '立即订购' : 'Place an order'%></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="section page_4">
+                    <div class="wrap clearfix">
+                        <div class="header">
+                            <h2><%=lang=='cn' ? '推进您的高速自动驾驶节奏' : 'Speed up your autonomous driving'%></h2>
+                            <p><%=lang=='cn' ? '有了多线激光雷达耦合方案，您不需要购买昂贵的高线束激光雷达，也不需要长时间等待产品。我们的方案竭诚与您一起推进您的高速自动驾驶节奏，对于合作伙伴，速腾聚创将从标定模块（内参和外参）、数据采集模块与数据融合模块三方面全方位为您提供支持。' : 'With our LiDAR coupling solutions, costly high beam density LiDAR is now not the only choice, beside, the hassle of torturous long lead time is averted. As your partner, we will provide supports in standardized module (internal specs and external specs), data collection module and data fusion module, we are dedicated to work with you and speed up your autonomous driving projects.'%></p>
+                        </div>
+                        <div class="bg"></div>
+                    </div>
+                </div>
+                <div class="section page_5" id="smoothScroll">
+                    <div class="wrap clearfix">
+                        <h2><%=lang=='cn' ? '参数/效果' : 'Parameters/effects'%></h2>
+                        <div class="flex-box">
+                            <div class="item">
+                                <div class="absolute">
+                                    <img src="/index/images/rslidar/xiaoguo.gif" />
+                                    <p><%=lang=='cn' ? '*以上视频显示是速腾聚创多16线激光雷达耦合进行演示的效果。' : '*The above video demonstrates the scanning effect of RS-LiDAR coupling solution.'%></p>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <table border="0" cellpadding="5" class="parameter">
+                                    <tbody>
+                                        <tr>
+                                            <td align="right"><%=lang=='cn' ? '激光雷达数量' : 'Number of LiDAR'%></td>
+                                            <td>…………</td>
+                                            <td align="left"><%=lang=='cn' ? '4个（标准版）' : '4 (Standard solution)'%></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right"><%=lang=='cn' ? '激光等级' : 'Laser class'%></td>
+                                            <td>…………</td>
+                                            <td align="left"><%=lang=='cn' ? 'Class 1' : 'class 1'%></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right"><%=lang=='cn' ? '线束' : 'Laser beam'%></td>
+                                            <td>…………</td>
+                                            <td align="left"><%=lang=='cn' ? '正前/后：64' : 'right front/behind: 64'%></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right">&nbsp;</td>
+                                            <td>&nbsp;</td>
+                                            <td align="left"><%=lang=='cn' ? '左/右 ：16' : 'left/right: 16'%></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right"><%=lang=='cn' ? '测量距离' : 'Range'%></td>
+                                            <td>…………</td>
+                                            <td align="left"><%=lang=='cn' ? '20cm - 150m' : '20cm to 150m'%></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right"><%=lang=='cn' ? '测量精度' : 'Accuracy'%></td>
+                                            <td>…………</td>
+                                            <td align="left"><%=lang=='cn' ? '±2cm(典型值)' : '±2cm(typical)'%></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right"><%=lang=='cn' ? '出点数' : 'Data rate'%></td>
+                                            <td>…………</td>
+                                            <td align="left"><%=lang=='cn' ? '1 280 000pts/s' : '1,280,000 pts/s'%></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right"><%=lang=='cn' ? '垂直测角' : 'FOV(vertical)'%></td>
+                                            <td>…………</td>
+                                            <td align="left"><%=lang=='cn' ? '31.5°' : '31.5°'%></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right"><%=lang=='cn' ? '垂直角分辨率' : 'Angular resolution(horizontal)'%></td>
+                                            <td>…………</td>
+                                            <td align="left"><%=lang=='cn' ? '0.5°' : '0.5°'%></td>
+                                        </tr><tr>
+                                            <td align="right"><%=lang=='cn' ? '防护安全级别' : 'Protection level'%></td>
+                                            <td>…………</td>
+                                            <td align="left"><%=lang=='cn' ? 'IP67' : 'IP67'%></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right"><%=lang=='cn' ? '规格' : 'Dimension'%></td>
+                                            <td>…………</td>
+                                            <td align="left"><%=lang=='cn' ? 'H82.7*φ109mm（单个）' : 'H82.7*φ109mm(individual)'%></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right"><%=lang=='cn' ? '重量' : 'Weight'%></td>
+                                            <td>…………</td>
+                                            <td align="left"><%=lang=='cn' ? '0.84kg（不包含数据线）' : '0.84kg(without Cabling)'%></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right"><%=lang=='cn' ? '采集数据' : 'Data type'%></td>
+                                            <td>…………</td>
+                                            <td align="left"><%=lang=='cn' ? '三维空间坐标/反射率' : 'spatial coordinates/intensity'%></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <!-- <a class="download" href="/web/resource/<%=lang%>">下载资源</a> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="footnav">
+                <footnav></footnav>
+            </div>
+        </div>
+    </div>
+    <div class="buy-box">
+        <a href="/web/buy/<%=lang%>" target="_blank"><img src="<%=lang=='cn'?'/index/images/buy-icon.png':'/index/images/buy-icon-en.png'%>" /></a>
+    </div>
+
+
+    <script src="/index/js/jquery-2.2.4.min.js"></script>
+    <script type="text/javascript" src="/index/js/jquery.fullPage.js"></script>
+    <script type="text/javascript" src="/index/js/move.js"></script>
+    <script src="/index/js/aos.js"></script>
+    <script type="text/javascript">
+        var navtop = new Vue({
+            el: '#navtop',
+            data: {
+                threeMenu: ''
+            }
+        });
+        var rslidar = new Vue({
+            el: '#rslidar',
+            data: {
+                datas: <%-include("lang_"+lang, {lang: lang})%>
+            },
+            methods: {
+                init: function(){
+                    navtop.threeMenu = this.datas.rslidarIntro.threeMenu;
+                    AOS.init({
+                        easing: 'ease-out-back',
+                        duration: 1000
+                    });
+                }
+            }
+        });
+        rslidar.init();
+        var footnav = new Vue({
+            el: '#footnav'
+        });
+        $(function(){
+            var timer,flag = true;
+            function lock(){
+                clearTimeout(timer);
+                flag = false;
+                timer = setTimeout(function(){
+                    flag= true;
+                }, 200);                
+            }
+            $('#panorama').fullpage({
+                loopBottom : true,        // 顶部轮滚
+                loopTop : true,           // 顶部轮滚
+                css3 : true,              // 开启CSS3动画
+                anchors: ['page1', 'page2', 'page3', 'page4', 'page5'],
+                scrollingSpeed : 1500,     //页面滚动速度，单位为毫秒
+                easing : 'easeIn',        //滚动动画方式
+                keyboardScrolling : true, //键盘控制
+                navigation : true,        //显示项目导航
+                onLeave : function( index,nextIndex,direction ){ 
+                    //滚动前的回调函数,index  是离开的“页面”的序号，从1开始计算；nextIndex 是滚动到的“页面”的序号，从1开始计算；direction 判断往上滚动还是往下滚动，值是 up 或 down
+                    // if( direction=='down' ){
+                    //   move('#navtop').y(-69).duration('1s').end();
+                    // }
+                    // if( direction=='up' ){
+                    //   move('#navtop').y(0).duration('1s').end();
+                    // }
+                    var rslidar = $("#rslidar");
+                    if ( index === 1 && nextIndex === 5 ){
+                        move('#navtop').y(0).duration('1s').end();
+                        return false;
+                    }
+                    if( index === 1 && nextIndex === 2 ){
+                        move('#navtop').y(-69).duration('1s').end();
+                    }
+                    if( index === 2 && nextIndex === 1 ){
+                        move('#navtop').y(0).duration('1s').end();
+                    }
+                    // 底部
+                    if ( index===5 && nextIndex===1 ){
+                        rslidar.addClass("footer");
+                        move('#navtop').y(-69).duration('1s').end();
+                        return false;
+                    }
+                    if ( index===5 && nextIndex===4 && rslidar.hasClass("footer") ){
+                        lock();
+                        rslidar.removeClass("footer");
+                        return false;
+                    }
+                    // 返回事件阻塞
+                    return flag;
+                },
+                afterRender : function(){
+                    return false;
+                }
+            }) 
+            $('.movetoslide').on('click', function(){
+                $.fn.fullpage.moveTo('page5', 0);
+            })   
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title><%=lang=='cn'?'资源中心':'Downloads'%></title>
+    <link rel="stylesheet" href="/index/css/common.css" type="text/css"> 
+    <link rel="stylesheet" href="/index/css/resource.css" type="text/css"> 
+</head>
+<body>
+    <%include nav%>
+    <%include footer%>
+    <div id="navtop">
+        <navtop>
+            <div class="three-menu" slot="navbottom">
+                <div class="link">
+                    <a @click.stop.prevent="toggle" class="button" :class="{'active': type}">
+                        <span v-text="threeMenu.rsResource"></span>
+                    </a>
+                </div>
+                <div class="link">
+                    <a @click.stop.prevent="toggle" class="button" :class="{'active': !type}">
+                        <span v-text="threeMenu.driveResource"></span>
+                    </a>
+                </div>
+            </div>
+        </navtop>
+    </div>
+    <div class="resource-wrap" id="resource-wrap">
+        <div class="bannner"></div>
+        <div class="resource-list">
+            <div id="wrap" class="clearfix">
+                <div id="menu">
+                    <ul>
+                        <li :class="{'on': $index==index}" id="m{{$index+1}}" v-for="data in menus"><a href="#" @click.prevent.stop="gopage($index)" v-text="data"></a></li>
+                    </ul>
+                </div>
+                <div id="content">
+                    <div class="video mt_20 clearfix" v-for="data in lists" v-show="$index==index">
+                        <div class="onload fl">
+                            <p v-for="list in data">
+                                <a :href="list[0]" v-text="list[1]"></a>
+                                <span class="size" v-text="list[2]"></span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="footnav">
+        <footnav></footnav>
+    </div>
+
+    <script type="text/javascript">
+        var navtop = new Vue({
+            el: '#navtop',
+            data: {
+                threeMenu: '',
+                type: ''
+            },
+            methods: {
+                toggle: function(){
+                    resourcewrap.type = !resourcewrap.type;
+                    this.type = !this.type;
+                }
+            }
+        });
+        var footnav = new Vue({
+            el: '#footnav'
+        });
+        var resourcewrap = new Vue({
+            el: '#resource-wrap',
+            data: {
+                resourcedata: <%-include("lang_"+lang, {lang: lang})%>,
+                type: true,
+                index: 0
+            },
+            computed: {
+                menus: function(){
+                    return this.type ? this.resourcedata.resource.menu.rsResource : this.resourcedata.resource.menu.driveResource;
+                },
+                lists: function(){
+                    return this.type ? this.resourcedata.resource.datas.rsResource : this.resourcedata.resource.datas.driveResource;
+                }
+            },
+            methods: {
+                init: function(){
+                    navtop.threeMenu = this.resourcedata.resource.threeMenu;
+                    navtop.type = this.type;
+                },
+                gopage: function(menu_index){
+                    this.index = menu_index;
+                }
+            }
+        });
+        resourcewrap.init();
+    </script>
+</body>
+</html>

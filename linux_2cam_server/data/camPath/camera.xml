@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<opencv_storage>
+<camera_param_list>
+  <_><focal>1.1827329752189142e+004</focal>
+    <aspect>1.</aspect>
+    <principal>
+      450. 750.</principal>
+    <rotMat type_id="opencv-matrix">
+      <rows>3</rows>
+      <cols>3</cols>
+      <dt>f</dt>
+      <data>
+        9.95986640e-001 8.24381690e-003 -8.91216248e-002
+        -8.25668871e-003 9.99965906e-001 2.24314630e-004 8.91204327e-002
+        5.12428582e-004 9.96020675e-001</data></rotMat>
+    <transMat type_id="opencv-matrix">
+      <rows>3</rows>
+      <cols>1</cols>
+      <dt>d</dt>
+      <data>
+        0. 0. 0.</data></transMat></_>
+  <_><focal>1.1760263891785724e+004</focal>
+    <aspect>1.</aspect>
+    <principal>
+      8.9950000000000000e+002 750.</principal>
+    <rotMat type_id="opencv-matrix">
+      <rows>3</rows>
+      <cols>3</cols>
+      <dt>f</dt>
+      <data>
+        9.99999940e-001 8.78935680e-009 0. -6.05359674e-009 1. 0.
+        -4.65661287e-010 0. 1.</data></rotMat>
+    <transMat type_id="opencv-matrix">
+      <rows>3</rows>
+      <cols>1</cols>
+      <dt>d</dt>
+      <data>
+        0. 0. 0.</data></transMat></_>
+  <_><focal>1.1824018747822984e+004</focal>
+    <aspect>1.</aspect>
+    <principal>
+      4.4950000000000000e+002 750.</principal>
+    <rotMat type_id="opencv-matrix">
+      <rows>3</rows>
+      <cols>3</cols>
+      <dt>f</dt>
+      <data>
+        9.95990813e-001 -2.94020865e-003 8.94074664e-002 2.95190793e-003
+        9.99995589e-001 1.40070915e-006 -8.94070715e-002 2.62521207e-004
+        9.95995104e-001</data></rotMat>
+    <transMat type_id="opencv-matrix">
+      <rows>3</rows>
+      <cols>1</cols>
+      <dt>d</dt>
+      <data>
+        0. 0. 0.</data></transMat></_></camera_param_list>
+<work_scale>1.</work_scale>
+<warped_image_scale>1.1824018554687500e+004</warped_image_scale>
+</opencv_storage>

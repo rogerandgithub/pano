@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title><%=lang=='cn'?'RoboSense 产品购买意向表':'RoboSense Purchase Intention '%></title>
+    <link rel="stylesheet" href="/index/css/buy.css" type="text/css">
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-default/index.css">
+    <style type="text/css">
+        <%if(lang=='en'){%>
+            #buy-wrapper .content .user-info .infoList li label {
+                width: 95px;
+            }
+            #buy-wrapper .content .user-info .infoList li input {
+                width: calc(100% - 95px);
+            }
+            #buy-wrapper .content .product .other input.otherinput {
+                width: calc(100% - 105px);
+            }
+        <%}%>
+    </style>
+</head>
+<body>
+
+	<div id="buy-wrapper">
+        <div class="header">
+            <h2 class="title"><%=lang=='cn'?'RoboSense产品购买意向表':'RoboSense Purchase Intention'%></h2>
+            <p class="desc"><%=lang=='cn'?'非常感谢您对速腾聚创的认可，我们将竭力为您服务！我们将在24小时内回复您的意向需求，感谢您的支持。':'Thank you for your recognition of of our products. Your purchase intention will be attended to within 24 hours. Thank you for your support.'%></p>
+        </div>
+        <div class="content">
+            <div class="dail-wrapper">
+                <div class="flex-box user-info">
+                    <h3 class="title"><%=lang=='cn'?'个人信息':'Customer Information'%></h3>
+                    <ul class="infoList">
+                        <li>
+                            <label><span class="light">*</span><%=lang=='cn'?'机构:':'Company:'%></label>
+                            <input type="text" v-model="organization" />
+                        </li>
+                        <li>
+                            <label><%if(lang=='cn'){%>&nbsp;地址：<%}else{%>&nbsp;Address:<%}%>
+                            </label>
+                            <input type="text" v-model="address" />
+                        </li>
+                        <li>
+                            <label><%if(lang=='cn'){%>&nbsp;电话：<%}else{%>&nbsp;Tel:<%}%>
+                            </label>
+                            <input type="text" v-model="telephone" />
+                        </li>
+                        <li>
+                            <label>
+                                <span class="light">*</span><%if(lang=='cn'){%>姓名:<%}else{%>Name:<%}%>
+                            </label>
+                            <input type="text" v-model="name" />
+                        </li>
+                        <li>
+                            <label>
+                                <span class="light">*</span><%if(lang=='cn'){%>职位:<%}else{%>Title:<%}%>
+                            </label>
+                            <input type="text" v-model="position" />
+                        </li>
+                        <li>
+                            <label>
+                                <span class="light">*</span><%if(lang=='cn'){%>手机:<%}else{%>Mobile:<%}%>
+                            </label>
+                            <input type="text" v-model="mobilephone" />
+                        </li>
+                        <li>
+                            <label><%if(lang=='cn'){%>&nbsp;邮箱：<%}else{%>&nbsp;Email:<%}%>
+                            </label>
+                            <input type="text" v-model="email" />
+                        </li>
+                        <li>
+                            <label><%if(lang=='cn'){%>&nbsp;微信：<%}else{%>&nbsp;Wechat ID:<%}%>
+                            </label>
+                            <input type="text" v-model="wechat" />
+                        </li>
+                        <li>
+                            <label>&nbsp;Q&nbsp;Q :</label>
+                            <input type="text" v-model="qq" />
+                        </li>
+                    </ul>
+                </div>
+                <div class="flex-box product">
+                    <h3 class="title"><%=lang=='cn'?'购买产品':'Product'%><span class="light">*</span></h3>
+                    <div class="product-type">
+                        <h4><%=lang=='cn'?'您采购的产品：':'Your intended product:'%></h4>
+                        <div class="item">
+                            <span class="analog" :class="{select: product=='RS-LiDAR'}" @click="selectProduct"></span>
+                            <input type="radio" name="product" id="RS-LiDAR" v-model="product" value="RS-LiDAR"><label for="RS-LiDAR"><%=lang=='cn'?'多线激光雷达RS-LiDAR':'RS-LiDAR'%></label>
+                        </div>
+                        <div class="item">
+                            <span class="analog" :class="{select: product=='Seeker'}" @click="selectProduct"></span>
+                            <input type="radio" name="product" id="SEEKER" v-model="product" value="Seeker"><label for="SEEKER"><%=lang=='cn'?'静态激光雷达Seeker':'Seeker'%></label>
+                        </div>
+                        <div class="item quantity">
+                            <label style="color: #fff;font-size: 16px;font-weight: 400;"><%=lang=='cn'?'您需求的数量：':'Quantity:'%></label><input type="text" v-model="quantity" :style="fontcolor" />
+                        </div>
+                    </div>
+                    <div class="deliverdate">
+                        <h4><%=lang=='cn'?'您期望的收货时间：':'Preferred delivery time:'%></h4>
+                        <div class="item">
+                            <span class="analog" :class="{select: deliverdate == '<%=lang=='cn'?'4周内':'4 weeks'%>'}"></span>
+                            <input type="radio" name="deliverdate" v-model="deliverdate" value="<%=lang=='cn'?'4周内':'4 weeks'%>" id="4week"><label for="4week"><%=lang=='cn'?'4周内':'4 weeks'%></label>
+                        </div>
+                        <div class="item">
+                            <span class="analog" :class="{select: deliverdate == '<%=lang=='cn'?'8周内':'8 weeks'%>'}"></span>
+                            <input type="radio" name="deliverdate" v-model="deliverdate" value="<%=lang=='cn'?'8周内':'8 weeks'%>" id="8week"><label for="8week"><%=lang=='cn'?'8周内':'8 weeks'%></label>
+                        </div>
+                        <div class="item">
+                            <span class="analog" :class="{select: deliverdate == '<%=lang=='cn'?'12周内':'12 weeks'%>'}"></span>
+                            <input type="radio" name="deliverdate" v-model="deliverdate" value="<%=lang=='cn'?'12周内':'12 weeks'%>" id="12week"><label for="12week"><%=lang=='cn'?'12周内':'12 weeks'%></label>
+                        </div>
+                        <div class="item other">
+                            <span class="analog" :class="{select: deliverdate == '<%=lang=='cn'?'其他':'Others'%>'}"></span>
+                            <input type="radio" name="deliverdate" v-model="deliverdate" value="<%=lang=='cn'?'其他':'Others'%>" id="other"><label for="other"><%=lang=='cn'?'其他':'Others'%></label>
+                            <input type="text" class="otherinput" :disabled="deliverdate!='<%=lang=='cn'?'其他':'Others'%>'" v-model="otherdeliverdate" />
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-box application">
+                    <h3 class="title" style="font-size: 16px;"><%=lang=='cn'?'您的主要用途：':'Your product application:'%></h3>
+                    <div class="checkbox">
+                        <div class="item">
+                            <span class="analog" :class="{select: application.indexOf('<%=lang=='cn'?'自动驾驶测试':'Autonomous Cars Testing'%>')!=-1}"></span>
+                            <input type="checkbox" v-model="application" value="<%=lang=='cn'?'自动驾驶测试':'Autonomous Cars Testing'%>" id="11" /><label for="11"><%=lang=='cn'?'自动驾驶测试':'Autonomous Cars Testing'%></label>
+                        </div>
+                        <div class="item">
+                            <span class="analog" :class="{select: application.indexOf('<%=lang=='cn'?'机器人视觉':'Robot Vision'%>')!=-1}"></span>
+                            <input type="checkbox" v-model="application" value="<%=lang=='cn'?'机器人视觉':'Robot Vision'%>" id="22" /><label for="22"><%=lang=='cn'?'机器人视觉':'Robot Vision'%></label>
+                        </div>
+                        <div class="item">
+                            <span class="analog" :class="{select: application.indexOf('<%=lang=='cn'?'机载车载测绘':'Vehicle/UAV Mapping'%>')!=-1}"></span>
+                            <input type="checkbox" v-model="application" value="<%=lang=='cn'?'机载车载测绘':'Vehicle/UAV Mapping'%>" id="33" /><label for="33"><%=lang=='cn'?'机载车载测绘':'Vehicle/UAV Mapping'%></label>
+                        </div>
+                        <div class="item">
+                            <span class="analog" :class="{select: application.indexOf('<%=lang=='cn'?'室内三维建模':'Indoor 3D Modeling'%>')!=-1}"></span>
+                            <input type="checkbox" v-model="application" value="<%=lang=='cn'?'室内三维建模':'Indoor 3D Modeling'%>" id="44" /><label for="44"><%=lang=='cn'?'室内三维建模':'Indoor 3D Modeling'%></label>
+                        </div>
+                        <div class="item">
+                            <span class="analog" :class="{select: application.indexOf('<%=lang=='cn'?'研究与开发':'R & D'%>')!=-1}"></span>
+                            <input type="checkbox" v-model="application" value="<%=lang=='cn'?'研究与开发':'R & D'%>" id="55" /><label for="55"><%=lang=='cn'?'研究与开发':'R & D'%></label>
+                        </div>
+                        <div class="item">
+                            <span class="analog" :class="{select: application.indexOf('<%=lang=='cn'?'工业自动化':'Industrial Automation'%>')!=-1}"></span>
+                            <input type="checkbox" v-model="application" value="<%=lang=='cn'?'工业自动化':'Industrial Automation'%>" id="66" /><label for="66"><%=lang=='cn'?'工业自动化':'Industrial Automation'%></label>
+                        </div>
+                        <div class="item">
+                            <span class="analog" :class="{select: application.indexOf('<%=lang=='cn'?'智能安防':'Intelligent Security & Surveillance'%>')!=-1}"></span>
+                            <input type="checkbox" v-model="application" value="<%=lang=='cn'?'智能安防':'Intelligent Security & Surveillance'%>" id="77" /><label for="77"><%=lang=='cn'?'智能安防':'Intelligent Security & Surveillance'%></label>
+                        </div>
+                        <div class="item">
+                            <span class="analog" :class="{select: application.indexOf('<%=lang=='cn'?'其他':'Others'%>')!=-1}"></span>
+                            <input type="checkbox" v-model="application" value="<%=lang=='cn'?'其他':'Others'%>" id="88" /><label for="88"><%=lang=='cn'?'其他':'Others'%></label>
+                        </div>
+                        <div class="item other">
+                            <input type="text" :disabled="this.application.indexOf('<%=lang=='cn'?'其他':'Others'%>')==-1" v-model="otherapplication" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="suggest">
+                <h3 class="title"><%=lang=='cn'?'其他需求及建议':'Your requirements and suggestions'%></h3>
+                <textarea class="suggest-content" v-model="suggest"></textarea>
+            </div>
+            <div class="contact">
+                <h3 class="title"><%=lang=='cn'?'电话咨询':'Call us'%></h3>
+                <p><%=lang=='cn'?'1.400 电话：':'1. 400 international No.:'%> <span class="phone">400 632 5830</span> <%=lang=='cn'?'转商务部':'transfer to Marketing Dept.'%></p>
+                <p><%=lang=='cn'?'2.前台电话：':'2.Front desk:'%> <span class="phone">0755-8632 5830</span> <%=lang=='cn'?'转商务部':'transfer to Marketing Dept.'%></p>
+                <%if(lang=='cn'){%>
+                    <p>3.销售经理：<span class="phone">136 7029 0070</span>  蔡经理</p>
+                <%}else{%>
+                    <p>3.Sales Manager:Zara Cheung <span class="phone">86-15527037833</span></p>
+                <%}%>
+            </div>
+        </div>
+        <div class="footer">
+            <a @click.stop.prevent="submit" style="cursor: pointer;"><%=lang=='cn'?'确定提交':'Submit'%></a>
+        </div>
+    </div>
+    
+    <script type="text/javascript" src="/index/js/vue2.0.js"></script>
+    <script type="text/javascript" src="/index/js/axios.min.js"></script>
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script type="text/javascript">
+        var buy = new Vue({
+            el: '#buy-wrapper',
+            data: {
+                organization: '',
+                address: '',
+                telephone: '',
+                name: '',
+                position: '',
+                mobilephone: '',
+                email: '',
+                wechat: '',
+                qq: '',
+                product: null,
+                quantity: 5,
+                deliverdate: null,
+                otherdeliverdate: '',
+                application: [],
+                otherapplication: '',
+                suggest: ''
+            },
+            computed: {
+                fontcolor: function(){
+                    if(this.quantity == 5){
+                        return {
+                            color: '#ccc'
+                        }
+                    }
+                }
+            },
+            methods: {
+                selectProduct: function(){
+                    console.log(this.product);
+                },
+                submit: function(){
+                    var _this = this;
+                    var data = {
+                        organization: this.organization,
+                        address: this.address,
+                        telephone: this.telephone,
+                        name: this.name,
+                        position: this.position,
+                        mobilephone: this.mobilephone,
+                        email: this.email,
+                        wechat: this.wechat,
+                        qq: this.qq,
+                        product: this.product,
+                        quantity: this.quantity,
+                        deliverdate: this.deliverdate == "<%=lang=='cn'?'其他':'Others'%>"?this.otherdeliverdate : this.deliverdate,
+                        suggest: this.suggest
+                    }
+                    if(this.application.indexOf("<%=lang=='cn'?'其他':'Others'%>")!=-1){
+                        this.application.push(this.otherapplication);
+                    };
+                    data.application = this.application;
+
+                    if(!data.organization || !data.name || !data.position || !data.mobilephone || !data.product || !data.quantity || !data.deliverdate || !data.application){
+                        this.$alert("<%=lang=='cn'?'带*号为必填项':'Fields with an asterisk are required.'%>", "<%=lang=='cn'?'提交失败':'Submission failed'%>", {
+                            confirmButtonText: "<%=lang=='cn'?'确定':'Sure'%>",
+                            type: 'error'
+                        });
+                        return;
+                    }
+
+                    axios.post('/web/buy', data)
+                    .then(function(res){
+                        _this.$alert("<%=lang=='cn'?'提交成功':'Success'%>", {
+                            confirmButtonText: "<%=lang=='cn'?'确定':'Sure'%>",
+                            type: 'success'
+                        });
+                        _this.organization = '';
+                        _this.address = '';
+                        _this.telephone = '';
+                        _this.name = '';
+                        _this.position = '';
+                        _this.mobilephone = '';
+                        _this.email = '';
+                        _this.wechat = '';
+                        _this.qq = '';
+                        _this.product = '';
+                        _this.quantity = 5;
+                        _this.deliverdate = '';
+                        _this.otherdeliverdate = '';
+                        _this.application = [];
+                        _this.otherapplication = '';
+                        _this.suggest = '';
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });  
+                }
+            }
+        })
+    </script>
+</body>
+</html>

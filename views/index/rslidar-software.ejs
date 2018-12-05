@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>多线实时激光雷达-软件服务</title>
+    <link rel="stylesheet" href="/index/css/common.css" type="text/css"> 
+    <link rel="stylesheet" href="/index/css/rslidar-software.css" type="text/css"> 
+</head>
+<body id="rslidar">
+    <%include nav%>
+    <%include footer%>
+    <div id="navtop">
+        <navtop>
+          <div class="three-menu" slot="navbottom">
+            <div class="link">
+                <a href="/web/rslidar/<%=lang%>" class="button">
+                    <span class="line line-top"></span>
+                    <span class="line line-right"></span>
+                    <span class="line line-bottom"></span>
+                    <span class="line line-left"></span>
+                    <span v-text="threeMenu.introduction"></span>
+                </a>
+            </div>
+            <div class="link">
+                <a href="/web/rslidar-application/<%=lang%>#portfolio" class="button">
+                    <span class="line line-top"></span>
+                    <span class="line line-right"></span>
+                    <span class="line line-bottom"></span>
+                    <span class="line line-left"></span>
+                    <span v-text="threeMenu.applications"></span>
+                </a>
+            </div>
+            <div class="link">
+                <a href="/web/rslidar-software/<%=lang%>" class="button active">
+                    <span class="line line-top"></span>
+                    <span class="line line-right"></span>
+                    <span class="line line-bottom"></span>
+                    <span class="line line-left"></span>
+                    <span v-text="threeMenu.service"></span>
+                </a>
+            </div>
+          </div>
+        </navtop>
+    </div>
+    <div class="software-wrap" id="software-wrap">
+        <div class="software-text">
+            <div v-for="software in softwaredata.rslidarsoftware.softwaretext">
+                <h3 class="title" v-text="software[0]"></h3>
+                <p v-for="text in software[1]" v-text="text"></p>
+            </div>
+        </div>
+    </div>
+    <div id="footnav">
+        <footnav></footnav>
+    </div>
+
+    <script type="text/javascript">
+        var navtop = new Vue({
+            el: '#navtop',
+            data: {
+                threeMenu: ''
+            }
+        });
+        var footnav = new Vue({
+            el: '#footnav'
+        });
+        var softwarewrap = new Vue({
+            el: '#software-wrap',
+            data: {
+                softwaredata: <%-include("lang_"+lang, {lang: lang})%>
+            },
+            methods: {
+                init: function(){
+                    navtop.threeMenu = this.softwaredata.rslidarsoftware.threeMenu;
+                }
+            }
+        });
+        softwarewrap.init();     
+    </script>
+</body>
+</html>

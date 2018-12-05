@@ -1,0 +1,58 @@
+<script type="text/javascript">
+    Vue.component('footnav', Vue.extend({
+        template:   '<div id="footer">\
+                        <div class="w cls clearfix">\
+                            <ul class="arlist">\
+                                <h2 v-text="langdata.footer.ProductCenter"></h2>\
+                                <li><a href="/web/rslidar/<%=lang%>" title="多线实时激光雷达" v-text="langdata.footer.rslidar"></a></li>\
+                                <li><a href="/web/three-dimensional/<%=lang%>" title="静态三维激光雷达" v-text="langdata.footer.threedimensional"></a></li>\
+                            </ul>\
+                            <ul class="arlist1">\
+                                <h2 v-text="langdata.footer.aboutUs"></h2>\
+                                <li><a href="/web/company/<%=lang%>" title="企业介绍" v-text="langdata.footer.company"></a></li>\
+                                <li><a href="/web/contact/<%=lang%>" title="联系我们" v-text="langdata.footer.contact"></a></li>\
+                                <li><a href="/web/news/<%=lang%>" title="新闻中心" v-text="langdata.footer.news"></a></li>\
+                                <li><a href="/web/resource/<%=lang%>" title="资源中心" v-text="langdata.footer.resource"></a></li>\
+                                <li><a href="/web/recruitment/<%=lang%>" title="人才招聘" v-text="langdata.footer.recruitment"></a></li>\
+                            </ul>\
+                            <ul class="arlist2">\
+                                <h2 v-text="langdata.footer.contact"></h2>\
+                                <li v-text="langdata.footer.address"></li>\
+                                <li v-text="langdata.footer.mail"></li>\
+                                <li>\
+                                    <span v-text="langdata.footer.telphone"></span>\
+                                    <div class="fr linkedin"><a target="_blank" href="https://www.linkedin.com/company/robosense-lidar"></a></div>\
+                                    <div class="fr ins"><a target="_blank" href="https://www.instagram.com/robosenselidar"></a></div>\
+                                    <div class="fr twitter"><a target="_blank" href="https://twitter.com/RoboSense1"></a></div>\
+                                    <div class="fr facebook"><a target="_blank" href="https://www.facebook.com/robosenseLiDAR"></a></div>\
+                                </li>\
+                            </ul>\
+                            <ul class="arlist3">\
+                                <li>\
+                                    <img width="140" :src="wechat" />\
+                                </li>\
+                            </ul>\
+                        </div>\
+                    </div>',
+        data: function(){
+            return { 
+                langdata: <%-include("nav_lang_"+lang, {lang: lang})%>,
+                wechat: 'http://qncdn.sz-sti.com/images/three-dimensional-product/wechats.jpg',
+                facebook: 'http://qncdn.sz-sti.com/images/three-dimensional-product/facebook.png',
+                ins: 'http://qncdn.sz-sti.com/images/three-dimensional-product/ins.png',
+                linkedin: 'http://qncdn.sz-sti.com/images/three-dimensional-product/linkedin.png',
+                twitter: 'http://qncdn.sz-sti.com/images/three-dimensional-product/twitter.png',
+                wechatshow: false
+            }
+        }
+    }));
+</script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?38bc08fa5669118d5859709d5784dcea";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>

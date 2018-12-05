@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>新闻中心</title>
+    <link rel="stylesheet" href="/index/css/m_common.css" type="text/css"> 
+    <link rel="stylesheet" href="/index/css/m_socialinfo.css" type="text/css"> 
+    <script src="/index/js/Vue.min.js"></script>
+</head>
+<body>
+    <%include m_nav%>
+    <%include loading%>
+    <div id="wrapper">
+        <div class="section_1"></div>
+        <div class="section_2">
+            <div class="socialinfo">
+                <div class="header">
+                    <h4 class="title" v-text="socialdata.name"></h4>
+                    <p>
+                        <span v-if="socialdata.wages" v-text="socialdata.wages+' / '"></span>
+                        <span v-if="socialdata.address" v-text="socialdata.address+' / '"></span>
+                        <span v-if="socialdata.experience" v-text="socialdata.experience+' / '"></span>
+                        <span v-if="socialdata.education" v-text="socialdata.education+' / '"></span>
+                        <span>全职</span>
+                    </p>
+                </div>
+                <div class="content">
+                    <div class="temptation">
+                        <h2 class="title">职业诱惑：</h2>
+                        <p v-text="socialdata.CareerTemptation"></p>
+                    </div>
+                    <div class="desc">
+                        <h2 class="title">职位描述：</h2>
+                        <div class="box">
+                            <h4>职位描述：</h4>
+                            <p v-for="quality in socialdata.quality" v-text="($index+1)+'.'+quality"></p>
+                        </div>
+                        <div class="box">
+                            <h4>任职要求：</h4>
+                            <p v-for="duty in socialdata.duty" v-text="($index+1)+'.'+duty"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="section_3">
+            <p>
+                投递简历至邮箱<br/>
+                hr@sz-sti.com
+            </p>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        var wrapper = new Vue({
+            el: '#wrapper',
+            data: {
+                index: <%=index%>,
+                socialdata: '',
+                lang: '<%=lang%>'
+            },
+            methods: {
+                init: function(){
+                    var _this = this;
+                    $.get('/web/join/data/'+this.lang,function(res){
+                        _this.socialdata = res[_this.index];
+                    });
+                }
+            }
+        });
+        wrapper.init();
+    </script>
+</body>
+</html>

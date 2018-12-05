@@ -1,0 +1,42 @@
+<script>
+    (function() {
+        var wechat = document.createElement("script");
+        wechat.src = "http://res.wx.qq.com/open/js/jweixin-1.0.0.js";
+        var s = document.getElementsByTagName("script")[0]; 
+        s.parentNode.insertBefore(wechat, s);
+        wechat.onload = function(){
+            $.post('/wechat/jsapi',{url:location.href.split('#')[0]},function(result){
+                var data = {
+                    debug: false,
+                    appId: 'wxec58fce24188eb77',
+                    timestamp:result.timestamp,
+                    nonceStr: result.noncestr,
+                    signature: result.signature,
+                    jsApiList: ['onMenuShareAppMessage','onMenuShareTimeline','onMenuShareQQ','onMenuShareWeibo','onMenuShareQZone']
+                };
+                wx.config(data);
+                var config = {
+                    title: '<%=sharetitle%>', // 分享标题
+                    desc: '<%=sharead%>', // 分享描述
+                    link: location.href,
+                    imgUrl:'<%=shareiconKey%>',
+                    success: function () { 
+                       // 用户确认分享后执行的回调函数
+                    },
+                    cancel: function () { 
+                       // 用户取消分享后执行的回调函数
+                    }
+                }
+                wx.ready(function(){
+                    wx.onMenuShareTimeline(config);
+                    wx.onMenuShareAppMessage(config);
+                    wx.onMenuShareQQ(config);
+                    wx.onMenuShareWeibo(config);
+                    wx.onMenuShareQZone(config);
+                });
+                wx.error(function(res){
+                });
+            });
+        }
+    })();
+</script>

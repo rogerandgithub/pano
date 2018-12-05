@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>新闻中心</title>
+    <link rel="stylesheet" href="/index/css/common.css" type="text/css"> 
+    <link rel="stylesheet" href="/index/css/newinfo.css" type="text/css"> 
+    <script src="/index/js/Vue.min.js"></script>
+    <style type="text/css">
+        #backtop{
+            position: fixed;
+            right: 60px;
+            bottom: 60px;
+            width: 60px;
+            z-index: 9999;
+            cursor: pointer;
+        }
+        #backtop img{
+            display: block;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <%include footer%>
+    <div id="header">
+        <div class="nav clearfix">
+            <h2 class="logo"><a href="/web/news/<%=lang%>">
+                <!-- <img src="/index/images/news/back.png" /></a> -->
+            </h2>
+            <!-- <ul id="menu"> -->
+                <!-- <li><a href="/web/main/<%=lang%>" v-text="lang_<%=lang%>.home"></a></li> -->
+                <!-- <li> -->
+                    <a class="menu" href="/web/news/<%=lang%>" v-text="lang_<%=lang%>.media"></a>
+                <!-- </li> -->
+                <!-- <li>
+                    <a href="javascript:;" @click="showlang=!showlang" v-text="lang_<%=lang%>.lang"></a>
+                    <div class="langlist" transition="lang" v-show="showlang">
+                        <p @click.stop="togglelang" v-text="'<%=lang%>'=='cn'?lang_en.lang:lang_cn.lang"></p>
+                    </div>
+                </li> -->
+            <!-- </ul> -->
+        </div>
+    </div>
+    <div class="news-wrap" id="newinfowrap">
+        <div class="banner"></div>
+        <div class="robosense-about">
+            <div class="wrap">
+                <div class="newinfo">
+                    <h4 class="title" v-text="newlist.title"></h4>
+                    <div class="mt_12">
+                        <span class="edit" v-text="newlist.edit"></span>
+                        <span class="edittime" v-text="newlist.edittime"></span>
+                    </div>
+                    <div class="content">
+                        <div v-for="(key,val) in newlist.newinfo">
+                            <p v-if="key.indexOf('text')!=-1" :class="{'bold':false}" v-text="val"></p>
+                            <img v-else :src="val" />
+                        </div>
+                        <!-- <a v-if="!!newlist.link" :href="newlist.link"><%=lang=='cn'?'原文:':'Original Text:'%><span class="link">{{newlist.link}}</span></a> -->
+                    </div>
+                    <!-- <div class="linkbox">
+                        <a @click="prev(index-1)" href="javascript:;" v-show="index - 1>=0"><%=lang=='cn'?'上一篇:':'Last:'%>{{newsdata.news.newslist[index-1].title}}</a>
+                        <a @click="next(index+1)" href="javascript:;" v-show="index + 1<count"><%=lang=='cn'?'下一篇:':'Next:'%>{{newsdata.news.newslist[index+1].title}}</a>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="backtop">
+        <img src="/index/images/backtop.png">
+    </div>
+    <div id="footnav">
+        <footnav></footnav>
+    </div>
+    
+    <script src="/index/js/jquery-2.2.4.min.js"></script>
+    <script type="text/javascript" src="/index/js/smooth-scroll.min.js"></script>
+    <script src="/index/js/move.js"></script>
+    <script type="text/javascript">
+        $('#backtop').on('click',function(){
+            $.smoothScroll({
+                scrollTarget: 'html',
+                speed: 1200
+            });
+        })
+        window.onscroll = function () { 
+            var t = document.documentElement.scrollTop || document.body.scrollTop;
+            if (t > 69) { 
+                move("#header").ease('snap').set('top',0).end();
+            }else{ 
+                move("#header").ease('snap').set('top','69px').end(); 
+            } 
+        }
+        var header = new Vue({
+            el: '#header',
+            data: {
+                showlang: false,
+                lang_cn:{
+                    home: '首页',
+                    media: '媒体报道',
+                    lang: '简体中文'
+                },
+                lang_en: {
+                    home: 'HOME',
+                    media: 'MEDIA',
+                    lang: 'ENGLISH'
+                },
+                lang: '<%=lang%>'
+            },
+            methods: {
+                togglelang: function(){
+                    if(this.lang == 'cn'){
+                        location.href = location.href.replace('/cn', '/en');
+                    }else{
+                        location.href = location.href.replace('/en', '/cn');
+                    }
+                }
+            }
+        })
+        var footnav = new Vue({
+            el: '#footnav'
+        });
+        var newinfowrap = new Vue({
+            el: '#newinfowrap',
+            data: {
+                newsdata: <%include article%>,
+                index: <%=index%>,
+                count: '',
+                newlist: ''
+            },
+            methods: {
+                init: function(){
+                    this.newlist = this.newsdata.news.newslist[this.index];
+                    this.count = this.newsdata.news.newslist.length;
+                },
+                prev: function(prev){
+                    // this.newlist = this.newsdata.news.newslist[prev];
+                    // this.index = prev;
+                    location.href="/web/newinfo/"+prev+"/<%=lang%>"
+                },
+                next: function(next){
+                    location.href="/web/newinfo/"+next+"/<%=lang%>"
+                }
+            }
+        });
+        newinfowrap.init();
+    </script>
+</body>
+</html>

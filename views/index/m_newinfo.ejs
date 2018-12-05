@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>新闻中心</title>
+    <link rel="stylesheet" href="/index/css/m_common.css" type="text/css"> 
+    <link rel="stylesheet" href="/index/css/m_newinfo.css" type="text/css"> 
+    <script src="/index/js/Vue.min.js"></script>
+</head>
+<body>
+    <%include m_nav%>
+    <%include loading%>
+    <div id="wrapper">
+        <div class="section_1"></div>
+        <div class="section_2">
+            <div class="newinfo">
+                <h4 class="title" v-text="newlist.title"></h4>
+                <h5 class="clearfix header">
+                    <span class="edit" v-text="newlist.edit"></span>
+                    <span class="edittime" v-text="newlist.edittime"></span>
+                </h5>
+                <div class="content">
+                    <div v-for="(key,val) in newlist.newinfo">
+                        <p v-if="key.indexOf('text')!=-1" :class="{'bold':false}" v-text="val"></p>
+                        <img v-else :src="val" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        var wrapper = new Vue({
+            el: '#wrapper',
+            data: {
+                newsdata: <%include article%>,
+                index: <%=index%>,
+                count: '',
+                newlist: ''
+            },
+            methods: {
+                init: function(){
+                    this.newlist = this.newsdata.news.newslist[this.index];
+                    this.count = this.newsdata.news.newslist.length;
+                }
+            }
+        });
+        wrapper.init();
+    </script>
+</body>
+</html>

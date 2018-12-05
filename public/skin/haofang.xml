@@ -1,0 +1,88 @@
+<krpano version="1.18" title="成都市武侯区玉林" showerrors="false">
+
+    <include url="/skin/vtourskin.xml" />
+
+    <!-- set skin settings: bingmaps? gyro? thumbnails? tooltips? -->
+    <skin_settings maps="false"
+                   maps_zoombuttons="false"
+                   gyro="true"
+                   title="true"
+                   thumbs="true"
+                   thumbs_width="122" thumbs_height="82" thumbs_padding="10" thumbs_crop="0|40|250|210"
+                   thumbs_opened="true"
+                   thumbs_text="true"
+                   thumbs_dragging="true"
+                   thumbs_onhoverscrolling="true"
+                   thumbs_scrollbuttons="false"
+                   thumbs_scrollindicator="false"
+                   thumbs_loop="false"
+                   tooltips_thumbs="true"
+                   tooltips_hotspots="false"
+                   tooltips_mapspots="false"
+                   loadscene_flags="MERGE"
+                   loadscene_blend="BLEND(0.5)"
+                   controlbar_offset="20"
+    />
+
+    <!-- set optional skin logo url -->
+
+
+    <!-- 底部广告图 -->
+    <hotspot name="bottom_background"
+             url="http://qncdn.sz-sti.com/images/tools/bottom.png"
+             enabled="true"
+             keep="true"
+             visible=""
+             handcursor="false"
+             ath="0" atv="90" rx="0.0" ry="0.0" rz="0.0"
+             width="510" height="510"
+             distorted="true"
+             ondown="skin_view_change_with_hotspot();"
+             />
+    <hotspot name="bottom_trademark"
+             url="%SWFPATH%/plugins/textfield.swf"
+             css="text-align:center; color:#494949; font-family:黑体; text-align:center;  font-size:40px;"
+             enabled="true"
+             keep="true"
+             shadowangle="45" shadowrange="4.0"
+             handcursor="false"
+             background="false"
+             ath="0" atv="90" rx="0.0" ry="0.0" rz="0.0"
+             distorted="true"
+             html="1"
+             />
+
+    <!-- 顶部广告图 -->
+    <hotspot name="top_trademark" 
+             type="image"
+             url="http://test.haofang.net:20001/Test/images/icon_2.jpg"
+             waittime="1"
+             keep="true"
+             devices="all"
+             handcursor="false"
+             ath="0" atv="-90" rx="0.0" ry="0.0" rz="0.0"
+             width="360" height="360"
+             distorted="true"
+             ondown="skin_view_change_with_hotspot();"
+             />
+
+    <!-- 右键菜单 -->
+    <scene name="scene客厅" title="客厅" lat="" lng="" heading="" onstart="" thumburl="http://test.haofang.net:20001/Test/images/1/negx.jpg">
+
+        <image type="CUBE" tilesize="512">
+                
+                    <front  url="http://qncdn.sz-sti.com/images/scenes/d8158eff9baf44e693d9f0dda640b956468ffc58/allinone.jpg?imageMogr2/gravity/NorthWest/crop/!1024x1024a0a0/interlace/0/thumbnail/!100p/rotate/0" flip="" />
+                
+                    <down  url="http://qncdn.sz-sti.com/images/scenes/d8158eff9baf44e693d9f0dda640b956468ffc58/allinone.jpg?imageMogr2/gravity/NorthWest/crop/!1024x1024a0a1024/interlace/0/thumbnail/!100p/rotate/90" flip="" />
+                
+                    <left  url="http://qncdn.sz-sti.com/images/scenes/d8158eff9baf44e693d9f0dda640b956468ffc58/allinone.jpg?imageMogr2/gravity/NorthWest/crop/!1024x1024a0a2048/interlace/0/thumbnail/!100p/rotate/0" flip="" />
+                
+                    <back  url="http://qncdn.sz-sti.com/images/scenes/d8158eff9baf44e693d9f0dda640b956468ffc58/allinone.jpg?imageMogr2/gravity/NorthWest/crop/!1024x1024a0a3072/interlace/0/thumbnail/!100p/rotate/0" flip="" />
+                
+                    <up  url="http://qncdn.sz-sti.com/images/scenes/d8158eff9baf44e693d9f0dda640b956468ffc58/allinone.jpg?imageMogr2/gravity/NorthWest/crop/!1024x1024a0a4096/interlace/0/thumbnail/!100p/rotate/270" flip="" />
+                
+                    <right  url="http://qncdn.sz-sti.com/images/scenes/d8158eff9baf44e693d9f0dda640b956468ffc58/allinone.jpg?imageMogr2/gravity/NorthWest/crop/!1024x1024a0a5120/interlace/0/thumbnail/!100p/rotate/0" flip="" />
+                
+        </image>
+    </scene>
+</krpano>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>多线实时激光雷达-产品介绍</title>
+    <link rel="stylesheet" href="/index/css/common.css" type="text/css"> 
+    <link rel="stylesheet" href="/index/css/rs_solution.css">
+    <script src="/index/js/modernizr.js"></script>
+</head>
+<body>
+    <%include nav%>
+    <div id="navtop">
+        <navtop>
+          <div class="three-menu" slot="navbottom">
+            <div class="link">
+                <a href="/web/rslidar/<%=lang%>" class="button">
+                    <span v-text="threeMenu.introduction"></span>
+                </a>
+            </div>
+            <div class="link">
+                <a href="/web/rslidar/solution/<%=lang%>" class="button active">
+                    <span v-text="threeMenu.solution"></span>
+                </a>
+            </div>
+          </div>
+        </navtop>
+    </div>
+    <div id="rslidar">
+        <div class="app" id="app-container">
+            <div data-reactroot="" class="root-component">
+                <main class="app-main">
+                    <span>
+                        <div class="page page--node page--fixed page--carousel" id="page--node-2">
+                            <section class="page__content">
+                                <section class="scenario-carousel scenario-carousel--3">
+                                    <div class="scenario-carousel__container">
+                                        <ul class="scenario-carousel__parallax">
+                                            <li class="scenario-carousel__item" style="background-image: url(/index/images/rs_solution/unmanned.jpg);">
+                                                <a>
+                                                    <span class="scenario-carousel__teaser">
+                                                        <span class="clickicon"></span>
+                                                        <p class="scenario-carousel__desc">无人驾驶汽车环境感知</p>
+                                                    </span>
+                                                    <span class="scenario-carousel__teaser">
+                                                        <h3 class="scenario-carousel__title">无人驾驶汽车环境感知</h3><hr>
+                                                        <p class="scenario-carousel__desc">无人驾驶汽车研究涉及环境感知、导航定位及决策控制等科学领域，而环境感知以及导航定位无疑是无人驾驶技术的基础...</p>
+                                                        <button class="ui-btn ui-btn--large ui-btn--transparent" data-analytic="Learn More">
+                                                            <span class="ui-btn__label">了解详情</span>
+                                                        </button>
+                                                    </span>
+                                                </a>
+                                            </li>
+                                            <li class="scenario-carousel__item" style="background-image: url(/index/images/rs_solution/roober.jpg);">
+                                                <a>
+                                                    <span class="scenario-carousel__teaser">
+                                                        <span class="clickicon"></span>
+                                                        <p class="scenario-carousel__desc">机器人环境感知</p>
+                                                    </span>
+                                                    <span class="scenario-carousel__teaser">
+                                                        <h3 class="scenario-carousel__title">机器人环境感知</h3><hr>
+                                                        <p class="scenario-carousel__desc">在机器人领域，机器人获取局部三维环境信息是为了帮助自己判断并选取后续行进路线。如果要使设计出的移动机器人能够完全自主地应对复杂、未知的环境，使机器人具备精细的环境感知能力就显得至关重要...</p>
+                                                        <button class="ui-btn ui-btn--large ui-btn--transparent" data-analytic="Learn More">
+                                                            <span class="ui-btn__label">了解详情</span>
+                                                        </button>
+                                                    </span>
+                                                </a>
+                                            </li>
+                                            <li class="scenario-carousel__item" style="background-image: url(/index/images/rs_solution/uav.jpg);">
+                                                <a>
+                                                    <span class="scenario-carousel__teaser">
+                                                        <span class="clickicon"></span>
+                                                        <p class="scenario-carousel__desc">无人机测绘</p>
+                                                    </span>
+                                                    <span class="scenario-carousel__teaser">
+                                                        <h3 class="scenario-carousel__title">无人机测绘</h3><hr>
+                                                        <p class="scenario-carousel__desc">机载激光雷达技术作为一种重要的航空遥感技术，已经被越来越多的学者所关注。在未来的航空遥感领域，机载激光雷达将成为主流之一。</p>
+                                                        <button class="ui-btn ui-btn--large ui-btn--transparent" data-analytic="Learn More">
+                                                            <span class="ui-btn__label">了解详情</span>
+                                                        </button>
+                                                    </span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <figure class="scenario-img" style="background-image: url(/index/images/rs_solution/solution_bg.jpg);"></figure>
+                                </section>
+                            </section>
+                        </div>
+                    </span>
+                    <div class="modal modal--warning">
+                        <div class="modal__inner">
+                            <span class="modal__text">This site is not optimized for this screen size or landscape view.</span>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="/index/js/jquery-2.2.4.min.js"></script>
+    <script type="text/javascript">
+        $('.scenario-carousel__item').on('mouseover',function(){
+            $('.scenario-img').addClass('blur');
+        })
+        $('.scenario-carousel__item').on('mouseout',function(){
+            $('.scenario-img').removeClass('blur');
+        })
+    </script>
+    <script type="text/javascript">
+        var navtop = new Vue({
+            el: '#navtop',
+            data: {
+                threeMenu: ''
+            }
+        });
+        var footnav = new Vue({
+            el: '#footnav'
+        });
+        var rslidar = new Vue({
+            el: '#rslidar',
+            data: {
+                rslidardata: <%-include("lang_"+lang, {lang: lang})%>
+            },
+            methods: {
+                init: function(){
+                    navtop.threeMenu = this.rslidardata.rslidar.threeMenu;
+                }
+            }
+        });
+        rslidar.init();
+    </script>
+</body>
+</html>

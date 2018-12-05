@@ -1,0 +1,1284 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>STi 速腾聚创-后台</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href="/css/newitem/bootstrap.css" rel="stylesheet" />
+    <link href="/css/newitem/bootstrap-responsive.css" rel="stylesheet" />
+    <link href="/css/newitem/bootstrap-overrides.css" type="text/css" rel="stylesheet" />
+    <link href="/css/newitem/font-awesome.css" type="text/css" rel="stylesheet" />   
+    <link href="/css/newitem/layout.css" rel="stylesheet" type="text/css" />
+    <link href="/css/newitem/icons.css" rel="stylesheet" type="text/css" />
+    <link href="/css/newitem/common.css" rel="stylesheet" type="text/css" /> 
+    <link href="/css/newitem/reset.css" rel="stylesheet" type="text/css" />  
+    <link href="/css/newitem/set.css" type="text/css" rel="stylesheet" media="screen" />
+    <script src="/js/newitem/vue.min.js"></script>
+    <script src="/js/newitem/jquery-2.2.4.min.js"></script>   
+    <style type="text/css">
+        *{
+            -webkit-tap-highlight-color: transparent;  
+            -webkit-appearance: none; 
+        }
+    </style>
+</head>  
+<body @click="hidepopt">
+
+    <%include loading%>
+    <%include toast%>
+    
+    <div id="wrapper">
+        <!-- sidebar -->
+        <%include nav%>
+        <%include menu%>
+        <div class="content">
+
+            <div id="menubox">
+                <menulist></menulist>
+            </div>
+
+            <div class="container-fluid">
+                <div class="resource-body">
+                    <h6 class="q-item-label" id="advance-setting">图片设置</h6>
+                    <div id="function-wrapper" class="function">
+                        <div class="function-wrapper">
+                            <input id="file_input" type="file" @change="filechange">
+                            <div class="function-row clearfix">
+                                <div class="function-container">
+                                    <div class="function-box">
+                                        <div class="borderbox" style="border: 3px solid red;padding: 7px;border-radius: 50%;">
+                                            <div class="picbox">
+                                                <img v-on:click="upmap" :src="url.logo?url.logo:'/images/newitem/icons/uppic.png'" />
+                                                <div class="masktips" @click="upload_logo" v-text="logo_uped"></div>
+                                            </div>
+                                        </div>
+                                        <a class="noImg" href="javascript:;" @click="upload_logo">LOGO/个人头像
+                                        <img class="tipicon" @mouseover="toggletip('logo')" @click.stop.prevent @mouseout="toggletip('logo')" width="16" src="/images/newitem/tipicon.png" /></a>
+                                    </div>
+                                    <div class="tipiconbox">
+                                        <div class="tipbox" transition="qrtoast" v-show="tipshow.logo">
+                                            <img src="http://qncdn.sz-sti.com/logo-tip.jpg" />
+                                            <p style="text-align:left;">客户观看时会在左上方显示</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="function-container">
+                                    <div class="function-box">
+                                        <div class="borderbox" style="border: 3px solid red;padding: 7px;border-radius: 50%;">
+                                            <div class="picbox">
+                                                <img v-on:click="uptopad" :src="url.topad?url.topad:'/images/newitem/icons/uppic.png'" />
+                                                <div class="masktips" @click="upload_topad" v-text="topad_uped"></div>
+                                            </div>
+                                        </div>
+                                        <a class="noImg" href="javascript:;" @click="upload_topad">顶部商标
+                                        <img class="tipicon" @mouseover="toggletip('topad')" @click.stop.prevent @mouseout="toggletip('topad')" width="16" src="/images/newitem/tipicon.png" /></a>
+                                    </div>
+                                    <div class="tipiconbox">
+                                        <div class="tipbox" style="left:-55px;" transition="qrtoast" v-show="tipshow.topad">
+                                            <p style="text-align:left;">可上传企业专属商标防止他人盗用，商标将在场景顶部显示</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="function-container">
+                                    <div class="function-box">
+                                        <div class="borderbox" style="border: 3px solid red;padding: 7px;border-radius: 50%;">
+                                            <div class="picbox">
+                                                <img v-on:click="upbotad" :src="url.botad?url.botad:'/images/newitem/icons/uppic.png'" />
+                                                <div class="masktips" @click="upload_botad" v-text="botad_uped"></div>
+                                            </div>
+                                        </div>
+                                        <a class="noImg" href="javascript:;" @click="upload_botad">底部商标
+                                        <img class="tipicon" @mouseover="toggletip('botad')" @click.stop.prevent @mouseout="toggletip('botad')" width="16" src="/images/newitem/tipicon.png" /></a>
+                                    </div>
+                                    <div class="tipiconbox">
+                                        <div class="tipbox botad" transition="qrtoast" v-show="tipshow.botad">
+                                            <p style="text-align:left;">可上传企业专属商标防止他人盗用，商标将在场景底部显示</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                                <!-- <div class="function-container">
+                                    <div class="function-box">
+                                        <div class="picbox">
+                                            <img src="/images/newitem/uploadlogo.png" width="180" />
+                                            <div class="masktips" @click="upload_logo" v-text="logo_uped"></div>
+                                        </div>
+                                        <a class="noImg" href="javascript:;" @click="upload_logo">LOGO</a>
+                                    </div>
+                                </div>
+                                <div class="function-container">
+                                    <div class="function-box">
+                                        <div class="picbox">
+                                            <img src="/images/newitem/topad.png" width="180" />
+                                            <div class="masktips" @click="upload_topad" v-text="topad_uped"></div>
+                                        </div>
+                                        <a class="noImg" href="javascript:;" @click="upload_topad">顶部商标</a>
+                                        <p class="haveImg"><a href="javascript:;">编辑</a><a href="javascript:;">删除</a></p>
+                                    </div>
+                                </div>
+                                <div class="function-container">
+                                    <div class="function-box">
+                                        <div class="picbox">
+                                            <img src="/images/newitem/bottomad.png" width="180" />
+                                            <div class="masktips" @click="upload_botad" v-text="botad_uped"></div>
+                                        </div>
+                                        <a class="noImg" href="javascript:;" @click="upload_botad">底部商标</a>
+                                        <p class="haveImg"><a href="javascript:;">编辑</a><a href="javascript:;">删除</a></p>
+                                    </div>
+                                </div> -->
+                            </div>
+
+
+
+                            <div class="popcontainer" v-show="preview" transition="five">
+                                <h5 id="editheader" class="edit">{{uploadobj.type}} 预览编辑 Preview And Edit</h5>
+                                <div class="popup clearfix">
+                                    <div class="thumb">
+                                        <div class="imgcontainer">
+                                            <img :src="previewurl" />
+                                        </div>
+                                        <canvas id="canvas" v-show="false"></canvas>
+                                        <div class="mask" v-bind:style="{width: maskwidth}"></div>
+                                    </div>
+                                    <p class="button-group">
+                                        <button class="crop" v-show="cancut&&!iscircle" @click="render(1)" :class="{'disabled': confirm}" :disabled="confirm">裁方</button>
+                                        <button class="crop" v-show="cancut&&!iscircle" @click="render" :class="{'disabled': confirm}" :disabled="confirm">裁圆</button>
+                                        <button class="crop" v-show="cancut&&iscircle" @click="goback" :class="{'disabled': confirm}" :disabled="confirm">还原</button>
+                                        <button class="ensure" v-show="isdelete" @click="delete">删除</button>
+                                        <button class="ensure" v-show="!isdelete||isrender" @click="upload" :class="{'disabled': confirm}" :disabled="confirm">确定</button>
+                                        <button class="cancel" @click="hidepreview">取消</button>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <h6 class="q-item-label mt_55" id="advance-setting">基本设置</h6>
+                    <div id="advanceset">
+                        <section class="q-item">
+                            <div class="item clearfix">
+                                <div class="item-title col-xs-3" style="height:42px;line-height:42px;">
+                                    <div>
+                                        标题前缀
+                                        <div class="tipiconbox">
+                                            <img class="tipicon" @mouseover="toggletip('prefix')" @mouseout="toggletip('prefix')" width="16" src="/images/newitem/tipicon.png" />
+                                            <div class="tipbox" transition="qrtoast" v-show="tipshow.prefix">
+                                                <img src="http://qncdn.sz-sti.com/set/help/prefix.jpg" />
+                                                <p>客户观看时标题栏所显示的前缀</p>
+                                            </div>
+                                        </div>
+                                    </div> 
+                                </div>
+                                <div class="item-body col-xs-9">
+                                    <!-- <p class="item-describe">
+                                    通过配置 prefix 实现全景标题添加自己所属的前缀，建议少于 5 个汉字
+                                    </p> -->
+                                    <div>
+                                        <div class="form-group form-inline">
+                                            <input type="text" name="prefix" :disabled="expire" class="form-control" v-model="prefix.content"/>
+                                            <small style="color:#e72420;font-size:17px;" v-if="prefix.content.length>5">*建议少于 5 个汉字</small>
+                                        </div>
+                                        <!-- <div>
+                                            <button type="button" class="btn btn-default btn-mute" @click="prefix.content = prefix.back;">取消</button>
+                                            <button type="submit" class="btn save" :disabled="prefix_disable" @click="sub_prefix">保存设置</button>
+                                        </div> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        <section class="q-item">
+                            <div class="item clearfix">
+                                <div class="item-title col-xs-3" style="height:42px;line-height:42px;">
+                                    <div>
+                                        一键拨打
+                                        <div class="tipiconbox">
+                                            <img class="tipicon" @mouseover="toggletip('telephone')" @mouseout="toggletip('telephone')" width="16" src="/images/newitem/tipicon.png" />
+                                            <div class="tipbox" transition="qrtoast" v-show="tipshow.telephone">
+                                                <img src="http://qncdn.sz-sti.com/set/help/telephone.jpg" />
+                                                <p>客户观看时点击右上方按钮可一键拨打电话</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="item-body col-xs-9">
+                                    <!-- <p class="item-describe">
+                                    通过配置 phone 实现全景页面一键拨打的联系方式的默认设置
+                                    </p > -->
+                                    <div>
+                                        <div class="form-group form-inline">
+                                            <input type="text" name="phone" :disabled="expire" class="form-control" @blur="validatePhone" v-model="phone.content"/>
+                                        </div>
+<!--                                    <div>
+                                            <button type="button" class="btn btn-default btn-mute" @click="phone.content = phone.back;">取消</button>
+                                            <button type="submit" class="btn btn-primary btn+" :disabled="phone_disable" @click="sub_phone">保存设置</button>
+                                        </div> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        <section class="q-item">
+                            <div class="item clearfix">
+                                <div class="item-title col-xs-3" style="top:3px">
+                                    <div>
+                                        语音播报
+                                        <div class="tipiconbox">
+                                            <img class="tipicon" @mouseover="toggletip('broadcast')" @mouseout="toggletip('broadcast')" width="16" src="/images/newitem/tipicon.png" />
+                                            <div class="tipbox" transition="qrtoast" v-show="tipshow.broadcast">
+                                                <img src="http://qncdn.sz-sti.com/set/help/broadcast.jpg" />
+                                                <p>客户观看时语音播报是否默认打开</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="item-body col-xs-9">
+                                    <!-- <p class="item-describe">
+                                    通过配置 broadcast 实现对 全景页面的文字语音播报 的开闭，建议 20 个字内
+                                    </p> -->
+                                    <div class="form-group mb_0">
+                                        <span class="toggle-btn" :class="{'on':is_broadcast_on.content}">
+                                            <span class="toggle-label">关闭</span>
+                                            <label @click="toggle_broadcast()">
+                                                <span class="switcher-wrapper"><span class="switcher"></span></span>
+                                            </label>
+                                            <span class="toggle-label">开启</span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        <section class="q-item">
+                            <div class="item clearfix">
+                                <div class="item-title col-xs-3" style="height:99px;line-height:99px;">
+                                    主页链接
+                                    <div class="tipiconbox">
+                                        <img class="tipicon" @mouseover="toggletip('menu_name')" @mouseout="toggletip('menu_name')" width="16" src="/images/newitem/tipicon.png" />
+                                        <div class="tipbox menutipbox" transition="qrtoast" v-show="tipshow.menu_name">
+                                            <img src="http://qncdn.sz-sti.com/set/help/link.jpg" />
+                                            <p>客户观看时点击右下方按钮可进入官网</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="item-body col-xs-9">
+                                    <!-- <p class="item-describe">
+                                    通过配置 menu 实现对全景页面右键菜单的 菜单名称 和 logo跳转链接 的配置
+                                    </p> -->
+                                    <div>
+                                        <div class="form-group form-inline">
+                                            <div>
+                                                <label for="menu_name" class="control-label">菜单名称：</label>
+                                                <input style="width:274px;" :disabled="expire" id="menu_name" type="text" name="menu_name" class="form-control" v-model="menu.content.name">
+                                            </div>
+                                            <div class="mt_15">
+                                                <label for="menu_link" class="control-label">跳转链接：</label>
+                                                <input style="width:274px;" :disabled="expire" id="menu_link" type="text" name="menu_link" class="form-control width300" placeholder="http://" v-model="menu.content.link">
+                                            </div>
+                                        </div>
+                                        <!-- <div>
+                                            <button type="button" class="btn btn-default btn-mute" @click="cancel_menu">取消</button>
+                                            <button type="submit" class="btn save" :disabled="menu_disable" @click="sub_menu">保存设置</button>
+                                        </div> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        <section class="q-item">
+                            <div class="item clearfix">
+                                <video id="bgmusic" class="hide" controls="" name="media" v-if="true">
+                                    <source :src="bgmusic_uped.url" type="audio/mpeg">
+                                </video>
+                                <input id="music_input" type="file" @change="music_change">
+                                <div class="item-title col-xs-3" style="top:3px">
+                                    <div>
+                                        背景音乐
+                                        <div class="tipiconbox">
+                                            <img class="tipicon" @mouseover="toggletip('bgmusic')" @mouseout="toggletip('bgmusic')" width="16" src="/images/newitem/tipicon.png" />
+                                            <div class="tipbox" transition="qrtoast" v-show="tipshow.bgmusic">
+                                                <img src="http://qncdn.sz-sti.com/set/help/bgmusic.jpg" />
+                                                <p>客户观看时背景音乐是否默认打开，也可自己设定背景音乐</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="item-body col-xs-9">
+                                    <!-- <p class="item-describe">
+                                    通过配置 background_music 实现对 全景页面的背景音乐 的上传和配置
+                                    </p> -->
+                                    <div class="form-group">
+                                        <span class="toggle-btn" :class="{'on':is_bgmusic_on.content}">
+                                            <span class="toggle-label">关闭</span>
+                                            <label @click="toggle_bgmusic()">
+                                                <span class="switcher-wrapper"><span class="switcher"></span></span>
+                                            </label>
+                                            <span class="toggle-label">开启</span>
+                                        </span>
+                                        <div class="mt_15">
+                                            当前背景音乐为 <span style="color:#e72420;" v-text="bgmusic_uped.name"></span>
+                                            <p class="bgmusic mt_15" v-if="bgmusic_uped.name">
+                                                <i class="icon-trash" v-if="bgmusic.uped" @click="delete_bgmusic"></i>
+                                                <i :class="{'icon-play':bgmusic.is_pause, 'icon-pause':!bgmusic.is_pause}" @click="play_bgmusic"></i>
+                                            </p>
+                                        </div>
+                                        <div class="sel-music mt_15">
+                                            <div class="sel-btn" v-show="!bgmusic.name" @click="up_bgmusic">
+                                                <div class="plus-box">
+                                                    <i><!-- <img src="/images/addfile.png" /> --></i>
+                                                </div>
+                                                <p>点击上传自定义音乐</p>
+                                            </div>
+                                            <div class="sel-btn" v-else>
+                                                <div class="plus-box" v-text="bgmusic.name"></div>
+                                                <div class="mt_15">
+                                                    <button type="button" class="btn btn-default btn-mute" :disabled="bgmusic.disabled" @click="cancel_sel_bgmusic">取消</button>
+                                                    <button type="submit" class="btn btn-red btn+" :disabled="bgmusic.disabled" @click="upload_bgmusic">确定</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        <section class="q-item">
+                            <div class="item clearfix">
+                                <input id="shareicon_input" type="file" @change="shareicon_change">
+                                <div class="item-title col-xs-3" style="top:2px">
+                                    <div>
+                                        微信分享图标
+                                        <div class="tipiconbox">
+                                            <img class="tipicon" @mouseover="toggletip('shareicon')" @mouseout="toggletip('shareicon')" width="16" src="/images/newitem/tipicon.png" />
+                                            <div class="tipbox" transition="qrtoast" v-show="tipshow.shareicon">
+                                                <img src="http://qncdn.sz-sti.com/set/help/shareicon.jpg" />
+                                                <p>微信分享时所显示的图标</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="item-body col-xs-9">
+                                    <!-- <p class="item-describe">
+                                    通过配置实现对 全景朋友圈小图标 的上传和配置
+                                    </p> -->
+                                    <div class="form-group">
+                                        <span class="toggle-btn sharing-text" :class="sharetype">
+                                            <span class="toggle-label">产品图</span>
+                                            <span class="toggle-label">跟随场景</span>
+                                            <span class="toggle-label">自定义</span>
+                                            <div class="sharing-icon">
+                                                <label @click="toggle_shareicon()">
+                                                    <span class="switcher-wrapper switcher-line"><span class="switcher"></span></span>
+                                                </label> 
+                                            </div>
+                                        </span>
+                                        <div v-if="uploadicon">
+                                            <div class="sel-music mt_15">
+                                                <div class="sel-btn" v-show="!shareicon.url" @click="up_shareicon">
+                                                    <div class="plus-box">
+                                                        <i></i>
+                                                    </div>
+                                                    <p>点击上传自定义小图标</p>
+                                                </div>
+                                                <div class="sel-btn" v-else>
+                                                    <img :src="shareicon.url" />
+                                                    <div class="mt_15">
+                                                        <button type="button" class="btn btn-default btn-mute" :disabled="shareicon.disabled" @click="cancel_sel_shareicon" v-if="!shareicon.initurl">取消</button>
+                                                        <button type="submit" class="btn btn-red btn+" v-if="shareicon.initurl" @click="del_shareicon">删除</button>
+                                                        <button type="submit" class="btn btn-red btn+" v-else :disabled="shareicon.disabled" @click="upload_shareicon">确定</button>
+                                                    </div>
+                                                </div>
+                                                <p v-if="!shareicon.initurl"><small>注:建议上传200*200以下的正方形小图标</small></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        <section class="q-item">
+                            <div class="item clearfix">
+                                <div class="item-title col-xs-3" style="height:42px;line-height:42px;">
+                                    微信分享描述
+                                    <div class="tipiconbox">
+                                        <img class="tipicon" @mouseover="toggletip('share_desc')" @mouseout="toggletip('share_desc')" width="16" src="/images/newitem/tipicon.png" />
+                                        <div class="tipbox sharetipbox" transition="qrtoast" v-show="tipshow.share_desc">
+                                            <img src="http://qncdn.sz-sti.com/set/help/sharedesc.jpg" />
+                                            <p>微信分享时所显示的描述语</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="item-body col-xs-9">
+                                    <!-- <p class="item-describe">
+                                    通过配置 sharedesc 实现对全景页面社交分享时的描述文字的配置，建议 20 个字内
+                                    </p> -->
+                                    <div>
+                                        <div class="form-group form-inline">
+                                            <input :disabled="expire" class="form-control" placeholder="请填入分享小窗描述语" @keydown.enter.prevent v-model.trim="sharedesc.content" />
+                                            <small style="color:#e72420;font-size:17px;" v-if="sharedesc.content.length>20">*建议 20 个字内</small>
+                                        </div>
+                                        <!-- <div>
+                                            <button type="button" class="btn btn-default btn-mute" @click="sharedesc.content = sharedesc.back">取消</button>
+                                            <button type="submit" class="btn save" :disabled="sharedesc_disable" @click="sub_sharedesc">保存设置</button>
+                                        </div> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        <section class="q-item">
+                            <div class="item clearfix">
+                                <div class="item-title col-xs-3" style="top:2px">
+                                    <div>
+                                        自动播放
+                                        <div class="tipiconbox">
+                                            <img class="tipicon" @mouseover="toggletip('autoplay')" @mouseout="toggletip('autoplay')" width="16" src="/images/newitem/tipicon.png" />
+                                            <div class="tipbox" style="width: 500px;" transition="qrtoast" v-show="tipshow.autoplay">
+                                                <img src="http://ipano3.sz-sti.com/set/help/autoplay.jpg" />
+                                                <p>客户观看时是否自动进入下一场景</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="item-body col-xs-9">
+                                   <!--  <p class="item-describe">
+                                    通过配置 QRcode 实现对 PC端全景页面二维码 的显示和折叠（注：显示在二级菜单栏里）的切换（手机端折叠）
+                                    </p> -->
+                                    <div class="form-group">
+                                        <span class="toggle-btn" :class="{'on':qrcode.content}">
+                                            <span class="toggle-label">关闭</span>
+                                            <label @click="toggle_qrcode()">
+                                                <span class="switcher-wrapper"><span class="switcher"></span></span>
+                                            </label>
+                                            <span class="toggle-label">开启</span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        <section class="q-item">
+                            <div class="item clearfix">
+                                <div class="item-title col-xs-3" style="top:2px">
+                                    <div>
+                                        全景旋转
+                                        <div class="tipiconbox">
+                                            <img class="tipicon" @mouseover="toggletip('rotate')" @mouseout="toggletip('rotate')" width="16" src="/images/newitem/tipicon.png" />
+                                            <div class="tipbox" transition="qrtoast" v-show="tipshow.rotate">
+                                                <img src="http://ipano3.sz-sti.com/set/help/rotate.jpg" />
+                                                <p>客户观看时是否默认打开自动旋转</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="item-body col-xs-9">
+                                    <!-- <p class="item-describe">
+                                    通过配置 Scene rotate 实现对 全景页面自动旋转 的切换
+                                    </p> -->
+                                    <div class="form-group">
+                                        <span class="toggle-btn" :class="{'on':!rotate.content}">
+                                            <span class="toggle-label">停止</span>
+                                            <label @click="toggle_rotate()">
+                                                <span class="switcher-wrapper"><span class="switcher"></span></span>
+                                            </label>
+                                            <span class="toggle-label">旋转</span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        <!-- <section class="q-item">
+                            <div class="item clearfix">
+                                <div class="item-title col-xs-3">全景底部信息<br/><small>info</small></div>
+                                <div class="item-body col-xs-9">
+                                    <p class="item-describe">
+                                    通过配置 info 实现对全景页面底部图标显示的 文字信息 的配置
+                                    </p>
+                                    <div>
+                                        <div class="form-group form-inline info">
+                                            <div>
+                                                <label for="contact_name" class="control-label">Line1：</label>
+                                                <input :disabled="expire" id="contact_name" type="text" name="contact_name" class="form-control" v-model="info.content.ad1">
+                                            </div>
+                                            <div class="mt_15">
+                                                <label for="contact_phone" class="control-label">Line2：</label>
+                                                <input :disabled="expire" id="contact_phone" type="text" name="contact_phone" class="form-control" v-model="info.content.ad2">
+                                            </div>
+                                            <div class="mt_15">
+                                                <label for="contact_other" class="control-label">Line3：</label>
+                                                <input :disabled="expire" id="contact_other" type="text" name="contact_other" class="form-control" v-model="info.content.ad3">
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <button type="button" class="btn btn-default btn-mute" @click="cancel_info">取消</button>
+                                            <button type="submit" class="btn save" :disabled="info_disable" @click="subinfo">保存设置</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section> -->
+                        <button type="submit" class="btn save block" @click="subsceneinfo">保存设置</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container-fluid">
+                <div id="function-wrapper" class="function">
+                        <div class="app-resource-card">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/newitem/smooth-scroll.min.js"></script>
+    <script src="/js/qnuploader.js"></script>
+    <script type="text/javascript">
+
+        var menubox = new Vue({el: '#menubox'});
+        loading1.isshow = false; 
+        nav.current.set = true;
+
+        var mainWrap = new Vue({
+            el:'#function-wrapper',
+            data:{
+                preview : false,
+                uploadobj : {},
+                previewurl : '', 
+                maskwidth : '0%',
+                iscircle: false,
+                cancut: true,
+                isdelete: false,
+                isrender: false,
+                expire:false,
+                expiredate:'<%=user.expire%>',
+                expireinfo: '该功能为商业版功能，开通请联系销售经理',
+                url: {
+                    logo: '<%=user.logo%>',
+                    topad: '<%=user.trademark%>',
+                    botad: '<%=user.itccontactstel%>'
+                },
+                uploadtype: '',
+                jurisdiction:{
+                    permission_logo:'<%=user.permission_logo%>',
+                    permission_trademark:'<%=user.permission_trademark%>'
+                },
+                confirm: false,
+                tipshow: {
+                    logo: false,
+                    topad: false,
+                    botad: false
+                }
+            },
+            computed: {
+                logo_uped: function(){
+                    return this.expire?'商业版功能':this.url.logo?'点击查看':'点击上传'
+                },
+                topad_uped: function(){
+                    return this.expire?'商业版功能':this.url.topad?'点击查看':'点击上传'
+                },
+                botad_uped: function(){
+                    return this.expire?'商业版功能':this.url.botad?'点击查看':'点击上传'
+                }
+            },
+            methods:{
+                toggletip: function(name){
+                    this.tipshow[name] = !this.tipshow[name];
+                },
+                init: function(){
+                    var now = Date.parse(new Date());
+                    var expiredate = Date.parse(new Date(this.expiredate));
+                    if(now>expiredate){
+                        this.expire = true;
+                        advanceset.shareicon.type = 0;
+                    }else{
+                        advanceset.shareicon.type = JSON.parse(advanceset.shareicon.uped)[0];
+                        advanceset.shareicon.inittype = JSON.parse(advanceset.shareicon.uped)[0];
+                        JSON.parse(advanceset.shareicon.uped)[0] != 1?advanceset.shareicon.type = JSON.parse(advanceset.shareicon.uped)[0]:'';
+                        advanceset.shareicon.url = JSON.parse(advanceset.shareicon.uped)[1]?JSON.parse(advanceset.shareicon.uped)[1]:'';
+                        advanceset.shareicon.initurl = JSON.parse(advanceset.shareicon.uped)[1]?JSON.parse(advanceset.shareicon.uped)[1]:'';
+                        advanceset.shareicon.url?advanceset.shareicon.url = 'http://qncdn.sz-sti.com/images/shareicon/'+JSON.parse(advanceset.shareicon.uped)[1]:'';
+                        advanceset.shareicon.initurl?advanceset.shareicon.initurl = 'http://qncdn.sz-sti.com/images/shareicon/'+JSON.parse(advanceset.shareicon.uped)[1]:'';
+                    }
+                },
+                checkexpire: function(){
+                    if(this.expire){
+                        toast.showmsg(this.expireinfo, true);
+                        return true;
+                    }else{
+                        return false;
+                    }
+                },
+                upload_logo: function(event){
+                    if(this.checkexpire())return;
+                    this.cancut = false;
+                    if(this.url.logo){
+                        this.filechange(event,this.url.logo);
+                        this.isdelete = true;
+                    }else{
+                        this.uploadtype = true;
+                        $("#file_input").click();
+                        this.isdelete = false;
+                    }
+                    this.uploadobj = {
+                        type: 'logo',
+                        uploadurl: '/tokenitem/logo',
+                        deleteurl: '/setitem/set-logo'
+                    };
+                },
+                upload_topad: function(event){
+                    if(this.checkexpire())return;
+                    this.cancut = true;
+                    if(this.url.topad){
+                        this.filechange(event,this.url.topad);
+                        this.isdelete = true;
+                    }else{
+                        $("#file_input").click();
+                        this.isdelete = false;
+                    } 
+                    this.uploadobj = {
+                        type: 'topad',
+                        uploadurl: '/tokenitem/topad',
+                        deleteurl: '/setitem/deltrademark'
+                    };
+                },
+                upload_botad: function(event){
+                    if(this.checkexpire())return;
+                    this.cancut = true;
+                    if(this.url.botad){
+                        this.filechange(event,this.url.botad);
+                        this.isdelete = true;
+                    }else{
+                        $("#file_input").click();
+                        this.isdelete = false;
+                    }
+                    this.uploadobj = {
+                        type: 'botad',
+                        uploadurl: '/tokenitem/botad',
+                        deleteurl: '/setitem/delbottrademarks'
+                    };
+                },
+                getObject: function(){
+                    var file = document.getElementById('file_input').files[0];
+                    var url = undefined;
+                    if (window.createObjectURL) {
+                        url = createObjectURL(file);
+                    }else if(window.URL){
+                        url = URL.createObjectURL(file);
+                    }else if(window.webkitURL){
+                        url = webkitURL.createObjectURL(file);
+                    };
+                    return {
+                        url: url,
+                        size: file.size,
+                        type: file.type
+                    };
+                },
+                filechange: function(event,src){
+                    if(src){
+                        var url = src;
+                    }else{
+                        var obj = this.getObject();
+                        if(obj.type.split('/')[0]!='image'){
+                            toast.showmsg('不是图片类型的文件', true);
+                            return;
+                        }
+                        if(obj.size>307200){
+                            toast.showmsg('图片大小不得大于300K', true);
+                            return;
+                        };
+                        var url = obj.url;
+                    }
+                    if(this.uploadtype){
+                        var _this = this;
+                        var image = new Image();
+                        image.src = url;
+                        image.crossOrigin = "*";
+                        image.onload = function(){
+
+                            // if((image.width/image.height)>1:1){
+                            //     toast.showmsg('建议上传宽高比大于或等于1:1的图片', true);
+                            //     return;
+                            // }
+                            url?_this.preview = true:_this.preview = false;
+                            _this.iscircle = false;
+                            _this.previewurl = url;
+                            _this.$nextTick(function(){
+                                $.smoothScroll({
+                                    scrollTarget: '#editheader'
+                                });
+                            });
+                        };
+                    }else{
+                        url?this.preview = true:this.preview = false;
+                        this.iscircle = false;
+                        this.previewurl = url;
+                        this.$nextTick(function(){
+                            $.smoothScroll({
+                                scrollTarget: '#editheader'
+                            });
+                        });
+                    }
+                },
+                upload: function(){
+                    var _this = this;
+                    this.confirm = true;
+                    $.post(this.uploadobj.uploadurl,{type: 'global'},function(res){
+                        console.log(res);
+                        var token = res.token;
+                        var key = res.key;
+                        var url = res.url;
+                        Q.addEvent("progress", function(p, s) {
+                            console.log(1);
+                            _this.maskwidth = (p==100?99:p)+'%';
+                        });
+                        Q.addEvent("putFinished", function(fsize, res, taking) {
+                            console.log(_this.uploadobj.type);
+                            console.log(2);
+                            switch(_this.uploadobj.type){
+                                case 'logo':
+                                    _this.url.logo = 'http://qncdn.sz-sti.com/'+key;
+                                    break;
+                                case 'topad':
+                                    _this.url.topad = 'http://qncdn.sz-sti.com/'+url;
+                                    break;
+                                case 'botad':
+                                    _this.url.botad = 'http://qncdn.sz-sti.com/'+url;
+                                    break;
+                                default:;
+                            }
+                            _this.hidepreview();
+                            _this.isrender = false;
+                            toast.showmsg('上传成功');
+                        });
+                        Q.SetToken(token);
+
+                        _this.iscircle?Q.Upload_base64(_this.previewurl.replace('data:image/png;base64,',''), url):
+                        Q.Upload(document.getElementById('file_input').files[0], url);
+                    });
+                },
+                goback: function(){
+                    this.url[this.uploadobj.type]?
+                    this.previewurl = this.url[this.uploadobj.type]:
+                    this.previewurl = this.getObject().url;
+                    this.iscircle = false;
+                },
+                delete: function(){
+                    var _this = this;
+                    $.post(this.uploadobj.deleteurl,{
+                            type: 'global'
+                        },function(res){
+                            if(res.code == 0){
+                                toast.showmsg('删除成功');
+                                _this.url[_this.uploadobj.type] = '';
+                                _this.preview = false;
+                            }else{
+                                toast.showmsg(res.msg, true);
+                            }
+                        }
+                    );
+                },
+                render: function(type){
+                    var width = 400;
+                    var _this = this;
+                    var image = new Image();
+                    image.crossOrigin = "*";
+
+                    image.onload = function(){
+                        var canvas = document.getElementById("canvas");
+                        var ctx = canvas.getContext("2d");
+                        ctx.clearRect(0, 0, image.width, image.height);
+
+                        var max = Math.max(image.width, image.height);
+                        var min = Math.min(image.width, image.height);
+
+                        var MAX_HEIGHT = 400;
+                        canvas.height = canvas.width = MAX_HEIGHT;
+
+                        var pattern = ctx.createPattern(image, "no-repeat");
+                        ctx.scale(MAX_HEIGHT/min, MAX_HEIGHT/min);
+
+                        type == 1?ctx.rect(0, 0, min, min):ctx.arc(min/2, min/2, min/2, 0, 2 * Math.PI);
+
+                        image.height<image.width?ctx.translate((min-max)/2, 0):ctx.translate(0, (min-max)/2);
+                        ctx.fillStyle = pattern;
+                        ctx.fill();  
+
+                        _this.previewurl = canvas.toDataURL('image/png');
+                        _this.iscircle = true;
+                        _this.isrender = true;
+                    };
+                    image.src = this.previewurl;
+                },
+                hidepreview: function(){
+                    this.preview = false;
+                    this.confirm = false;
+                    this.isrender = false;
+                    this.maskwidth = '0%';
+                    $("#file_input").val('');
+                }
+            }
+        });
+
+
+        var advanceset = new Vue({
+            el: '#advanceset',
+            data: {
+                tipshow: {
+                    prefix: false,
+                    menu_name: false,
+                    share_desc: false,
+                    telephone: false,
+                    broadcast: false,
+                    bgmusic: false,
+                    shareicon: false,
+                    autoplay: false,
+                    rotate: false
+                },
+                expire:mainWrap.expire,
+                prefix: {
+                    back: '<%=user.prefix%>',
+                    content: '<%=user.prefix%>'
+                },
+                phone: {
+                    back: '<%=user.itcregion%>',
+                    content: '<%=user.itcregion%>'
+                },
+                is_broadcast_on: {
+                    back: <%=!!user.permission_introduction%>,
+                    content: <%=!!user.permission_introduction%>
+                },
+                menu: {
+                    content: {
+                        name: '<%=user.company%>',
+                        link: '<%=user.itcwebsite%>'
+                    },
+                    back: {
+                        name: '<%=user.company%>',
+                        link: '<%=user.itcwebsite%>'
+                    }
+                },
+                is_bgmusic_on: {
+                    back: <%=!!user.permission_bgsnd%>,
+                    content: <%=!!user.permission_bgsnd%>
+                },
+                bgmusic: {
+                    uped: '<%=user.bgmusic%>',
+                    name: '',
+                    is_pause: true,
+                    disabled: false,
+                    isnew: false
+                },
+                shareicon: {
+                    uped: '<%-user.sharekey%>',
+                    name: '',
+                    url: '',
+                    initurl: '',
+                    disabled: false,
+                    type: '',
+                    inittype: ''
+                },
+                qrcode: {
+                    back: <%=!!user.qrcode%>,
+                    content: <%=!!user.qrcode%>
+                },
+                sharedesc: {
+                    content: '<%=user.itccontacts%>',
+                    back: '<%=user.itccontacts%>'
+                },
+                rotate: {
+                    back: <%=!!user.isrotate%>,
+                    content: <%=!!user.isrotate%>
+                }
+                // info: {
+                //     content: {
+                //         ad1: '<%=user.info.ad1%>',
+                //         ad2: '<%=user.info.ad2%>',
+                //         ad3: '<%=user.info.ad3%>'
+                //     },
+                //     back: {
+                //         ad1: '<%=user.info.ad1%>',
+                //         ad2: '<%=user.info.ad2%>',
+                //         ad3: '<%=user.info.ad3%>'
+                //     }
+                // }
+            },
+            computed: {
+                uploadicon: function(){
+                    return this.shareicon.type == '1'?true:false;
+                },
+                sharetype: function(){
+                    return ['scene','self','default'][this.shareicon.type];
+                },
+                prefix_disable: function(){
+                    return this.prefix.content == this.prefix.back;
+                },
+                phone_disable: function(){
+                    return this.phone.content == this.phone.back;
+                },
+                broadcast_disable: function(){
+                    return this.is_broadcast_on.content == this.is_broadcast_on.back;
+                },
+                menu_disable: function(){
+                    return this.menu.content.name == this.menu.back.name && this.menu.content.link == this.menu.back.link;
+                },
+                toggle_bgmusic_disable: function(){
+                    return this.is_bgmusic_on.content == this.is_bgmusic_on.back;
+                },
+                toggle_shareicon_disable: function(){
+                    return this.shareicon.type == this.shareicon.inittype;
+                },
+                bgmusic_uped: function(){
+                    return {
+                        url: this.bgmusic.uped?this.bgmusic.uped:'http://qncdn.sz-sti.com/images/tools/785.mp3',
+                        name: this.bgmusic.uped?this.bgmusic.uped.split('/')[this.bgmusic.uped.split('/').length-1].substr(-20, 20):'默认音乐'
+                    }
+                },
+                sharedesc_disable: function(){
+                    return this.sharedesc.content == this.sharedesc.back;
+                },
+                qrcode_disable: function(){
+                    return this.qrcode.content == this.qrcode.back;
+                },
+                rotate_disable: function(){
+                    return this.rotate.content == this.rotate.back;
+                }
+                // info_disable: function(){
+                //     return this.info.content.ad1 == this.info.back.ad1 && this.info.content.ad2 == this.info.back.ad2 && this.info.content.ad3 == this.info.back.ad3;
+                // }
+            },
+            methods: {
+                toggletip: function(name){
+                    this.tipshow[name] = !this.tipshow[name];
+                },
+                subsceneinfo: function(){
+                    if(mainWrap.checkexpire())return;
+                    if(!this.menu_disable){
+                        this.sub_menu();
+                    }
+                    var validatePhone = this.validatePhone();
+                    if(!this.phone_disable&&validatePhone)this.sub_phone();
+
+                    if(!this.prefix_disable) this.sub_prefix();
+                    if(!this.sharedesc_disable) this.sub_sharedesc();
+                    // if(!this.info_disable) this.subinfo();
+                    if(!this.broadcast_disable) this.toggle_broadcast(1);
+                    if(!this.toggle_bgmusic_disable) this.toggle_bgmusic(1);
+                    // if(!this.toggle_shareicon_disable) {
+                    //       if(this.uploadicon){
+                    //         if(!this.shareicon.url){
+                    //             toast.showmsg('请先上传小图标');
+                    //             return;
+                    //         }
+                    //     }
+                    //     this.toggle_shareicon(1);  
+                    // }
+                    if(!this.qrcode_disable) this.toggle_qrcode(1);
+                    if(!this.rotate_disable) this.toggle_rotate(1);
+                            console.log(this.uploadicon);
+
+                    if(!this.prefix_disable || !this.menu_disable || !this.sharedesc_disable || !this.broadcast_disable || !this.toggle_bgmusic_disable || !this.toggle_shareicon_disable || (!this.phone_disable&&validatePhone) ||!this.qrcode_disable ||!this.rotate_disable ||!this.rotate_disable){
+                        if(this.uploadicon){
+                            if(!this.shareicon.url){
+                                toast.showmsg('请先上传小图标');
+                                return;
+                            }
+                        }
+                        this.toggle_shareicon(1); 
+                        toast.showmsg('保存成功');
+                    }else{
+                        if(this.phone_disable)toast.showmsg('你未进行信息修改');
+                    }
+                },
+                validatePhone: function(){
+                    var reg = /((\d{11})|^((\d{7,8})|(\d{4}|\d{3})-(\d{7,8})|(\d{4}|\d{3})-(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1})|(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1}))$)/;
+                    if(this.phone.content&&this.phone.content.match(reg) == null&&this.phone.content.indexOf('400')==-1){
+                        toast.showmsg('电话号码不符合规则', true);
+                        return false;
+                    }else{
+                        return true;
+                    }
+                },
+                sub_phone: function(){
+                    var _this = this;
+                    $.post('/setitem/set-global-phone',{
+                        phone: _this.phone.content
+                    },function(res){
+                        _this.phone.back = _this.phone.content;
+                    });
+                },
+                sub_prefix: function(){
+                    var _this = this;
+                    $.post('/setitem/set-global-prefix',{
+                        prefix: _this.prefix.content
+                    },function(res){
+                        _this.prefix.back = _this.prefix.content;
+                    });
+                },
+                toggle_broadcast: function(fn){
+                    if(mainWrap.checkexpire())return;
+                    if(fn){
+                        var _this = this;
+                        $.post('/setitem/set-introduction-status',{},function(res){
+                            if(res.code == 0)_this.is_broadcast_on.back = _this.is_broadcast_on.content;
+                        });
+                    }else{
+                        this.is_broadcast_on.content = !this.is_broadcast_on.content;
+                    }
+                },
+                cancel_menu: function(){
+                    this.menu.content.name = this.menu.back.name;
+                },
+                sub_menu: function(){
+                    var _this = this;
+                    $.post('/setitem/set-info',{
+                            itcname: _this.menu.content.name,
+                            itcwebsite:_this.menu.content.link.replace('http://', '')
+                        },function(res){
+                            // toast.showmsg(res.msg, res.code!=0);
+                            if(res.code == 0){
+                                _this.menu.back.name = _this.menu.content.name;
+                                _this.menu.back.link = _this.menu.content.link;
+                            }
+                        }
+                    );
+                },
+                toggle_bgmusic: function(fn){
+                    if(mainWrap.checkexpire())return;
+                    if(fn){
+                        var _this = this;
+                        $.post('/setitem/set-bgmusic-status',{},function(res){
+                            if(res.code == 0)_this.is_bgmusic_on.back = _this.is_bgmusic_on.content;
+                        });
+                    }else{
+                        this.is_bgmusic_on.content = !this.is_bgmusic_on.content;
+                    }
+                },
+                toggle_shareicon: function(fn){
+                    if(mainWrap.checkexpire())return;
+                    if(fn){
+                        var _this = this;
+                        $.post('/setitem/toggleshareicon',{sharetype:this.shareicon.type},function(res){
+                            if(res.code == 0)_this.shareicon.inittype = _this.shareicon.type;
+                        });
+                    }else{
+                        var index = this.shareicon.type;
+                        index++;
+                        this.shareicon.type = index%3;
+                    }
+                },
+                delete_bgmusic: function(){
+                    if(mainWrap.checkexpire())return;
+                    var _this = this;
+                    var audio = document.getElementById('bgmusic');
+                    audio.pause();
+                    this.bgmusic.is_pause = audio.paused;
+                    $.post('/setitem/del-bgmusic',{
+                            type:"global"
+                        },function(res){
+                            // toast.showmsg(res.msg, res.code!=0);
+                            if(res.code == 0){
+                                _this.bgmusic.uped = ''; 
+                                _this.bgmusic.isnew = true;
+                            }
+                        }
+                    );
+                },
+                toggle_qrcode: function(fn){
+                    if(mainWrap.checkexpire())return;
+                    if(fn){
+                        var _this = this;
+                        $.post('/setitem/set-qrcode-position',{},function(res){
+                            if(res.code == 0)_this.qrcode.back = _this.qrcode.content;
+                        });
+                    }else{
+                        this.qrcode.content = !this.qrcode.content;
+                        console.log(this.qrcode_disable);
+                    }
+                },
+                toggle_rotate: function(fn){
+                    if(mainWrap.checkexpire())return;
+                    if(fn){
+                        var _this = this;
+                        $.post('/setitem/set-rotate-status',{},function(res){
+                            if(res.code == 0)_this.rotate.back = _this.rotate.content;
+                        });
+                    }else{
+                        this.rotate.content = !this.rotate.content;
+                        console.log(this.rotate_disable);
+                    }
+                },
+                play_bgmusic: function(){
+                    if(mainWrap.checkexpire())return;
+                    var audio = document.getElementById('bgmusic');
+                    if(this.bgmusic.isnew){
+                        audio.load();
+                        this.bgmusic.isnew = false;
+                    }
+                    audio.paused?audio.play():audio.pause();
+                    this.bgmusic.is_pause = audio.paused;
+                },
+                getObject: function(){
+                    var file = document.getElementById('shareicon_input').files[0];
+                    var url = undefined;
+                    if (window.createObjectURL) {
+                        url = createObjectURL(file);
+                    }else if(window.URL){
+                        url = URL.createObjectURL(file);
+                    }else if(window.webkitURL){
+                        url = webkitURL.createObjectURL(file);
+                    };
+                    return {
+                        url: url,
+                        size: file.size,
+                        type: file.type,
+                        name: file.name
+                    };
+                },
+                up_bgmusic: function(){
+                    if(mainWrap.checkexpire())return;
+                    $('#music_input').click();
+                },
+                music_change: function(){
+                    var obj = document.getElementById('music_input').files[0];
+                    console.log(obj);
+                    var type = obj.type.split('/')[obj.type.split('/').length-1];
+                    if(type!='mp3' && type!='wma' && type!='wav' && type!='ogg' && type!='mpeg'){
+                        toast.showmsg('不是音频类型的文件', true);
+                        return;
+                    };
+                    if(obj.size>1572864){
+                        toast.showmsg('音频文件不能大于1.5m', true);
+                        return;
+                    };
+                    this.bgmusic.name = obj.name.substr(-20, 20);
+                },
+                up_shareicon: function(){
+                    if(mainWrap.checkexpire())return;
+                    if(this.shareicon.url){
+                        this.shareicon_change(event,this.shareicon.url);
+                    }else{
+                        $("#shareicon_input").click();
+                    }
+                },
+                del_shareicon: function(){
+                    var _this = this;
+                    $.post('/setitem/del_shareicon',{},function(res){
+                            if(res.code == 0){
+                                toast.showmsg('删除成功');
+                                _this.shareicon.type = 0;
+                                _this.shareicon.url = '';
+                                _this.shareicon.initurl = '';
+                            }else{
+                                toast.showmsg(res.msg, true);
+                            }
+                        }
+                    );
+                },
+                shareicon_change: function(event,src){
+                    if(src){
+                        var url = src;
+                    }else{
+                        var obj = this.getObject();
+                        if(obj.type.split('/')[0]!='image'){
+                            toast.showmsg('不是图片类型的文件', true);
+                            return;
+                        }
+                        if(obj.size>51200){
+                            toast.showmsg('图片大小不得大于50k', true);
+                            return;
+                        };
+                        var url = obj.url;
+                    }
+                    this.shareicon.url = obj.url;
+                    this.shareicon.name = obj.name;
+                },
+                cancel_sel_bgmusic: function(){
+                    this.bgmusic.name = '';
+                    document.getElementById('music_input').value = '';
+                },
+                upload_bgmusic: function(){
+                    this.bgmusic.disabled = true;
+                    var _this = this;
+                    $.post('/tokenitem/music',{
+                            type: "global",
+                            name: _this.bgmusic.name
+                        },function(res){
+                        var token = res.token;
+                        var key = res.musicurl;
+                        Q.addEvent("progress", function(p, s) {
+                            _this.bgmusic.name = (p==100?99:p)+'%';
+                        });
+                        Q.addEvent("putFinished", function(fsize, res, taking) {
+                            _this.bgmusic.disabled = false;
+                            _this.bgmusic.name = '';
+                            _this.bgmusic.uped = 'http://qncdn.sz-sti.com/'+key;
+                            _this.bgmusic.isnew = true;
+                            toast.showmsg('上传背景音乐成功');
+                        });
+                        Q.SetToken(token);
+                        Q.Upload(document.getElementById('music_input').files[0], key);
+                    });
+                },
+                cancel_sel_shareicon: function(){
+                    this.shareicon.url = '';
+                    document.getElementById('shareicon_input').value = '';
+                },
+                upload_shareicon: function(){
+                    this.shareicon.disabled = true;
+                    var _this = this;
+                    $.post('/tokenitem/shareicon',{name: _this.shareicon.name},function(res){
+                        var token = res.token;
+                        var key = res.key;
+                        var url = res.url;
+                        console.log(res);
+                        Q.addEvent("progress", function(p, s) {
+                            // _this.maskwidth = (p==100?99:p)+'%';
+                        });
+                        Q.addEvent("putFinished", function(fsize, res, taking) {
+                            _this.shareicon.disabled = false;
+                            _this.shareicon.url = 'http://qncdn.sz-sti.com/'+url;
+                            _this.shareicon.initurl = 'http://qncdn.sz-sti.com/'+url;
+                            _this.toggle_shareicon(1);
+                            toast.showmsg('设置成功');
+                        });
+                        Q.SetToken(token);
+                        Q.Upload(document.getElementById('shareicon_input').files[0], url);
+                    });
+                },
+                sub_sharedesc: function(){
+                    var _this = this;
+                    $.post('/setitem/set-sharedesc',{
+                            sharead: _this.sharedesc.content.replace(/<[^>]+>/g,"")
+                        },function(res){
+                            if(res.code == 0)_this.sharedesc.back = _this.sharedesc.content;
+                        }
+                    )
+                },
+                cancel_info: function(){
+                    this.info.content = this.info.back;
+                },
+                subinfo: function(){
+                    var _this = this;
+                    $.post('/setitem/set-global-ad',{
+                            advertisement:'<div>'+_this.info.content.ad1+'</div>'+'<div>'+_this.info.content.ad2+'</div>'+'<div>'+_this.info.content.ad3+'</div>'
+                        },function(res){
+                            // toast.showmsg(res.msg, res.code!=0);
+                            if(res.code == 0){
+                                _this.info.back.ad1 = _this.info.content.ad1;
+                                _this.info.back.ad2 = _this.info.content.ad2;
+                                _this.info.back.ad3 = _this.info.content.ad3;
+                            }
+                        }
+                    )
+                }
+            }
+        });
+    
+        mainWrap.init();
+        var body = new Vue({
+            el: 'body',
+            methods: {
+                hidepopt: function(){
+                    nav.display = false;
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1701 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>STi 速腾聚创-后台</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <meta content="email=no" name="format-detection" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href="/css/newitem/bootstrap.css" rel="stylesheet" />
+    <link href="/css/newitem/bootstrap-responsive.css" rel="stylesheet" />
+    <link href="/css/newitem/bootstrap-overrides.css" type="text/css" rel="stylesheet" />
+    <link href="/css/newitem/font-awesome.css" type="text/css" rel="stylesheet" />   
+    <link href="/css/newitem/layout.css" rel="stylesheet" type="text/css" />
+    <link href="/css/newitem/icons.css" rel="stylesheet" type="text/css" />
+    <link href="/css/newitem/common.css" rel="stylesheet" type="text/css" /> 
+    <link href="/css/newitem/reset.css" rel="stylesheet" type="text/css" /> 
+    <link href="/css/newitem/edit.css" type="text/css" rel="stylesheet" media="screen" />
+    <link href="/css/newitem/editmap.css" rel="stylesheet" type="text/css" /> 
+    <link href='/css/newitem/swiper-3.3.1.min.css' rel='stylesheet' type='text/css'>
+    <script src="/js/newitem/vue.min.js"></script>
+    <script src="/js/newitem/jquery-2.2.4.min.js"></script>
+    <script src="/js/newitem/swiper-3.3.1.min.js"></script>
+    <script src="/js/newitem/Sortable.min.js"></script>
+</head>  
+<body @click="hidepopt" @mousedown="hidepopt" :class="{noscroll: noscroll}">
+
+    <%include loading%>
+    <%include toast%>
+    <%include trash%>
+    <div id="wrapper">
+        <!-- sidebar -->
+        <%include nav%>
+        <%include menu%>
+        
+        <!-- end sidebar -->
+        <!-- main container -->
+
+        <div id="houseinfo" class="content" transition="five" v-show="editinfo">
+            <span @click="hideeditinfo"><i class="close-pop ico-close"></i></span>
+            <div class="container-fluid">
+                <div id="pad-wrapper" class="availability">
+                    <div class="row-fluid header">
+                        <h3>设置房源信息</h3>
+                    </div>
+                    <div class="row-fluid form-wrapper">
+                        <section>
+                            <div class="clearfix">
+                                <div class="col-3 item-title">
+                                    <p>城市:</p>
+                                </div>
+                                <div class="col-9">
+                                    <div>
+                                        <input class="city" type="text" v-model="panoinfo.city" />
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        <section>
+                            <div class="clearfix">
+                                <div class="col-3 item-title">
+                                    <p>区域:</p>
+                                </div>
+                                <div class="col-9">
+                                    <div>
+                                        <input class="area" type="text" v-model="panoinfo.region" />
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        <section>
+                            <div class="clearfix">
+                                <div class="col-3 item-title">
+                                    <p>商圈:</p>
+                                </div>
+                                <div class="col-9">
+                                    <div>
+                                        <input class="business-district" type="text" v-model="panoinfo.business_circle" />
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        <section>
+                            <div class="clearfix">
+                                <div class="col-3 item-title">
+                                    <p>小区:</p>
+                                </div>
+                                <div class="col-9">
+                                    <div>
+                                        <input class="plot" type="text" v-model="panoinfo.community" />
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        <section>
+                            <div class="clearfix">
+                                <div class="col-3 item-title">
+                                    <p>栋:</p>
+                                </div>
+                                <div class="col-9">
+                                    <div>
+                                        <input class="ridgepole" placeholder="请输入房源栋数(数字)" v-model="panoinfo.building" />
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        <section>
+                            <div class="clearfix">
+                                <div class="col-3 item-title">
+                                    <p>房号:</p>
+                                </div>
+                                <div class="col-9">
+                                    <div>
+                                        <input class="room" placeholder="请输入房源房间号(数字)" v-model="panoinfo.room" />
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        <section>
+                            <div class="clearfix">
+                                <div class="col-3 item-title">
+                                    <p>厅数:</p>
+                                </div>
+                                <div class="col-9">
+                                    <div>
+                                        <input class="hall" placeholder="请输入房源厅数(数字)" v-model="panoinfo.apartment_halls" />
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        <section>
+                            <div class="clearfix">
+                                <div class="col-3 item-title">
+                                    <p>卧室数:</p>
+                                </div>
+                                <div class="col-9">
+                                    <div>
+                                        <input class="bedroom" placeholder="请输入房源卧室数量(数字)" v-model="panoinfo.apartment_rooms" />
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        <section>
+                            <div class="clearfix">
+                                <div class="col-3 item-title">
+                                    <p>卫生间数:</p>
+                                </div>
+                                <div class="col-9">
+                                    <div>
+                                        <input class="toilet" placeholder="请输入房源卫生间数(数字)" v-model="panoinfo.apartment_bathrooms" />
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        <section>
+                            <div class="clearfix">
+                                <div class="col-3 item-title">
+                                    <p>面积:</p>
+                                </div>
+                                <div class="col-9">
+                                    <div>
+                                        <input class="area" placeholder="请输入房源总面积(数字)" v-model="panoinfo.area" />
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        <section>
+                            <div class="clearfix">
+                                <div class="col-3 item-title">
+                                    <p>楼层:</p>
+                                </div>
+                                <div class="col-9">
+                                    <div>
+                                        <input class="floor" placeholder="请输入房源楼层(数字)" v-model="panoinfo.floor" />
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        <section>
+                            <div class="clearfix">
+                                <div class="col-3 item-title">
+                                    <p>总层数:</p>
+                                </div>
+                                <div class="col-9">
+                                    <div>
+                                        <input class="sumfloor" placeholder="请输入房源楼层总层数(数字)" v-model="panoinfo.total_floor" />
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        <section>
+                            <div class="clearfix">
+                                <div class="col-3 item-title">
+                                    <p>朝向:</p>
+                                </div>
+                                <div class="col-9">
+                                    <div>
+                                        <input class="orientation" placeholder="请输入房源朝向" v-model="panoinfo.face" />
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        <section>
+                            <div class="clearfix">
+                                <div class="col-3 item-title">
+                                    <p>售价:</p>
+                                </div>
+                                <div class="col-9">
+                                    <div>
+                                        <input class="orientation" placeholder="请输入房源售价" v-model="panoinfo.price" />
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        <div class="btn_group text-center">
+                            <button class="btn btn-cancel btn-lg" type="button" @click="hideeditinfo">取消</button>
+                            <button class="btn redbtn btn-setter btn-lg" type="button" @click="submithouseinfo">确定</button> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div id="description" style="overflow: auto;" class="toast-content" transition="qrtoast" v-show="showdescription" onpaste="ispaste()">
+            <span @click="hide"><i class="ico-close close-pop fixed"></i></span>
+            <div class="description-wrap clearfix" v-show="ispaste" :class="{ispaste: 'ispaste'}">
+                <p style="text-align: center;padding:20px 0;">请将内容复制到此处</p>
+                <input type="text" v-model="descriptionTxt" placeholder="请将内容复制到此处" />
+                <div class="noticBtn">
+                    <button class="btn redbtn" @click="insertTxt">确定</button>
+                </div>
+            </div>
+            <div class="description-wrap clearfix" v-else>
+                <div id="simple-editor"></div>
+                <div class="noticBtn">
+                    <button class="btn redbtn" @click="submit">确定</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="introdescription" style="overflow: auto;" class="toast-content" transition="qrtoast" v-show="showdescription" onpaste="introispaste()">
+            <span @click="hide"><i class="ico-close close-pop fixed"></i></span>
+            <div class="description-wrap clearfix" v-show="ispaste" :class="{ispaste: 'ispaste'}">
+                <p style="text-align: center;padding:20px 0;">请将内容复制到此处</p>
+                <input type="text" v-model="descriptionTxt" placeholder="请将内容复制到此处" />
+                <div class="noticBtn">
+                    <button class="btn redbtn" @click="insertTxt">确定</button>
+                </div>
+            </div>
+            <div class="description-wrap clearfix" v-else>
+                <div id="simple-editor-intro"></div>
+                <div class="noticBtn">
+                    <button class="btn redbtn" @click="submit">确定</button>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="content" v-show="!editinfo">
+
+            <div id="menubox">
+                <menulist>
+                    <span slot="readcount" v-text="readcount" v-if="readcount>0"></span>
+                </menulist>
+            </div>
+
+            <div class="container-fluid" >
+
+                <div id="function-wrapper" class="function">
+                    <div class="row-fluid header">
+                        <div class="title-header">
+                            <h3><%=title%></h3>
+                            <a class="addscene" @click="addscene">添加全景</a>
+                            <a href="javascript:;" @click="deletepano">删除该组</a>
+                        </div>
+                        <div class="thumbimgbox"><img style="width:100%" :src="thumbimg"/></div>
+                        <p class="stitle" v-if="!edittitle">分享标题：{{settedtitle?settedtitle:origintitle}}<i class="icon-edit" title="点击编辑标题" @click="showedittitle"></i></p>
+                        <div v-else>
+	                        <span>分享标题：</span>
+	                        <p class="edit-area stitle">
+	                            <input id="edittitle" type="text" v-model="title" @keyup.enter="settitle"/>
+	                            <label>
+	                                <i class="icon-ok ishow" @click="settitle"></i><i class="icon-remove ishow" @click="hideedittitle"></i>
+	                            </label>
+	                        </p>
+                        </div>
+                        <p>最后更新：<%=new Date(group.updatedAt).toLocaleDateString()%></p>
+                    </div>
+
+                    <div id="editscene" class="row-fluid">
+                        <div class="row-fluid">
+                            <h3>场景列表</h3>                 
+                        </div>
+                        <div class="row-fluid profile">
+                            <div class="profile-box">
+                                <table class="table table-loading">
+                                    <tbody id="sortable">
+                                        <tr class="first" v-for="scene in scenes" sceneid="{{scene.id}}">
+                                            <td>
+                                                <div v-show="!editscene[$index]">{{scene.name}}<i class="icon-edit" title="点击编辑场景" @click="showeditname($index)"></i></div>
+                                                <p class="edit-area" v-else>
+                                                    <input id="editname{{$index}}" type="text" v-model="scene.name"  @keyup.enter="setname($index)"/>
+                                                    <label>
+                                                        <i class="icon-ok ishow" @click="setname($index)"></i><i class="icon-remove ishow" @click="hideeditname($index)"></i>
+                                                    </label>
+                                                </p>
+                                            </td>
+                                            <td class="align-right btn-preview">
+                                                <!-- <i class="icon-eye-open" @click.prevent="viewscene($index)"></i> -->
+                                                <button id="more-operate" class="btn redbtn" @click="viewscene($index)">预览</button>
+                                            </td>
+                                            <td class="align-right">
+                                                <div class="dropdown">
+                                                    <a class="btn redbtn btn-link" @click="editscenes($index)">编辑</a>
+                                                    <button id="more-operate" class="btn redbtn" @click.stop="showmore($index)">更多</button>
+                                                    <ul class="dropdown-menu" v-show="showmorestat[$index]" transition="onehalf">
+                                                        <li><a href="javascript:;" @mousedown.stop @click="setbroadcast($index)">语音播报</a></li>
+                                                        <li class="menu-preview"><a href="javascript:;" @mousedown.stop @click="viewscene($index)">预览场景</a></li>
+                                                        <!-- <li><a href="javascript:;" @click="setcover($index)"><i class="icon-desktop"></i>设为封面</a></li> -->
+                                                        <li><a @mousedown.stop @click="downloadscene($index,scene)">下载全景</a></li>
+                                                        <li><a href="javascript:;" @mousedown.stop @click="deletescene($index)">删除场景</a></li>
+                                                    </ul>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="row-fluid header">
+                        <h3>全景编辑</h3>
+                    </div> -->
+                    <div class="function-wrapper">
+                        <div class="row-fluid">
+                            <h3>全景编辑</h3>                 
+                        </div>
+                        <input id="file_input" type="file" v-on:change="filechange">
+                        <div id="wrapperbox">
+                            <div class="function-row clearfix">
+                                <div class="function-container">
+                                    <div class="function-box">
+                                        <div class="borderbox" style="border: 3px solid red;padding: 7px;border-radius: 50%;">
+                                            <div class="picbox">
+                                                <img v-on:click="upmap" :src="uped.map?'http://qncdn.sz-sti.com/images/maps/'+uped.map+'.jpg':'/images/newitem/icons/uppic.png'" />
+                                                <div class="masktips" v-on:click="upmap" v-text="maptips.map"></div>
+                                            </div>
+                                        </div>
+                                        <a class="noImg" href="javascript:;" v-on:click="upmap">{{text.map}}
+                                        <img class="tipicon" @mouseover="toggletip('house')" @click.stop.prevent @mouseout="toggletip('house')" width="16" src="/images/newitem/tipicon.png" /></a></a>
+                                    </div>
+                                    <div class="tipiconbox">
+                                        <div class="tipbox default" style="left:-66px;" transition="qrtoast" v-show="tipshow.house">
+                                            <img src="http://qncdn.sz-sti.com/house-tip.jpg" />
+                                            <p style="text-align:left;">客户观看时点击左方按钮可打开户型图</p>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="function-container">
+                                    <div class="function-box">
+                                        <div class="borderbox" style="border: 3px solid red;padding: 7px;border-radius: 50%;">
+                                            <div class="picbox">
+                                                <img v-on:click="uptopad" :src="uped.topad?uped.topad:'/images/newitem/icons/uppic.png'" />
+                                                <div class="masktips" v-on:click="uptopad" v-text="topadtips.topad"></div>
+                                            </div>
+                                        </div>
+                                        <a class="noImg" href="javascript:;" v-on:click="uptopad">{{text.topad}}
+                                        <img class="tipicon" @mouseover="toggletip('topad')" @click.stop.prevent @mouseout="toggletip('topad')" width="16" src="/images/newitem/tipicon.png" /></a></a>
+                                    </div>
+                                    <div class="tipiconbox">
+                                        <div class="tipbox default" style="left:-55px;" transition="qrtoast" v-show="tipshow.topad">
+                                            <p style="text-align:left;">可上传企业专属商标防止他人盗用，商标将在场景顶部显示</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="function-container">
+                                    <div class="function-box">
+                                        <div class="borderbox" style="border: 3px solid red;padding: 7px;border-radius: 50%;">
+                                            <div class="picbox">
+                                                <img v-on:click="upbotad" :src="uped.botad?uped.botad:'/images/newitem/icons/uppic.png'" />
+                                                <div class="masktips" v-on:click="upbotad" v-text="botadtips.botad"></div>
+                                            </div>
+                                        </div>
+                                        <a class="noImg" href="javascript:;" v-on:click="upbotad">{{text.botad}}
+                                        <img class="tipicon" @mouseover="toggletip('botad')" @click.stop.prevent @mouseout="toggletip('botad')" width="16" src="/images/newitem/tipicon.png" /></a></a>
+                                    </div>
+                                    <div class="tipiconbox">
+                                        <div class="tipbox botad" transition="qrtoast" v-show="tipshow.botad">
+                                            <p style="text-align:left;padding-top:0;">可上传企业专属商标防止他人盗用，商标将在场景底部显示</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="popcontainer" v-show="preview" transition="five">
+                            <h5 id="editheader" class="edit">{{uploadobj.type}} 预览编辑 Preview And Edit</h5>
+                            <div class="popup clearfix"><!--裁切框-->
+                                <div class="thumb">
+                                    <div class="imgcontainer">
+                                        <img :src="previewurl" />
+                                    </div>
+                                    
+                                    <canvas id="canvas" v-show="false"></canvas>
+                                    <!--上传进度遮罩 -->
+                                    <div class="mask" v-bind:style="{width: maskwidth}"></div>
+                                </div>
+                                <p class="button-group">
+                                    <a class="crop" href="javascript:;" v-show="cancut&&!iscircle" :disabled="unablecut" :class="{'disabled':unablecut}" @click="render(1)">裁方</a>
+                                    <a class="crop" href="javascript:;" v-show="cancut&&!iscircle" :disabled="unablecut" :class="{'disabled':unablecut}" @click="render">裁圆</a>
+                                    <a class="crop" href="javascript:;" v-show="cancut&&iscircle" :disabled="unablecut" :class="{'disabled':unablecut}" @click="back">还原</a>
+                                    <a class="crop" href="javascript:;" v-show="iseditmap" @click="editmap">添加指引点</a>
+                                    <a class="ensure" href="javascript:;" v-show="isdelete&&!iscircle" @click="delete">删除</a>
+                                    <a class="ensure" href="javascript:;" v-show="!isdelete||iscircle" :disabled="unablecut" :class="{'disabled':unablecut}" @click="upload">确定</a>
+                                    <a class="cancel" href="javascript:;" v-on:click="hide">取消</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="function-wrapper">
+                        <div class="tablelist">
+                            <table id="bottable" class="table table-loading">
+                                <tbody>
+                                    <tr>
+                                        <td class="span1">
+                                            <div class="name l-spacing" contenteditable="false">
+                                            房源信息
+                                            <div class="tipiconbox">
+                                                <img class="tipicon" @mouseover="toggletip('houseinfo')" @mouseout="toggletip('houseinfo')" width="16" src="/images/newitem/tipicon.png" />
+                                                <div class="tipbox" transition="qrtoast" v-show="tipshow.houseinfo">
+                                                    <p style="padding-top:0;">此处所填的信息除小区名、几室几厅其余信息不会对外展示</p>
+                                                </div>
+                                            </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <p class="old-info">
+                                                <span>{{houseinfo}}</span>
+                                            </p>
+                                        </td>
+                                        <td class="align-right">
+                                            <button class="btn redbtn" @click="editpanoinfo">更改</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="name l-spacing">
+                                            房源描述
+                                            <div class="tipiconbox">
+                                                <img class="tipicon" @mouseover="toggletip('housedesc')" @mouseout="toggletip('housedesc')" width="16" src="/images/newitem/tipicon.png" />
+                                                <div class="tipbox" transition="qrtoast" v-show="tipshow.housedesc">
+                                                    <img src="http://qncdn.sz-sti.com/edit/help/housedesc.jpg" />
+                                                    <p>客户观看时点击左方按钮可查看描述</p>
+                                                </div>
+                                            </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="old-info" v-show="!housedesc.showedit" v-html="housedesc.content?housedesc.content:'您还没设置房源描述'"></div>
+                                            <div class="edit-area edit-area-house" v-else>
+                                            </div>
+                                        </td>
+                                        <td class="align-right">
+                                            <button class="btn redbtn" @click="edithousedes">更改</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="name l-spacing">
+                                            联系电话
+                                            <div class="tipiconbox">
+                                                <img class="tipicon" @mouseover="toggletip('telephone')" @mouseout="toggletip('telephone')" width="16" src="/images/newitem/tipicon.png" />
+                                                <div class="tipbox" transition="qrtoast" v-show="tipshow.telephone">
+                                                    <img src="http://qncdn.sz-sti.com/edit/help/telephone.jpg" />
+                                                    <p>客户观看时点击右上方按钮可一键拨打电话</p>
+                                                </div>
+                                            </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <p class="old-info" v-show="!tel.showedit"><span>{{expire?"商业版功能":tel.number}}</span></p>
+                                            <p class="edit-area" v-else>
+                                                <input id="tel" type="text" v-model="tel.number" @keyup.enter="submittel" />
+                                                <label>
+                                                    <i class="icon-ok" @click="submittel"></i><i class="icon-remove" @click="edittelhide"></i>
+                                                </label>
+                                            </p>
+                                        </td>
+                                        <td class="align-right">
+                                            <button class="btn redbtn" @click="edittel">更改</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="name l-spacing">
+                                            标题前缀
+                                            <div class="tipiconbox">
+                                                <img class="tipicon" @mouseover="toggletip('prefix')" @mouseout="toggletip('prefix')" width="16" src="/images/newitem/tipicon.png" />
+                                                <div class="tipbox" transition="qrtoast" v-show="tipshow.prefix">
+                                                    <img src="http://qncdn.sz-sti.com/edit/help/prefix.jpg" />
+                                                    <p>客户观看时标题栏所显示的前缀</p>
+                                                </div>
+                                            </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <p class="old-info" v-show="!prefix.showedit"><span>{{expire?"商业版功能":prefix.content}}</span></p>
+                                            <p class="edit-area" v-else>
+                                                <input id="prefix" type="text" v-model="prefix.content" @keyup.enter="submitprefix" />
+                                                <label>
+                                                    <i class="icon-ok" @click="submitprefix"></i><i class="icon-remove" @click="editprefixhide"></i>
+                                                </label>
+                                            </p>
+                                        </td>
+                                        <td class="align-right">
+                                            <button class="btn redbtn" @click="editprefix">更改</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="name l-spacing">
+                                            语音播报
+                                            <div class="tipiconbox">
+                                                <img class="tipicon" @mouseover="toggletip('broadcast')" @mouseout="toggletip('broadcast')" width="16" src="/images/newitem/tipicon.png" />
+                                                <div class="tipbox" transition="qrtoast" v-show="tipshow.broadcast">
+                                                    <img src="http://qncdn.sz-sti.com/edit/help/broadcast.jpg" />
+                                                    <p>客户观看时自动播报输入的文字，点击左方按钮可关闭</p>
+                                                </div>
+                                            </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <p class="old-info" v-show="!intro.showedit"><span>{{expire?"商业版功能":intro.content}}</span></p>
+                                            <p class="edit-area edit-area-house" v-else>
+                                                <textarea id="intro" type="text" v-model="intro.content" onpaste="return false;"></textarea>
+                                                <label>
+                                                    <i class="icon-ok" @click="submitintro"></i><i class="icon-remove" @click="editintrohide"></i>
+                                                </label>
+                                            </p>
+                                        </td>
+                                        <td class="align-right">
+                                            <button class="btn redbtn" @click="editintro">更改</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="broadcast" class="toast-content" transition="three" v-show="showbroadcast">
+            <span @click="hide"><i class="close-pop ico-close"></i></span>
+            <div class="toast-center-wrapper">
+                <div class="m-header">
+                    <h1 class="text-center"><i class="icon-volume-up"></i></h1>
+                    <h6 class="toast-title text-center">设置语言播报</h6>
+                </div>
+                <div>
+                    <div class="toast-body">
+                        <div class="form-group"> 
+                            <textarea class="form-control" placeholder="请输入语言播报内容" @change="trim" @keyup="trim" v-model="info"></textarea>
+                        </div>
+                    </div>
+                    <div class="m-footer">
+                        <div class="text-center">
+                            <button class="btn btn-cancel btn-lg" type="button" @click="hide">取消</button>
+                            <button class="btn redbtn btn-setter btn-lg" type="submit" @click="submit">确定</button> 
+                        </div>
+                    </div>
+                </div>
+            </div>   
+        </div>
+
+        <div id="edit-house-wrap" class="toast-content" transition="three" v-show="showeditmap">
+            <div class="edit-house-wrap">
+                <span><i class="close-pop ico-close" @click="hide" style="top:70px;"></i></span>
+                <h3>户型图 — 添加指引点</h3>
+                <div class="house-pic-box">
+                    <span class="pictureBox">
+                        <img id="house-pic" class="house-pic" :src="src" @click="addspot" @mousemove.prevent="changeXY"/>
+                        <div class="links" @click="delspot(link.id,$index)" v-for="link in links" :style="{left:link.position_x + '%',top:link.position_y + '%'}">
+                            <p class="text" v-text="link.text"></p>
+                        </div>
+
+                        <div>
+                            <span id="preview" v-show="showspot" :style="{left:left + '%',top:top + '%'}" @mousedown="changeBefore" @touchmove.prevent ="mobilechangeXY" @touchstart="changeBefore" @mouseup="changeAfter" @touchend="changeAfter">
+                                <span class="text" v-text="checktext"></span>
+                                <span class="delspot" @click="removespot"><img width="20" height="20" src="/images/newitem/removespot.png"></span>
+                            </span>
+                        </div>
+                    </span>
+                </div>
+                <div class="thumbs-wrap" id="thumbs-wrap">
+                    <div class="swiper-container">
+                        <div class="swiper-button-next"></div>
+                        <div class="swiper-button-prev"></div>
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide" v-for="scene in scenes">
+                                <img :src="scene.thumbsrc" />
+                                <input type="radio" name="thumbs-house" :data-name="scene.name" :value="scene.id" @click="checkscene($index)" />
+                                <i class="icon-ok"></i>
+                                <p class="title">{{scene.name}}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="edithouser-btn">
+                        <a class="radius-btn" href="javascript:;" @click="deletespot" v-show="removespotbtn">删除链接</a>
+                        <a class="radius-btn" href="javascript:;" @click="sumbitspot" v-show="addspotbtn">添加链接</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+   
+
+    <!-- end main container -->
+    <script src="/js/newitem/smooth-scroll.min.js"></script>
+    <script src="/js/qnuploader.js"></script>
+    <script src="/js/newitem/trumbowyg.js"></script>
+    <script src="/js/newitem/fr.js"></script>
+    <script type="text/javascript">
+
+        loading1.isshow = false;
+        var scenes = new Vue({
+            el:'#edit-house-wrap',
+            data:{
+                src:'',
+                showspot:false,
+                left:0,
+                top:0,
+                change:false,
+                scenes:[],
+                links:[],
+                disabled:true,
+                groupid:<%=group.id%>,
+                mapkey:'',
+                addspotbtn:false,
+                removespotbtn: false,
+                showeditmap: false,
+                spot:false,
+                checktext:'',
+                soptdata:{
+                    position_x:0, 
+                    position_y:0, 
+                    position_z:0,
+                    go_scene:0,
+                    type:100,
+                    text: '',
+                    mapkey:''
+                },
+                deledata:null,
+                spotindex:0
+            },
+            methods:{
+                show:function(){
+                    var _this = this;
+                    groupEdit.preview = false;
+                    this.showeditmap = true;
+                    body.noscroll = true;
+                    $.get('/panoitem/mapdata/'+this.groupid,function(res){
+                        for(var i=0;i<res.romaing.length;i++){
+
+                            _this.scenes.push(res.romaing[i]);
+                        }
+                        _this.$nextTick(function(){
+                            var swiper = new Swiper('.swiper-container', {
+                                slidesPerView: 3,
+                                spaceBetween: 10,
+                                freeMode: true,
+                                prevButton:'.swiper-button-prev',
+                                nextButton:'.swiper-button-next'
+                            });  
+                        });
+                        _this.src = 'http://qncdn.sz-sti.com/images/maps/'+res.maps[0].key+'.jpg';
+                        _this.mapkey = res.maps[0].key;
+                        for(i in res.links ){
+                            _this.links.push(res.links[i]);
+                        }
+                    });
+                },
+                hide: function(){
+                    this.showeditmap = false;
+                    this.showspot = false;
+                    this.checktext = '';
+                    body.noscroll = false;
+                },
+                delspot: function(id,index){
+                    this.removespotbtn = true;
+                    this.spotindex = index;
+                    this.deledata ={
+                        link_id:id,
+                        mapkey:this.mapkey
+                    } 
+                },
+                deletespot: function(){
+                    var _this = this;
+                    $.post('/panoitem/spot-delete',this.deledata,function(res){
+                        _this.links.splice(_this.spotindex,1);
+                        _this.removespotbtn = false;
+                        toast.showmsg('成功删除链接');
+                    });
+                },
+                addspot:function(e){
+                    this.showspot = true;
+                    this.addspotbtn = true;
+                    this.left = ((e.offsetX-10)/e.target.width)*100;
+                    this.top = ((e.offsetY-10)/e.target.height)*100;
+                    this.soptdata.position_x = this.left;
+                    this.soptdata.position_y = this.top;
+                },
+                changeBefore:function(e){
+                    this.change = true;
+                    this.candelete = true;
+                },
+                changeXY:function(e){
+                    if(this.change){
+                        this.left = ((e.offsetX - 10)/e.target.offsetParent.clientWidth)*100;
+                        this.top = ((e.offsetY - 10)/e.target.offsetParent.clientHeight)*100;
+                        this.soptdata.position_x = this.left;
+                        this.soptdata.position_y = this.top;
+                    }
+                },
+                mobilechangeXY:function(e){//移动端拖动热点.....
+                    if(this.change){
+                        var touch = e.touches[0];
+                        var x = touch.pageX;
+                        var y = touch.pageY;
+                        var pL = e.target.parentElement.offsetLeft;
+                        var pT = e.target.parentElement.offsetTop;
+                        var pW = e.target.parentElement.offsetWidth;
+                        var pH = e.target.parentElement.offsetHeight;
+                        var isTrue = x>pL && x<(pL+pW) && y>pT && y<(pT+pH);
+                        if(isTrue){
+                            this.left = ((x - pL - 15)/pW)*100;
+                            this.top = ((y - pT - 15)/pH)*100;
+                        }
+                    }
+                },
+                changeAfter:function(){
+                    this.change = false;
+                },
+                sumbitspot:function(){
+                    if(!this.spot){
+                        toast.showmsg('请选择场景再添加链接');
+                        return;
+                    };
+                    var _this = this;
+                    console.log(this.soptdata);
+                    $.post('/panoitem/spot-post',this.soptdata,function(res){
+                        $('#thumbs-wrap .icon-ok').hide();
+                        _this.addspotbtn = false;
+                        _this.links.push(res.links);
+                        _this.showspot = false;
+                        _this.checktext = '';
+                        toast.showmsg('添加成功');
+                    })
+                },
+                checkscene: function(index){
+                    if(!this.showspot){
+                        toast.showmsg('请点击户型图添加链接再选择场景编辑');
+                        return;
+                    };
+                    this.spot = true;
+                    $('#thumbs-wrap .icon-ok').hide();
+                    $('#thumbs-wrap .icon-ok').eq(index).show();
+                    var scene_id = $('#thumbs-wrap input').eq(index).val();
+                    this.checktext = $('#thumbs-wrap input').eq(index).attr('data-name');
+                    this.soptdata = {
+                        position_x:this.left, 
+                        position_y:this.top, 
+                        position_z:0,
+                        go_scene:scene_id,
+                        type:100,
+                        text: this.checktext,
+                        mapkey:this.mapkey
+                    }
+                },
+                removespot:function(){
+                    this.showspot = false;
+                    this.spot = false;
+                    this.checktext = '';
+                    $('#thumbs-wrap .icon-ok').hide();
+                    this.addspotbtn = false;
+                }
+            }
+        });
+    </script>
+    <script type="text/javascript">
+
+        var menubox = new Vue({
+            el: '#menubox',
+            data: {
+                readcount: ''
+            }
+        });
+        function ispaste(){
+            if(!description.ispaste){
+                description.ispaste=true;
+                description.html = $('#simple-editor').html();
+                toast.showmsg('请将内容重新复制到下面的输入框');
+            }
+            return false;
+        };
+        function introispaste(){
+            if(!introdescription.ispaste){
+                introdescription.ispaste=true;
+                introdescription.html = $('#simple-editor-intro').html();
+                toast.showmsg('请将内容重新复制到下面的输入框');
+            }
+            return false;
+        };
+        var description = new Vue({
+            el: '#description',
+            data: {
+                showdescription: false,
+                ispaste: false,
+                descriptionTxt: '',
+                html: ''
+            },
+            methods: {
+                hide: function(){
+                    if(this.ispaste){
+                        this.ispaste = false;
+                        description.descriptionTxt = '';
+                        $('#simple-editor').html(this.html);
+                        return;
+                    }
+                    this.showdescription = false;
+                    this.html = '';
+                    !groupEdit.housedesc.back?groupEdit.housedesc.content = groupEdit.housedesc.pretermit:groupEdit.housedesc.content = groupEdit.housedesc.back;
+                },
+                insertTxt: function(){
+                    if(this.ispaste){
+                        var html = this.html + description.descriptionTxt;
+                        $('#simple-editor').html(html);
+                        this.ispaste = false;
+                        description.descriptionTxt = '';
+                        return;
+                    }
+                },
+                submit: function(){
+                    var _this = this;
+                    var re= /select|update|delete|exec|count/i;
+                    var data = {
+                        housedesc: $('#simple-editor').html().replace(/&nbsp;/g, ''),
+                        groupid: groupEdit.groupid
+                    }
+                    if ( re.test($('#simple-editor').html()) ){
+                        toast.showmsg("请您不要输入SQL关键字(select update delete exec count)",true);
+                        return;
+                    }
+                    $.post('/panoitem/set-housedesc',data,function(res){
+                        toast.showmsg('['+res.code+'] '+res.msg, res.code!=0);
+                        if(res.code==0){
+                            $('#simple-editor').text().trim()?"":$('#simple-editor').html(' ');
+                            groupEdit.housedesc.back = $('#simple-editor').html().trim().replace(/&nbsp;/g, '');
+                            groupEdit.housedesc.content = $('#simple-editor').html().trim().replace(/&nbsp;/g, '');
+                            description.descriptionTxt = '';
+                            $('#simple-editor').html(groupEdit.housedesc.content);
+                            _this.showdescription = false;
+                        }
+                    });
+                }
+            }
+        });
+        var introdescription = new Vue({
+            el: '#introdescription',
+            data: {
+                showdescription: false,
+                ispaste: false,
+                descriptionTxt: '',
+                html: ''
+            },
+            methods: {
+                hide: function(){
+                    if(this.ispaste){
+                        this.ispaste = false;
+                        introdescription.descriptionTxt = '';
+                        $('#simple-editor-intro').html(this.html);
+                        return;
+                    }
+                    this.showdescription = false;
+                    this.html = '';
+                    !groupEdit.intro.back?groupEdit.intro.content = groupEdit.intro.pretermit:groupEdit.intro.content = groupEdit.intro.back;
+                },
+                insertTxt: function(){
+                    if(this.ispaste){
+                        var html = this.html + introdescription.descriptionTxt;
+                        $('#simple-editor-intro').html(html);
+                        this.ispaste = false;
+                        introdescription.descriptionTxt = '';
+                        return;
+                    }
+                },
+                submit: function(){
+                    var _this = this;
+                    var re= /select|update|delete|exec|count/i;
+                    var data = {
+                        introduction: $('#simple-editor-intro').html().replace(/&nbsp;/g, ''),
+                        groupid: groupEdit.groupid
+                    }
+                    if ( re.test($('simple-editor-intro').html()) ){
+                        toast.showmsg("请您不要输入SQL关键字(select update delete exec count)",true);
+                        return;
+                    }
+                    $.post('/panoitem/set-introduction',data,function(res){
+                        toast.showmsg('['+res.code+'] '+res.msg, res.code!=0);
+                        if(res.code==0){
+                            $('#simple-editor-intro').text().trim()?"":$('#simple-editor-intro').html(' ');
+                            groupEdit.intro.back = $('#simple-editor-intro').html().trim().replace(/&nbsp;/g, '');
+                            groupEdit.intro.content = $('#simple-editor-intro').html().trim().replace(/&nbsp;/g, '');
+                            introdescription.descriptionTxt = '';
+                            $('#simple-editor-intro').html(groupEdit.intro.content);
+                            _this.showdescription = false;
+                        }
+                    });
+                }
+            }
+        });
+        var broadcast = new Vue({
+            el:'#broadcast',
+            data: {
+                index: '',
+                info: '',
+                showbroadcast: false,
+                scene_key: ''
+            },
+            methods: {
+                trim: function(){
+                    this.info = this.info.trim();
+                },
+                show: function(i){
+                    this.index = i;
+                    this.showbroadcast = true;
+                },
+                hide: function(){
+                    this.showbroadcast = false;
+                },
+                submit:function(){
+                    var _this = this;
+                    var info = this.info==''?0:this.info;
+                    $.post('/panoitem/set-introduction',
+                        {
+                            introduction: info,
+                            scene_key: this.scene_key
+                        },
+                        function(res){
+                            if(res.code==0){
+                                toast.showmsg('设置成功');
+                                _this.hide();
+                                _this.info = info;
+                                groupEdit.scenes[_this.index].introduction = info;
+                            }else{
+                                toast.showmsg(res.msg, true);
+                            }
+                        }
+                    );
+                }
+            }
+        });
+
+        var groupEdit = new Vue({
+            el:'#function-wrapper',
+            data: {
+                tipshow: {
+                    houseinfo: false,
+                    housedesc: false,
+                    telephone: false,
+                    prefix: false,
+                    broadcast: false,
+                    house: false,
+                    topad: false,
+                    botad: false
+                },
+                thumbimg: '',
+                preview: false,
+                maskwidth: '0%',
+                iscircle: false,
+                previewurl: '',
+                cancut: false,
+                uploadobj: {},
+                groupid: <%=group.id%>,
+                origintitle: '<%=group.city+'市 '+group.region+'区 '+group.community%>',
+                settedtitle: '<%=group.title%>',
+                title:'',
+                edittitle: false,
+                editscene: [],
+                scenes: [],
+                scenebackname:'',
+                showmorestat: [],
+                iseditmap: false,
+                panoinfo: {
+                    city: '<%=group.city.replace("市市","市")%>',
+                    region: '<%=group.region.replace("市市","市")%>',
+                    business_circle: '<%=group.business_circle%>',
+                    community: '<%=group.community%>',
+                    building: '<%=group.building%>',
+                    room: '<%=group.room%>',
+                    floor: '<%=group.floor%>',
+                    total_floor: '<%=group.total_floor%>',
+                    face: '<%=group.face%>',
+                    area: '<%=group.area%>',
+                    apartment_rooms: '<%=group.apartment_rooms%>',
+                    apartment_halls: '<%=group.apartment_halls%>',
+                    apartment_bathrooms: '<%=group.apartment_bathrooms%>',
+                    price: '<%=group.price%>'
+                },
+                tel: {
+                    pretermit: '您还没设置联系方式',
+                    showedit: false,
+                    number: '',
+                    back: ''
+                },
+                prefix: {
+                    pretermit: '您还没设置前缀',
+                    showedit: false,
+                    content: '',
+                    back: ''
+                },
+                uped: {
+                    map: '<%=map.key%>',
+                    topad: '<%=scenes[0].trademark%>',
+                    botad: '<%=group.bottrademark%>'
+                },
+                intro: {
+                    pretermit: '您还没设置语音播报',
+                    showedit: false,
+                    content: '<%=group.introduction%>',
+                    back: '<%=group.introduction%>'
+                },
+                housedesc: {
+                    pretermit: '您还没设置房源描述',
+                    showedit: false,
+                    content: '<%-group.extra=='{}'?'':group.extra.replace(/(\n)+|(\r\n)+/g, "").replace(/\'/g, "\"").replace(/&nbsp;/g,'').trim()%>',
+                    back: '<%-group.extra=='{}'?'':group.extra.replace(/(\n)+|(\r\n)+/g, "").replace(/\'/g, "\"").replace(/&nbsp;/g,'').trim()%>'
+                },
+                isdelete: false,
+                unablecut: false,
+                expire:false,
+                expiredate:'<%=user.expire%>',
+                expireinfo: '该功能为商业版功能，开通请联系销售经理',
+            },
+            computed:{
+                houseinfo: function(){
+                    return this.panoinfo.city+' '+this.panoinfo.region+' '+this.panoinfo.community+' '+this.panoinfo.building+' '+this.panoinfo.room;
+                },
+                text: function(){
+                    return{
+                        map: '户型图',
+                        topad: '顶部商标',
+                        botad: '底部商标'
+                    }
+                },
+                maptips: function(){
+                    return {
+                        map: this.uped.map?'点击查看':'点击上传'
+                    }
+                },
+                topadtips: function(){
+                    return {
+                        topad: this.expire?'商业版功能':this.uped.topad?'点击查看':'点击上传'
+                    }
+                },
+                botadtips: function(){
+                    return {
+                        botad: this.expire?'商业版功能':this.uped.botad?'点击查看':'点击上传'
+                    }
+                }
+            },
+            methods: {
+                toggletip: function(name){
+                    console.log(this.tipshow[name]);
+                    this.tipshow[name] = !this.tipshow[name];
+                    console.log(this.tipshow[name]);
+                },
+                trim: function(){
+                    this.housedesc.content = this.housedesc.content.trim();
+                },
+                showedittitle: function(){
+                	this.title = this.settedtitle?this.settedtitle:this.origintitle;
+                	this.edittitle = true;
+                	this.$nextTick(function(){
+                		$('#edittitle').focus();
+                	});
+                },
+                hideedittitle: function(){
+                	this.edittitle = false;
+                },
+                settitle: function(){
+                	var pattern = new RegExp("[%--`~!@#$^&*()=|{}':;',\\[\\]<>/?~！@#￥……&*（）——|{}‘；：”“'。，、？]");
+                	var index = pattern.exec(this.title);
+                	if(index != null){
+			            toast.showmsg('标题不可以包含特殊字符 '+this.title[index.index]);
+			            return;
+			        }
+			        var _this = this;
+                	$.post('/panoitem/settitle', {groupid: this.groupid,title: this.title}, function(res){
+                		if(res.code != 0){
+                			toast.showmsg(res.msg, true);
+                			return;
+                		}
+                		toast.showmsg('修改成功');
+                		_this.settedtitle = _this.title;
+                		_this.hideedittitle();
+                	});
+                },
+                checkexpire: function(){
+                    if(this.expire){
+                        toast.showmsg(this.expireinfo, true);
+                        return true;
+                    }else{
+                        return false;
+                    }
+                },
+                addscene: function(){
+                    location.href = '/uploadsitem?id='+this.groupid;
+                },
+                deletepano: function() {
+                    trashpano.show(this.expire, function() {
+                        setTimeout(function() {
+                            location.href='/panoitem';
+                        }, 300);
+                    }, this.groupid, true);
+                },
+                deletescene: function(i) {
+                    trashpano.show(this.expire, function() {
+                        groupEdit.scenes.splice(i,1);
+                        if(groupEdit.scenes.length == 0)
+                            location.href='/panoitem';
+                    }, this.scenes[i].id, false);
+                },
+                editscenes: function(index){
+                    console.log(this.scenes[index].id);
+                    location.href='/scenesitem/edit/'+this.scenes[index].id;
+                },
+                editpanoinfo: function(){
+                    body.showeditinfo();
+                },
+                edittel: function(){
+                    if(this.checkexpire())return;
+                    this.tel.showedit = true;
+                    if(!this.tel.back)this.tel.number = '';
+                    this.$nextTick(function(){
+                        $('#tel').focus();
+                    });
+                },
+                showmore: function(index){
+                    this.showmorestat.$set(index, !this.showmorestat[index]);
+                },
+                nomore: function(){
+                    for(var i in this.showmorestat)
+                        if(this.showmorestat[i])this.showmorestat.$set(i, false);
+                },
+                edittelhide: function(){
+                    this.tel.showedit = false;
+                    this.tel.number = this.tel.back?this.tel.back:this.tel.pretermit;
+                },
+                submittel: function(){
+                    var _this = this;
+                    if(this.tel.back == this.tel.number){
+                        if(!this.tel.back)this.tel.number = this.tel.pretermit;
+                        this.tel.showedit = false;
+                        return;
+                    }
+                    $.post('/panoitem/set-tel',
+                        {
+                            telephone:_this.tel.number,
+                            groupid:this.groupid
+                        },
+                        function(res){
+                            if(res.code==0){
+                                toast.showmsg('设置成功');
+                                _this.tel.back = _this.tel.number;
+                                _this.tel.number = _this.tel.number?_this.tel.number:_this.tel.pretermit;
+                                _this.tel.showedit = false;;
+                            }else{
+                                toast.showmsg(res.msg, true);
+                            }
+                        }
+                    )
+                },
+                edithousedes: function(){
+                    // if(!this.housedesc.back)this.housedesc.content = '';
+                    // this.housedesc.showedit = true;
+                    // this.$nextTick(function(){
+                    //     $('#housedesc').focus();
+                    // });
+                    description.showdescription = true;
+                    if(!this.housedesc.back){
+                        this.housedesc.content = '';
+                        $('#simple-editor').html('');
+                    }
+                    $('#simple-editor').html(this.housedesc.content);
+                },
+                edithousedeschide: function(){
+                    console.log(this.housedesc.back);
+                    !this.housedesc.back?this.housedesc.content = this.housedesc.pretermit:this.housedesc.content = this.housedesc.back;
+                    this.housedesc.showedit = false;
+                },
+                submithousedesc: function(){
+                    var _this = this;
+                    var data = {
+                        housedesc: this.housedesc.content.replace("\n","；"),
+                        groupid: this.groupid
+                    }
+                    if(this.housedesc.content==''){
+                        toast.showmsg('请输入房源描述内容',true);
+                        return;
+                    }
+                    $.post('/panoitem/set-housedesc',data,function(res){
+                        toast.showmsg('['+res.code+'] '+res.msg, res.code!=0);
+                        if(res.code==0){
+                            if(!_this.housedesc.content){
+                                _this.housedesc.back = false;
+                                _this.housedesc.content = _this.housedesc.pretermit;
+                            }else{
+                                _this.housedesc.back = _this.housedesc.content;
+                            }
+                            _this.housedesc.showedit = false;;
+                        }
+                    });
+                },
+                editprefix: function(){
+                    if(this.checkexpire())return;
+                    if(!this.prefix.back)this.prefix.content = '';
+                    this.prefix.showedit = true;
+                    this.$nextTick(function(){
+                        $('#prefix').focus();
+                    });
+                },
+                editprefixhide: function(){
+                    if(!this.prefix.back)this.prefix.content = this.prefix.pretermit;
+                    this.prefix.showedit = false;
+                },
+                submitprefix: function(){
+                    var _this = this;
+                    if(this.prefix.back == this.prefix.content){
+                        if(!this.prefix.back)this.prefix.content = this.prefix.pretermit;
+                        this.prefix.showedit = false;
+                        return;
+                    }
+                    $.post('/panoitem/set-prefix',
+                        {
+                            prefix:_this.prefix.content,
+                            groupkey:'<%=group.key%>'
+                        },
+                        function(res){
+                            if(res.code==0){
+                                toast.showmsg('设置成功');
+                                if(!_this.prefix.content){
+                                    _this.prefix.back = false;
+                                    _this.prefix.content = _this.prefix.pretermit;
+                                }else{
+                                    _this.prefix.back = _this.prefix.content;
+                                }
+                                _this.prefix.showedit = false;;
+                            }else{
+                                toast.showmsg(res.msg, true);
+                            }
+                        }
+                    )
+                },
+                editintro: function(){
+                    // if(this.checkexpire())return;
+                    // if(!this.intro.back)this.intro.content = '';
+                    // this.intro.showedit = true;
+                    // this.$nextTick(function(){
+                    //     $('#intro').focus();
+                    // });
+
+                    if(this.checkexpire())return;
+                    introdescription.showdescription = true;
+                    if(!this.intro.back){
+                        this.intro.content = '';
+                        $('#simple-editor-intro').html('');
+                    }
+                    $('#simple-editor-intro').html(this.intro.content);
+                },
+                editintrohide: function(){
+                    if(!this.intro.back)this.intro.content = this.intro.pretermit;
+                    this.intro.showedit = false;
+                },
+                submitintro: function(){
+                    var _this = this;
+                    $.post('/panoitem/set-introduction',
+                        {
+                            introduction: this.intro.content.replace("\n","；"),
+                            groupid: this.groupid
+                        },
+                        function(res){
+                            toast.showmsg('['+res.code+'] '+res.msg, res.code!=0);
+                            if(res.code==0){
+                                if(!_this.intro.content){
+                                    _this.intro.back = false;
+                                    _this.intro.content = _this.intro.pretermit;
+                                }else{
+                                    _this.intro.back = _this.intro.content;
+                                }
+                                _this.intro.showedit = false;;
+                            }
+                        }
+                    );
+                },
+                getobj: function (){
+                    var file = document.getElementById("file_input").files[0];
+                    if(!file)return;
+                    var url = undefined;
+                    if (window.createObjectURL) {
+                        url = createObjectURL(file);
+                    }else if(window.URL){
+                        url = URL.createObjectURL(file);
+                    }else if(window.webkitURL){
+                        url = webkitURL.createObjectURL(file);
+                    }
+                    return {
+                        url: url,
+                        size: file.size,
+                        type: file.type
+                    };
+                },
+                hide: function(){
+                    this.maskwidth = '0%';
+                    this.preview = false;
+                    console.log(this.preview);
+                    this.unablecut = false;
+                    document.getElementById("file_input").value='';
+                    if(this.uploadobj.type == 'map')this.iseditmap = false;
+                },
+                upmap: function(event){
+                    this.cancut = false;
+                    this.uploadobj = {
+                        type: 'map',
+                        uploadurl: '/tokenitem/map',
+                        deleteurl: '/panoitem/del-map',
+                        data:{groupid: this.groupid},
+                        deldata:{mapkey:this.uped.map}
+                    };
+                    this.uped.map?
+                    this.filechange(event, 'http://qncdn.sz-sti.com/images/maps/'+this.uped.map+'.jpg'):
+                    $('#file_input').click();
+                },
+                uptopad: function(event){
+                    if(this.checkexpire())return;
+                    this.cancut = true;
+                    this.iseditmap = false;
+                    this.uploadobj = {
+                        type: 'topad',
+                        uploadurl: '/tokenitem/topad',
+                        deleteurl: '/panoitem/del-topimg',
+                        data:{groupid: this.groupid},
+                        deldata:{groupkey:'<%=group.key%>'}
+                    }
+                    this.uped.topad?
+                    this.filechange(event, this.uped.topad):
+                    $('#file_input').click();
+                },
+                upbotad: function(event){
+                    if(this.checkexpire())return;
+                    this.cancut = true;
+                    this.iseditmap = false;
+                    this.uploadobj = {
+                        type: 'botad',
+                        uploadurl: '/tokenitem/botad',
+                        deleteurl: '/setitem/del_botimg',
+                        data:{groupid: this.groupid},
+                        deldata:{groupkey:'<%=group.key%>'}
+                    }
+                    this.uped.botad?
+                    this.filechange(event, this.uped.botad):
+                    $('#file_input').click();
+                },
+                editmap: function(){
+                    scenes.show();
+                },
+                delete: function(){
+                    var _this = this;
+                    $.post(this.uploadobj.deleteurl,this.uploadobj.deldata,function(res){
+                            if(res.code == 0){
+                                toast.showmsg('设置成功');
+                                _this.uped[_this.uploadobj.type] = '';
+                                _this.preview = false;
+                                if(_this.uploadobj.type == 'map'){
+                                    _this.iseditmap = false;
+                                    scenes.src = '';
+                                    scenes.links = [];
+                                }
+                            }else{
+                                toast.showmsg(res.msg);
+                            }
+                        }
+                    );
+                },
+                upload: function(){
+                    var _this = this;
+                    this.unablecut = true;
+                    $.post(this.uploadobj.uploadurl,this.uploadobj.data,function(res){
+                        var token = res.token;
+                        var url = res.url;
+                        var key = res.key;
+                        Q.addEvent("progress", function(p, s) {
+                            _this.maskwidth = (p==100?99:p)+'%';
+                        });
+                        Q.addEvent("putFinished", function(fsize, response, taking) {
+                            _this.hide();
+                            switch(_this.uploadobj.type){
+                                case 'map':
+                                    _this.uped.map = key;
+                                    // location.href = location.origin+'/panoitem/editmap/'+_this.groupid;
+                                    scenes.show();
+                                    break;
+                                case 'topad':
+                                    _this.uped.topad = 'http://qncdn.sz-sti.com/images/trademarks/'+key+'.jpg';
+                                    break;
+                                case 'botad':
+                                    _this.uped.botad = 'http://qncdn.sz-sti.com/images/bottrademarks/'+key+'.jpg';
+                                default:;
+                            }
+                            toast.showmsg('上传成功');
+                        });
+                        Q.SetToken(token);
+                        _this.iscircle?Q.Upload_base64(_this.previewurl.replace('data:image/png;base64,',''), url):
+                        Q.Upload(document.getElementById('file_input').files[0], url);
+                    });
+                },
+                filechange: function(e,src){
+                    if(src){
+                        var url = src;
+                        this.isdelete = true;
+                        if(this.uploadobj.type == 'map')this.iseditmap = true;
+                    }else{
+                        this.isdelete = false;
+                        var obj = this.getobj();
+                        if(obj.type.split('/')[0]!='image'){
+                            toast.showmsg('仅支持图片类型的文件', true);
+                            return;
+                        }
+                        if(obj.size>1048576){
+                            toast.showmsg('图片大小不得大于1M', true);
+                            return;
+                        }
+                        var url = obj.url;
+                    }
+                    
+                    url?this.preview = true:this.preview = false;
+                    this.iscircle = false;
+                    this.previewurl = url;
+                    this.$nextTick(function(){
+                        $.smoothScroll({
+                            scrollTarget: '#editheader'
+                        });
+                    });
+                },
+                back: function(){
+                    this.previewurl = this.uped[this.uploadobj.type]?this.uped[this.uploadobj.type]:this.getobj().url;
+                    this.iscircle = false;
+                },
+                render: function(how){
+                    var width = 400;
+                    var _this = this;
+                    var image = new Image();
+                    image.crossOrigin = "*";
+
+                    image.onload = function(){
+                        var canvas = document.getElementById("canvas");
+                        var ctx = canvas.getContext("2d");
+                        ctx.clearRect(0, 0, image.width, image.height);
+
+                        var max = Math.max(image.width, image.height);
+                        var min = Math.min(image.width, image.height);
+
+                        var MAX_HEIGHT = 400;
+                        canvas.height = canvas.width = MAX_HEIGHT;
+
+                        var pattern = ctx.createPattern(image, "no-repeat");
+                        ctx.scale(MAX_HEIGHT/min, MAX_HEIGHT/min);
+
+                        how==1?ctx.rect(0, 0, min, min):ctx.arc(min/2, min/2, min/2, 0, 2 * Math.PI);;
+
+                        image.height<image.width?ctx.translate((min-max)/2, 0):ctx.translate(0, (min-max)/2);
+                        ctx.fillStyle = pattern;
+                        ctx.fill();  
+
+                        _this.previewurl = canvas.toDataURL('image/png');
+                        _this.iscircle = true;
+                    };
+
+                    image.src = this.previewurl;
+                },
+                showeditname: function(i){
+                    this.scenebackname = this.scenes[i].name;
+                    for(var index in this.editscene){
+                        this.editscene.$set(index, false);
+                    }
+                    this.editscene.$set(i, true);
+                    this.$nextTick(function(){
+                        $('#editname'+i).focus();
+                    });
+                },
+                hideeditname: function(i){
+                    this.scenes[i].name = this.scenebackname;
+                    this.editscene.$set(i, false);
+                },
+                setname: function(i){
+                    var _this = this;
+                    $.post('/panoitem/set-name',
+                        {
+                            id:_this.scenes[i].id,
+                            name:_this.scenes[i].name
+                        },function(res){
+                            if(res.code==0){
+                                toast.showmsg('修改成功');
+                                _this.editscene.$set(i, false);;
+                            }else{
+                                toast.showmsg(res.msg, true);
+                            }
+                        }
+                    );
+                },
+                setbroadcast: function(i){
+                    if(this.checkexpire())return;
+                    broadcast.info = this.scenes[i].introduction==0?'':this.scenes[i].introduction;
+                    broadcast.scene_key = this.scenes[i].key;
+                    broadcast.show(i);
+                },
+                viewscene: function(i){
+                    // window.open('/pano/'+this.scenes[i].id);
+                    window.open('/scene?key='+this.scenes[i].key+'&preview=1')
+                },
+                downloadscene: function(index,scene){
+                    console.log(scene.type);
+                    if(this.checkexpire())return;
+
+                    if(scene.type == 18){
+                        location.href = 'http://qncdn.sz-sti.com/pano/'+this.scenes[index].key.split('_')[0]+'.jpg?download';
+                    }else{
+
+                    scene.type==6 || scene.type==9 || scene.type==5 || scene.key.split('_')[0].length == 10 ? location.href = '/newitem/download/pano/'+scene.key.split('_')[0]+'?name='+scene.name : location.href = '<%=cdnImagesPath%>/scenes/'+this.scenes[index].key.split('_')[0]+'/allinone.jpg?download';
+                    }
+                },
+                setcover: function(i){
+                    var _this = this;
+                    $.post('/panoitem/set-cover',
+                        {
+                            id:_this.scenes[i].id,
+                            groupkey:'<%=group.key%>'
+                        },
+                        function(res){
+                            if(res.code==0){
+                                toast.showmsg('设置成功');
+                                setTimeout(function(){
+                                    _this.scenes.unshift(_this.scenes.splice(i,1)[0]);
+                                }, 500);
+                            }else{
+                                toast.showmsg(res.msg, true);
+                            }
+                        }
+                    );
+                },
+                init: function(){
+                    loading1.isshow = false;
+                    var _this = this;
+                    $.get('/panoitem/scenes/'+this.groupid, function(scenes){
+                        for(var i in scenes){
+                            _this.showmorestat.push(false);
+                            _this.editscene.push(false);
+                        }
+                        _this.scenes = scenes;
+                        _this.tel.number = scenes[0].telephone?scenes[0].telephone:_this.tel.pretermit;
+                        _this.tel.back = scenes[0].telephone;
+                        _this.prefix.content = scenes[0].prefix?scenes[0].prefix:_this.prefix.pretermit;
+                        _this.prefix.back = scenes[0].prefix?scenes[0].prefix:false;
+                        nav.current.pano = true;
+                        _this.thumbimg = scenes[0].thumbsrc;
+                    });
+                    var now = Date.parse(new Date());
+
+                    this.intro.content = this.intro.content?this.intro.content:this.intro.pretermit;
+                    this.housedesc.content = this.housedesc.content?this.housedesc.content:this.housedesc.pretermit;
+                    
+                    var expiredate = Date.parse(new Date(this.expiredate));
+                    if(now>expiredate){
+                        this.expire = true;
+                    }
+
+                    document.getElementById('intro').addEventListener('keydown',function(e){
+                        console.log(e);
+                        if(e.keyCode!=13) return;
+                        e.preventDefault();
+                    });
+
+                    var sortablebox = document.getElementById('sortable');
+                    var sortable = new Sortable(sortablebox,{
+                        animation: 250,
+                        ghostClass: 'sortable-ghost',
+                        chosenClass: "sortable-chosen",
+                        dragClass: "sortable-drag", 
+                        fallbackClass: "sortable-fallback",
+                        onEnd: function (evt) {
+                            var ev = arguments[0] || window.event;
+                            if(ev.preventDefault){
+                                ev.preventDefault();
+                            }else{
+                               ev.returnValue=false; 
+                            }
+                            var neworder = [];
+                            for(var i=0;i<evt.from.children.length;i++){
+                                neworder.push(parseInt($(evt.from.children[i]).attr('sceneid')));
+                            }
+                            $.post('/panoitem/sort', { 
+                                neworder: neworder,
+                                groupid: groupEdit.groupid
+                            }, function(res){
+                                res.code == 0?
+                                    toast.showmsg('排序成功'):
+                                    toast.showmsg(res.mag, true);
+                            });
+                        }
+                    });
+
+                    $('#simple-editor').trumbowyg();
+                    $('#simple-editor-intro').trumbowyg();
+                    $.trumbowyg.btnsGrps.test = ['bold', 'link'];
+                    $.extend(true, $.trumbowyg.langs, {
+                        fr: {
+                            align: 'Alignement',
+                            image: 'Image'
+                        }
+                    });
+                    $('.editor').on('dblclick', function(e){
+                        $(this).trumbowyg({
+                            lang: 'fr',
+                            closable: true,
+                            fixedBtnPane: true
+                        });
+                    });
+                    $('.trumbowyg-insertImage-button').parent().prev().remove();
+                    $('.trumbowyg-insertImage-button').parent().remove();
+                }
+            }
+        });
+
+        groupEdit.init();
+
+        var body = new Vue({
+            el: 'body',
+            data: {
+                editinfo: false,
+                panoinfo: groupEdit.panoinfo,
+                noscroll: false
+            },
+            methods: {
+                showeditinfo: function(){
+                    this.editinfo = true;
+                    this.$nextTick(function(){
+                        $.smoothScroll({
+                            scrollTarget: '#houseinfo'
+                        });
+                    });
+                },
+                hideeditinfo: function(){
+                    console.log(222);
+                    this.editinfo = false;
+                    this.$nextTick(function(){
+                        $.smoothScroll({
+                            scrollTarget: '#bottable'
+                        });
+                    });
+                },
+                hidepopt: function(){
+                    nav.display = false;
+                    menubox.open = false;
+                    groupEdit.nomore();
+                },
+                submithouseinfo: function(){
+                    var _this = this;
+                    var data = this.panoinfo;
+                    data.key = '<%=group.key%>';
+                    $.post('/panoitem/set-info',data,function(res){
+                        if(res.code==0){
+                            toast.showmsg('修改成功');
+                            _this.$nextTick(function(){
+                                this.hideeditinfo();
+                                groupEdit.panoinfo = this.panoinfo;
+                            });
+                        }else{
+                            toast.showmsg(res.msg, true);
+                        }
+                    });
+                }
+            }
+        });
+ 
+    </script>
+</body>
+</html>

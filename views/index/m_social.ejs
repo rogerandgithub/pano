@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>深圳速腾聚创科技有限公司</title>
+    <link rel="stylesheet" href="/index/css/m_common.css" type="text/css"> 
+    <link rel="stylesheet" href="/index/css/m_social.css" type="text/css"> 
+    <script type="text/javascript" src="/index/js/Vue.min.js"></script>
+</head>
+<body>
+    <%include m_nav%>
+    <%include loading%>
+    <div id="wrapper">
+        <div class="section_1"></div>
+        <div class="searchbox">
+            <div class="searchInput">
+                <input class="jobname" type="text" name="jobname" placeholder="职位关键词" v-model="filtername" />
+                <a class="btn" href="javascript:;" @click="filterjob"></a>
+            </div>
+        </div>
+        <div class="section_3">
+            <div class="newlist" v-for="social in sociallist | jobfilter filtername" @click.prevent="check($index)">
+                <div class="content">
+                    <h2 class="jobname" v-text="social.name"></h2>
+                    <div class="list">
+                        <span v-if="social.address" v-text="social.address"></span>
+                        <span v-if="social.education" v-text="social.education"></span>
+                        <span v-if="social.experience" v-text="social.experience"></span>
+                    </div>
+                    <p class="quality">
+                        <span v-for="quality in social.quality" v-text="($index+1)+quality"></span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        var wrapper = new Vue({
+            el: '#wrapper',
+            data: {
+                sociallist: [],
+                lang: '<%=lang%>',
+                jobname: '<%=jobname%>',
+                filtername: ''
+            },
+            methods: {
+                init: function(){
+                    var _this = this;
+                    $.get('/web/join/data/'+this.lang,function(res){
+                        for(var i in res){
+                            _this.sociallist.push(res[i]);
+                        }
+                        _this.filtername = _this.jobname;
+                    });
+                },
+                check: function(index){
+                    location.href = '/mobile/social/' + index + '/' + '<%=lang%>'; 
+                }
+            }
+        });
+        wrapper.init();
+        //自定义筛选账号的过滤器
+        Vue.filter('jobfilter', function(val, account){
+            if(!account){
+                wrapper.count = val.length;
+                return val;
+            };
+            var result = [];
+            for(var i in val){
+                var name = val[i].name;
+                if(name.indexOf(account) != -1){
+                    result.push(val[i]);
+                }
+            }
+            return result;
+        });
+    </script>
+</body>
+</html>

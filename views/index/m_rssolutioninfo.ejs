@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>新闻中心</title>
+    <link rel="stylesheet" href="/index/css/m_common.css" type="text/css"> 
+    <link rel="stylesheet" href="/index/css/m_rssolutioninfo.css" type="text/css"> 
+    <script src="/index/js/Vue.min.js"></script>
+    <%if(lang=='en'){%>
+        <style type="text/css">
+            #wrapper .section_2 .header .headerinfo,#wrapper .section_2 .list p{
+                text-align: left;
+            }
+        </style>
+    <%}%>
+</head>
+<body>
+    <%include m_nav%>
+    <%include loading%>
+    <div id="wrapper">
+        <div class="section_1" :class="classObject"></div>
+        <div class="section_2">
+            <div class="solutioninfo">
+                <div class="header">
+                    <h2 class="title" v-text="solutiondata.title"></h2>
+                    <h4 class="headerinfo" v-text="solutiondata.header"></h4>
+                </div>
+                <div class="content">
+                    <div class="list" v-for="list in solutiondata.content">
+                        <h2 class="title" v-text="list.title"></h2>
+                        <p v-for="info in list.info" v-text="info"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        var wrapper = new Vue({
+            el: '#wrapper',
+            data: {
+                index: <%=index%>,
+                datas: <%-include("mobile_lang_"+lang, {lang: lang})%>,
+                solutiondata: '',
+                lang: '<%=lang%>',
+                classObject: {
+                    banner1: <%=index==0?true:false%>,
+                    banner2: <%=index==1?true:false%>,
+                    banner3: <%=index==2?true:false%>
+                }
+            },
+            methods: {
+                init: function(){
+                    this.solutiondata = this.datas.rsSolution.content[this.index];
+                    console.log(this.solutiondata);
+                }
+            }
+        });
+        wrapper.init();
+    </script>
+</body>
+</html>

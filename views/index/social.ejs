@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>社会招聘-所有职位</title>
+    <link rel="stylesheet" href="/index/css/common.css" type="text/css"> 
+    <link rel="stylesheet" href="/index/css/social.css" type="text/css"> 
+</head>
+<body>
+    <%include nav%>
+    <%include footer%>
+    <div id="navtop">
+        <navtop>
+            <div class="three-menu" slot="navbottom">
+                <div class="link">
+                    <a href="/web/recruitment/social/<%=lang%>" class="button active">
+                        <span v-text="'<%=lang%>'=='cn'?'所有职位':'JOBS'"></span>
+                    </a>
+                </div>
+            </div>
+        </navtop>
+    </div>
+    <div class="social-wrap" id="socialwrap">
+        <div class="banner"></div>
+        <div class="robosense-about">
+            <div class="search" id="search">
+                <div class="searchInput fl">
+                    <input class="jobname" type="text" name="jobname" placeholder="职位关键词" v-model="filtername"  @keyup="filterjob | debounce 500" />
+                    <a class="btn" href="javascript:;" @click="filterjob"></a>
+                </div>
+            </div>
+            <div class="wrap">
+                <div class="social-wrapper" v-for="social in sociallist | jobfilter filtername | limitS limit offset">
+                    <div class="box" @click="checkJob(social.index)">
+                        <h2 class="jobname" v-text="social.name"></h2>
+                        <div class="list">
+                            <span v-text="social.address"></span>
+                            <span v-text="social.education"></span>
+                            <span v-text="social.experience"></span>
+                        </div>
+                        <p class="quality">
+                            <span v-for="quality in social.quality" v-text="($index+1)+quality"></span>
+                        </p>
+                    </div>
+                </div>
+                <div class="noJob" v-if="count<=0">
+                    <h2>没有找到相关的职位</h2>
+                </div>
+            </div>
+            <div id="pagation">
+                <div class="container-fluid" v-if="!isshowload2&&count>limit" style="margin-top:30px;">
+                    <div class="pagination">
+                        <ul>
+                            <li :class="{'disabled': 1 == pagindex}"><a href="javascript:;" @click="load(1)">首页</a></li>
+                            <li :class="{'disabled': 1 == pagindex}" class="child"><a href="javascript:;" @click="load(pagindex-1)">&#8249;&#8249;</a></li>
+                            <li v-for="cur in pages" v-if="pagindex>3&&pages-2>pagindex?(cur+1<=pagindex+2&&cur+1>=pagindex-2):(pagindex<=3?cur+1<=5:cur+1>=pages-4)" :class="{'active': cur+1 == pagindex}">
+                                <a href="javascript:;" @click="load(cur+1)" v-text="cur+1"></a>
+                            </li>
+                            <li :class="{'disabled': pages == pagindex}" class="child"><a href="javascript:;" @click="load(pagindex+1)">&#8250;&#8250;</a></li>
+                            <li :class="{'disabled': pages == pagindex}"><a href="javascript:;" @click="load(pages)">尾页</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="footnav">
+        <footnav></footnav>
+    </div>
+
+    <script type="text/javascript" src="/index/js/jquery-2.2.4.min.js"></script>
+    <script type="text/javascript" src="/index/js/smooth-scroll.min.js"></script>
+    <script type="text/javascript">
+        var navtop = new Vue({
+            el: '#navtop',
+        });
+        var footnav = new Vue({
+            el: '#footnav'
+        });
+        var search = new Vue({
+            el: '#search',
+            data: {
+                filtername: ''
+            },
+            methods: {
+                filterjob: function(){
+                    socialwrap.filtername = this.filtername;
+                }
+            }
+        });
+
+        var socialwrap = new Vue({
+            el: '#socialwrap',
+            data: {
+                sociallist: [],
+                lang: '<%=lang%>',
+                jobname: '<%=jobname%>',
+                count: 0,
+                pages: 0,
+                pagindex: 1,
+                limit: 5,
+                filtername: ''
+            },
+            computed: {
+                offset: function(){
+                    return (this.pagindex-1)*this.limit;
+                },
+                pages: function(){
+                    return Math.ceil(this.count/this.limit);
+                }
+            },
+            methods: {
+                init: function(){
+                    var _this = this;
+                    $.get('/web/join/data/'+this.lang,function(res){
+                        for(var i in res){
+                            _this.sociallist.push(res[i]);
+                            _this.count = _this.sociallist.length;
+                        }
+                        _this.filtername = _this.jobname;
+                    });
+                },
+                checkall: function(index){
+                    if(this.newlist[index].newinfo == "false"){
+                       window.open(this.newlist[index].link); 
+                    }else{
+                        window.open('/web/newinfo/' + index + '/' + '<%=lang%>');
+                    }
+                },
+                load: function(cur){
+                    if(cur != this.pagindex){
+                        if(cur<1){
+                            return;
+                        }
+                        if(cur>this.pages){
+                            return;
+                        }
+                        this.pagindex = cur;
+                    }
+                },
+                checkJob: function(index){
+                    window.open('/web/recruitment/social/' + index + '/' + '<%=lang%>');
+                }
+            }
+        });
+        Vue.filter('limitS', function(val, limit, offset){
+            var result = val.slice(offset,limit+offset);
+            return result;
+        });
+        //自定义筛选账号的过滤器
+        Vue.filter('jobfilter', function(val, account){
+            if(!account){
+                socialwrap.count = val.length;
+                return val;
+            };
+            var result = [];
+            for(var i in val){
+                var name = val[i].name;
+                if(name.indexOf(account) != -1){
+                    result.push(val[i]);
+                }
+            }
+            Vue.nextTick(function(){
+                socialwrap.count = result.length;
+                socialwrap.pagindex = 1;
+            });
+            return result;
+        });
+        socialwrap.init();
+    </script>
+</body>
+</html>

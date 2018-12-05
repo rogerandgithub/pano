@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en" id="maps">
+	<head>
+    <title><%=title%></title>
+		<meta charset="utf-8">
+        <meta name="format-detection" content="telephone=no">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        <link rel="stylesheet" href="/css/suteng.css?v=<%=version%>">
+        <link rel="stylesheet" href="/css/mediaelementplayer.css">     
+        <link rel="stylesheet" href="/css/sti_style.css" type="text/css" media="screen"> 
+        <script src="js/jquery-1.7.min.js"></script> 
+        <script src="/js/sti-common.min.js?<%=version%>"></script>
+        <script src="http://qtestbucket.qiniudn.com/demo/qiniu.uploader.js?id=2"></script>
+        <script src="/js/jquery.touchSwipe.min.js"></script> 
+        <script src="/js/jquery.versatileTouchSlider.min.js"></script> 
+        <script src="/js/mediaelement-and-player.min.js"></script> 
+	</head>
+	<body ondrag="return false">
+
+    <%if(maps.length==0){%>
+        <div class="margin10">
+            您目前没有上传户型图
+        </div>
+    <%}else{%>
+        <div class="sti-container">
+            <div class="mapsbox">
+                <div class="map">
+                    <%for(var i in maps){%>
+                    <img class="map-img" src="<%=cdnImagesPath%>/maps/<%=maps[i].key%>.jpg">
+                    <%for(var j in mapid2linksid[maps[i].id]){%>
+                        <div class="map-spot" data-id="<%=links[mapid2linksid[maps[i].id][j]+''].id%>" style="top:<%=links[mapid2linksid[maps[i].id][j]+''].position_y%>%;left:<%=links[mapid2linksid[maps[i].id][j]+''].position_x%>%;"></div>
+                        <div class="map-spot-text" style="top:<%=links[mapid2linksid[maps[i].id][j]+''].position_y%>%;left:<%=links[mapid2linksid[maps[i].id][j]+''].position_x%>%;"><%=links[mapid2linksid[maps[i].id][j]+''].text%></div>
+                    <%}%>                    
+                    <div class="map-spot add_spot" style="top:0;left:0;display:none;"></div>
+                    <%}%>
+                </div>
+            </div>
+            <div class="sti-romaing overflow">
+                <div class="smallmap">
+                    <img src="<%=cdnImagesPath%>/maps/<%=maps[i].key%>.jpg">
+                </div>
+
+                <div class="romaing-editor" id="ex_shelf_full"> 
+                 
+                    <div class="sti_slider"> 
+                        <div class="sti_items"> 
+                        
+                            <!-- SLIDE GROUP 1 --> 
+                            <div class="sti_slide"> 
+                                <%for(var i in romaing){%>
+                                    <div class="sti_prod"> 
+                                        <a class="video sti_lightbox" data-type="video-vimeo" data-size="700x394" title="Lamborghini Aventador"><%=romaing[i].name%></a> 
+                                        <img src="http://qncdn.sz-sti.com/images/scenes/<%=romaing[i].key.split('_')[0]%>/allinone.jpg?v=&imageMogr2/gravity/NorthWest/crop/!1024x1024a0a0/thumbnail/!20p" alt="" width="129" height="120"> 
+                                        <div class="cover" data-id="<%=romaing[i].id%>" data-name="<%=romaing[i].name%>"></div>
+                                        <div class="icon radiobox"></div>
+                                    </div> 
+                                <%}%>
+                            </div> 
+                            
+
+                            <%if(romaing.length>5){%>
+                            <!-- SLIDE GROUP 2 --> 
+                            <div class="sti_slide"> 
+                                <%for(var i in romaing){%>
+                                    <%if(i>=romaing.length-5){%>
+                                        <div class="sti_prod"> 
+                                            <a class="video sti_lightbox" data-type="video-vimeo" data-size="700x394" title="Lamborghini Aventador"><%=romaing[i].name%></a> 
+                                            <img src="http://qncdn.sz-sti.com/images/scenes/<%=romaing[i].key.split('_')[0]%>/allinone.jpg?v=&imageMogr2/gravity/NorthWest/crop/!1024x1024a0a0/thumbnail/!20p" alt="" width="132" height="120"> 
+                                            <div class="cover"  data-name="<%=romaing[i].name%>"></div>
+                                            <div class="icon radiobox"></div>
+                                        </div> 
+                                    <%}%>
+                                <%}%>
+                            </div> 
+                            <%}%>
+
+
+                            <%if(romaing.length>10){%>
+                            <!-- SLIDE GROUP 3 --> 
+                            <div class="sti_slide"> 
+                                <%for(var i in romaing){%>
+                                    <%if(i>=romaing.length-10){%>
+                                        <div class="sti_prod"> 
+                                            <a class="video sti_lightbox" data-type="video-vimeo" data-size="700x394" title="Lamborghini Aventador"><%=romaing[i].name%></a> 
+                                            <img src="http://qncdn.sz-sti.com/images/scenes/<%=romaing[i].key.split('_')[0]%>/allinone.jpg?v=&imageMogr2/gravity/NorthWest/crop/!1024x1024a0a0/thumbnail/!20p" alt="" width="132" height="120"> 
+                                            <div class="cover"  data-name="<%=romaing[i].name%>"></div>
+                                            <div class="icon radiobox"></div>
+                                        </div> 
+                                    <%}%>
+                                <%}%>
+                            </div> 
+                            <%}%>
+
+
+                            <%if(romaing.length>15){%>
+                            <!-- SLIDE GROUP 4 --> 
+                            <div class="sti_slide"> 
+                                <%for(var i in romaing){%>
+                                    <%if(i>=romaing.length-15){%>
+                                        <div class="sti_prod"> 
+                                            <a class="video sti_lightbox" data-type="video-vimeo" data-size="700x394" title="Lamborghini Aventador"><%=romaing[i].name%></a> 
+                                            <img src="http://qncdn.sz-sti.com/images/scenes/<%=romaing[i].key.split('_')[0]%>/allinone.jpg?v=&imageMogr2/gravity/NorthWest/crop/!1024x1024a0a0/thumbnail/!20p" alt="" width="132" height="120"> 
+                                            <div class="cover"  data-name="<%=romaing[i].name%>"></div>
+                                            <div class="icon radiobox"></div>
+                                        </div> 
+                                    <%}%>
+                                <%}%>
+                            </div> 
+                            <%}%>
+
+
+                            <%if(romaing.length>20){%>
+                            <!-- SLIDE GROUP 4 --> 
+                            <div class="sti_slide"> 
+                                <%for(var i in romaing){%>
+                                    <%if(i>=romaing.length-20){%>
+                                        <div class="sti_prod"> 
+                                            <a class="video sti_lightbox" data-type="video-vimeo" data-size="700x394" title="Lamborghini Aventador"><%=romaing[i].name%></a> 
+                                            <img src="http://qncdn.sz-sti.com/images/scenes/<%=romaing[i].key.split('_')[0]%>/allinone.jpg?v=&imageMogr2/gravity/NorthWest/crop/!1024x1024a0a0/thumbnail/!20p" alt="" width="132" height="120"> 
+                                            <div class="cover"  data-name="<%=romaing[i].name%>"></div>
+                                            <div class="icon radiobox"></div>
+                                        </div> 
+                                    <%}%>
+                                <%}%>
+                            </div> 
+                            <%}%>
+
+
+                            <%if(romaing.length>25){%>
+                            <!-- SLIDE GROUP 4 --> 
+                            <div class="sti_slide"> 
+                                <%for(var i in romaing){%>
+                                    <%if(i>=romaing.length-25){%>
+                                        <div class="sti_prod"> 
+                                            <a class="video sti_lightbox" data-type="video-vimeo" data-size="700x394" title="Lamborghini Aventador"><%=romaing[i].name%></a> 
+                                            <img src="http://qncdn.sz-sti.com/images/scenes/<%=romaing[i].key.split('_')[0]%>/allinone.jpg?v=&imageMogr2/gravity/NorthWest/crop/!1024x1024a0a0/thumbnail/!20p" alt="" width="132" height="120"> 
+                                            <div class="cover"  data-name="<%=romaing[i].name%>"></div>
+                                            <div class="icon radiobox"></div>
+                                        </div> 
+                                    <%}%>
+                                <%}%>
+                            </div> 
+                            <%}%>
+                            
+                        </div><!-- sti_items --> 
+                    </div><!-- sti_slider --> 
+
+                    <div class="horizontal margintop10 vcenter" style="padding:0 20px;font-size:18px;">
+                        <div>场景名称:</div>
+                        <div class="input-wrap flex1">
+                            <input class="romaing-input" disabled="true" placeholder="">
+                        </div>
+                    </div>
+                </div><!-- romaing-editor --> 
+            </div>
+
+
+            <div class="mapsbutton" style="margin-top:80px;">
+                <div class="buttons editor-add" style="display:none;">
+                    <button class="btn gray flex1 edit-cancel">取消</button>
+                    <button class="btn red flex1 edit-add">添加</button>
+                </div>
+                <div class="buttons editor-modify" style="display:none;">
+                    <button class="btn gray flex1 edit-cancel">取消</button>
+                    <button class="btn gray flex1 edit-delete">删除</button>
+                    <button class="btn red flex1 edit-add">确定</button>
+                </div>
+                <div class="buttons editor-img">
+                    <button class="btn gray flex1" onClick="location.href='/romaing/list?groupkey=<%=groupkey%>&platform=<%=platform%>';">返回</button>
+                    <button class="btn bloodred flex1 btn-map-delete" <%if(maps.length==0){%>style="display:none;"<%}%>>删除</button>
+                </div>
+            </div>
+        </div>
+        <%include alert%>
+    <%}%>
+        <script>
+            $(function(){
+
+
+                $.versatileTouchSlider('#ex_shelf_full', {
+                        slideWidth: 760, // some number. ex: 960 or '100%'
+                        slideHeight: 120, // some number. ex: 220 or 'auto'
+                        showPreviousNext: true,
+                        currentSlide: 0,
+                        scrollSpeed: 600,
+                        autoSlide: false,
+                        autoSlideDelay: 3000,
+                        showPlayPause: true,
+                        showPagination: true,
+                        alignPagination: 'left',
+                        alignMenu: 'left',
+                        swipeDrag: true,
+                        sliderType: 'image_shelf', // image_shelf, image_banner, image_text, image_gallery
+                        pageStyle: 'numbers', // numbers, bullets, thumbnails
+                        orientation: 'horizontal', // horizontal, vertical (if vertical, the "slideHeight" option must be a number, not 'auto')
+                        onScrollEvent: function() {},
+                        ajaxEvent: function() {}
+                    }
+                );
+
+
+                var curX,curY;
+                var curLinkId;
+                var mapkey;
+                var add_spot_flag = 0;
+                <%if(maps.length){%>mapkey='<%=maps[0].key%>';<%}%>
+                function mapImgMouseDown(e){
+                    var x=e.changedTouches?e.changedTouches[0].pageX:e.clientX;
+                    var y=e.changedTouches?e.changedTouches[0].pageY:e.clientY;
+                    curX=(x-$('.map-img').offset().left-10)/$('.map-img').width()*100;
+                    curY=(y-$('.map-img').offset().top-10)/$('.map-img').height()*100;
+                };
+
+
+                function mapImgMouseUp(e){
+                    var x=e.changedTouches?e.changedTouches[0].pageX:e.clientX;
+                    var y=e.changedTouches?e.changedTouches[0].pageY:e.clientY;
+                    var tx=(x-$('.map-img').offset().left-10)/$('.map-img').width()*100;
+                    var ty=(y-$('.map-img').offset().top-10)/$('.map-img').height()*100;
+
+                    if(tx==curX&&curY==ty){
+                        setTimeout(function(){
+                            $('.romaing-editor').show();
+                            $('.editor-add').show();
+                            $('.editor-modify').hide();
+                            $('.editor-img').hide();
+                            $('.add_spot').show();
+                            $('.add_spot').css({
+                                left:tx+"%",
+                                top:ty+"%"
+                            });
+                            add_spot_flag = 1;
+                        },100);
+                    }
+                }
+                function uploadClick(){
+                    if(!mapkey){
+                        $('#input-file').click();
+                    }else{
+                        alert('请先删除当前户型图再上传新的户型图');
+                    }
+                }
+                function mapSpotClick(){
+                    setTimeout(function(){
+                        $('.romaing-editor').show();
+                        $('.editor-add').hide();
+                        $('.editor-img').hide();
+                        $('.editor-modify').show();
+                    },100);
+                    curLinkId=$(this).attr('data-id');
+                }
+                function itemClick(){
+                    if(add_spot_flag){
+                        $('.cover').css({opacity:0.5});
+                        $(this).css({opacity:0});
+                        $('.radiobox').removeClass('check');
+                        $(this).next('.radiobox').addClass('check');
+                        itemSelectorFunction( $( this ) );
+                    }else{
+                        alert('点击户型图开始编辑');
+                    }
+                }
+                function cancelClick(){
+                    $('.editor-add').hide();
+                    $('.editor-modify').hide();
+                    $('.editor-img').show();
+                }
+                if(checkMobile()){
+                    $('.btn-up').on('touchend',uploadClick);
+
+                    $('.btn-map-delete').on('touchend',deleteMap);
+                    $('.map-spot').on('touchend',mapSpotClick);
+
+                    $('.map-img').on('touchstart',mapImgMouseDown);
+                    $('.map-img').on('touchend',mapImgMouseUp);
+                    $('.map-spot-text').on('touchstart',mapImgMouseDown);
+                    $('.map-spot-text').on('touchend',mapImgMouseUp);
+
+                    $( '.cover' ).on( 'click', itemClick);
+                    $( '.edit-cancel' ).on( 'touchend', cancelClick);
+                    $( '.edit-delete' ).on( 'touchstart', editDeleteFunction );
+                    $( '.edit-add' ).on( 'touchstart', editAddFunction );
+                }else{
+                    $('.map-img').on('mousedown',mapImgMouseDown);
+                    $('.map-img').on('mouseup',mapImgMouseUp);
+                    $('.map-spot-text').on('mousedown',mapImgMouseDown);
+                    $('.map-spot-text').on('mouseup',mapImgMouseUp);
+
+                    $('.btn-up').on('mouseup',uploadClick);
+                    $('.btn-map-delete').on('mouseup',deleteMap);
+                    $('.map-spot').on('mouseup',mapSpotClick);
+                    $( '.cover' ).on( 'mouseup', itemClick);
+                    $( '.edit-cancel' ).on( 'mouseup', cancelClick);
+                    $( '.edit-delete' ).on( 'mouseup', editDeleteFunction );
+
+                    $( '.edit-add' ).on( 'mouseup', editAddFunction );
+                }
+
+                function editDeleteFunction(){
+                    $.ajax({
+                            type:'POST',
+                            url:'/maps/spot-delete',
+                            data:{
+                                link_id:curLinkId,
+                                mapkey:'<%if(maps.length){%><%=maps[0].key%><%}else{%>xxx<%}%>'
+                            },
+                            async:false,
+                            success:function(res){
+                                if(res.code==0){
+                                    location.reload();
+                                }else{
+                                    alert(res.msg);
+                                }
+                            }
+                    });
+                }
+                function editAddFunction(){
+                    if(!$('.romaing-input').attr('data-id')){
+                        alert('请选择场景');
+                        return;
+                    }
+
+                    var data={
+                            text:$('.romaing-input').val(),
+                            position_x:curX,
+                            position_y:curY,
+                            position_z:0,
+                            mapkey:'<%if(maps.length){%><%=maps[0].key%><%}else{%>xxx<%}%>',
+                            type:100,
+                            go_scene:$('.romaing-input').attr('data-id')
+                        };
+
+                    if($('.editor-modify').css('display')!='none'){
+                        data.link_id=curLinkId;
+                    }
+                    $.ajax({
+                        url:'/maps/spot-post',
+                        data:data,
+                        type:'POST',
+                        async:false,
+                        success:function(res){
+                            if(res.code==0){
+                                location.reload();
+                            }else{
+                                alert(res.msg);
+                            }
+                        }
+                    });
+                }
+
+
+                function itemSelectorFunction( who ) {
+                    $(this).css({opacity:0});
+                    who.next( '.check' ).removeClass( 'hide' );
+                    $( '.romaing-input' ).val( who.attr( 'data-name' ) );
+                    $( '.romaing-input' ).attr( 'data-id', who.attr( 'data-id' ) );
+                }
+
+                function deleteMap(){
+                    if(confirm('确定要删除吗？')){
+                    // if(1){
+                    $.ajax({
+                            type:'POST',
+                            url:'/maps/delete',
+                            async:false,
+                            data:{
+                                mapkey:'<%if(maps.length){%><%=maps[0].key%><%}else{%>xxx<%}%>'
+                            },
+                            success:function(res){
+                                if(res.code==0){
+                                    location.href='/romaing';
+                                }else{
+                                    alert(res.msg);
+                                }
+                            }
+                    });
+                    }
+                }
+
+
+                $('#input-file').on('change',up);
+                var hasup=0;
+                function update(a,b){
+                    $('.btn-up').text(a+' '+(b?b:''));
+                }
+                function up(){
+                    if(document.getElementById('input-file').files.length==0){
+                        alert("请选择文件");
+                        return;
+                    }
+                    if(hasup){
+                        return;
+                    }
+                    hasup=1;
+                    $.post('/upload/maptoken',{groupkey:'<%=groupkey%>'},function(res){
+                        var token = res.token;
+                        var key = res.key;
+                        Q.addEvent("progress", function(p, s) {
+                            update((p==100?99:p)+'%', s);
+                        });
+                        //上传完成回调
+                        //fsize:文件大小(MB)
+                        //res:上传返回结果，默认为{hash:<hash>,key:<key>}
+                        Q.addEvent("putFinished", function(fsize, res, taking) {
+                            uploadSpeed = 1024 * fsize / (taking * 1000);
+                            if (uploadSpeed > 1024) {
+                                formatSpeed = (uploadSpeed / 1024).toFixed(2) + "Mb\/s";
+                            } else {
+                                formatSpeed = uploadSpeed.toFixed(2) + "Kb\/s";
+                            };
+                            var res = {
+                                key: res.key,
+                                hash: res.hash,
+                                speed: formatSpeed
+                            };
+                            update('上传成功');
+                            location.reload();
+                        });
+                        Q.SetToken(token);
+                        Q.Upload(document.getElementById('input-file').files[0], key);
+                    });
+                };
+            });
+        </script>
+    </body>
+</html>

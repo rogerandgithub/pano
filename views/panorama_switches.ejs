@@ -1,0 +1,190 @@
+<script id="template-switches" type="text/html">
+    <#if(audio){#>
+      <audio id="audio" src='<#=audio.value#>' <#if(audio.status){#>autoplay="autoplay"<#}#> loop="loop"></audio>
+    <#}#>
+      <div class="options-wrap">
+        <#if(comment){#>
+          <div class="item">
+              <div class="icon switch <#=audio.status?'on':'off'#>" data-type="comment"></div>
+          </div>
+        <#}#>
+        <#if(vr){#>
+          <div class="item">
+              <div class="icon switch <#=vr.status?'on':'off'#>" data-type="vr"></div>
+          </div>
+        <#}#>
+        <#if(audio){#>
+          <div class="item">
+              <div class="icon switch <#=audio.status?'on':'off'#>" data-type="audio"></div>
+          </div>
+        <#}#>
+        <#if(maps&&maps.length){#>
+          <div class="item">
+              <div class="icon switch off" data-type="maps"></div>
+          </div>
+        <#}#>
+        <#if(rotate){#>
+          <div class="item">
+              <div class="icon switch <#=rotate.status?'on':'off'#>" data-type="rotate"></div>
+          </div>
+        <#}#>
+        <#if(introduction&&introduction.value){#>
+          <div class="item">
+              <div class="icon switch <#=introduction.status?'on':'off'#>" data-type="info">
+                  <div id="introduction"><#=introduction.value#></div>
+              </div>
+          </div>
+        <#}#>
+      </div>
+      <#if(telephone){#>
+      <a href='tel:<#=telephone#>' class="icon telephone"></a>
+      <#}#>
+      <#if(maps&&maps.length){#>
+        <div class="maps-wrap">
+            <#for(var i in maps){#>
+            <div class="map-item">
+                <img src="<#=cdnImagesPath#>/maps/<#=maps[i].key#>.jpg" style="width:100%;position:relative;border-radius:3px;">
+                <#for(var j in maps[i].links){#>
+                <button class="btn map-spot <#if(maps[i].links[j].sceneKey==curSceneKey){#>current<#}#>" style="top:<#=maps[i].links[j].position_y#>%;left:<#=maps[i].links[j].position_x#>%;" type="map-spot" key="<#=maps[i].links[j].sceneKey#>"></button>
+                <button class="map-spot-text" style="top:<#=maps[i].links[j].position_y#>%;left:<#=maps[i].links[j].position_x#>%;"><#=maps[i].links[j].text#></button>
+                <#}#>
+            </div>
+            <#}#>
+        </div>
+      <#}#>
+</script>
+<script>
+    function initSwitches(config){
+
+        if($('.options-wrap').length){
+            $('.options-wrap').remove();
+        }
+        if(config.introduction.value == 0){config.introduction.value=''};
+        $('body').append(template('template-switches',config));
+        if(checkMobile()){
+            bindClick($('.icon.switch'),switchClick);
+
+            $('.map-spot').on('touchend',function(){changeScene($(this).attr('key'));});
+
+            $('.map-item').on('touchstart',function(e){
+                e.preventDefault();
+                if(e.touches.length>1){
+                    maps_touches.x1=e.touches[0].pageX;
+                    maps_touches.y1=e.touches[0].pageY;
+                    maps_touches.x2=e.touches[1].pageX;
+                    maps_touches.y2=e.touches[1].pageY;
+                    maps_touches.isZooming=true;
+                    maps_touches.isTranslating=false;
+                }else if(e.touches.length==1){
+                    maps_touches.x1=e.touches[0].pageX;
+                    maps_touches.y1=e.touches[0].pageY;
+                    maps_offx_base=maps_offx;
+                    maps_offy_base=maps_offy;
+                    maps_touches.isTranslating=true;
+                    maps_touches.isZooming=false;
+                }
+            });
+
+            $('.map-item').on('touchmove',function(e){
+                e.preventDefault();
+                if(e.touches.length>1&&maps_touches.isZooming){
+                    maps_touches.x3=e.touches[0].pageX;
+                    maps_touches.y3=e.touches[0].pageY;
+                    maps_touches.x4=e.touches[1].pageX;
+                    maps_touches.y4=e.touches[1].pageY;
+
+                    var d1=distance2D(maps_touches.x1,maps_touches.y1,maps_touches.x2,maps_touches.y2);
+                    var d2=distance2D(maps_touches.x3,maps_touches.y3,maps_touches.x4,maps_touches.y4);
+                    if(d1<d2||d1>d2){
+                        maps_scale-=d1/d2-1;
+                        $('.map-item').css('-webkit-transform','scale('+maps_scale+') translate3d('+maps_offx+'px,'+maps_offy+'px,0)');
+
+                        maps_touches.x1=maps_touches.x3;
+                        maps_touches.y1=maps_touches.y3;
+                        maps_touches.x2=maps_touches.x4;
+                        maps_touches.y2=maps_touches.y4;
+                    }
+                }else if(e.touches.length==1&&maps_touches.isTranslating){
+                    maps_offx=e.touches[0].pageX-maps_touches.x1+maps_offx_base;
+                    maps_offy=e.touches[0].pageY-maps_touches.y1+maps_offy_base;
+
+                    $('.map-item').css('-webkit-transform','scale('+maps_scale+') translate3d('+maps_offx+'px,'+maps_offy+'px,0)');
+
+                }else{
+                    maps_touches.isTranslating=false;
+                    maps_touches.isZooming=false;
+                }
+            });
+        }else{
+            $('.icon.switch').on('mouseup',switchClick);
+            $('.map-spot').on('mouseup',function(){changeScene($(this).attr('key'));});
+        }
+        for(var i in config){
+            if(_onFunctions[i]&&config[i].status){
+                _onFunctions[i]();
+            }
+        }
+        speech($('#introduction').text());
+    };
+
+    var _onFunctions={
+        'audio':function(){
+            document.getElementById( 'audio' ).play();
+        },
+        'maps':function(){
+            $('.maps-wrap').show();
+        },
+        'info':function(){
+            $('#introduction').addClass('show');
+            speech($('#introduction').text());
+        },
+        'comment':function(){
+        },
+        'rotate':function(){
+            sti.autoRotate=0.1;
+        },
+        'vr':function(){
+            sti.vr=true;
+            sti.touchMoveDisabled=true;
+        }
+    }
+    var _offFunctions={
+        'audio':function(){
+            document.getElementById( 'audio' ).pause();
+        },
+        'maps':function(){
+            $('.maps-wrap').hide();
+        },
+        'info':function(){
+            $('#introduction').removeClass('show');
+        },
+        'comment':function(){
+        },
+        'rotate':function(){
+            sti.autoRotate=0;
+        },
+        'vr':function(){
+            sti.vr=false;
+            sti.setRz(0);
+            sti.touchMoveDisabled=false;
+        }
+    }
+    function switchClick(){
+        if($(this).hasClass('on')){
+            $(this).removeClass('on');
+            $(this).addClass('off');
+            _offFunctions[$(this).attr('data-type')]();
+        }else{
+            $(this).removeClass('off');
+            $(this).addClass('on');
+            _onFunctions[$(this).attr('data-type')]();
+        }
+    }
+        var maps_touches={};
+        var maps_scale=1;
+        var maps_offx=0;
+        var maps_offy=0;
+        var maps_offx_base=0;
+        var maps_offy_base=0;
+
+</script>

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>STi 速腾聚创-后台</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href="/css/newitem/bootstrap.css" rel="stylesheet" />
+    <link href="/css/newitem/bootstrap-responsive.css" rel="stylesheet" />
+    <link href="/css/newitem/bootstrap-overrides.css" type="text/css" rel="stylesheet" />
+    <link href="/css/newitem/font-awesome.css" type="text/css" rel="stylesheet" />   
+    <link href="/css/newitem/layout.css" rel="stylesheet" type="text/css" />
+    <link href="/css/newitem/icons.css" rel="stylesheet" type="text/css" />
+    <link href="/css/newitem/common.css" rel="stylesheet" type="text/css" /> 
+    <link href="/css/newitem/editmap.css" rel="stylesheet" type="text/css" /> 
+    <!-- <link href='http://fonts.useso.com/css?family=Varela' rel='stylesheet' type='text/css'> -->
+    <link href='/css/newitem/swiper-3.3.1.min.css' rel='stylesheet' type='text/css'>
+    <script src="/js/newitem/vue.min.js"></script>
+    <style type="text/css">
+        *{
+            -webkit-tap-highlight-color: transparent;  
+            -webkit-appearance: none; 
+        }
+    </style>
+</head>  
+<body>
+    <%include loading%>
+    <%include toast%>
+    <div id="wrapper">
+        <!-- sidebar -->
+        <%include nav%>
+        <%include menu%>
+
+        <div class="content">
+
+             <div id="menubox">
+                <menulist>
+                    <span slot="readcount" v-text="readcount" v-if="readcount>0"></span>
+                </menulist>
+            </div>
+
+            <div class="edit-house-wrap" id="edit-house-wrap">
+                <h3>户型图 — 添加指引点</h3>
+                <div class="house-pic-box">
+                    <span class="pictureBox">
+                        <img id="house-pic" class="house-pic" :src="src" @click="addspot" @mousemove.prevent="changeXY"/>
+                        <div class="links" @click="delspot(link.id,$index)" v-for="link in links" :style="{left:link.position_x + '%',top:link.position_y + '%'}">
+                            <p class="text" v-text="link.text"></p>
+                        </div>
+
+                        <div>
+                            <span id="preview" v-show="showspot" :style="{left:left + '%',top:top + '%'}" @mousedown="changeBefore" @touchmove.prevent ="mobilechangeXY" @touchstart="changeBefore" @mouseup="changeAfter" @touchend="changeAfter">
+                                <span class="text" v-text="checktext"></span>
+                                <span class="delspot" @click="removespot"><img width="20" height="20" src="/images/newitem/removespot.png"></span>
+                            </span>
+                        </div>
+                    </span>
+                </div>
+                <div class="thumbs-wrap" id="thumbs-wrap">
+                    <div class="swiper-container">
+                        <div class="swiper-button-next"></div>
+                        <div class="swiper-button-prev"></div>
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide" v-for="scene in scenes">
+                                <img :src="scene.type>=5?'http://qncdn.sz-sti.com/pano/'+scene.key+'.tiles/mobile_f.jpg':'<%=cdnImagesPath%>/scenes/'+scene.key.split('_')[0]+'/allinone.jpg?imageMogr2/gravity/NorthWest/crop/!1248x1248a0a0/thumbnail/!20p'" />
+                                <input type="radio" name="thumbs-house" :data-name="scene.name" :value="scene.id" @click="checkscene($index)" />
+                                <i class="icon-ok"></i>
+                                <p class="title">{{scene.name}}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="edithouser-btn">
+                        <a class="radius-btn" href="javascript:;" @click="deletespot" v-show="removespotbtn">删除链接</a>
+                        <a class="radius-btn" href="javascript:;" @click="sumbitspot" v-show="addspotbtn">添加链接</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/js/newitem/jquery-2.2.4.min.js"></script>
+    <script src="/js/newitem/swiper-3.3.1.min.js"></script>
+    <script type="text/javascript">
+
+        loading1.isshow = false;
+
+        var menubox = new Vue({
+            el: '#menubox',
+            data: {
+                readcount: ''
+            }
+        });
+
+        var scenes = new Vue({
+            el:'#edit-house-wrap',
+            data:{
+                src:'',
+                showspot:false,
+                left:0,
+                top:0,
+                change:false,
+                scenes:[],
+                links:[],
+                disabled:true,
+                groupid:<%=groupid%>,
+                mapkey:'',
+                addspotbtn:false,
+                removespotbtn: false,
+                spot:false,
+                checktext:'',
+                soptdata:{
+                    position_x:0, 
+                    position_y:0, 
+                    position_z:0,
+                    go_scene:0,
+                    type:100,
+                    text: '',
+                    mapkey:''
+                },
+                deledata:null,
+                spotindex:0
+            },
+            methods:{
+                init:function(){
+                    var _this = this;
+                    $.get('/panoitem/mapdata/'+this.groupid,function(res){
+                        for(var i=0;i<res.romaing.length;i++){
+                            _this.scenes.push(res.romaing[i]);
+                        }
+                        _this.$nextTick(function(){
+                            var swiper = new Swiper('.swiper-container', {
+                                slidesPerView: 3,
+                                spaceBetween: 10,
+                                freeMode: true,
+                                prevButton:'.swiper-button-prev',
+                                nextButton:'.swiper-button-next'
+                            });  
+                        });
+                        _this.src = 'http://qncdn.sz-sti.com/images/maps/'+res.maps[0].key+'.jpg';
+                        _this.mapkey = res.maps[0].key;
+                        for(i in res.links ){
+                            _this.links.push(res.links[i]);
+                        }
+                    });
+                    nav.current.pano = true;
+                },
+                delspot: function(id,index){
+                    this.removespotbtn = true;
+                    this.spotindex = index;
+                    this.deledata ={
+                        link_id:id,
+                        mapkey:this.mapkey
+                    } 
+                },
+                deletespot: function(){
+                    var _this = this;
+                    $.post('/panoitem/spot-delete',this.deledata,function(res){
+                        _this.links.splice(_this.spotindex,1);
+                        _this.removespotbtn = false;
+                        toast.showmsg('成功删除链接');
+                    });
+                },
+                addspot:function(e){
+                    this.showspot = true;
+                    this.addspotbtn = true;
+                    this.left = ((e.offsetX-10)/e.target.width)*100;
+                    this.top = ((e.offsetY-10)/e.target.height)*100;
+                    this.soptdata.position_x = this.left;
+                    this.soptdata.position_y = this.top;
+                },
+                changeBefore:function(e){
+                    this.change = true;
+                    this.candelete = true;
+                },
+                changeXY:function(e){
+                    if(this.change){
+                        this.left = ((e.offsetX - 10)/e.target.offsetParent.clientWidth)*100;
+                        this.top = ((e.offsetY - 10)/e.target.offsetParent.clientHeight)*100;
+                        this.soptdata.position_x = this.left;
+                        this.soptdata.position_y = this.top;
+                    }
+                },
+                mobilechangeXY:function(e){//移动端拖动热点.....
+                    if(this.change){
+                        var touch = e.touches[0];
+                        var x = touch.pageX;
+                        var y = touch.pageY;
+                        var pL = e.target.parentElement.offsetLeft;
+                        var pT = e.target.parentElement.offsetTop;
+                        var pW = e.target.parentElement.offsetWidth;
+                        var pH = e.target.parentElement.offsetHeight;
+                        var isTrue = x>pL && x<(pL+pW) && y>pT && y<(pT+pH);
+                        if(isTrue){
+                            this.left = ((x - pL - 15)/pW)*100;
+                            this.top = ((y - pT - 15)/pH)*100;
+                        }
+                    }
+                },
+                changeAfter:function(){
+                    this.change = false;
+                },
+                sumbitspot:function(){
+                    if(!this.spot){
+                        toast.showmsg('请选择场景再添加链接');
+                        return;
+                    };
+                    var _this = this;
+                    console.log(this.soptdata);
+                    $.post('/panoitem/spot-post',this.soptdata,function(res){
+                        $('#thumbs-wrap .icon-ok').hide();
+                        _this.addspotbtn = false;
+                        _this.links.push(res.links);
+                        _this.showspot = false;
+                        _this.checktext = '';
+                        // _this.soptdata.position_x = 0;
+                        // _this.soptdata.position_y = 0;
+                        // _this.soptdata.position_z = 0;
+                        // _this.soptdata.go_scene = 0;
+                        // _this.soptdata.type = 100;
+                        // _this.soptdata.text =  '';
+                        // _this.soptdata.mapkey = '';
+                        toast.showmsg('添加成功');
+                    })
+                },
+                checkscene: function(index){
+                    if(!this.showspot){
+                        toast.showmsg('请点击户型图添加链接再选择场景编辑');
+                        return;
+                    };
+                    this.spot = true;
+                    $('#thumbs-wrap .icon-ok').hide();
+                    $('#thumbs-wrap .icon-ok').eq(index).show();
+                    var scene_id = $('#thumbs-wrap input').eq(index).val();
+                    this.checktext = $('#thumbs-wrap input').eq(index).attr('data-name');
+                    this.soptdata = {
+                        position_x:this.left, 
+                        position_y:this.top, 
+                        position_z:0,
+                        go_scene:scene_id,
+                        type:100,
+                        text: this.checktext,
+                        mapkey:this.mapkey
+                    }
+                },
+                removespot:function(){
+                    this.showspot = false;
+                    this.spot = false;
+                    this.checktext = '';
+                    $('#thumbs-wrap .icon-ok').hide();
+                    this.addspotbtn = false;
+                }
+            }
+        });
+        scenes.init();
+    </script>
+</body>
+</html>

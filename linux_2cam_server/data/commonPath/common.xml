@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<opencv_storage>
+	<correctCurve>1.456e+000</correctCurve>
+	<halfFov>115.</halfFov>
+	<caliScale>5.0000000000000000e-001</caliScale>
+	<fuseBand>180.</fuseBand>
+	<cropRatio>2.0000000000000001e-001</cropRatio>
+	<stitchRoiW>2.0000000000000001e-001</stitchRoiW>
+	<stitchRoiH>1.0000000000000001e-001</stitchRoiH>
+</opencv_storage>

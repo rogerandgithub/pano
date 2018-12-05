@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+    <title><%=title%></title>
+		<meta charset="utf-8">
+        <meta name="format-detection" content="telephone=no">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        <link href="/css/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <link href="/css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
+        <link rel="stylesheet" type="text/css" href="/css/common.css?v=<%=version%>">
+        <script type="text/javascript" src="/js/jquery-1.8.3.min.js" charset="UTF-8"></script>
+        <script type="text/javascript" src="/js/bootstrap/bootstrap.min.js"></script>
+        <script type="text/javascript" src="/js/bootstrap/bootstrap-datetimepicker.min.js" charset="UTF-8"></script>
+        <style>
+            .input-wrap{position:relative;}
+            .btn-save{position:absolute;right:0;bottom:100%;display:none;}
+            .alert{padding:0}
+        </style>
+	</head>
+	<body ondrag="return false">
+    <script src="<%=cdnJsPath%>/zepto.min.js?v=<%=libVersion%>"></script>
+    <script src="/js/sti-common.min.js?<%=version%>"></script>
+    <script src="/js/template-native.js?<%=version%>"></script>
+    <%include alert%>
+    <div class="vertical h100">
+        <%include header%>
+        <div class="paddinglr10 overflow flex1">
+            <div class="btn bloodred tiny vcenter hcenter btn-newuser margint10" style='width:80px'>
+                新建用户
+            </div>
+            <div class="users-wrap margint10">
+            </div>
+            <div class="buttons" style="-webkit-box-pack:end">
+                <div class="btn gray tiny vcenter hcenter btn-pre">
+                    上一页
+                </div>
+                <div class="btn bloodred tiny vcenter hcenter btn-next">
+                    下一页
+                </div>
+            </div>
+        </div>
+    </div>
+    <script id="template-users" type="text/html">
+    <table class="table table-striped table-bordered table-hover table-responsive">
+    <tbody>
+        <tr>
+            <td rowspan=2>id</td>
+            <td rowspan=2>账号</td>
+            <td rowspan=2>昵称</td>
+            <td rowspan=2>公司</td>
+            <td rowspan=2>logo</td>
+            <td rowspan=2>商标</td>
+            <td colspan="4">权限</td>
+        </tr>
+        <tr>
+            <td>修改商标</td>
+            <td>修改前缀</td>
+            <td>隐藏标题栏</td>
+            <td>修改logo</td>
+        </tr>
+    <#for(var i in users){#>
+        <tr data-id="<#=users[i].id#>">
+            <td><#=users[i].id#></td>
+            <td><#=users[i].name#></td>
+            <td><div class="input-wrap"><input class="form-control input-name" value="<#=users[i].nickname#>"><button class="btn-primary btn-xs btn-save">保存</button></div></td>
+            <td><div class="input-wrap"><input class="form-control input-company" value="<#=users[i].company#>"><button class="btn-primary btn-xs btn-save">保存</button></div></td>
+            <td><div class="input-wrap"><input class="form-control input-prefix" value="<#=users[i].prefix#>"><button class="btn-primary btn-xs btn-save">保存</button></div></td>
+            <td><img width=50 height=50 src="<#=users[i].logo#>"></img></td>
+            <td><img width=50 height=50 src="<#=users[i].trademark#>"></img></td>
+            <td><input class="checkbox-trademark" type="checkbox" <#if(users[i].permission_trademark){#>checked="checked" data-checked=1<#}#>></td>
+            <td><input class="checkbox-prefix" type="checkbox" <#if(users[i].permission_prefix){#>checked="checked" data-checked=1<#}#>></td>
+            <td><input class="checkbox-hidetitle" type="checkbox" <#if(users[i].permission_hidetitle){#>checked="checked" data-checked=1<#}#>></td>
+            <td>
+                <select class="form-control select-logo" >
+                    <option value="0"  <#if(users[i].permission_logo==0){#>selected='selected'<#}#>>
+                    默认
+                    </option>
+                    <option value="1" <#if(users[i].permission_logo==1){#>selected='selected'<#}#>>
+                    隐藏sti logo
+                    </option>
+                    <option value="2" <#if(users[i].permission_logo==2){#>selected='selected'<#}#>>
+                    可自定义logo
+                    </option>
+                </select>
+            </td>
+        </tr>
+    <#}#>
+    </tbody>
+    </table>
+    <div style="text-align:end;margin-right:10px;">
+    <#=cur_page#>/<#=total_page#>
+    </div>
+
+    </script>
+    <script>
+    $(function(){
+            template.config('openTag','<#');
+            template.config('closeTag','#>');
+
+            function getUsers(page){
+                $.ajax({
+                    type:'post',
+                    url:'/master/users',
+                    data:{cur_page:page},
+                    async:false,
+                    success:function(r){
+                        if(r.code!=0){
+                            alert(r.msg);
+                            return;
+                        }
+                        $('.users-wrap').html(template('template-users',r));
+                        if(r.cur_page<=1){
+                            $('.btn-pre').removeClass('bloodred').addClass('gray');
+                        }else{
+                            $('.btn-pre').removeClass('gray').addClass('bloodred');
+                        }
+
+                        if(r.cur_page>=r.total_page){
+                            $('.btn-next').removeClass('bloodred').addClass('gray');
+                        }else{
+                            $('.btn-next').removeClass('gray').addClass('bloodred');
+                        }
+
+                        function showBtnSave(){
+                                $(this).closest('td').find('.btn-save').show();
+                        }
+                        function hideBtnSave(){
+                                $(this).closest('td').find('.btn-save').hide();
+                        }
+                        $('.input-name').on('focus',showBtnSave);
+                        $('.input-name').on('blur',hideBtnSave);
+                        $('.input-company').on('focus',showBtnSave);
+                        $('.input-company').on('blur',hideBtnSave);
+                        $('.input-prefix').on('focus',showBtnSave);
+                        $('.input-prefix').on('blur',hideBtnSave);
+                        $('.checkbox-trademark').on('click',checkboxClick);
+                        $('.checkbox-prefix').on('click',checkboxClick);
+                        $('.checkbox-hidetitle').on('click',checkboxClick);
+                        $('.select-logo').on('change',selectClick);
+
+                    }
+                });
+            }
+
+            var cur_page=1;
+            getUsers(cur_page);
+            function preClick(){
+                if($(this).hasClass('gray')){
+                    return;
+                }
+                cur_page--;
+                getUsers(cur_page);
+            }
+            function nextClick(){
+                if($(this).hasClass('gray')){
+                    return;
+                }
+                cur_page++;
+                getUsers(cur_page);
+            }
+            function post(data){
+                $.ajax({
+                        type:'post',
+                        url:'/master/set',
+                        data:data,
+                        async:false,
+                        success:function(r){
+                            if(r.code!=0){
+                                alert(r.msg);
+                                return;
+                            }
+                        }
+                });
+            }
+            function checkboxClick(){
+                var data={user_id:$(this).closest('tr').attr('data-id')};
+                if($(this).attr('data-checked')==1){
+                    $(this).attr('data-checked',0);
+                }else{
+                    $(this).attr('data-checked',1);
+                }
+
+                if($(this).hasClass('checkbox-trademark')){
+                    data.permission_trademark=$(this).attr('data-checked');
+                }else if($(this).hasClass('checkbox-hidetitle')){
+                    data.permission_hidetitle=$(this).attr('data-checked');
+                }else if($(this).hasClass('checkbox-prefix')){
+                    data.permission_prefix=$(this).attr('data-checked');
+                }
+                post(data);
+            }
+            function newuserClick(){
+                $('.alert-wrap').css('visibility','visible');
+                initAlert('',{
+                    title:'新建用户',
+                    content:'<input class="input-newuser-name" placeholder="用户名"><input class="input-newuser-password" placeholder="密码"><input class="input-newuser-father" placeholder="父账号(可选)">',
+                    buttons:[
+                    {
+                        text:'取消'
+                    },{
+                        text:'确定',
+                        color:'red',
+                        callBack:function(){
+                            if($('.input-newuser-password').val()==""){
+                                alert('密码不能为空');
+                                return;
+                            }
+                            $.ajax({
+                                url:'/master/newuser',
+                                type:'post',
+                                data:{
+                                    username:$('.input-newuser-name').val(),
+                                    password:hex_sha1($('.input-newuser-password').val()+'letian'),
+                                    father:$('.input-newuser-father').val()||undefined
+                                },
+                                async:false,
+                                success:function(r){
+                                    if(r.code!=0){
+                                        alert(r.msg);
+                                        return;
+                                    }
+                                    $('.alert-wrap').css('visibility','hidden');
+                                }
+                            });
+                        }
+                    }]
+                });
+            }
+            function selectClick(){
+                var data={user_id:$(this).closest('tr').attr('data-id'),permission_logo:$(this).val()};
+                post(data);
+            }
+            function saveClick(){
+                var i=$(this).closest('td').find('input');
+                var data={user_id:$(this).closest('tr').attr('data-id')};
+                if(i.hasClass('input-name')){
+                    data.nickname=i.val();
+                }else if(i.hasClass('input-company')){
+                    data.company=i.val();
+                }else if(i.hasClass('input-prefix')){
+                    data.prefix=i.val();
+                }
+                post(data);
+            }
+            if(checkMobile()){
+                bindClick($('.btn-pre'),preClick);
+                bindClick($('.btn-next'),nextClick);
+            }else{
+                $('.btn-newuser').on('click',newuserClick);
+                $('.btn-pre').on('click',preClick);
+                $('.btn-next').on('click',nextClick);
+                $('body').delegate('.btn-save','mousedown',saveClick);
+            }
+    });
+    </script>
+    </body>
+</html>

@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title><%=lang=='cn'?'三维激光雷达-产品介绍':'SEEKER Products'%></title>
+    <link rel="stylesheet" href="/index/css/common.css" type="text/css"> 
+    <link rel="stylesheet" href="/index/css/three-dimensional.css" type="text/css"> 
+    <link rel="stylesheet" href="/index/css/aos.css" type="text/css"> 
+    <style type="text/css">
+        <%if(lang=='en'){%>
+            .buy-box a {
+                display: block;
+                width: 110px;
+            }
+        <%}%>
+    </style>
+</head>
+<body>
+    <%include nav%>
+    <%include footer%>
+    <div id="navtop">
+        <navtop>
+            <div class="three-menu" slot="navbottom">
+                <div class="link">
+                    <a href="/web/three-dimensional/<%=lang%>" class="button active">
+                        <span v-text="threeMenu.introduction"></span>
+                    </a>
+                </div>
+            </div>
+        </navtop>
+    </div>
+    <div id="robosense">
+        <div id="three-dimensional">
+            <div class="content-warp">
+                <div class="section_1">
+                    <img src="/index/images/three-dimensional-product/section1_bg.jpg">
+                </div>
+                <div class="section_2">
+                    <div class="content clearfix">
+                        <div class="fl">
+                            <img aos-once="true"  aos="fade-right" aos-easing="ease" src="/index/images/three-dimensional-product/seeker_thum.png">
+                        </div>
+                        <div class="fr">
+                            <div aos-once="true"  aos="fade-left" aos-easing="ease">
+                                <p v-text="datas.threedimensional.section_2.p1"></p>
+                                <p v-text="datas.threedimensional.section_2.p2"></p>
+                                <p v-text="datas.threedimensional.section_2.p3"></p>
+                                <a class="checkArg" href="javascript:;" @click.stop="smoothScroll" v-text="datas.threedimensional.section_2.a"></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="section_3">
+                    <div class="picScroll-left">
+                        <div class="hd">
+                            <a class="prev" href="javascript:void(0)"></a>
+                            <a class="next" href="javascript:void(0)"></a>
+                        </div>
+                        <div class="bd">
+                            <ul class="picList">
+                                <li>
+                                    <img src="/index/images/three-dimensional-product/box1.jpg">
+                                    <div class="text-info">
+                                        <h2 v-text="datas.threedimensional.section_3.h1"></h2>
+                                        <span v-text="datas.threedimensional.section_3.span1"></span>
+                                        <p v-text="datas.threedimensional.section_3.p1"></p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <img src="/index/images/three-dimensional-product/box2.jpg">
+                                    <div class="text-info">
+                                        <h2 v-text="datas.threedimensional.section_3.h2"></h2>
+                                        <span v-text="datas.threedimensional.section_3.span2"></span>
+                                        <p v-text="datas.threedimensional.section_3.p2"></p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <img src="/index/images/three-dimensional-product/box3.jpg">
+                                    <div class="text-info">
+                                        <h2 v-text="datas.threedimensional.section_3.h3"></h2>
+                                        <span v-text="datas.threedimensional.section_3.span3"></span>
+                                        <p v-text="datas.threedimensional.section_3.p3"></p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <img src="/index/images/three-dimensional-product/box4.jpg">
+                                    <div class="text-info">
+                                        <h2 v-text="datas.threedimensional.section_3.h4"></h2>
+                                        <span v-text="datas.threedimensional.section_3.span4"></span>
+                                        <p v-text="datas.threedimensional.section_3.p4"></p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <img src="/index/images/three-dimensional-product/box5.jpg">
+                                    <div class="text-info">
+                                        <h2 v-text="datas.threedimensional.section_3.h5"></h2>
+                                        <span v-text="datas.threedimensional.section_3.span5"></span>
+                                        <p v-text="datas.threedimensional.section_3.p5"></p>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="section_4">
+                    <h2 v-text="datas.threedimensional.section_4.h2"></h2>
+                    <div class="legend clearfix">
+                        <img aos-once="true" aos="flip-up" aos-easing="ease" src="/index/images/three-dimensional-product/legend1.jpg">
+                        <img aos-once="true" aos="flip-down" aos-delay="200" aos-easing="ease" src="/index/images/three-dimensional-product/legend2.jpg">
+                    </div>
+                </div>
+                <div class="section_5">
+                    <div class="slides-box">
+                        <ul class="slides">
+                            <li style="background: url('/index/images/three-dimensional-product/geography.jpg') center">
+                                <div class="maskbox"></div>
+                                <p>
+                                    <span v-text="datas.threedimensional.section_5.span1"></span><br/>
+                                    {{datas.threedimensional.section_5.span1br}}
+                                </p>
+                            </li>
+                            <li style="background: url('/index/images/three-dimensional-product/home-decoration.jpg') center">
+                                <div class="maskbox"></div>
+                                <p>
+                                    <span v-text="datas.threedimensional.section_5.span2"></span><br/>
+                                    {{datas.threedimensional.section_5.span2br}}
+                                </p>
+
+                            </li>
+                            <li style="background: url('/index/images/three-dimensional-product/architecture.jpg') center">
+                                <div class="maskbox"></div>
+                                <p>
+                                    <span v-text="datas.threedimensional.section_5.span3"></span><br/>
+                                    {{datas.threedimensional.section_5.span3br}}
+                                </p>
+                            </li>
+                            <li style="background: url('/index/images/three-dimensional-product/hacienda.jpg') center">
+                                <div class="maskbox"></div>
+                                <p>
+                                    <span v-text="datas.threedimensional.section_5.span4"></span><br/>
+                                    {{datas.threedimensional.section_5.span4br}}
+                                </p>
+                            </li>
+                            <li style="background: url('/index/images/three-dimensional-product/culture.jpg') center">
+                                <div class="maskbox"></div>
+                                <p>
+                                    <span v-text="datas.threedimensional.section_5.span5"></span><br/>
+                                    {{datas.threedimensional.section_5.span5br}}
+                                </p>
+                            </li>
+                            <li style="background: url('/index/images/three-dimensional-product/environment.jpg') center">
+                                <div class="maskbox"></div>
+                                <p>
+                                    <span v-text="datas.threedimensional.section_5.span6"></span><br/>
+                                    {{datas.threedimensional.section_5.span6br}}
+                                </p>
+                            </li>
+                            <li style="background: url('/index/images/three-dimensional-product/conservancy.jpg') center">
+                                <div class="maskbox"></div>
+                                <p>
+                                    <span v-text="datas.threedimensional.section_5.span7"></span><br/>
+                                    {{datas.threedimensional.section_5.span7br}}
+                                </p>
+                            </li>
+                            <li style="background: url('/index/images/three-dimensional-product/hold-power.jpg') center">
+                                <div class="maskbox"></div>
+                                <p>
+                                    <span v-text="datas.threedimensional.section_5.span8"></span><br/>
+                                    {{datas.threedimensional.section_5.span8br}}
+                                </p>
+                            </li>
+                            <li style="background: url('/index/images/three-dimensional-product/modeling.jpg') center">
+                                <div class="maskbox"></div>
+                                <p>
+                                    <span v-text="datas.threedimensional.section_5.span9"></span><br/>
+                                    {{datas.threedimensional.section_5.span9br}}
+                                </p>
+                            </li>
+                        </ul>
+                        <div class="reactBox">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="section_6 clearfix" id="smoothScroll">
+                    <div class="seeker_pic fl">
+                        <img aos-once="true"  aos="fade-right" aos-easing="ease" src="/index/images/three-dimensional-product/seeker_pic.png">
+                    </div>
+                    <div aos-once="true"  aos="fade-left" aos-easing="ease" class="seeker_info fr">
+                        <table border="0" cellpadding="5" class="parameter">
+                            <tr v-for="data in datas.threedimensional.section_6.tabledata">
+                                <td align="right" v-text="data[0]"></td>
+                                <td>…………</td>
+                                <td colspan="2" align="left" v-text="data[1]"></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <a class="download" href="/web/resource/<%=lang%>?name=seeker" v-text="datas.threedimensional.downloadbtn"></a>
+            </div>
+            <div id="footnav">
+                <footnav></footnav>
+            </div>
+        </div>
+    </div>
+    <div class="buy-box">
+        <a href="/web/buy/<%=lang%>" target="_blank"><img src="<%=lang=='cn'?'/index/images/buy-icon.png':'/index/images/buy-icon-en.png'%>" /></a>
+    </div>
+    
+    <script src="/index/js/jquery-2.2.4.min.js"></script>
+    <script src="/index/js/aos.js"></script>
+    <script src="/index/js/smooth-scroll.min.js"></script>
+    <script src="/index/js/poposlides.js"></script>
+    <script src="/index/js/jquery.SuperSlide.2.1.1.js"></script>
+    <script src="/index/js/move.js"></script>
+    <script type="text/javascript">
+        $(function(){
+            $(".picScroll-left").slide({titCell:".hd ul",mainCell:".bd ul",autoPage:true,effect:"left",autoPlay:false,vis:3,trigger:"click"});
+        })
+    </script>
+
+    <script type="text/javascript">
+        var langobj = {
+            cn: ['地理测绘','家装','建筑/土木工程','矿山测量','文化遗产与考古工作','大环境建模','水电工程/数字工厂','执法与取证','人体建模'],
+            en: ['Gergraphic Mapping','HOME DECORATION','ARCHITECTURE/CIVIL ENGINEERING','MINGING','Cultural Relics & Archaeology','Large Environment Modeling','Hydropower Engineeering/Digital Factory','Law Enforcement and Forensics','Human Body Modeling']
+        } 
+        var arrList = langobj['<%=lang%>'];
+        
+        $(".slides").poposlides();
+        var navtop = new Vue({
+            el: '#navtop',
+            data: {
+                threeMenu: ''
+            }
+        })
+        var footnav = new Vue({
+            el: '#footnav'
+        })
+        var threedimensional = new Vue({
+            el: '#three-dimensional',
+            data: {
+                datas: <%-include("lang_"+lang, {lang: lang})%>
+            },
+            methods: {
+                init: function(){
+                    navtop.threeMenu = this.datas.threedimensional.threeMenu;     
+                    AOS.init({
+                        easing: 'ease-out-back',
+                        duration: 1000
+                    });
+                },
+                smoothScroll: function(){
+                    $.smoothScroll({
+                        scrollTarget: '#smoothScroll',
+                        speed: 1200
+                    });
+                }
+            }
+        });
+        threedimensional.init();
+    </script>
+</body>
+</html>

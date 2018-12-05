@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title><%=lang=='cn'?'联系方式':'Contact US'%></title>
+    <link rel="stylesheet" href="/index/css/common.css" type="text/css"> 
+    <link rel="stylesheet" href="/index/css/contact.css" type="text/css"> 
+</head>
+<body>
+    <%include nav%>
+    <%include footer%>
+    <div id="navtop">
+        <navtop>
+            <div class="three-menu" slot="navbottom">
+                <div class="link">
+                    <a href="/web/contact/<%=lang%>" class="button active">
+                        <span v-text="threeMenu.contact"></span>
+                    </a>
+                </div>
+            </div>
+        </navtop>
+    </div>
+    <div class="contact-wrap" id="contact-wrap">
+        <div class="banner"></div>
+        <div class="robosense-contact">
+            <div class="wrap">
+                <div class="mb_80">
+                    <h3 v-text="datas.contact.langinfo.header"></h3>
+                    <p v-text="datas.contact.langinfo.telphone"></p>
+                    <p v-text="datas.contact.langinfo.market"></p>
+                    <p v-text="datas.contact.langinfo.email"></p>
+                    <p v-text="datas.contact.langinfo.address_one" style="width:755px;"></p>
+                    <p v-text="datas.contact.langinfo.worktime"></p>
+                </div>
+                <!-- <div class="mb_100">
+                    <h3 v-text="datas.contact.contact.header"></h3>
+                    <div>
+                        <h4 v-text="datas.contact.contact.title"></h4>
+                        <p v-text="datas.contact.contact.address"></p>
+                        <p v-text="datas.contact.contact.contacts"></p>
+                        <p v-text="datas.contact.contact.telphone"></p>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+    </div>
+
+    <div id="footnav">
+        <footnav></footnav>
+    </div>
+
+    <script type="text/javascript">
+        var navtop = new Vue({
+            el: '#navtop',
+            data: {
+                threeMenu: ''
+            }
+        })
+        var footnav = new Vue({
+            el: '#footnav'
+        })
+        var contactwrap = new Vue({
+            el: '#contact-wrap',
+            data: {
+                datas: <%-include("lang_"+lang, {lang: lang})%>
+            },
+            methods: {
+                init: function(){
+                    navtop.threeMenu = this.datas.contact.threeMenu;
+                }
+            }
+        });
+        contactwrap.init();
+    </script>
+</body>
+</html>

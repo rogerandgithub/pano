@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>消息</title>
+    <link rel="stylesheet" href="/css/notice.css" type="text/css">
+    <link href="/css/new/common.css" rel="stylesheet" type="text/css" /> 
+    <!-- <link rel="stylesheet" type="text/css" href="/css/trumbowyg.css" />
+    <link rel="stylesheet" type="text/css" href="/css/trumbowyg.colors.css" /> -->
+    <script src="/js/new/vue.min.js"></script> 
+    <script src="/js/jquery-1.8.3.min.js"></script>
+    <!-- <script src="/js/trumbowyg.js"></script>
+    <script src="/js/trumbowyg.colors.min.js"></script>
+    <script src="/js/fr.js"></script> -->
+    <script src="/js/qnuploader.js"></script>
+    <script src="/js/pdfobject.js"></script>
+
+
+    <script type="text/javascript" charset="utf-8" src="/js/ueditor.config.js"></script>
+    <script type="text/javascript" charset="utf-8" src="/js/ueditor.all.js"> </script>
+    <script type="text/javascript" charset="utf-8" src="/js/zh-cn.js"></script>
+</head>
+<body>
+    <%include toast%>
+
+    <%if(isadmin){%>
+        <div id="trashpano" class="toast-content">
+            <div class="toast-center-wrapper">
+                <div class="m-header">
+                    <h1 class="text-center"><img width="35" src="/images/lock.png" /></h1>
+                    <h6 class="toast-title text-center">密码认证</h6>
+                </div>
+                <div>
+                    <div class="toast-body">
+                        <div class="form-group"> 
+                            <input id="psw" class="form-control" type="password" placeholder="请输入您的密码" autocomplete="off" @keyup.enter="submit" v-model="psw" />
+                        </div>
+                    </div>
+                    <div class="m-footer">
+                        <div class="text-center">
+                            <button class="btn btn-cancel btn-lg" type="button" @click="hide">取消</button>
+                            <button class="btn btn-primary btn-setter btn-lg" :disabled="disabled" type="submit" @click="submit">确定</button> 
+                        </div>
+                    </div>
+                </div>
+            </div>   
+        </div>
+        <script type="text/javascript">
+            var login = new Vue({
+                el: '#trashpano',
+                data: {
+                    psw: ''
+                },
+                methods: {
+                    hide: function() {
+                        location.href = '/joinus';
+                    },
+                    submit: function(){
+                        if(!this.psw){
+                            toast.showmsg('密码不能为空', true);
+                            return;
+                        }
+                        $.post('/supermaster/notice/login', {
+                            psw: this.psw
+                        }, function(res){
+                            if(res.code!=0){
+                                toast.showmsg(res.msg, true);
+                                return;
+                            }
+                            toast.showmsg('登录成功');
+                            setTimeout(function(){
+                                location.href = '/supermaster/notice';
+                            }, 1000);
+                        });
+                    }
+                }
+            });
+        </script>
+    <%}else{%>
+        <%if(name=='admin'&&token){%>  
+            <link href="/css/new/icons.css" rel="stylesheet" type="text/css" />  
+            <div id="pdfview" v-show="showpdfview" transition="qrtoast"></div>
+
+            <div id="trashpano" style="overflow: auto;" class="toast-content" transition="qrtoast" v-show="showtptoast">
+                <span @click="hide"><i class="ico-close close-pop fixed"></i></span>
+                <div class="notice-wrap clearfix">
+                    <div class="title clearfix">
+                        消息标题：<input type="text" v-model="noticeTitle" placeholder="输入消息标题" />
+                        <img width="30" title="预览消息" class="pull-right" src="/images/preview.png" @click="showview" />
+                        <input id="file_input" type="file" @change="filechange">
+                    </div>
+                    <script id="simple-editor" type="text/plain" style="width:960px;height:300px;"></script>
+                    <div class="noticBtn">
+                        <button class="btn btn-primary" @click="submit">提交消息</button>
+                        <span class="picture" @click="showpicpdf('picture')"><img width="20" src="/images/picture.png" /></span>
+                        <span class="pdf" @click="showpicpdf('pdf')"><img width="20" src="/images/PDF.png" /></span>
+                    </div>
+                </div>
+            </div>
+            <div id="preview" style="overflow: auto;" class="toast-content" transition="qrtoast" v-show="showpreview">
+                <span @click="hide"><i class="ico-close close-pop fixed"></i></span>
+                <div class="previewcontent">
+                    <h4 class="title" v-text="previewTitle"></h4>
+                    <div class="notice"></div>
+                </div>
+            </div>
+            <div id="transhimg" style="overflow: auto;" class="toast-content" transition="qrtoast" v-show="showimg">
+                <span @click="hide"><i class="ico-close close-pop fixed"></i></span>
+                <div class="previewimg">
+                    <h4 v-text="filename" class="filename"></h4>
+                    <img class="img" :src="imgurl" />
+                    <button class="btn btn-primary" @click="submitimg">确定上传</button>
+                </div>
+            </div>
+            <div id="pic-pdf" transition="qrtoast" v-show="showpicpdf">
+                <input id="file_upload" type="file" @change="filechange">
+                <div class="showcontent">
+                    <div class="wrapper" v-for="picpdf in picpdfList | limitBy limit offset">
+                        <div class="pic-wrap">
+                            <img :src="picpdf.src" v-if="!picbtn" />
+                            <img src="/images/pdf.png" v-else />
+                        </div>
+                        <p @click="appendto(picpdf.src)">插入</p>
+                        <div class="pdfname" v-text="picpdf.name" v-if="picbtn"></div>
+                    </div>
+
+
+                    <div class="pagination pull-right" v-if="count>limit">
+                        <ul>
+                            <li :class="{'disabled': 1 == pagindex}"><a href="javascript:;" @click="load(1)">&#8249;&#8249;</a></li>
+                            <li :class="{'disabled': 1 == pagindex}" class="child"><a href="javascript:;" @click="load(pagindex-1)">&#8249;</a></li>
+                            <li v-for="cur in pages" v-if="pagindex>3&&pages-2>pagindex?(cur+1<=pagindex+2&&cur+1>=pagindex-2):(pagindex<=3?cur+1<=5:cur+1>=pages-4)" :class="{'active': cur+1 == pagindex}">
+                                <a href="javascript:;" @click="load(cur+1)" v-text="cur+1"></a>
+                            </li>
+                            <li :class="{'disabled': pages == pagindex}" class="child"><a href="javascript:;" @click="load(pagindex+1)">&#8250;</a></li>
+                            <li :class="{'disabled': pages == pagindex}"><a href="javascript:;" @click="load(pages)">&#8250;&#8250;</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="noticBtn">
+                    <button class="btn btn-primary" @click="submit" v-if="picbtn">上传</button>
+                    <button class="btn btn-primary" @click="hide">取消</button>
+                </div>
+            </div>
+        <%}%>
+
+        <div id="notice">    
+            <header id="header" class="clearfix">
+                <img width="35" src="/images/robologo.png" />
+                <%if(name=='admin'&&token){%>
+                    <button class="btn btn-primary pull-right" style="margin-left:10px;" @click="logout">退出登录</button>
+                    <button class="btn btn-primary pull-right" @click="addnew">发布消息</button>
+                <%}%>
+            </header>
+            <div class="notice-content">
+                <div class="row-fluid table">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th class="align-left span1">预览</th>
+                                <%if(name=='admin'&&token){%>
+                                <th class="align-left span1">修改</th>
+                                <%}%>
+                                <th class="align-left span1">标题</th>
+                                <th class="span4">消息内容</th>
+                                <th class="span3">提交时间</th>
+                                <%if(name=='admin'&&token){%>
+                                <th class="span1 align-right">删除</th>
+                                <th class="align-right span1">置顶</th>
+                                <%}%>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="notice in notices | orderBy 'order' | limitBy limit offset">
+                                <td>
+                                    <img width="25" title="预览消息" src="/images/preview.png" @click="previewnotice(notice.createdAt)" />
+                                </td>
+                                <%if(name=='admin'&&token){%>
+                                <td>
+                                    <img width="25" title="修改消息" src="/images/edit.png" @click="editnotice(notice.createdAt)" />
+                                </td>
+                                <%}%>
+                                <td>
+                                    <span class="noticetitle" v-text="notice.title"></span>
+                                </td>
+                                <td>
+                                    <span class="noticetext" v-text="notice.noticetext"></span>
+                                </td>
+                                <td>
+                                    <span v-text="notice.createdAt"></span>
+                                </td>
+                                <%if(name=='admin'&&token){%>
+                                <td>
+                                    <img class="pull-right" width="20" src="/images/remove.png" @click="remove(notice)" />
+                                </td>
+                                <td>
+                                    <img class="pull-right" width="25" title="预览消息" src="/images/newitem/settop.png" @click="order(notice.createdAt)" />
+                                </td>
+                                <%}%>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="pagination pull-right" v-if="count>limit">
+                    <ul>
+                        <li :class="{'disabled': 1 == pagindex}"><a href="javascript:;" @click="load(1)">&#8249;&#8249;</a></li>
+                        <li :class="{'disabled': 1 == pagindex}" class="child"><a href="javascript:;" @click="load(pagindex-1)">&#8249;</a></li>
+                        <li v-for="cur in pages" v-if="pagindex>3&&pages-2>pagindex?(cur+1<=pagindex+2&&cur+1>=pagindex-2):(pagindex<=3?cur+1<=5:cur+1>=pages-4)" :class="{'active': cur+1 == pagindex}">
+                            <a href="javascript:;" @click="load(cur+1)" v-text="cur+1"></a>
+                        </li>
+                        <li :class="{'disabled': pages == pagindex}" class="child"><a href="javascript:;" @click="load(pagindex+1)">&#8250;</a></li>
+                        <li :class="{'disabled': pages == pagindex}"><a href="javascript:;" @click="load(pages)">&#8250;&#8250;</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript">
+            <%if(name=='admin'&&token){%> 
+                var pdfview = new Vue({
+                    el: '#pdfview',
+                    data: {
+                        showpdfview: false
+                    }
+                })
+                var picpdf = new Vue({
+                    el: '#pic-pdf',
+                    data: {
+                        showpicpdf: false,
+                        picpdfList: [],
+                        count:0,
+                        pagindex:1,
+                        limit:16,
+                        pages:0,
+                        picbtn: true,
+                        type: ''
+                    },
+                    computed: {
+                        offset: function(){
+                            return (this.pagindex-1)*this.limit;
+                        },
+                        pages: function(){
+                            return Math.ceil(this.count/this.limit);
+                        }
+                    },
+                    methods: {
+                        appendto: function(check){
+                            var index;
+                            for(var i in this.picpdfList){
+                                if(this.picpdfList[i].src == check){
+                                    index = i;
+                                }
+                            }
+                            if(this.type == 'pdf'){
+                                var ele = $("<div class=pdfwrap contenteditable=false data-src="+this.picpdfList[index].src+"><img width=20 src=/images/PDF.png /><span class=filename>"+ this.picpdfList[index].name +"</span></div>");
+                                $('#simple-editor iframe').contents().find("body").append(ele);
+                                $('.pdfwrap').on('click',function(){
+                                    pdfview.showpdfview = true;
+                                    var src = $(this).attr('data-src');
+                                    PDFObject.embed(src, "#pdfview");
+                                });
+                            }else{
+                                $('#simple-editor iframe').contents().find("body").append('<img src='+this.picpdfList[index].src+' />');
+                            }
+                            this.hide();
+                        },
+                        load: function(cur){
+                            if(cur!=this.pagindex){
+                                if(cur<1){
+                                    toast.showmsg('当前就是首页了！', true);
+                                    return;
+                                }
+                                if(cur>this.pages){
+                                    toast.showmsg('没有下一页了', true);
+                                    return;
+                                }
+                                this.pagindex = cur;
+                            }
+                        },
+                        hide: function(){
+                            this.showpicpdf = false;
+                            var _this = this;
+                            setTimeout(function(){
+                                _this.picbtn = true;
+                            },200)
+                            
+                        },
+                        submit: function(){
+                            $("#file_upload").click();
+                        },
+                        getObject: function(){
+                            var file = document.getElementById('file_upload').files[0];
+                            var url = undefined;
+                            if (window.createObjectURL) {
+                                url = createObjectURL(file);
+                            }else if(window.URL){
+                                url = URL.createObjectURL(file);
+                            }else if(window.webkitURL){
+                                url = webkitURL.createObjectURL(file);
+                            };
+                            return {
+                                url: url,
+                                size: file.size,
+                                type: file.type,
+                                name: file.name
+                            };
+                        },
+                        filechange: function(event,src){
+                            if(src){
+                                var url = src;
+                            }else{
+                                var obj = this.getObject();
+                                if(obj.type.split('/')[1]!='pdf'){
+                                    toast.showmsg('不是PDF类型的文件', true);
+                                    return;
+                                }
+                                if(obj.size>10485760){
+                                    toast.showmsg('文件大小不得大于10M', true);
+                                    return;
+                                };
+                                transhimg.showimg = true;
+                                transhimg.type = 'pdf';
+                                transhimg.filename = obj.name;
+                                preview.filename = obj.name;
+                                transhimg.imgurl = '/images/pdffile.png';
+                            }
+                        }
+                    }
+                })
+                var preview = new Vue({
+                    el: '#preview',
+                    data: {
+                        showpreview: false,
+                        previewTitle: '',
+                        filename: ''
+                    },
+                    methods: {
+                        hide: function(){
+                            this.showpreview = false;
+                        }
+                    }
+                });  
+                var transhimg = new Vue({
+                    el: '#transhimg',
+                    data: {
+                        showimg: false,
+                        imgurl: '',
+                        type: '',
+                        filename: ''
+                    },
+                    methods: {
+                        hide: function(){
+                            this.showimg = false;
+                            $("#file_input").val('');
+                        },
+                        submitimg: function(){
+                            var _this = this;
+                            var postUrl;
+                            this.type == 'pdf'?postUrl = '/upload/pdf':postUrl = '/upload/notice';
+                            $.post(postUrl,{},function(res){
+                                var token = res.token;
+                                var key = res.key;
+                                var url = res.url;
+                                Q.addEvent("progress", function(p, s) {
+                                    // _this.maskwidth = (p==100?99:p)+'%';
+                                });
+                                Q.addEvent("putFinished", function(fsize, res, taking) {
+                                    toast.showmsg('上传成功');
+                                    _this.showimg = false;
+                                    if(_this.type == 'pdf'){
+                                        picpdf.showpicpdf = false;
+                                        var ele = $("<div class=pdfwrap contenteditable=false data-src=http://qncdn.sz-sti.com/"+url+"><img width=20 src=/images/PDF.png /><span class=filename>"+ _this.filename +"</span></div>")
+                                        $('#simple-editor iframe').contents().find("body").append(ele);
+                                        $('.pdfwrap').on('click',function(){
+                                            pdfview.showpdfview = true;
+                                            var src = $(this).attr('data-src');
+                                            PDFObject.embed(src, "#pdfview");
+                                        });
+                                        $.post('/supermaster/notice/picpdf/pdf',{url:url,name:_this.filename},function(res){
+                                            console.log(res);
+                                            return;
+                                        });
+                                    }else{
+                                        $('#simple-editor iframe').contents().find("body").append('<img src=http://qncdn.sz-sti.com/'+url+' />');
+                                        $.post('/supermaster/notice/picpdf/img',{url:url},function(res){
+                                            return;
+                                        });
+                                    }
+                                });
+                                Q.SetToken(token);
+                                if(_this.type == 'pdf'){
+                                    Q.Upload(document.getElementById('file_upload').files[0], url);
+                                }else{
+                                    Q.Upload(document.getElementById('file_input').files[0], url);
+                                }
+
+                            });
+                        }
+                    }
+                })
+                var addnew = new Vue({
+                    el: '#trashpano',
+                    data: {
+                        showtptoast: false,
+                        noticeTitle: '',
+                        update: false,
+                        updataCreatat: '',
+                        updateorder: 0,
+                        updateindex: 0
+                    },
+                    methods: {
+                        showpicpdf: function(type){
+                            type=='picture'?picpdf.picbtn = false:'';
+                            $.get('/supermaster/notice/picpdf/data',function(res){
+                                picpdf.picpdfList = res[type];
+                                picpdf.count = res[type].length;
+                                picpdf.showpicpdf = true;
+                                picpdf.type = type;
+                            })
+                        },
+                        showview: function(){
+                            if( !this.noticeTitle || !$('#simple-editor iframe').contents().find("body").text()){
+                                toast.showmsg('你不会把消息填写完整再预览？！');
+                                return;
+                            };
+                            preview.showpreview = true;
+                            preview.previewTitle = this.noticeTitle;
+                            var html = $('#simple-editor iframe').contents().find("body").html();
+                            $('#preview .previewcontent .notice').html(html);
+                        },
+                        hide: function(){
+                            this.showtptoast = false;
+                            picpdf.showpicpdf = false;
+                            this.noticeTitle = '';
+                            $('#simple-editor iframe').contents().find("body").html('');
+                        },
+                        upload_img: function(){
+                            $("#file_input").click();
+                        },
+                        getObject: function(){
+                            var file = document.getElementById('file_input').files[0];
+                            var url = undefined;
+                            if (window.createObjectURL) {
+                                url = createObjectURL(file);
+                            }else if(window.URL){
+                                url = URL.createObjectURL(file);
+                            }else if(window.webkitURL){
+                                url = webkitURL.createObjectURL(file);
+                            };
+                            return {
+                                url: url,
+                                size: file.size,
+                                type: file.type
+                            };
+                        },
+                        filechange: function(event,src){
+                            if(src){
+                                var url = src;
+                            }else{
+                                var obj = this.getObject();
+                                if(obj.type.split('/')[0]!='image'){
+                                    toast.showmsg('不是图片类型的文件', true);
+                                    return;
+                                }
+                                if(obj.size>1048576){
+                                    toast.showmsg('图片大小不得大于1M', true);
+                                    return;
+                                };
+                                var url = obj.url;
+                            }
+                            transhimg.showimg = true;
+                            transhimg.imgurl = url;
+                        },
+                        submit: function(){
+                            var _this = this;
+                            var postUrl = '';
+                            var data = {
+                                token: '<%=token%>',
+                                title: this.noticeTitle,
+                                noticehtml: JSON.stringify($('#simple-editor iframe').contents().find("body").html()),
+                                noticetext: JSON.stringify($('#simple-editor iframe').contents().find("body").text()),
+                                order: 0
+                            };
+                            console.log(data);
+                            // return;
+                            if( !this.noticeTitle || !$('#simple-editor iframe').contents().find("body").text()){
+                                toast.showmsg('你不会把消息填写完整再提交？！');
+                                return;
+                            };
+                            if(this.update){
+                                postUrl='/supermaster/notice/update';
+                                data.createdAt = this.updataCreatat;
+                                data.order = this.updateorder;
+                            }else{
+                                postUrl='/supermaster/notice/add';
+                            }
+                            $.post(postUrl,data,function(res){
+                                if(res.code!=0){
+                                    return;
+                                };
+                                var createdAt;
+                                var time = new Date(res.data.createdAt);
+                                createdAt = time.getFullYear();
+                                createdAt += '-'+(parseInt(time.getMonth())+1<10?'0':'')+(parseInt(time.getMonth())+1);
+                                createdAt += '-'+(time.getDate()<10?'0':'')+time.getDate();
+                                createdAt += ' '+(time.getHours()<10?'0':'')+time.getHours();
+                                createdAt += ':'+(time.getMinutes()<10?'0':'')+time.getMinutes();
+                                createdAt += ':'+(time.getSeconds()<10?'0':'')+time.getSeconds();
+                                res.data.createdAt = createdAt;
+                                if(_this.update){
+                                    notice.notices[_this.updateindex].title = res.data.title;
+                                    notice.notices[_this.updateindex].noticetext = res.data.noticetext;
+                                    notice.notices[_this.updateindex].createdAt = res.data.createdAt;
+                                }else{
+                                    notice.notices.unshift(res.data);
+                                }
+                                notice.count = notice.notices.length;
+                                toast.showmsg(res.msg);
+                                setTimeout(function(){
+                                    _this.noticeTitle = '';
+                                    $('#simple-editor iframe').contents().find("body").html('');
+                                    _this.showtptoast = false;
+                                },600)
+                            });
+                        }
+                    }
+                });
+            <%}%>
+
+            var notice = new Vue({
+                el: '#notice',
+                data: {
+                    showarr: [],
+                    jobs: [],
+                    partments: [],
+                    changeindex: -1,
+                    showpartment: false,
+                    filtername: '',
+                    selname: '全部',
+                    count:0,
+                    pagindex:1,
+                    limit:10,
+                    pages:0,
+                    notices: []
+                },
+                computed: {
+                    offset: function(){
+                        return (this.pagindex-1)*this.limit;
+                    },
+                    pages: function(){
+                        return Math.ceil(this.count/this.limit);
+                    }
+                },
+                methods: {
+                    <%if(name=='admin'&&token){%>   
+                        addnew: function(){
+                            addnew.showtptoast = true;
+                            $('#edui1_bottombar').remove();
+                            $('.edui-for-insertimage').on('click',function(){
+                                $("#file_input").click();
+                            })
+                        },
+                        logout: function(){
+                            location.href = '/supermaster/notice/logout';
+                        },
+                        remove: function(notice){
+                            if(confirm('是否删除该公告')){
+                                var _this = this;
+                                var data = {
+                                    token: '<%=token%>',
+                                    createdAt: Date.parse(notice.createdAt)
+                                };
+                                $.post('/supermaster/notice/del',data,function(res){
+                                    if(res.code!=0){
+                                        return;
+                                    };
+                                    _this.notices.$remove(notice);
+                                    _this.count = _this.notices.length;
+                                    if( _this.pagindex-1 == _this.pages && _this.notices.length%_this.limit == 0 && _this.pagindex > 1 ){
+                                        _this.pagindex--;
+                                    }
+                                    toast.showmsg(res.msg);
+                                });
+                            }
+                        },
+	                    editnotice: function(createat){
+                            $('#edui1_bottombar').remove();
+	                        var index;
+	                        for(var i in this.notices){
+	                            if(this.notices[i].createdAt == createat){
+	                                index = i;
+	                            };
+	                        }
+	                        addnew.showtptoast = true;
+	                        addnew.noticeTitle = this.notices[index].title;
+	                        addnew.update = true;
+	                        addnew.updataCreatat = Date.parse(createat);
+	                        addnew.updateorder = this.notices[index].order;
+	                        addnew.updateindex = index;
+	                        $('#simple-editor iframe').contents().find("body").html(this.notices[index].noticehtml);
+	                        $('.pdfwrap').on('click',function(){
+	                            pdfview.showpdfview = true;
+	                            var src = $(this).attr('data-src');
+	                            PDFObject.embed(src, "#pdfview");
+	                        });
+	                    },
+                    <%}%>
+                    order: function(create){
+                        var _this = this;
+                        $.post('/supermaster/notice/order',{create:create},function(res){
+                            if(res.code!=0){
+                                toast.showmsg('置顶失败',true);
+                                return;
+                            }
+                            for(var i in _this.notices){
+                                if(_this.notices[i].createdAt == create){
+                                    _this.notices[i].order = res.minorder;
+                                }
+                            }
+                            toast.showmsg('置顶成功');
+                        });
+                    },
+                    previewnotice: function(createat){
+                        var index;
+                        for(var i in this.notices){
+                            if(this.notices[i].createdAt == createat){
+                                index = i;
+                            };
+                        }
+                        preview.showpreview = true;
+                        preview.previewTitle = this.notices[index].title;
+                        $('#preview .previewcontent .notice').html(this.notices[index].noticehtml);
+                        $('.pdfwrap').on('click',function(){
+                            pdfview.showpdfview = true;
+                            var src = $(this).attr('data-src');
+                            PDFObject.embed(src, "#pdfview");
+                        });
+                    },
+                    load: function(cur){
+                        if(cur!=this.pagindex){
+                            if(cur<1){
+                                toast.showmsg('当前就是首页了！', true);
+                                return;
+                            }
+                            if(cur>this.pages){
+                                toast.showmsg('没有下一页了', true);
+                                return;
+                            }
+                            this.pagindex = cur;
+                        }
+                    },
+                    init: function(){
+                        var _this = this;
+                        $.get('/supermaster/notice/data', function(res){
+                            for(var i in res){
+                                var createdAt;
+                                var time = new Date(res[i].createdAt);
+                                createdAt = time.getFullYear();
+                                createdAt += '-'+(parseInt(time.getMonth())+1<10?'0':'')+(parseInt(time.getMonth())+1);
+                                createdAt += '-'+(time.getDate()<10?'0':'')+time.getDate();
+                                createdAt += ' '+(time.getHours()<10?'0':'')+time.getHours();
+                                createdAt += ':'+(time.getMinutes()<10?'0':'')+time.getMinutes();
+                                createdAt += ':'+(time.getSeconds()<10?'0':'')+time.getSeconds();
+                                res[i].createdAt = createdAt;
+                                _this.notices.unshift(res[i]);
+                            }
+                            _this.count = _this.notices.length;
+                        });
+                        var ue = UE.getEditor('simple-editor');
+                    }
+                }
+            });
+            notice.init();
+        </script>
+    <%}%>
+</body>
+</html>

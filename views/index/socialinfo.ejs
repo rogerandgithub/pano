@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>所有招聘</title>
+    <link rel="stylesheet" href="/index/css/common.css" type="text/css"> 
+    <link rel="stylesheet" href="/index/css/socialinfo.css" type="text/css"> 
+    <script src="/index/js/Vue.min.js"></script>
+    <style type="text/css">
+        #backtop{
+            position: fixed;
+            right: 60px;
+            bottom: 60px;
+            width: 60px;
+            z-index: 9999;
+            cursor: pointer;
+        }
+        #backtop img{
+            display: block;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <%include footer%>
+    <div id="header">
+        <div class="nav clearfix">
+            <h2 class="logo">
+                <a href="/web/recruitment/social/<%=lang%>">
+                    <!-- <img src="/index/images/news/back.png" /> -->
+                </a>
+            </h2>
+            <a href="/web/recruitment/social/<%=lang%>" v-text="lang_<%=lang%>.social"></a>
+        </div>
+    </div>
+    <div class="social-wrap" id="socialinfowrap">
+        <div class="banner"></div>
+        <div class="robosense-about">
+            <div class="wrap">
+                <div class="socialinfo">
+                    <div class="header">
+                        <h4 class="title" v-text="socialdata.name"></h4>
+                        <p>
+                            <span v-if="socialdata.wages" v-text="socialdata.wages+' / '"></span>
+                            <span v-if="socialdata.address" v-text="socialdata.address+' / '"></span>
+                            <span v-if="socialdata.experience" v-text="socialdata.experience+' / '"></span>
+                            <span v-if="socialdata.education" v-text="socialdata.education+' / '"></span>
+                            <span>全职</span>
+                        </p>
+                    </div>
+                    <div class="content">
+                        <div class="temptation">
+                            <h2 class="title">职业诱惑：</h2>
+                            <p v-text="socialdata.CareerTemptation"></p>
+                        </div>
+                        <div class="desc">
+                            <h2 class="title">职位描述：</h2>
+                            <div>
+                                <h4>任职要求：</h4>
+                                <p v-for="duty in socialdata.quality" v-text="($index+1)+'.'+duty"></p>
+                            </div>
+                            <div>
+                                <h4>职位描述：</h4>
+                                <p v-for="quality in socialdata.duty" v-text="($index+1)+'.'+quality"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mailbox">
+            <p>投递简历邮箱hr@sz-sti.com</p>
+        </div>
+    </div>
+
+    <div id="footnav">
+        <footnav></footnav>
+    </div>
+    
+    <div id="backtop">
+        <img src="/index/images/backtop.png">
+    </div>
+
+    <script src="/index/js/jquery-2.2.4.min.js"></script>
+    <script type="text/javascript" src="/index/js/smooth-scroll.min.js"></script>
+    <script src="/index/js/move.js"></script>
+    <script type="text/javascript">
+
+        $('#backtop').on('click',function(){
+            $.smoothScroll({
+                scrollTarget: 'html',
+                speed: 1200
+            });
+        })
+        window.onscroll = function () { 
+            var t = document.documentElement.scrollTop || document.body.scrollTop;
+            if (t > 69) { 
+                move("#header").ease('snap').set('top',0).end();
+            }else{ 
+                move("#header").ease('snap').set('top','69px').end(); 
+            } 
+        }
+        var header = new Vue({
+            el: '#header',
+            data: {
+                showlang: false,
+                lang_cn:{
+                    social: '社会招聘'
+                },
+                lang_en: {
+                    social: 'social'
+                },
+                lang: '<%=lang%>'
+            },
+            methods: {
+                togglelang: function(){
+                    if(this.lang == 'cn'){
+                        location.href = location.href.replace('/cn', '/en');
+                    }else{
+                        location.href = location.href.replace('/en', '/cn');
+                    }
+                }
+            }
+        })
+        var footnav = new Vue({
+            el: '#footnav'
+        });
+        var socialinfowrap = new Vue({
+            el: '#socialinfowrap',
+            data: {
+                index: <%=index%>,
+                socialdata: '',
+                lang: '<%=lang%>'
+            },
+            methods: {
+                init: function(){
+                    var _this = this;
+                    $.get('/web/join/data/'+this.lang,function(res){
+                        _this.socialdata = res[_this.index];
+                    });
+                }
+            }
+        });
+        socialinfowrap.init();
+    </script>
+</body>
+</html>

@@ -1,0 +1,925 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="format-detection" content="telephone=no">
+        <meta name="viewport" content=" user-scalable=no, initial-scale=1.0,minimum-scale=1.0, maximum-scale=1.0">
+        <meta name="author" content="muwenhu@gmail.com">
+        <title><%=title%></title>
+        <link rel="stylesheet" type="text/css" href="css/common.css">
+        <link rel="stylesheet" type="text/css" href="css/sti-pano.css">
+        <link rel="stylesheet" type="text/css" href="css/panorama.css">
+        <link rel="stylesheet" type="text/css" href="css/pc-editor.css">
+        <link href="/css/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="css/layout.css" />
+        <style>
+            <%if(permission_hidetitle){%>
+            .header{display:none;}
+            .visited-wrap{display:none;}
+            .options-wrap{display:none;}
+            <%}%>
+
+            html{background: url(http://7xk1dv.com1.z0.glb.clouddn.com/control/background.png) center no-repeat;background-attachment: fixed;  background-size:cover;}
+            body{background: none;height: 100%;min-height: 810px;font-family:"Microsoft YaHei" !important;}
+            .clearfix:after{content:".";display:block;height:0;clear:both;visibility:hidden}
+            .clearfix{*+height:1%;}
+            .hide{display: none;}
+            .show{display: block;}
+            .center{margin:0 auto;}
+            .sti-container{ width: 1280px;position: absolute;top: 0;left: 50%;margin-left: -640px;}
+            .box{width: 100%; height: 100%; max-width: 1020px;margin: 0 auto;position: relative;}
+            .icon{background: url(../images/tool.png) no-repeat;}
+            .icon-wlogo{background-position: -1292px -667px;}
+            .icon-rlogo{background-position: -1022px -667px;}
+            .line{border-right: 1px solid #333;height: 20px;width: 0;margin-right: 8px;}
+
+            
+            .menubox{padding: 220px 0 60px;box-sizing:border-box;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;height:100%;overflow: auto; }
+            #dashboard-menu{height:100%;overflow-y: auto;overflow-x: hidden;padding: 0; width: 200px;}
+            #sidebar-nav{background-color: #df0024;}
+            #sidebar-nav .logo{width:180px;position: absolute;left: 50%;margin-left:-90px;}
+            #sidebar-nav .nav-logo{display: block;width: 82px;height: 94px;background-position: -708px -890px;margin:0 auto;margin-top: 5.8em;}
+            #sidebar-nav .icon-list{background-position: 0px -940px; }
+            #sidebar-nav .icon-rearch{background-position: -33px -940px; }
+            #sidebar-nav .icon-setall{background-position: -66px -940px; }
+            #sidebar-nav .icon-setaccount{background-position: -99px -940px; }
+            #sidebar-nav .icon-management{width:48px;left: 10px; background-position: -132px -940px; }
+
+            #dashboard-menu > li > a {width: 150px;height:100px;overflow: hidden;margin: 20px 15px;padding:0;background-color: #fff;position: relative;}
+            #dashboard-menu > li > a  img{width: 100%;}
+            #dashboard-menu .cover{position: absolute;top: 0;left: 0;width:100%;height: 100%;     background-color: #000;opacity: 0.5;}
+            #dashboard-menu .active .cover{display: none}
+            #dashboard-menu .active img{opacity: 0.75;}
+            #dashboard-menu .sname{position: absolute;top: 0;left: 15px;width: 50px;text-align: center;height: 50px;line-height: 50px;background-color: #565656;}
+            #dashboard-menu .sname:after{content: "";position: absolute;top: 100%;left: 0;width: 0px;height: 0px;border: 25px solid transparent;border-top: 0;border-left-color: #565656;border-right-color: #565656;}
+
+            .content{box-sizing:border-box;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;min-height: 810px;height: 100%;padding: 30px 50px 30px 20px !important;}
+            .pc-editor-wrap {display:block;height: 50%;}
+            .tips{top:0;width: auto;padding: 0 20px;background-color: #d5d1c5;color:#dc001e;font-size: 16px;font-weight: 600;z-index: 1000;}
+            .preview{padding: 0;position: relative;width: 100%;}
+
+            .editor-nav-wrap{width: 100%;height: 100%;}
+            .editor-sti-logo-wrap{display: none;}
+            .btn-view{position: absolute;left: 100%;top: 0;width: 24px;border-radius:  0 10px 0 0;font-size: 14px;height: 70px;line-height: 17px;padding-top: 5px;}
+
+            .btn-mode-wrap{top: 50%;left: 100%;line-height: 17px !important;padding: 10px 0;line-height: 18px;padding-top: 5px;font-size: 14px !important;width: 24px;display: block;z-index: 0;margin-top: -107px;}
+            .btn-mode-add, .btn-mode-del{width: 100%;height: 70px;margin-bottom: 10px;font-size: 14px;padding:10px 0;line-height: 18px;background-color: #888;box-shadow: 1px 1px 3px #aaa;border-radius: 0 6px 0 0;}
+            .btn-mode-add.selected, .btn-mode-del.selected{box-shadow: 1px 1px 3px #aaa;}
+
+            .btn-finish{position: absolute;top: 100%;margin-top: -91px;left: 100%;width: 24px;height: 70px;border-radius: 0 6px 0 0;font-size: 14px;line-height: 18px;padding:10px 0;}
+
+            #sti-pano{z-index: 100;}
+            .preview-pointer{z-index:1000;}
+            .scene-list{height: 90px;overflow:hidden;}
+            .iselector{width:50px;height: 50px !important}
+            .icon.spot0, .icon.spot1, .icon.spot2, .icon.spot3, .icon.spot4, .icon.spot5, .icon.spot6, .icon.spot7, .icon.spot8, .icon.spot9{top:-44px;}
+            .editor-switch-wrap{padding: 15px 10px 0px 10px;}
+            .editor-switch{color: #fff;margin-right: 5px;}
+            .editor-switch.on{background-color: #353535;}
+
+            .mosaic{width: 80px;height: 80px;margin:10px;height:110px; background-size: 70%; background-repeat: no-repeat;background-color: #9a9a9a;background-position: 50% 15px;}
+            .mosaic:after{bottom: 5px;width: 100%;text-align: center;color: #fff;}
+            .mosaic-small{background-size: 60%;background-position: 50% 20px;}
+            .mosaic-large{background-size: 80%;background-position: 50% 10px;}
+            .romaing-name{margin-top: 35%;}
+
+            .romaing-input{background: none;border:none;padding-left:20px;font-weight:600;}
+
+            #console{word-break:break-all;position:absolute;top:0;right:0;width:60px;background-color:rgba(255,255,255,0.5);z-index:10}
+            .alert-wrap{width:100%;position:fixed;height:100%;left:0;top:0;z-index:10000;visibility:hidden;background-color:rgba(0,0,0,0.5);}
+            .alert-td{}
+            .alert{padding: 30px 40px;display:inline-block;background-color:#dedfdf;width:330px;padding: 30px 40px;}
+            .alert .title{color:#303030;font-size: 18px;font-weight: 600; display:block;min-height:45px;font-size:16px;color:#565656;text-align: left;border-bottom:none;}
+            .alert .contentbox{font-size:16px;word-break:break-all;min-height:200px;background-color: #fff;}
+            .alert .contentbox img{width: 80%;height: auto;margin:0 20px; padding: 20px 0; }
+            .buttons{display:block;margin-top: 36px;text-align: center;}
+            .buttons .btn{max-width:100px;width: 30%;margin: 0 5%;height: 28px;line-height: 28px;text-align: center;border-radius: 5px;display: inline-block;padding: 0;}
+            .buttons :last-child{margin-right:10px;}
+            .alert .middle{font-size: 25px;font-weight: 800;color: #aaa;line-height: 200px;height:200px;position: relative;}
+            .alert .inputbox{width: 70%;margin:0 auto;padding-top: 40px;}
+            .alert .table{background-color: #dedfdf;font-size: 13px;}
+            .alert .table .table-info{width: 100%}
+            .alert .table .table-info tr{display: block;float:left;width:50%;margin: 10px 0;width: 45%;margin-right: 5%;}
+            .alert .table .table-info td{padding: 0;width: calc(100%-40px)}
+            .alert .table .table-info .tdhead{width: 70px;}
+            .alert .table .table-info input{border-radius: 5px;border: 1px solid #565656;font-size: 14px;}
+        </style>
+        <script>
+            function webgl_detect(return_context)
+            {
+                if (!!window.WebGLRenderingContext) {
+                    var canvas = document.createElement("canvas"),
+                        names = ["webgl", "experimental-webgl", "moz-webgl", "webkit-3d"],
+                       context = false;
+                    for(var i=0;i<4;i++) {
+                        try {
+                            context = canvas.getContext(names[i]);
+                            if (context && typeof context.getParameter == "function") {
+                                if (return_context) {
+                                    return {name:names[i], gl:context};
+                                }
+                                return true;
+                            }
+                        } catch(e) {}
+                    }
+                    return false;
+                }
+                return false;
+            }
+            // if(webgl_detect()){
+            //     var u=location.href;
+            //     u=u.replace('/scene','/scene/panorama_webgl');
+            //     location.href=u;
+            // }
+        </script>
+        <script src="js/zepto-tween-xss-pano.min.js?v=<%=version%>"></script>
+        <script src="js/template-native.js?v=<%=version%>"></script>
+        <script src="/js/sti-common.min.js?<%=version%>"></script>
+        <script src="<%=cdnJsPath%>/zepto.min.js?v=<%=libVersion%>"></script>
+        <script src="/js/qrcode.min.js"></script>
+        <script src="http://qtestbucket.qiniudn.com/demo/qiniu.uploader.js?id=2"></script>
+        <script>
+        template.config('openTag','<#');
+        template.config('closeTag','#>');
+        </script>
+        <!-- global styles -->
+        <!-- bootstrap -->
+    </head>
+    <body id="romaing">
+        <!-- alert -->
+        <%include alert%>
+
+        <!-- sidebar --><!-- sidebar -->
+    <div class="box">
+        <div id="sidebar-nav">
+
+            <div class="logo">
+                <div class="icon nav-logo"></div>
+            </div>
+            <div class="menubox">
+                <ul id="dashboard-menu">
+                    <%for(var i in romaing){%>
+                        <li class="<%if(romaing[i].key==sceneKey){%>active<%}%>">                
+                            <a href="/scene?key=<%=romaing[i].key%>&type=edit">
+                                <img src="<%=cdnImagesPath%>/scenes/<%=romaing[i].key.split('_')[0]%>/allinone.jpg?imageMogr2/gravity/NorthWest/crop/!1024x800a0a500/interlace/0/thumbnail/!10p">
+                                <div class="sname"><%=romaing[i].name%></div>
+                                <div class="cover"></div>
+                            </a>
+                        </li> 
+                    <%}%>
+                </ul>
+            </div>
+        </div>
+        <!-- end sidebar -->
+
+        <!-- main container -->
+        <div class="content">
+            <!-- Loading Animation -->
+            <table class="loader">
+                <tbody>
+                <tr>
+                    <td>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <div class="pc-editor-wrap">
+                <div class="preview">
+                        <div class="tips">
+                            点击任意位置开始放置漫游点
+                        </div>
+                        <div class="btn-mode-wrap horizontal">
+                            <div class="btn-mode-add selected">
+                                添加指引
+                            </div>
+                            <div class="btn-mode-del">
+                                删除指引
+                            </div>
+                        </div>
+                    <div class="editor-nav-wrap">
+                        <div class="editor-sti-logo-wrap hcenter vcenter">
+                            <div class="editor-sti-logo"></div>
+                        </div>
+                        <div class="btn-view editor-nav">
+                        默认视角
+                        </div>
+                        <div class="editor-nav btn-finish" onClick="location.href='/romaing?groupkey=<%=groupKey%>'">
+                            保存编辑
+                        </div>
+                    </div>
+
+
+
+        <%if(mode=='editor'&&platform.indexOf('pc-webkit')>=0){%>
+            <!-- Essential -->
+            <div id="sti-pano">
+                <div id="container">
+                    <div id="camera">
+                        <img class="cube front">
+                        <img class="cube left">
+                        <img class="cube right">
+                        <img class="cube back">
+                        <img class="cube top">
+                        <img class="cube bottom">
+                    </div>
+                </div>
+            </div>
+        <%}else{%>
+            <iframe width="100%" height="100%" src="/scene?key=<%=romaing[0].key%>"/>
+        <%}%>
+
+            <div class="preview-pointer"></div>
+                </div>
+                <div class="control-panel">
+
+
+            <!-- Editor -->
+            <div id="sti-editor" class="vertical h100">
+                <div class="horizontal editor-switch-wrap">
+                    <div class="editor-switch editor-switch-romaing on">
+                        添加场景指引
+                    </div>
+                    <div class="editor-switch off editor-switch-description" style="display:none">
+                        添加文字介绍
+                    </div>
+                    <div class="editor-switch off editor-switch-mosaic">
+                        添加马赛克
+                    </div>
+                </div>
+                <div class="flex1">
+                <div id="editor-switch-romaing-content">
+                    <div class="scene-list">
+                        <%for(var i in romaing){%>
+                            <div class="item" data-id="<%=romaing[i].id%>" data-scene="<%=romaing[i].key%>" data-name="<%=romaing[i].name%>" style="background-image:url(<%=cdnImagesPath%>/scenes/<%=romaing[i].key.split('_')[0]%>/allinone.jpg?imageMogr2/gravity/NorthWest/crop/!1024x1024a0a0/interlace/0/thumbnail/!10p);">
+                                <div class="romaing-name flex1 vcenter hcenter" >
+                                    <%=romaing[i].name%>
+                                </div>
+                                <div class="icon check hide"></div>
+                            </div>
+                        <%}%>
+                    </div>
+                    <div class="horizontal padding10 marginbottom10 vcenter">
+                        <div>场景指引名称:</div>
+                        <div class="input-wrap flex1">
+                            <input class="romaing-input" disabled="true" placeholder="">
+                        </div>
+                    </div>
+                    <div class="padding10">
+                        <div>选择图标:</div>
+                        <div class="iselector vertical vcenter hcenter checked" data-icon-type='0'>
+                            <div class="icon spot0"></div>
+                        </div>
+                        <div class="iselector vertical vcenter hcenter" data-icon-type='1'>
+                            <div class="icon spot1"></div>
+                        </div>
+                        <div class="iselector vertical vcenter hcenter" data-icon-type='2'>
+                            <div class="icon spot2"></div>
+                        </div>
+                        <div class="iselector vertical vcenter hcenter" data-icon-type='3'>
+                            <div class="icon spot3"></div>
+                        </div>
+                        <div class="iselector vertical vcenter hcenter" data-icon-type='4'>
+                            <div class="icon spot4"></div>
+                        </div>
+                        <div class="iselector vertical vcenter hcenter" data-icon-type='5'>
+                            <div class="icon spot5"></div>
+                        </div>
+                        <div class="iselector vertical vcenter hcenter" data-icon-type='6'>
+                            <div class="icon spot6"></div>
+                        </div>
+                        <div class="iselector vertical vcenter hcenter" data-icon-type='7'>
+                            <div class="icon spot7"></div>
+                        </div>
+                        <div class="iselector vertical vcenter hcenter" data-icon-type='8'>
+                            <div class="icon spot8"></div>
+                        </div>
+                        <div class="iselector vertical vcenter hcenter" data-icon-type='9'>
+                            <div class="icon spot9"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="editor-switch-description-content" style="display:none">
+                    <div class="input-wrap" style="padding:10px">
+                        <textarea placeholder="添加文字介绍" class="editor-textarea"></textarea>
+                    </div>
+                </div>
+                <div id="editor-switch-mosaic-content" style="display:none;padding:10px;">
+                    <div data-size="1" class="mosaic mosaic-small selected"></div>
+                    <div data-size="2" class="mosaic mosaic-middle"></div>
+                    <div data-size="3" class="mosaic mosaic-large"></div>
+                </div>
+                </div>
+                <div class="buttons margintop10">
+                    <button class="btn gray flex1" id="sti-editor-cancel">取消</button>
+                    <button class="btn red flex1" id="sti-editor-add">新增</button>
+                </div>
+            </div>
+
+            <%if(platform.indexOf('pc-webkit')>=0){%>
+                </div>
+            </div>
+            <%}%>
+        </body>
+    </div>
+    <script>
+    <%if(platform.indexOf('wechat')>=0){%>
+        configWechatSharing(location.href.split('#')[0],'<%=cdnImagesPath%>/scenes/<%=sceneKey.split('_')[0]%>/allinone.jpg?imageMogr2/gravity/NorthWest/crop/!1024x1024a0a0/interlace/0/thumbnail/!10p','<%=title%>');
+    <%}%>
+        function setView(){
+            $.ajax({
+                type:'post',
+                url:'/scene/set_view',
+                data:{
+                    key:sti.sceneKey,
+                    ry:sti.ry
+                },
+                success:function(r){
+                    if(r.code!=0){
+                        $('.alert-wrap').css('visibility','visible');
+                        initAlert('alert',{
+                            title:"提示",
+                            content:'<div class="middle">'+r.msg+'</div>'
+                        });
+                        return;
+                    }
+                    $('.alert-wrap').css('visibility','visible');
+                    initAlert('alert',{
+                        title:"提示",
+                        content:'<div class="middle">设置默认视角成功</div>'
+                    });
+                }
+            });
+        }
+
+
+        function getSceneInfo(sceneKey){
+            if(sti.loaderDom){
+                sti.loaderDom.show();
+            }
+            <%if(mode=='viewer'&&maps.length!=0){%>
+                $('.map-spot').removeClass('current');
+                $('.map-spot[key="'+sceneKey+'"]').addClass('current');
+            <%}%>
+
+            $.ajax({
+                type:'GET',
+                url:'/scene',
+                data:{
+                    scene_key:sceneKey,
+                    group_key:sti.groupKey,
+                    type:'json'
+                },
+                async:false,
+                timeout:3000,
+                success:function(r){
+                    if(r.code!=0){
+                        $('.alert-wrap').css('visibility','visible');
+                        initAlert('alert',{
+                            title:"提示",
+                            content:'<div class="middle">'+r.msg+'</div>'
+                        });
+                        return;
+                    }
+                    $('#title').text(r.title);
+                    <%if(platform.indexOf('wechat')>=0){%>
+                    configWechatSharing('http://wx.sz-sti.com/scene?key='+r.sceneKey,'<%=cdnImagesPath%>/scenes/'+r.sceneKey.split('_')[0]+'/allinone.jpg?imageMogr2/gravity/NorthWest/crop/!1024x1024a0a0/interlace/0/thumbnail/!10p',r.title);
+                    <%}%>
+
+                    r.spots=JSON.parse(filterXSS(unicode2Chr(r.spots),{whiteList:{div:[]}}));
+                    r.advertisement=JSON.parse(filterXSS(unicode2Chr(r.advertisement),{whiteList:{div:[]}}));
+                    r.advertisement=r.advertisement?r.advertisement:'速腾聚创';
+                    r.comments=JSON.parse(filterXSS(unicode2Chr(r.comments),{whiteList:{div:[]}}));
+                    r.top_ad=filterXSS(unicode2Chr(r.trademark),{whiteList:{div:[]}});
+
+                    $('#visited').html(r.visited);
+
+                    sti.init(r,true);
+                },
+                error:function(r){
+                    alert('error');
+                }
+            });
+        }
+
+        var editor={
+            dom:$('#sti-editor'),
+            btnAdd:$('#sti-editor-add'),
+            btnCancel:$('#sti-editor-cancel'),
+            mode:'add',
+            data:{type:0}
+        };
+        editor.show=function(dom){
+            editor.dom.addClass('show');
+            editor.dom.find('.item').removeClass('checked');
+            editor.dom.find('.iselector').removeClass('checked');
+
+            if(dom){
+                var matrix=text2Matrix(dom.closest('.sprite').css('-webkit-transform'));
+                editor.data={
+                    id:dom.attr('data-id'),
+                    scene:dom.attr('data-scene'),
+                    type:dom.attr('data-type'),
+                    text:dom.attr('data-text'),
+                    x:sti.cubeSize/2-matrix[12],
+                    y:sti.cubeSize/2-matrix[13],
+                    z:-matrix[14]
+                }
+
+                editor.dom.find('.item[data-scene="'+sti.editor.data.scene+'"]').each(function(){
+                        $(this).addClass('checked');
+                        editor.dom.find('.romaing-input').val(editor.data.text);
+                        editor.dom.find('.iselector[data-icon-type="'+editor.data.type+'"]').addClass('checked');
+                });
+            }else{
+                editor.dom.find('.item').eq(0).addClass('checked');
+                editor.dom.find('.romaing-input').val(editor.dom.find('.item').attr('data-name'));
+                editor.dom.find('.iselector').eq(0).addClass('checked');
+            }
+            editor.dom.css('visibility','visible');
+        }
+        editor.hide=function(){
+            $('.preview-pointer').hide();
+            editor.dom.removeClass('show');
+            sti.pauseAnimation=false;
+            editor.dom.find('.item').removeClass('checked');
+        }
+        editor.addSpot=function(){
+            $('.preview-pointer').hide();
+            if(!editor.dom.hasClass('show')){
+                return;
+            }
+            $('.iselector').each(function(){
+                if($(this).hasClass('checked')){
+                    editor.data.type=$(this).attr('data-icon-type');
+                }
+            });
+            editor.data.text=editor.dom.find('.romaing-input').val();
+            editor.data.position_x=editor.data.x;
+            editor.data.position_y=editor.data.y;
+            editor.data.position_z=editor.data.z;
+            editor.data.scene_id=sti.scene_id;
+            editor.data.groupkey=sti.groupKey;
+            editor.data.go_scene=editor.dom.find('.item.checked').attr('data-id');
+
+            if($('.editor-switch-description').hasClass('on')||$('.editor-switch-mosaic').hasClass('on')){
+
+                var text=$('.editor-switch-description').hasClass('on')?$('.editor-textarea').val():'';
+                $.ajax({
+                    type:'POST',
+                    url:'/scene/add_comment',
+                    data:{
+                        position_x:editor.data.x,
+                        position_y:editor.data.y,
+                        position_z:editor.data.z,
+                        reply_id:0,
+                        scene_key:sti.sceneKey,
+                        group_key:sti.groupKey,
+                        text:text,
+                        //type:editor.data.type,
+                        type:7,
+                        is_description:$('.editor-switch-description').hasClass('on')?1:0,
+                        is_mosaic:$('.editor-switch-mosaic').hasClass('on')?$('.mosaic.selected').attr('data-size'):0
+                    },
+                    timeout:3000,
+                    async:false,
+                    success:function(r){
+                        if(r.code!=0){
+                            $('.alert-wrap').css('visibility','visible');
+                            initAlert('alert',{
+                                title:"提示",
+                                content:'<div class="middle">'+r.msg+'</div>'
+                            });
+                            return;
+                        }
+
+                        sti.loadComments([{
+                            text:text,
+                            position_x:editor.data.x,
+                            position_y:editor.data.y,
+                            position_z:editor.data.z,
+                            type:editor.data.type,
+                            is_description:$('.editor-switch-description').hasClass('on')?1:0,
+                            is_mosaic:$('.editor-switch-mosaic').hasClass('on')?$('.mosaic.selected').attr('data-size'):0,
+                            id:r.id
+                        }]);
+                        editor.hide();
+                    },
+                    error:function(){
+                        initAlert('alert',{
+                            content:'error'
+                        });
+                    }
+                });
+                return;
+            }
+
+            $.ajax({
+                type:'post',
+                url:'/scene/add_spot',
+                data:editor.data,
+                timeout:3000,
+                async:false,
+                success:function(r){
+                    if(r.code!=0){
+                        $('.alert-wrap').css('visibility','visible');
+                        initAlert('alert',{
+                            title:"提示",
+                            content:'<div class="middle">'+r.msg+'</div>'
+                        });
+                        return;
+                    }
+                    sti.loadSpots([
+                        {
+                            text:editor.data.text,
+                            position_x:editor.data.x,
+                            position_y:editor.data.y,
+                            position_z:editor.data.z,
+                            type:editor.data.type,
+                            id:r.id
+                        }
+                    ]);
+                    editor.hide();
+                },
+                error:function(){
+                    alert('Time out');
+                }
+            });
+        }
+        $('.slider-scroller').width($('.slider').size()*90);
+        editor.deleteSpot=function(){
+            if(editor.data['dom-id'].indexOf('comment')!=-1){
+                $.ajax({
+                    type:'post',
+                    url:'/scene/delete_comment',
+                    data:{
+                        group_key:sti.groupKey,
+                        scene_id:sti.scene_id,
+                        comment_id:editor.data.id
+                    },
+                    async:false,
+                    timeout:3000,
+                    success:function(r){
+                        if(r.code!=0){
+                            $('.alert-wrap').css('visibility','visible');
+                            initAlert('alert',{
+                                title:"删除成功",
+                                content:'<div class="middle">'+r.msg+'</div>'
+                            });
+                            return;
+                        }
+                        $("#"+editor.data['dom-id']).closest('.sprite').remove();
+                    },
+                    error:function(){
+                        initAlert('alert',{
+                            title:"删除失败",
+                            content:'<div class="middle">'+r.msg+'</div>'
+                        });
+                    }
+                });
+                return;
+            }
+            $.ajax({
+                type:'post',
+                url:'/scene/delete_spot',
+                data:{
+                    link_id:editor.data.id,
+                    scene_id:sti.scene_id,
+                    scene_key:sti.sceneKey,
+                    groupkey:sti.groupKey
+                },
+                async:false,
+                timeout:3000,
+                success:function(r){
+                    if(r.code!=0){
+                        $('.alert-wrap').css('visibility','visible');
+                        initAlert('alert',{
+                            title:"删除成功",
+                            content:'<div class="middle">'+r.msg+'</div>'
+                        });
+                        return;
+                    }
+                    $('#spot_'+editor.data.id).closest('.sprite').remove();
+                    editor.hide();
+                },
+                error:function(){
+                    initAlert('alert',{
+                        title:"删除成功",
+                        content:'<div class="middle">连接超时</div>'
+                    });
+                }
+            });
+        }
+        editor.changeScene=function(){
+            editor.dom.find('.item').removeClass('checked');
+
+            var self=$(this);
+            self.addClass('checked');
+            editor.dom.find('.romaing-input').val(self.attr('data-name'));
+            //editor.dom.find('.iselector').removeClass('checked');
+            //editor.dom.find('.iselector').eq(0).addClass('checked');
+
+        }
+        editor.changeIcon=function(){
+            editor.dom.find('.iselector').removeClass('checked');
+            $(this).addClass('checked');
+        }
+
+        function switchMode(){
+            $('.preview-pointer').hide();
+            editor.hide();
+            $('.btn-mode-add').removeClass('selected');
+            $('.btn-mode-del').removeClass('selected');
+            $(this).addClass('selected');
+            editor.mode=$(this)[0].className.indexOf('add')>=0?'add':'del';
+            if(editor.mode=='add'){
+                $('.comment').removeClass('deleteable');
+            }else{
+                $('.comment').addClass('deleteable');
+            }
+        }
+        function changeScene(key){
+            $('#switch-maps').removeClass('on');
+            $('#switch-maps').addClass('off');
+            $('.maps-wrap').hide();
+            sti.sceneKey=key;
+            $('.map-spot').removeClass('current');
+            $(this).addClass('current');
+            getSceneInfo(sti.sceneKey);
+        }
+
+        function editorSwitch(){
+            $('.editor-switch').removeClass('on');
+            $('.editor-switch').addClass('off');
+            $(this).addClass('on');
+            if($(this).hasClass('editor-switch-romaing')){
+                $('#editor-switch-romaing-content').show();
+                $('#editor-switch-mosaic-content').hide();
+                $('#editor-switch-description-content').hide();
+            }else if($(this).hasClass('editor-switch-description')){
+                $('#editor-switch-romaing-content').hide();
+                $('#editor-switch-mosaic-content').hide();
+                $('#editor-switch-description-content').show();
+            }else if($(this).hasClass('editor-switch-mosaic')){
+                $('#editor-switch-romaing-content').hide();
+                $('#editor-switch-description-content').hide();
+                $('#editor-switch-mosaic-content').show();
+            }
+        }
+
+        function sliderSwitch(){
+            if($('.slider-wrap').hasClass('show')){
+                $('.slider-wrap').removeClass('show');
+            }else{
+                $('.slider-wrap').addClass('show');
+            }
+        }
+
+        function sliderClick(){
+            location.href='/scene?key='+$(this).attr('data-key')<%if(permission_hidetitle){%>+'&hideheader=1'<%}%>;
+        }
+
+        function mosaicSwitch(){
+            $('.mosaic').removeClass('selected');
+            $(this).addClass('selected');
+        }
+
+        var preview_x=0;
+        var preview_y=0;
+        var preview_clicking=false;
+        function previewMousemove(e){
+            if(preview_clicking){
+                $('.preview-pointer').hide();
+                editor.hide();
+            }
+        }
+        function previewMousedown(e){
+            preview_clicking=true;
+            if(distance2D(0,0,e.layerX,e.layerY)>125){
+                preview_x=e.layerX;
+                preview_y=e.layerY;
+            }
+        }
+        function previewClick(e){
+            var x=e.layerX;
+            var y=e.layerY;
+            console.log(e.layerX);
+            if(preview_x==x&&preview_y==y&&$('.btn-mode-add').hasClass('selected')){
+                $('.preview-pointer').show();
+                $('.preview-pointer').css('left',preview_x);
+                $('.preview-pointer').css('top',preview_y);
+            }
+        }
+
+        if(checkMobile()){
+            bindClick($('.slider-btn'),sliderSwitch);
+            bindClick(editor.btnCancel,editor.hide);
+            bindClick(editor.btnAdd,editor.addSpot);
+            bindClick(editor.dom.find('.item'),editor.changeScene);
+            bindClick(editor.dom.find('.iselector'),editor.changeIcon);
+            bindClick($('.btn-mode-add'),switchMode);
+            bindClick($('.btn-mode-del'),switchMode);
+            bindClick($('.btn-view'),setView);
+
+            bindClick($('.slider'),sliderClick);
+            bindClick($('.editor-switch'),editorSwitch);
+            bindClick($('.mosaic'),mosaicSwitch);
+        }else{
+            $('.slider-btn').on('click',sliderSwitch);
+            $('.slider').on('click',sliderClick);
+            editor.btnCancel.on('mouseup',editor.hide);
+            editor.btnAdd.on('mouseup',editor.addSpot);
+            editor.dom.find('.item').on('mouseup',editor.changeScene);
+            editor.dom.find('.iselector').on('mouseup',editor.changeIcon);
+            $('.btn-mode-add').on('mouseup',switchMode);
+            $('.btn-mode-del').on('mouseup',switchMode);
+            $('.btn-view').on('mouseup',setView);
+            $('.editor-switch').on('mouseup',editorSwitch);
+            $('.mosaic').on('click',mosaicSwitch);
+            $('.preview').on('click',previewClick);
+            if($('.preview').length){
+                $('.preview')[0].addEventListener('mousedown',previewMousedown,true);
+                $('.preview')[0].addEventListener('mousemove',previewMousemove,true);
+                $('.preview')[0].addEventListener('mouseup',function(){preview_clicking=false;},true);
+            }
+            if($('.control-panel').length){
+                $('.control-panel')[0].addEventListener('mouseup',function(e){if(!$('#sti-editor').hasClass('show')){alert("请先点击场景中任意位置添加漫游");e.stopPropagation();}},true);
+            }
+        }
+
+        var advertisement=JSON.parse(filterXSS(unicode2Chr('<%-advertisement%>'),{whiteList:{div:[]}}));
+        advertisement=advertisement?advertisement:'速腾聚创';
+
+        var spots=JSON.parse(filterXSS(unicode2Chr('<%-spots%>'),{whiteList:{div:[]}}));
+        var comments=JSON.parse(filterXSS(unicode2Chr('<%-comments%>'),{whiteList:{div:[]}}));
+        var top_ad=filterXSS(unicode2Chr('<%-trademark%>'),{whiteList:{div:[]}});
+
+        var maxfov=120;
+        var minfov=90;
+        var fov=110;
+
+        <%if(mode=='editor'&&platform.indexOf('pc-webkit')>=0){%>
+        maxfov=90;
+        minfov=70;
+        fov=70;
+        <%}else{%>
+        if(checkMobile()||isIpad()){
+            maxfov=90;
+            minfov=70;
+            fov=70;
+        }
+        <%}%>
+
+        var moveRatio=0.3;
+        if(isIpad()){
+            moveRatio=0.2;
+        }
+        console.log(spots);
+
+        var middle;
+        for(var i in spots){
+            if(spots[i].is_new!=1){
+                // middle = spots[i].position_x;
+                // spots[i].position_x = spots[i].position_y;
+                spots[i].position_z = 50;
+            }
+        }
+
+        $.get('<%=cdnImagesPath%>/scenes/<%=romaing[i].key.split("_")[0]%>/allinone.jpg?imageInfo',function(info){
+            var cubeSize=info.width;
+            cubeSize=cubeSize==5000?1248:cubeSize;
+            sti.init({
+                moveRatio:moveRatio,
+                cubeSize:cubeSize,
+                dom   : $('#sti-pano'), // Panorama dom
+                debug : false,          // Debug mode
+                rx    : 0,              // Rotation around X axis with degree
+                maxfov: maxfov,            // Max field of view
+                minfov: minfov,             // Min field of view
+                fov   : fov,            // Default field of view
+
+                loaderDom : $('.loader'),
+                autoRotate: 0,
+
+                mode      : '<%=mode%>',
+                editor    : editor,
+                ry        : <%=ry%>,
+
+                spots:spots,
+                comments:comments,
+                advertisement:advertisement,
+                top_ad:top_ad,
+
+                scene_id:'<%=scene_id%>',
+                getSceneInfo:getSceneInfo,
+                sceneKey:'<%=sceneKey%>',
+                groupKey:'<%=groupKey%>'
+
+            });
+        });
+        $(window).resize(function(){
+            //location.reload();
+        });
+
+        <%if(mode=='viewer'){%>
+        var maps=JSON.parse('<%-JSON.stringify(maps)%>')
+        var switchConfig={
+            cdnImagesPath:'<%-cdnImagesPath%>',
+            curSceneKey:'<%=sceneKey%>',
+            audio:{
+                status:true,
+                value:'<%-cdnImagesPath%>/tools/785.mp3'
+            },
+            introduction:{
+                status:false,
+                value:"<%-introduction%>"
+            },
+            rotate:{
+                status:true,
+                value:0.1
+            },
+            maps:maps,
+            telephone:'<%-telephone%>'
+        };
+        initSwitches(switchConfig);
+        var sliderConfig={
+            permission_hidetitle:<%-permission_hidetitle?'true':'false'%>,
+            cdnImagesPath:'<%=cdnImagesPath%>',
+            romaing:JSON.parse(<%-JSON.stringify(romaing)%>)
+        };
+        initSlider(sliderConfig);
+        <%}%>
+    </script>
+
+
+    <script id="filter-html" type="text/html">
+        <div class="form-group">
+            <div style="text-align:start;margin-bottom:3px;">创建时间:</div>
+            <div class="input-group date form_date_start" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                <input class="form-control" size="16" type="text" value="<#=start_created_time#>" readonly>
+                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+            </div>
+            <input type="hidden" id="dtp_input2" value="" />
+        </div>
+        <div class="form-group">
+            <div class="input-group date form_date_end" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input3" data-link-format="yyyy-mm-dd">
+                <input class="form-control" size="16" type="text" value="<#=end_created_time#>" readonly>
+                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+            </div>
+            <input type="hidden" id="dtp_input3" value="" />
+        </div>
+        <div class="horizontal vcenter">
+            <div>城&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;市：</div>
+            <div class="input-warp" style="padding:3px;">
+                <input class="filter-city" placeholder="不限" value="<#=city#>">
+            </div>
+        </div>
+        <div class="horizontal vcenter">
+            <div>区&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;域：</div>
+            <div class="input-warp" style="padding:3px;">
+                <input class="filter-region" placeholder="不限" value="<#=region#>">
+            </div>
+        </div>
+        <div class="horizontal vcenter">
+            <div>小&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;区：</div>
+            <div class="input-warp" style="padding:3px;">
+                <input class="filter-community" placeholder="不限" value="<#=community#>">
+            </div>
+        </div>
+        <div class="horizontal vcenter">
+            <div>朝&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;向：</div>
+            <div class="input-warp" style="padding:3px;">
+                <input class="filter-face" placeholder="不限" value="<#=face#>">
+            </div>
+        </div>
+        <div class="horizontal vcenter">
+            <div>面&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;积：</div>
+            <div class="flex1" style="padding:3px;">
+                <input class="filter-min-area" type="tel" placeholder="不限" value="<#=min_area#>">
+            </div>
+            <div>~</div>
+            <div class="flex1" style="padding:3px;">
+                <input class="filter-max-area" type="tel" placeholder="不限" value="<#=max_area#>">
+            </div>
+            <div>㎡</div>
+        </div>
+        <div class="horizontal vcenter">
+            <div>房&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;型：</div>
+            <div class="flex1" style="padding:3px;">
+                <input class="filter-halls" placeholder="不限" value="<#=apartment_halls#>">
+            </div>
+            <div>房</div>
+            <div class="flex1" style="padding:3px;">
+                <input class="filter-rooms" placeholder="不限" value="<#=apartment_rooms#>">
+            </div>
+            <div>室</div>
+            <div class="flex1" style="padding:3px;">
+                <input class="filter-bathrooms" placeholder="不限" value="<#=apartment_bathrooms#>">
+            </div>
+            <div>卫</div>
+        </div>
+    </script>
+</html>

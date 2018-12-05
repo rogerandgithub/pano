@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>STi 速腾聚创 子账户管理</title>
+		<meta charset="utf-8">
+        <link rel="stylesheet" type="text/css" href="/css/suteng.css?v=<%=version%>">
+        <meta name="format-detection" content="telephone=no">
+        <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        <script src="<%=cdnJsPath%>/zepto.min.js"></script>
+        <script src="/js/sti-common.min.js"></script>
+        <script src="/js/template-native.js"></script>
+        <script>
+            template.config('openTag','<#');
+            template.config('closeTag','#>');
+        </script>
+    </head>
+    
+    <body id="management">
+        <%include alert%>
+
+        <div class="sti-container">
+            <div class="head">
+                <i class="icon pagelogo"></i>
+                <span>子账号管理</span>
+                <a class="addChildAccount" href="javascript:;">添加子账号</a>
+            </div>
+            <div class="tablebox">
+                <div class="loading" style="text-align:center">数据加载中</div>
+            </div>
+	        <div class="page">
+                <p id="pagebox">
+                    <div class="buttons inithide">
+                        <span data-page="<%=pagenum%>" class="icon btn-pre btn-turn"></span>
+                        <span class="pagenum">showing&nbsp;<input type="text" id="page" value="<%=1+pagenum%>"/>&nbsp;&nbsp;of&nbsp;&nbsp;<span id="allpage"></span></span>
+                        <span data-page="<%=2+pagenum%>" class="icon btn-next btn-turn"></span>
+                    </div>
+
+                    <div class="buttons" style="-webkit-box-pack:end">
+                        <a href="/romaing" class="btn gray tiny vcenter hcenter">返回</a>
+                        <div class="btn bloodred tiny vcenter hcenter btn-sure inithide">确定</div>
+                    </div>
+                </p>
+
+	        </div>
+        </div>
+
+        <script id="template-users" type="text/html">
+            <ul id="user-lists" style="width:80%;margin:0 auto;">
+                <#for(i in users){#>
+                    <li class="clearfix">
+                        <p class="fl"><img src="images/user-logo.png" /><span class="username"><#=users[i].name#></span></p> 
+                        <p class="fr permission-state">
+                            <input type="checkbox" data-name="<#=users[i].name#>" <#=users[i].permission_delete==1?'checked=checked':''#> class="switch-permission-delete">
+                            <span>可以删除</span>
+                            <i class="icon icon-delete" data-id="<#=users[i].id#>" data-delete="1"></i>
+                        </p>    
+                        <p class="fr amend-group"><span class="amend-account" data-id="<#=users[i].id#>">修改账户名</span><span class="amend-password" data-id="<#=users[i].id#>" data-name="<#=users[i].name#>">修改密码</span></p>
+                    </li>
+                <#}#>
+            </ul>
+        </script>
+        <script>
+        $(function(){
+            $('.inactive').click(function(e){return false;})
+
+
+            <%if(permission_hidetitle){%>
+            $('.addChildAccount').on('click',addChildAccount);
+            console.log('<%=permission_hidetitle%>');
+            <%}else{%>
+            $('.addChildAccount').on('click',function(){
+                alert('该功能为代理商权限');
+            });
+            <%}%>
+
+            $.get('/management/children?page=<%=pagenum%>',function(result){
+                !result.is_more_page||$('.inithide').css({display:'inline-block'});
+                pagenums=result.pagenums;
+                
+                if(result.list.length==0){
+                    $('.tablebox').html('<div style="text-align:center; font-size:20px;margin-top:40px;">'+<%if(permission_hidetitle){%>'您未绑定子账户'<%}else{%>'您并非管理员账户'<%}%>+'</div>');
+                }else{
+                    $('.tablebox').html(template('template-users',{users:result.list}));
+                    $('.main').show();
+                    $('.switch-permission-delete').on('click',onChangePermissionDelete);
+                    $('.icon-delete').on('click',deletechild);
+                    $('.amend-password').on('click',amendPassword);
+                    $('.amend-account').on('click',amendAccount);
+                    
+                }
+            });
+
+
+            $('.btn-sure').on('click', function(){
+                var page = $('#page').val();
+                if(page<=0||(page*10)%10!=0){
+                    return alert('您请求的页数格式不对');
+                }
+                if(page>pagenums){
+                    return alert('您请求的页数超过了总页数');
+                }
+                location.href='/management?page='+$('#page').val();
+            });
+
+            $('.btn-turn').on('click', function(){
+                var page = $(this).attr('data-page');
+                var pagenow=<%=1+pagenum%>;
+                if(page<=0||(page*10)%10!=0){
+                    return alert('您请求的页数格式不对');
+                }
+                if(page=pagenow){
+                    return alert('请输入您想跳转到的页数');
+                }
+                if(page>pagenums){
+                    return alert('您请求的页数超过了总页数');
+                }
+                location.href='/management?page='+$(this).attr('data-page');
+            })
+
+            $(".get_result").click(function(e){
+                $.get('/management/child?name='+$('.search_name').val(),function(r){
+                    if (r.code==-1) {
+                        alert(r.msg);
+                        return;
+                    };
+                    $('#user-list').html('<tr><td class="username">'+r.name+'</td><td><input type="checkbox" checked="&quot;checked&quot;" data-checked="true" class="switch-permission-delete"></td><td>'+r.permission_logo+'</td><td>'+r.logo+'</td><td>'+r.prefix+'</td><td>'+r.updatedAt+'</td><td class="changecode" data-id="'+r.id+'" data-name="'+r.name+'">修改密码</td></tr>');
+                    $('.switch-permission-delete').on('click',onChangePermissionDelete);
+                    $('.icon-delete').on('click',deletechild);
+                    $('.amend-password').on('click',amendPassword);
+                    $('.page').hide();
+                });
+            });
+            function onChangePermissionDelete(){
+                var self=$(this);
+                var username=self.attr('data-name');
+                console.log(self.is(":checked"));
+                $.post('/management/set_permission_delete',{
+                    username:username,
+                    permission:self.is(":checked")?1:0
+                },function(r){
+                    if(r.code!=0){
+                        alert(r.msg);
+                        return;
+                    }
+                })
+            }
+            function deletechild(){
+                var self=$(this);
+                var userid=self.attr('data-id');
+                if(confirm('删除此账号，此账号内所有信息都会删除。请确定此账号内信息为无效信息')){
+                    $.post('/management/deletechild',{
+                        userid:userid
+                    },function(r){
+                        if(r.code!=0){
+                            alert(r.msg);
+                            return;
+                        }else{
+                            alert('删除成功');
+                            location.reload();
+                        }
+                    })
+                } 
+            }
+            function amendAccount(){
+                var self=$(this);
+                $('.alert-wrap').css('visibility','visible');
+                    initAlert('',{
+                        title:'修改账户名',
+                        content:'<div class="inputbox"><div><input class="new_account" type="text" placeholder="新账户名"></div></div>',
+                        buttons:[
+                        {
+                            text:'取消',
+                            callBack:function(){
+                                $(".alert-wrap").css('visibility','hidden');
+                            }
+                        },{
+                            text:'确定',
+                            color:'red',
+                            callBack:function(){
+                                var new_account=$('.new_account').val();
+                                if (!new_account) {
+                                    alert("昵称不错为空");
+                                    return;
+                                };
+                                $.post('/management/amendaccount',{new_account:$('.new_account').val(),accounId:self.attr('data-id')},function(r){
+                                    if(r.code!=0){
+                                        alert(r.msg);
+                                        return;
+                                    }
+                                    location.reload();  
+                                });
+                            }
+                        }]
+                    });
+            }
+
+            <%if(permission_hidetitle){%>
+            function addChildAccount(){
+                $('.alert-wrap').css('visibility','visible');
+                initAlert('',{
+                    title:'创建子账号',
+                    content:'<div class="inputbox"><div><input class="login_account" type="text" placeholder="登录账号"></div>\
+                    <div class="margintop10"><input class="login_password" type="password" placeholder="密码"></div>\
+                    <div class="margintop10"><input class="affirm_password" type="password" placeholder="确认密码"></div></div>',
+                    buttons:[
+                    {
+                        text:'取消'
+                    },{
+                        text:'确定',
+                        className:'btn-confirm',
+                        color:'red',
+                        callBack:function(){
+                                var login_account = $('.login_account').val();
+                                var login_password = $('.login_password').val();
+                                var affirm_password = $('.affirm_password').val();
+                                if(login_account&&login_password&&affirm_password){
+                                    if(login_account.length<3||login_account.length>18){
+                                        alert('请输入3位～18位字符作为用户名');
+                                        return;
+                                    }
+                                    if(login_password!=affirm_password){
+                                        alert('两次输入密码不一致');
+                                        return;
+                                    }
+                                    $.ajax({
+                                        url:'/management/addChildAccount',
+                                        type:'POST',
+                                        async:false,
+                                        data:{
+                                            login_account:$('.login_account').val(),
+                                            login_password:$('.login_password').val()
+                                        },
+                                        success:function(result){
+                                            if(result.code!=0){
+                                                alert(result.msg);
+                                            }else{
+                                                alert('添加成功');
+                                                window.location.reload();
+                                            }
+                                        },
+                                        error:function(e){
+                                            alert(e);
+                                        }
+                                    })
+                                }else{
+                                    alert('请输入正确信息！');
+                                }                              
+                            }
+                        }
+                    ]
+                });
+            }
+            <%}%>
+            function amendPassword(){
+                var self=$(this);
+                $('.alert-wrap').css('visibility','visible');
+                initAlert('',{
+                    title:'修改'+self.attr('data-name')+'密码',
+                    content:'<div class="inputbox"><div><input class="mother_password" type="password" placeholder="输入母账户密码"></div>\
+                    <div class="margintop10"><input class="child_newcode" type="password" placeholder="输入新密码"></div>\
+                    <div class="margintop10"><input class="child_newcode_repeat" type="password" placeholder="再输入新密码"></div></div>',
+                    buttons:[
+                    {
+                        text:'取消'
+                    },{
+                        text:'确定',
+                        className:'btn-confirm',
+                        color:'red',
+                        callBack:function(){
+                            var mather_password = $('.mother_password').val();
+                            var child_newcode = $('.child_newcode').val();
+                            var child_newcode_repeat = $('.child_newcode_repeat').val();
+                            if(mather_password&&child_newcode&&child_newcode_repeat){
+                                if(child_newcode!=child_newcode_repeat){
+                                    alert('两次输入密码不一致');
+                                    return;
+                                }
+                                $.ajax({
+                                    url:'/management/changechildcode',
+                                    type:'POST',
+                                    async:false,
+                                    data:{
+                                        mather_password:hex_sha1(mather_password+"letian"),
+                                        child_id:self.attr('data-id'),
+                                        child_newcode:hex_sha1(child_newcode+"letian"),
+                                        child_newcode_repeat:hex_sha1(child_newcode_repeat+"letian")
+                                    },
+                                    timeout:1000,
+                                    success:function(result){
+                                        if(result.code!=0){
+                                            alert(result.msg);
+                                        }else{
+                                            alert('修改成功');
+                                            window.location.reload();
+                                        }
+                                    },
+                                    error:function(e){
+                                        alert(e);
+                                    }
+                                })
+                            }else{
+                                alert('请填好完整信息');
+                            }
+                        }
+                    }
+                    ]
+                });
+            }
+        });
+        </script>
+    </body>
+</html>

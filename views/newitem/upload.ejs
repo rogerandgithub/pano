@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, user-scalable=no" />
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta charset="UTF-8">
+        <title>全景图片上传</title>
+        <!-- bootstrap -->   
+        <link href="/css/newitem/bootstrap.css" rel="stylesheet" />
+        <link href="/css/newitem/bootstrap-responsive.css" rel="stylesheet" />
+        <link href="/css/newitem/bootstrap-overrides.css" type="text/css" rel="stylesheet" />
+
+        <!-- libraries -->
+        <link href="/css/newitem/font-awesome.css" type="text/css" rel="stylesheet" />
+        
+        <!-- global styles -->
+        <link href="/css/newitem/layout.css" rel="stylesheet" type="text/css" />
+        <link href="/css/newitem/elements.css" rel="stylesheet" type="text/css" />
+        <link href="/css/newitem/icons.css" rel="stylesheet" type="text/css" />
+        <link href="/css/newitem/common.css" rel="stylesheet" type="text/css" /> 
+
+        
+        <link href="/css/newitem/main.css" rel="stylesheet" type="text/css" />  
+        <link href="/css/newitem/reset.css" rel="stylesheet" type="text/css" /> 
+
+        <!-- this page specific styles -->
+        <link href="/css/newitem/index.css" type="text/css" rel="stylesheet" media="screen" />
+
+        <script src="/js/newitem/vue.min.js"></script>
+        <!-- 引用控制层插件样式 -->
+        <link rel="stylesheet" href="/css/newitem/upload.css" type="text/css">
+    </head>    
+    <body @click="hidepopt">
+        <%include toast%>
+        <%include trash%>
+
+        <div id="wrapper">
+            <%include nav%>
+            <%include menu%>
+            <div class="content">
+                <div id="menubox">
+                    <menulist></menulist>
+                </div>
+                <div class="container-fluid">
+                    <div class="resource-body">
+                        <!-- <div class="q-item-label">
+                            <h6>全景图片上传</h6>
+                            <p>支持上传长宽比二比一和一比六的全景图，不支持同时上传两种全景图</p>
+                        </div> -->
+                        <div class="wrap">
+                            <div id="upload12" class="upload12">
+                                <div id="uploadForm">
+                                    <section class="q-item">
+                                        <div class="item clearfix">
+                                            <div class="item-title">第一步：选择全景图</div>
+                                            <div class="item-body" style="margin: 20px 0 0 20px;">
+                                               <!-- <p class="item-describe">一次可选择多张相同比例的全景全景</p> -->
+                                               <div class="andArea">
+                                                   <div class="filePicker">点击选择全景图</div>
+                                                   <input id="fileImage" type="file" size="30" multiple="true" :disabled="locked">
+                                               </div>
+                                               <div id="fileDragArea">
+                                                   <span id="fileDragArea" v-if="!locked" class="upload_drag_area">或者将全景图拖到此处</span>
+                                               </div>
+                                           </div>
+                                        </div>
+                                    </section>
+                                    <section class="q-item" v-if="!groupid">
+                                        <div class="item clearfix">
+                                            <div class="item-title">第二步：填写全景信息</div>
+                                            <div class="item-body" style="margin: 20px 0 0 20px;font-size:16px;">
+                                                <!-- <p class="item-describe"><span class="item-describe" id="status_info">共选中0张全景，共0B。</span></p> -->
+                                                <div class="status_bar clearfix" id="cityregion">
+                                                    <div id="location" class="showRange clearfix">
+                                                        <div class="btn" @click.stop="citySelShow">
+                                                            <span class="rangeData1" style="font-size:16px;" id="city" v-text="location"></span>
+                                                            <span class="caret"></span>
+                                                        </div>
+                                                        <div id="PoPy" align="left" @click.stop="" v-show="showcitySel">
+                                                            <div class="_citys">
+                                                                <span><i class="close-pop ico-close" @click="showcitySel = false"></i></span>
+                                                                <ul id="_citysheng" class="_citys0">
+                                                                    <li :class="{citySel:showpro}">省份</li>
+                                                                    <li :class="{citySel:showcity}">城市</li>
+                                                                    <li :class="{citySel:showregion}">区县</li>
+                                                                </ul>
+                                                                <div id="_citys0" class="_citys1" v-show="showpro">
+                                                                    <a v-for="pro in province" v-text="pro.name" @click="selPro($index)"></a>
+                                                                </div>
+                                                                <div id="_citys1" class="_citys1" v-show="showcity">
+                                                                    <a v-for="city in cities" v-text="city.name" @click="selCity(city.id, city.name)"></a>
+                                                                </div>
+                                                                <div id="_citys2" class="_citys1" v-show="showregion">
+                                                                    <a v-for="region in regions" v-text="region.name" @click="selRegion(region.id, region.name)"></a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div id="where" class="showRange clearfix">
+                                                        <div class="btn" v-show="!showeditwhere" @click.stop="showeditwhere = true;">
+                                                            <span v-text="where" style="font-size:16px;" ></span>
+                                                            <i class="icon-edit" title="点击编辑"></i>
+                                                        </div>
+
+                                                        <div class="btn edit-area clearfix" v-else @click.stop>
+                                                            <input id="bussiness" type="text" class="pull-left" placeholder="商圈" v-model="selected.area"/>
+                                                            <span class="date-separator pull-left">&nbsp;&nbsp;-&nbsp;&nbsp;</span>
+                                                            <input id="community" type="text" class="pull-left" placeholder="小区" v-model="selected.community"/>
+                                                            <span class="date-separator pull-left">&nbsp;&nbsp;-&nbsp;&nbsp;</span>
+                                                            <input id="building" type="text" class="pull-left" placeholder="栋号" v-model="selected.building"/>
+                                                            <span class="date-separator pull-left">&nbsp;&nbsp;-&nbsp;&nbsp;</span>
+                                                            <input id="room" type="text" class="pull-left" placeholder="房号" v-model="selected.room"/>
+                                                            <label>
+                                                                <i class="icon-ok" @click="showeditwhere = false"></i>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>
+                                    <section class="q-item">
+                                        <div class="item clearfix">
+                                            <div class="item-title" v-text="groupid?'第二步：确认上传':'第三步：确认上传'"></div>
+                                                <br/>
+                                                <div id="fileSubmit" class="uploadBtn fileSubmit">快速上传</div>
+                                                <div class="uploadBtn fileSubmit" highupload="true">高级上传</div>
+                                                <br/>
+                                            </div>
+                                        </div>
+                                    </section>
+                                    <section class="q-item preview-container">
+                                        <div class="item clearfix">
+                                            <div class="item-title">上传图片预览</div>
+                                                <br/>
+                                                <div id="preview" class="upload_preview"></div>
+                                            </div>
+                                        </div>
+                                    </section>
+                                </div>
+                            </div>
+                        </div> 
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--上传成功-->
+        <div id="uploadtoast" transition="qrtoast" class="toast-content-half" v-show="uploadshow">
+            <span><i class="close-pop ico-close" @click="hide"></i></span>
+            <div class="toast-center-wrapper">
+                <div>
+                    <div id="uploadcoder" class="toast-body">
+                        <div class="uploadwrap clearfix">
+                            <div class="uploadbox">
+                                <a href="/panoitem">
+                                    <img src="../images/newitem/icons/panolist.png">
+                                    <p>回到作品列表</p>
+                                </a>
+                            </div>
+                            <div class="uploadbox">
+                                <a target="_blank" href='http://wx.sz-sti.com/scene?key={{scenekey}}'>
+                                    <img src="../images/newitem/icons/seek.png">
+                                    <p>查看上传的全景</p>
+                                </a>
+                            </div>
+                            <div class="uploadbox">
+                                <a href="javascript:;" @click="reloadwindow">
+                                    <img src="../images/newitem/icons/uploadagain.png">
+                                    <p>继续上传</p>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>   
+        </div>
+
+        <script src="/js/newitem/qsonuploader.js"></script>
+        <script src="/js/newitem/qsonupload.js"></script>
+        <script src="/js/newitem/cityJson.js"></script>
+        <script type="text/javascript">
+            var uuid = parseInt(Math.random()*100000000)+'qson';
+            
+            var uploadtoast = new Vue({
+                el: '#uploadtoast',
+                data: {
+                    uploadshow: false,
+                    scenekey: ''
+                },
+                methods: {
+                    hide: function(){
+                        this.uploadshow = false;
+                        location.reload();
+                    },
+                    reloadwindow: function(){
+                        location.reload();
+                    }
+                }
+            });
+
+            var groupid = <%=group?group.id:''%>+0;
+
+            $("#upload12").upload({
+                itemWidth  : "200px",
+                itemHeight : "100px"
+            });
+
+            var type = 2;
+
+            nav.current.center = true;
+
+            var upload = new Vue({
+                el:'#upload12',
+                data:{
+                    groupid : groupid,
+                    showcitySel: false,
+                    showpro: true,
+                    showcity: false,
+                    showregion: false,
+                    showeditwhere: false,
+                    showeditwhich: false,
+                    province: province,
+                    locked: <%=locked%>,
+                    cities: [],
+                    regions: [],
+                    selected: {
+                        province: '',
+                        city: '',
+                        region: '',
+                        area: '',
+                        community: '',
+                        building: '',
+                        room: '',
+                        start: '2015/01/01',
+                        end: (new Date()).getFullYear()+'/'+(parseInt((new Date()).getMonth())+1)+'/'+(new Date()).getDate()
+                    }
+                },
+                computed: {
+                    location: function(){
+                        var location = '';
+                        if(!this.selected.province){
+                            location = '省份 - 城市 - 区域';
+                            this.selected.city = this.selected.region = '';
+                        }else{
+                            location = this.selected.province.replace('省','');
+                            if(this.selected.city){
+                                location += ' - ' + this.selected.city.replace('市','');
+                                if(this.selected.region)
+                                    location += ' - ' + this.selected.region;
+                            }else{
+                                this.selected.city = this.selected.region = '';
+                            }
+                        }
+                        return location;
+                    },
+                    where: function(){
+                        var where = '';
+                        var str1 = '商圈';
+                        var str2 = '小区';
+                        if(!this.selected.area&&!this.selected.community){
+                            where = str1 + " - " + str2;
+                        }else if(this.selected.area&&!this.selected.community){
+                            where = str1+': ' + this.selected.area + " - " + str2;
+                        }else if(!this.selected.area&&this.selected.community){
+                            where = str1 + " - " + str2+': ' + this.selected.community;
+                        }else{
+                            where = str1+': ' + this.selected.area + ' - ' + str2+': ' + this.selected.community;
+                        }
+
+                        var str3 = '栋号';
+                        var str4 = '房号';
+                        if(!this.selected.building&&!this.selected.room){
+                            where += " - " + str3 + " - " + str4;
+                        }else if(this.selected.building&&!this.selected.room){
+                            where += " - " + str3+': ' + this.selected.building + " - " + str4;
+                        }else if(!this.selected.building&&this.selected.room){
+                            where += " - " + str3 + " - " + str4+': ' + this.selected.room;
+                        }else{
+                            where += " - " + str3+': ' + this.selected.building + ' - ' + str4+': ' + this.selected.room;
+                        }
+                        return where;
+                    }
+                },
+                methods:{
+                    citySelShow: function(){
+                        this.showcitySel = true;
+                        this.selected.province = '';
+                        this.proshow();
+                    },
+                    proshow: function(){
+                        this.showpro = true;
+                        this.showcity = this.showregion = false;
+                    },
+                    cityshow: function(){
+                        this.showregion =this.showpro = false;
+                        this.showcity = true;
+                    },
+                    regionshow: function(){
+                        this.showcity =this.showpro = false;
+                        this.showregion = true;
+                    },
+                    selPro: function(index){
+                        this.cities.splice(0);
+                        for(var i in province[index].city){
+                            this.cities.push(province[index].city[i]);
+                        }
+                        this.cityshow();
+                        this.selected.province = province[index].name;
+                    },
+                    selCity: function(id, name){
+                        this.regions.splice(0);
+                        for(var i in area){
+                            if(area[i].pid == id)
+                                this.regions.push(area[i]);
+                        }
+                        this.selected.city = name;
+                        this.regionshow();
+                    },
+                    selRegion: function(id, name){
+                        this.selected.region = name;
+                        this.proshow();
+                        this.showcitySel = false;
+                    },
+                    mapconfirm: function(){
+                        panolist.searchobj.city = this.selected.city.replace('市','');
+                        panolist.searchobj.region = this.selected.region.replace('区','').replace('县','');
+                        panolist.searchobj.area = this.selected.area;
+                        panolist.searchobj.community = this.selected.community;
+                        panolist.searchobj.building = this.selected.building;
+                        panolist.searchobj.room = this.selected.room;
+                        panolist.searchobj.start = new Date(this.selected.start);
+                        panolist.searchobj.end = new Date(this.selected.end);
+                        panolist.pagindex = 1;
+                        panolist.isshowload2 = true;
+                        // this.isshow = false;
+                        setTimeout(function(){
+                            panolist.isshowload2 = false;
+                        }, 500);
+                    }
+                }
+            });
+            var menubox = new Vue({
+                el: '#menubox',
+                data: {
+                    open: false
+                },
+                methods: {
+                    orderby: function(key){
+                        editpano.showsettings = false;
+                        panolist.pagindex = 1;
+                        panolist.orderkey = key?key:'';
+                        this.open = false;
+                    }
+                }
+            });
+            var body = new Vue({
+                el: 'body',
+                methods: {
+                    hidepopt: function(){
+                        upload.showcitySel = false;
+                        upload.showeditwhere = false;
+                        upload.showeditwhich = false;
+                        nav.display = false;
+                        menubox.open = false;
+                    }
+                }
+            });
+        </script> 
+    </body>
+</html>

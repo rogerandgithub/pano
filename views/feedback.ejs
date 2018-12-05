@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>后台管理</title>
+    <link rel="stylesheet" href="/css/feedback.css" type="text/css">
+    <link href="/css/newitem/common.css" rel="stylesheet" type="text/css" /> 
+    <script src="/js/new/vue.min.js"></script> 
+    <script src="/js/jquery-1.8.3.min.js"></script>
+    <script src="/js/qnuploader.js"></script>
+</head>
+<body>
+    <%include toast%>
+
+    <%if(isadmin){%>
+        <div id="trashpano" class="toast-content">
+            <div class="toast-center-wrapper">
+                <div class="m-header">
+                    <h1 class="text-center"><img width="35" src="/images/lock.png" /></h1>
+                    <h6 class="toast-title text-center">密码认证</h6>
+                </div>
+                <div>
+                    <div class="toast-body">
+                        <div class="form-group"> 
+                            <input id="psw" class="form-control" type="password" placeholder="请输入您的密码" autocomplete="off" @keyup.enter="submit" v-model="psw" />
+                        </div>
+                    </div>
+                    <div class="m-footer">
+                        <div class="text-center">
+                            <button class="btn btn-cancel btn-lg" type="button" @click="hide">取消</button>
+                            <button class="btn btn-primary btn-setter btn-lg" :disabled="disabled" type="submit" @click="submit">确定</button> 
+                        </div>
+                    </div>
+                </div>
+            </div>   
+        </div>
+        <script type="text/javascript">
+            var login = new Vue({
+                el: '#trashpano',
+                data: {
+                    psw: ''
+                },
+                methods: {
+                    hide: function() {
+                        location.href = '/joinus';
+                    },
+                    submit: function(){
+                        if(!this.psw){
+                            toast.showmsg('密码不能为空', true);
+                            return;
+                        }
+                        $.post('/supermaster/feedback/login', {
+                            psw: this.psw
+                        }, function(res){
+                            if(res.code!=0){
+                                toast.showmsg(res.msg, true);
+                                return;
+                            }
+                            toast.showmsg('登录成功');
+                            setTimeout(function(){
+                                location.href = '/supermaster/feedback';
+                            }, 1000);
+                        });
+                    }
+                }
+            });
+        </script>
+    <%}else{%>
+        <%if(name=='admin'&&token){%>  
+            <link href="/css/new/icons.css" rel="stylesheet" type="text/css" />  
+            <div id="trashpano" style="overflow: auto;" class="toast-content" transition="qrtoast" v-show="showtptoast">
+                <span @click="hide"><i class="ico-close close-pop fixed"></i></span>
+                <input id="file_input" type="file" @change="filechange">
+                <div class="news-wrap clearfix">
+                    <div class="news-body">
+                        <h3>添加新闻报道<span @click="viewnew" class="pull-right"><img width=17" src="/images/previewpic.png" /></span></h3>
+                        <div>
+                            <span><label>新闻标题：</label><input v-model="title" type="text" name="title" placeholder="请输入新闻标题" /></span>  
+                            <span><label>新闻外链：</label><input v-model="link" type="text" name="title" placeholder="请输入新闻外链" /></span>            
+                            <span><label>新闻来源：</label><input v-model="edit" type="text" name="title" placeholder="请输入新闻来源" /></span>
+                            <span><label>发布时间：</label><input v-model="edittime" type="text" name="title" placeholder="格式(2016-12-28)" /></span>
+                            <span><label>新闻简介：</label><input v-model="content" type="text" name="title" placeholder="请输入新闻简介" class="content" /></span>
+                        </div>
+                        <div v-for="newinfo in newinfos">
+                            <div v-if="newinfo.istext"><span><label>新闻段落：</label><input type="text" class="textinput" v-model="newinfo.text" placeholder="请输入新闻段落" /></span>
+                            <a href="jacascript:;" @click="remove($index)"><img width=20" src="/images/del.png" /></a>
+                            <!-- <a href="jacascript:;" @click="addbold($index)"><img width=17" src="/images/bold.png" /></a> -->
+                            </div>
+                            <div v-else><span><label>新闻插图：</label><input type="text" class="textinput" v-model="newinfo.img" /></span><a href="jacascript:;" @click="remove($index)"><img width=20" src="/images/del.png" /></a><a href="jacascript:;" @click="previewpic($index)"><img width=17" src="/images/previewpic.png" /></a></div>
+                        </div> 
+                        <div class="text-center">
+                            <button class="btn" type="submit" @click="inserttext">插入段落</button> 
+                            <button class="btn" type="button" @click="insertpic">插入图片</button>
+                        </div>
+                    </div>
+                    <div class="m-footer">
+                        <div class="text-center">
+                            <button class="btn btn-cancel btn-lg" type="button" @click="hide">取消</button>
+                            <button class="btn btn-primary btn-setter btn-lg" type="submit" @click="submit">确定</button> 
+                        </div>
+                    </div>             
+                </div>
+            </div>
+            <div id="delnews" class="toast-content" v-show="showdelnews" transition="qrtoast">
+                <div class="toast-center-wrapper">
+                    <div class="m-header">
+                        <h1 class="text-center"><img width="35" src="/images/lock.png" /></h1>
+                        <h6 class="toast-title text-center">密码认证</h6>
+                    </div>
+                    <div>
+                        <div class="toast-body">
+                            <div class="form-group"> 
+                                <input id="psw" class="form-control" type="password" placeholder="请输入您的密码" autocomplete="off" @keyup.enter="submit" v-model="psw" />
+                            </div>
+                        </div>
+                        <div class="m-footer">
+                            <div class="text-center">
+                                <button class="btn btn-cancel btn-lg" type="button" @click="hide">取消</button>
+                                <button class="btn btn-primary btn-setter btn-lg" :disabled="disabled" type="submit" @click="submit">确定</button> 
+                            </div>
+                        </div>
+                    </div>
+                </div>   
+            </div>
+            <div id="transhimg" style="overflow: auto;" class="toast-content" transition="qrtoast" v-show="showimg">
+                <span @click="hide"><i class="ico-close close-pop fixed"></i></span>
+                <div class="previewimg">
+                    <h4 v-text="filename" class="filename"></h4>
+                    <img class="img" :src="imgurl" />
+                    <button v-if="ispreview" class="btn btn-primary" @click="submitimg">确定上传</button>
+                </div>
+            </div>
+            <div id="previewnew" style="overflow: auto;" class="toast-content" transition="qrtoast" v-show="showpreviewnew">
+                <span @click="hide"><i class="ico-close close-pop fixed"></i></span>
+                <div class="wrap">
+                    <div class="newinfo">
+                        <h4 class="title" v-text="newlist.title"></h4>
+                        <div class="mt_12">
+                            <span class="edit" v-text="newlist.edit"></span>
+                            <span class="edittime" v-text="newlist.edittime"></span>
+                        </div>
+                        <div class="content">
+                            <div v-for="(key,val) in newlist.newinfo">
+                                <p v-if="key.indexOf('text')!=-1" :class="{'bold':false}" v-text="val"></p>
+                                <img v-else :src="val" />
+                            </div>
+                            <a :href="newlist.link">原文:<span class="link">{{newlist.link}}</span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <%}%>
+        <div id="feedback">    
+            <header id="header" class="clearfix">
+                <img width="35" src="/images/robologo.png" />
+                <%if(name=='admin'&&token){%>
+                    <button class="btn btn-primary pull-right" style="margin-left:10px;" @click="logout">退出登录</button>
+                    <button class="btn btn-primary pull-right" @click="addnew">发布新闻</button>
+                <%}%>
+            </header>
+            <div class="feedback-content">
+                <div class="row-fluid table">
+                    <h3 class="title">消息反馈</h3>
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>姓名</th>
+                                <th>手机号码</th>
+                                <th>邮箱</th>
+                                <th>咨询类型</th>
+                                <th>咨询内容</th>
+                                <th class="align-right">提交时间</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="feedback in feedbacks | limitBy limit offset">
+                                <td>
+                                    <span v-text="feedback.username"></span>
+                                </td>
+                                <td>
+                                    <span v-text="feedback.telephone"></span>
+                                </td>
+                                <td>
+                                    <span v-text="feedback.email"></span>
+                                </td>
+                                <td>
+                                    <span v-text="feedback.type"></span>
+                                </td>
+                                <td>
+                                    <span v-text="feedback.content"></span>
+                                </td>
+                                <td class="align-right">
+                                    <span v-text="feedback.createdAt"></span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="pagination pull-right" v-if="count>limit">
+                    <ul>
+                        <li :class="{'disabled': 1 == pagindex}"><a href="javascript:;" @click="load(1)">&#8249;&#8249;</a></li>
+                        <li :class="{'disabled': 1 == pagindex}" class="child"><a href="javascript:;" @click="load(pagindex-1)">&#8249;</a></li>
+                        <li v-for="cur in pages" v-if="pagindex>3&&pages-2>pagindex?(cur+1<=pagindex+2&&cur+1>=pagindex-2):(pagindex<=3?cur+1<=5:cur+1>=pages-4)" :class="{'active': cur+1 == pagindex}">
+                            <a href="javascript:;" @click="load(cur+1)" v-text="cur+1"></a>
+                        </li>
+                        <li :class="{'disabled': pages == pagindex}" class="child"><a href="javascript:;" @click="load(pagindex+1)">&#8250;</a></li>
+                        <li :class="{'disabled': pages == pagindex}"><a href="javascript:;" @click="load(pages)">&#8250;&#8250;</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="feedback_banner"></div>
+        <div id="new_media">
+            <div class="new-content">
+                <div class="row-fluid">
+                    <h3 class="title">新闻媒体</h3>
+                    <div class="newwrap clearfix">
+                        <div class="newlist" v-for="new in news | limitBy limit offset">
+                            <div class="clearfix">
+                                <h4 class="title" @click="checkall($index)">{{new.title}}<img class="pull-right" width="22" src="/images/del.png" @click.stop="delnews(new.title,$index)" /></h4>
+                            </div>
+                            <div class="mt_12">
+                                <span class="edit" v-text="new.edit"></span>
+                                <span class="edittime" v-text="new.edittime"></span>
+                            </div>
+                            <div class="content">
+                                <p>{{new.content}}<a href="javascript:;" @click="checkall($index)" class="checkall" target="_blank">阅读全文 >></a></p>
+                            </div>
+                        </div>
+
+                        <div class="pagination pull-right" v-if="count>limit">
+                            <ul>
+                                <li :class="{'disabled': 1 == pagindex}"><a href="javascript:;" @click="load(1)">&#8249;&#8249;</a></li>
+                                <li :class="{'disabled': 1 == pagindex}" class="child"><a href="javascript:;" @click="load(pagindex-1)">&#8249;</a></li>
+                                <li v-for="cur in pages" v-if="pagindex>3&&pages-2>pagindex?(cur+1<=pagindex+2&&cur+1>=pagindex-2):(pagindex<=3?cur+1<=5:cur+1>=pages-4)" :class="{'active': cur+1 == pagindex}">
+                                    <a href="javascript:;" @click="load(cur+1)" v-text="cur+1"></a>
+                                </li>
+                                <li :class="{'disabled': pages == pagindex}" class="child"><a href="javascript:;" @click="load(pagindex+1)">&#8250;</a></li>
+                                <li :class="{'disabled': pages == pagindex}"><a href="javascript:;" @click="load(pages)">&#8250;&#8250;</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript">
+            <%if(name=='admin'&&token){%>
+                var delnews = new Vue({
+                    el: '#delnews',
+                    data: {
+                        showdelnews: false,
+                        psw: '',
+                        index: '',
+                        title: ''
+                    },
+                    methods: {
+                        hide: function(){
+                            this.showdelnews = false;
+                            this.psw = '';
+                        },
+                        submit: function(){
+                            if(!this.psw){
+                                toast.showmsg('密码不能为空',true);
+                                return;
+                            }
+                            var _this = this;
+                            var data = {
+                                psw: this.psw,
+                                title: this.title,
+                                index: this.index
+                            }
+                            $.post('/supermaster/delnews',data,function(res){
+                                if(res.code != 0){
+                                    toast.showmsg(res.msg,true);
+                                    return;
+                                }
+                                if(newmedia.count == ((newmedia.pagindex-1)*newmedia.limit+1)){
+                                    newmedia.pagindex-- ;
+                                }
+                                newmedia.news.splice(_this.index,1);
+                                newmedia.count = newmedia.news.length;
+                                _this.showdelnews = false;
+                                _this.psw = '';
+                            });
+                        }
+                    }
+                })
+                var previewnew = new Vue({
+                    el: '#previewnew',
+                    data: {
+                        showpreviewnew: false,
+                        newlist: ''
+                    },
+                    methods: {
+                        hide: function(){
+                            this.showpreviewnew = false;
+                            this.newlist = '';
+                        }
+                    }
+                })
+                var transhimg = new Vue({
+                    el: '#transhimg',
+                    data: {
+                        showimg: false,
+                        imgurl: '',
+                        filename: '',
+                        ispreview: true
+                    },
+                    methods: {
+                        hide: function(){
+                            this.showimg = false;
+                            $("#file_input").val('');
+                        },
+                        submitimg: function(){
+                            var _this = this;
+                            var postUrl;
+                            $.post('/upload/notice',{},function(res){
+                                var token = res.token;
+                                var key = res.key;
+                                var url = res.url;
+                                Q.addEvent("progress", function(p, s) {
+                                    // _this.maskwidth = (p==100?99:p)+'%';
+                                });
+                                Q.addEvent("putFinished", function(fsize, res, taking) {
+                                    toast.showmsg('上传成功');
+                                    _this.showimg = false;
+                                    var imgurl = "http://qncdn.sz-sti.com/"+url;
+                                    addnew.newinfos.push({"img":imgurl})
+                                });
+                                Q.SetToken(token);
+                                Q.Upload(document.getElementById('file_input').files[0], url);
+
+                            });
+                        }
+                    }
+                }) 
+                var addnew = new Vue({
+                    el: '#trashpano',
+                    data: {
+                        showtptoast: false,
+                        title: '',
+                        link: '',
+                        edit: '',
+                        edittime: '',
+                        content: '',
+                        data: {},
+                        newinfos: []
+                    },
+                    methods: {
+                        hide: function(){
+                            this.showtptoast = false;
+                            this.newinfos = [];
+                        },
+                        inserttext: function(){
+                            if(this.newinfos.length>0 && this.newinfos[this.newinfos.length-1].text==''){
+                                toast.showmsg('请先填写新闻段落', true);
+                                return;
+                            };
+                            this.newinfos.push({
+                                "text":"",
+                                "istext":true
+                            });
+                        },
+                        insertpic: function(){
+                            if(this.newinfos.length>0 && this.newinfos[this.newinfos.length-1].text==''){
+                                toast.showmsg('请先填写新闻段落', true);
+                                return;
+                            };
+                            $("#file_input").click();
+                        },
+                        getObject: function(){
+                            var file = document.getElementById('file_input').files[0];
+                            var url = undefined;
+                            if (window.createObjectURL) {
+                                url = createObjectURL(file);
+                            }else if(window.URL){
+                                url = URL.createObjectURL(file);
+                            }else if(window.webkitURL){
+                                url = webkitURL.createObjectURL(file);
+                            };
+                            return {
+                                url: url,
+                                size: file.size,
+                                type: file.type,
+                                name: file.name
+                            };
+                        },
+                        filechange: function(event,src){
+                            if(src){
+                                var url = src;
+                            }else{
+                                var obj = this.getObject();
+                                if(obj.type.split('/')[0]!='image'){
+                                    toast.showmsg('不是图片类型的文件', true);
+                                    return;
+                                }
+                                if(obj.size>1048576){
+                                    toast.showmsg('图片大小不得大于1M', true);
+                                    return;
+                                };
+                                var url = obj.url;
+                            }
+                            transhimg.showimg = true;
+                            transhimg.imgurl = url;
+                            transhimg.filename = obj.name;
+                        },
+                        remove: function(index){
+                            this.newinfos.splice(index,1);
+                        },
+                        // addbold: function(index){
+                        //     var text = this.newinfos[index].text;
+                        //     this.newinfos.$set(index, {
+                        //         "textbold": text,
+                        //         "istext": true
+                        //     });
+                        //     console.log(this.newinfos[index]);
+                        // },
+                        previewpic: function(index){
+                            var imgurl = this.newinfos[index].img;
+                            transhimg.showimg = true;
+                            transhimg.ispreview = false;
+                            transhimg.imgurl = imgurl;
+                            transhimg.filename = imgurl.split('notice/')[1];
+                        },
+                        getData: function(){
+                            this.data = {
+                                "title": this.title,
+                                "link": this.link,
+                                "edit": this.edit,
+                                "edittime": this.edittime,
+                                "content": this.content,
+                                "newinfo":{}
+                            };
+                            if(this.newinfos.length>0){
+                                for(var i in this.newinfos){
+                                    if(this.newinfos[i].istext){
+                                        if(this.newinfos[i].textbold){
+                                            this.data.newinfo["textbold"] = this.newinfos[i].textbold;
+                                        }else{
+                                            this.data.newinfo["text"+i] = this.newinfos[i].text;
+                                        }
+                                    }else{
+                                        this.data.newinfo["img"+i] = this.newinfos[i].img;
+                                    }
+                                }
+                            }else{
+                                this.data.newinfo = "false";
+                            }
+                        },
+                        viewnew: function(){
+                            this.getData();
+                            if(!this.title || !this.link || !this.edit || !this.edittime || !this.content){
+                                toast.showmsg('请完善新闻',true);
+                                return;
+                            }
+                            if(this.newinfos.length>0 && this.newinfos[this.newinfos.length-1].text==''){
+                                toast.showmsg('请完善新闻',true);
+                                return;
+                            }
+                            previewnew.newlist = this.data;
+                            previewnew.showpreviewnew = true;
+                        },
+                        submit: function(){
+                            if(!this.title || !this.link || !this.edit || !this.edittime || !this.content){
+                                toast.showmsg('请完善新闻',true);
+                                return;
+                            }
+                            if(this.newinfos.length>0 && this.newinfos[this.newinfos.length-1].text==''){
+                                toast.showmsg('请完善新闻',true);
+                                return;
+                            }
+                            this.getData();
+                            var _this = this;
+                            $.post('/supermaster/news/add',_this.data,function(res){
+                                if(res.code!=0){
+                                    toast.showmsg('添加失败',true);
+                                }
+                                _this.showtptoast = false;
+                                _this.title = _this.link = _this.edit = _this.edittime = _this.content = '';
+                                _this.newinfos = [];
+                                newmedia.news.unshift(_this.data);
+                            });
+                        }
+                    }
+                });
+            <%}%>
+            var newmedia = new Vue({
+                el: '#new_media',
+                data: {
+                    count:0,
+                    pagindex:1,
+                    limit:5,
+                    pages:0,
+                    news: []
+                },
+                computed: {
+                    offset: function(){
+                        return (this.pagindex-1)*this.limit;
+                    },
+                    pages: function(){
+                        return Math.ceil(this.count/this.limit);
+                    }
+                },
+                methods: {
+                    load: function(cur){
+                        if(cur!=this.pagindex){
+                            if(cur<1){
+                                toast.showmsg('当前就是首页了！', true);
+                                return;
+                            }
+                            if(cur>this.pages){
+                                toast.showmsg('没有下一页了', true);
+                                return;
+                            }
+                            this.pagindex = cur;
+                        }
+                    },
+                    init: function(){
+                        var _this = this;
+                        $.get('/supermaster/news/data', function(res){
+                            var news = JSON.parse(res).news.newslist
+                            for(var i in news){
+                                _this.news.push(news[i]);
+                            };
+                            _this.count = _this.news.length;
+                        });
+                    },
+                    checkall: function(index){
+                        if(this.news[index].newinfo == "false"){
+                            window.open(this.news[index].link); 
+                        }else{
+                            previewnew.newlist = this.news[index];
+                            previewnew.showpreviewnew = true;
+                        }
+                    },
+                    delnews: function(title,index){
+                        for(var i in this.news){
+                            this.news[i].title == title?delnews.index = i:'';
+                        }
+                        delnews.title = title;
+                        delnews.showdelnews = true;
+                    }
+                }
+            });
+            var feedback = new Vue({
+                el: '#feedback',
+                data: {
+                    count:0,
+                    pagindex:1,
+                    limit:10,
+                    pages:0,
+                    feedbacks: []
+                },
+                computed: {
+                    offset: function(){
+                        return (this.pagindex-1)*this.limit;
+                    },
+                    pages: function(){
+                        return Math.ceil(this.count/this.limit);
+                    }
+                },
+                methods: {
+                    <%if(name=='admin'&&token){%> 
+                    logout: function(){
+                        location.href = '/supermaster/feedback/logout';
+                    },
+                    addnew: function(){
+                        addnew.showtptoast = true;
+                    },
+                    <%}%>
+                    load: function(cur){
+                        if(cur!=this.pagindex){
+                            if(cur<1){
+                                toast.showmsg('当前就是首页了！', true);
+                                return;
+                            }
+                            if(cur>this.pages){
+                                toast.showmsg('没有下一页了', true);
+                                return;
+                            }
+                            this.pagindex = cur;
+                        }
+                    },
+                    init: function(){
+                        var _this = this;
+                        $.get('/supermaster/feedback/data', function(res){
+                            for(var i in res){
+                                var createdAt;
+                                var time = new Date(res[i].createdAt);
+                                createdAt = time.getFullYear();
+                                createdAt += '-'+(parseInt(time.getMonth())+1<10?'0':'')+(parseInt(time.getMonth())+1);
+                                createdAt += '-'+(time.getDate()<10?'0':'')+time.getDate();
+                                createdAt += ' '+(time.getHours()<10?'0':'')+time.getHours();
+                                createdAt += ':'+(time.getMinutes()<10?'0':'')+time.getMinutes();
+                                createdAt += ':'+(time.getSeconds()<10?'0':'')+time.getSeconds();
+                                res[i].createdAt = createdAt;
+                                _this.feedbacks.push(res[i]);
+                            }
+                            _this.count = _this.feedbacks.length;
+                        });
+                    }
+                }
+            });
+            feedback.init();
+            newmedia.init();
+        </script>
+    <%}%>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>加盟合作</title>
+    <link rel="stylesheet" href="/index/css/common.css" type="text/css"> 
+    <link rel="stylesheet" href="/index/css/cooperation.css" type="text/css"> 
+</head>
+<body>
+    <%include nav%>
+    <%include footer%>
+    <div id="navtop">
+        <navtop>
+            <div class="three-menu" slot="navbottom">
+                <div class="link">
+                    <a href="/web/contact/<%=lang%>" class="button">
+                        <span class="line line-top"></span>
+                        <span class="line line-right"></span>
+                        <span class="line line-bottom"></span>
+                        <span class="line line-left"></span>
+                        <span v-text="threeMenu.contact"></span>
+                    </a>
+                </div>
+                <div class="link">
+                    <a href="/web/cooperation/<%=lang%>" class="button active">
+                        <span class="line line-top"></span>
+                        <span class="line line-right"></span>
+                        <span class="line line-bottom"></span>
+                        <span class="line line-left"></span>
+                        <span v-text="threeMenu.cooperation"></span>
+                    </a>
+                </div>
+                <div class="link">
+                    <a href="/web/service/<%=lang%>" class="button">
+                        <span class="line line-top"></span>
+                        <span class="line line-right"></span>
+                        <span class="line line-bottom"></span>
+                        <span class="line line-left"></span>
+                        <span v-text="threeMenu.service"></span>
+                    </a>
+                </div>
+                <div class="link">
+                    <a href="/web/recruitment" target="_blank" class="button">
+                        <span class="line line-top"></span>
+                        <span class="line line-right"></span>
+                        <span class="line line-bottom"></span>
+                        <span class="line line-left"></span>
+                        <span v-text="threeMenu.join"></span>
+                    </a>
+                </div>
+            </div>
+        </navtop>
+    </div>
+    <div class="cooperation-wrap" id="cooperation-wrap">
+        <div class="banner"></div>
+        <div class="robosense-cooperation">
+            <div class="wrap">
+                <h2 v-text="cooperationdata.cooperation.header"></h2>
+                <div v-for="data in cooperationdata.cooperation.infolist">
+                    <h3 v-text="data[0]"></h3>
+                    <p v-text="data[1]"></p>
+                </div>
+                <span v-text="cooperationdata.cooperation.span"></span>
+            </div>
+        </div>
+    </div>
+
+    <div id="footnav">
+        <footnav></footnav>
+    </div>
+
+    <script type="text/javascript">
+        var navtop = new Vue({
+            el: '#navtop',
+            data: {
+                threeMenu: ''
+            }
+        });
+        var footnav = new Vue({
+            el: '#footnav'
+        });
+        var cooperationwrap = new Vue({
+            el: '#cooperation-wrap',
+            data: {
+                cooperationdata: <%-include("lang_"+lang, {lang: lang})%>
+            },
+            methods: {
+                init: function(){
+                    navtop.threeMenu = this.cooperationdata.cooperation.threeMenu;
+                }
+            }
+        });
+        cooperationwrap.init();
+    </script>
+</body>
+</html>

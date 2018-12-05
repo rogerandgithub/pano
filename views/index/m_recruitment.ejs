@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>深圳速腾聚创科技有限公司</title>
+    <link rel="stylesheet" href="/index/css/m_common.css" type="text/css"> 
+    <link rel="stylesheet" href="/index/css/m_recruitment.css" type="text/css"> 
+    <link rel="stylesheet" href="/index/css/swiper-3.4.1.min.css" type="text/css">
+    <script src="/index/js/swiper-3.4.1.min.js"></script>
+    <%if(lang=='en'){%>
+        <style type="text/css">
+            #wrapper .section_2 p{
+                text-align: left;
+            }
+            #wrapper .section_6 .jobList ul li:nth-child(odd){
+                margin-right: 6%;
+            }
+            #wrapper .section_6 .jobList ul li:nth-child(odd),#wrapper .section_6 .jobList ul li:nth-child(even){
+                width: 47%;
+            }
+        </style>
+    <%}%>
+</head>
+<body>
+    <%include m_nav%>
+    <%include loading%>
+    <div id="wrapper">
+        <div class="section_1">
+            <div class="content">
+                <div class="header">
+                    <h3 v-text="datas.recruitment.section_1.h2"></h3>
+                    <p>
+                        <span v-text="datas.recruitment.section_1.span1"></span><br/>
+                        <span v-text="datas.recruitment.section_1.span2"></span>
+                    </p>
+                </div>
+                <div class="searchbox">
+                    <a class="checkAll" href="/mobile/recruitment/social/<%=lang%>" v-text="datas.recruitment.section_1.a"></a>
+                    <div class="search">
+                        <input class="input" type="text" name="keyword" v-model="jobname" :placeholder="datas.recruitment.section_1.inputplaceholder" />
+                        <img class="searchicon" src="http://qncdn.sz-sti.com/mobile/recruitment/search.png" @click="searchjob" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="section_2">
+            <h4 class="title" v-text="datas.recruitment.section_2.h2"></h4>
+            <p v-text="datas.recruitment.section_2.p1"></p>
+            <p v-text="datas.recruitment.section_2.p2"></p>
+            <p v-text="datas.recruitment.section_2.p3"></p>
+        </div>
+        <div class="section_3">
+            <h4 class="title" v-text="datas.recruitment.section_3.h2"></h4>
+            <p class="desc" v-text="datas.recruitment.section_3.p"></p>
+            <div class="welfareList">
+                <div class="list">
+                    <h4>
+                        <img src="http://qncdn.sz-sti.com/mobile/recruitment/icon1.png" />
+                        <span v-if="<%=lang=='cn'%>" v-text="datas.recruitment.section_3.li1"></span>
+                    </h4>
+                    <h4>
+                        <img src="http://qncdn.sz-sti.com/mobile/recruitment/icon2.png" />
+                        <span v-if="<%=lang=='cn'%>" v-text="datas.recruitment.section_3.li2"></span>
+                    </h4>
+                    <h4>
+                        <img src="http://qncdn.sz-sti.com/mobile/recruitment/icon3.png" />
+                        <span v-if="<%=lang=='cn'%>" v-text="datas.recruitment.section_3.li3"></span>
+                    </h4>
+                    <h4>
+                        <img src="http://qncdn.sz-sti.com/mobile/recruitment/icon4.png" />
+                        <span v-if="<%=lang=='cn'%>" v-text="datas.recruitment.section_3.li4"></span>
+                    </h4>
+                </div>
+                <div class="list">
+                    <h4>
+                        <img src="http://qncdn.sz-sti.com/mobile/recruitment/icon5.png" />
+                        <span v-if="<%=lang=='cn'%>" v-text="datas.recruitment.section_3.li5"></span>
+                    </h4>
+                    <h4>
+                        <img src="http://qncdn.sz-sti.com/mobile/recruitment/icon6.png" />
+                        <span v-if="<%=lang=='cn'%>" v-text="datas.recruitment.section_3.li6"></span>
+                    </h4>
+                    <h4>
+                        <img src="http://qncdn.sz-sti.com/mobile/recruitment/icon7.png" />
+                        <span v-if="<%=lang=='cn'%>" v-text="datas.recruitment.section_3.li7"></span>
+                    </h4>
+                    <h4>
+                        <img src="http://qncdn.sz-sti.com/mobile/recruitment/icon8.png" />
+                        <span v-if="<%=lang=='cn'%>" v-text="datas.recruitment.section_3.li8"></span>
+                    </h4>
+                </div>
+            </div>
+        </div>
+        <div class="section_4">
+            <div class="swiper-container">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide slide1">
+                        <h4 class="sildepic"></h4>
+                    </div>
+                    <div class="swiper-slide slide2">
+                        <h4 class="sildepic"></h4>
+                    </div>
+                    <div class="swiper-slide slide3">
+                        <h4 class="sildepic"></h4>
+                    </div>
+                </div>
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-button-next"></div>
+            </div>
+        </div>
+        <div class="section_5">
+            <h3 class="title" v-text="datas.recruitment.section_5.h2"></h3>
+            <p class="desc">
+                <span v-text="datas.recruitment.section_5.p1"></span><br/>
+                <span v-text="datas.recruitment.section_5.p2"></span><br/>
+                <span v-text="datas.recruitment.section_5.p3"></span>
+            </p>
+        </div>
+        <div class="section_6">
+            <div class="content">
+                <div class="header">
+                    <h4 class="title" v-text="datas.recruitment.section_6.h"></h4>
+                    <p class="desc" v-text="datas.recruitment.section_6.p1"></p>
+                    <p class="positions">
+                        <span class="num" v-text="count"></span><br/>
+                        {{datas.recruitment.section_6.p2}}
+                    </p>
+                </div>
+                <div class="map">
+                    <img src="http://qncdn.sz-sti.com/mobile/recruitment/map.jpg" />
+                </div>
+                <div class="jobList">
+                    <ul class="clearfix">
+                        <li>
+                            <span></span>
+                            <h2 v-text="datas.recruitment.section_6.h1"></h2>
+                        </li>
+                        <li>
+                            <span></span>
+                            <h2 v-text="datas.recruitment.section_6.h2"></h2>
+                        </li>
+                        <li>
+                            <span></span>
+                            <h2 v-text="datas.recruitment.section_6.h3"></h2>
+                        </li>
+                        <li>
+                            <span></span>
+                            <h2 v-text="datas.recruitment.section_6.h4"></h2>
+                        </li>
+                        <li>
+                            <span></span>
+                            <h2 v-text="datas.recruitment.section_6.h5"></h2>
+                        </li>
+                        <li>
+                            <span></span>
+                            <h2 v-text="datas.recruitment.section_6.h6"></h2>
+                        </li>
+                        <li>
+                            <span></span>
+                            <h2 v-text="datas.recruitment.section_6.h7"></h2>
+                        </li>
+                        <li>
+                            <span></span>
+                            <h2 v-text="datas.recruitment.section_6.h8"></h2>
+                        </li>
+                    </ul>
+                </div>
+                <a class="checkAllJob" href="/mobile/recruitment/social/<%=lang%>" v-text="datas.recruitment.checkbtn"></a>
+            </div>
+        </div>
+    </div>
+    
+    <script type="text/javascript">
+        var mySwiper = new Swiper('.swiper-container', {
+            autoplay: 5000,  //自动滑动
+            pagination: '.swiper-pagination',  //分页
+            loop: true,  //循环
+            effect: 'flip', //切换效果
+            prevButton:'.swiper-button-prev',
+            nextButton:'.swiper-button-next'
+        })
+        var wrapper = new Vue({
+            el: '#wrapper',
+            data: {
+                datas: <%-include("mobile_lang_"+lang, {lang: lang})%>,
+                count: '',
+                lang: '<%=lang%>',
+                jobname: ''
+            },
+            methods: {
+                init: function(){
+                    var _this = this;
+                    $.get('/web/join/data/'+this.lang,function(res){
+                        _this.count = res.length;
+                    });
+                },
+                searchjob: function(){
+                    location.href = '/mobile/recruitment/social/'+this.lang+'?jobname='+this.jobname;
+                }
+            }
+        })
+        wrapper.init();
+    </script>
+</body>
+</html>

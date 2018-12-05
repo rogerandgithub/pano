@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>深圳速腾聚创科技有限公司</title>
+    <link rel="stylesheet" href="/index/css/m_common.css" type="text/css"> 
+    <style type="text/css">
+        #wrapper{
+            width: 100%;
+        }
+        #wrapper .banner{
+            width: 100%;
+        }
+        #wrapper .banner img{
+            display: block;
+            width: 100%;
+            margin-bottom: 0.1rem;
+        }
+        #wrapper .banner img:first-child{
+            margin-top: 0.88rem;
+        }
+        #wrapper .banner img:last-child{
+            margin-bottom: 1rem;
+        }
+        #bottommenu a{
+            width: 25%;
+        }
+    </style>
+</head>
+<body>
+    <%include m_nav%>
+    <%include loading%>
+    <div id="wrapper">
+        <div class="banner">
+            <img src="<%=lang=='cn' ? 'http://qncdn.sz-sti.com/promethus_1.jpg' : 'http://qncdn.sz-sti.com/mobile/platform/promethus_1_en.jpg?v=2'%>" />
+            <img src="<%=lang=='cn' ? 'http://qncdn.sz-sti.com/promethus_2.jpg' : 'http://qncdn.sz-sti.com/mobile/platform/promethus_2_en.jpg'%>" />
+            <img src="<%=lang=='cn' ? 'http://qncdn.sz-sti.com/promethus_3.jpg' : 'http://qncdn.sz-sti.com/mobile/platform/promethus_3_en.jpg'%>" />
+            <img src="<%=lang=='cn' ? 'http://qncdn.sz-sti.com/promethus_4.jpg' : 'http://qncdn.sz-sti.com/mobile/platform/promethus_4_en.jpg'%>" />
+            <img src="<%=lang=='cn' ? 'http://qncdn.sz-sti.com/promethus_5.jpg' : 'http://qncdn.sz-sti.com/mobile/platform/promethus_5_en.jpg'%>" />
+        </div>
+        <div id="bottommenu">
+            <a class="fl" href="/mobile/rslidar/<%=lang%>" v-text="datas.platform.threeMenu.rslidar"></a>
+            <a class="fl" href="/mobile/rslidar/platform/<%=lang%>" v-text="datas.platform.threeMenu.platform"></a>
+            <a class="fl" href="/mobile/rslidar/algorithm/<%=lang%>" v-text="datas.platform.threeMenu.algorithm"></a>
+            <a class="fl active" href="/mobile/rslidar/promethus/<%=lang%>" v-text="datas.platform.threeMenu.prometheus"></a>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        var wrapper = new Vue({
+            el: '#wrapper',
+            data: {
+                datas: <%-include("mobile_lang_"+lang, {lang: lang})%>
+            }
+        })
+    </script>
+</body>
+</html>

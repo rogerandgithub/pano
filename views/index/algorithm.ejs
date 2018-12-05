@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title><%=lang=='cn'?'HAD激光雷达感知方案-感知算法':'RS-LiDAR Products'%></title>
+    <link rel="stylesheet" href="/index/css/common.css" type="text/css"> 
+    <style type="text/css">
+        <%if(lang=='en'){%>
+            .buy-box a {
+                display: block;
+                width: 110px;
+            }
+            #rslidar .content-warp {
+                background: url('/index/images/rslidar/algorithm_bg_en.jpg') no-repeat center !important;
+                background-size: cover !important;
+            }
+        <%}%>
+        html, body{
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        #rslidar{
+            width: 100%;
+            height: 100%;
+        }
+        #rslidar .content-warp {
+            width: 100%;
+            height: 100%;
+            background: url('/index/images/rslidar/algorithm_bg.jpg') no-repeat center;
+            background-size: cover;
+        }
+    </style>
+</head>
+<body>
+    <%include nav%>
+    <%include footer%>
+    <div id="navtop">
+        <navtop>
+          <div class="three-menu" slot="navbottom">
+            <div class="link">
+                <a href="/web/rslidar/<%=lang%>" class="button">
+                    <span v-text="threeMenu.rslidar"></span>
+                </a>
+            </div>
+            <div class="link">
+                <a href="/web/rslidar/platform/<%=lang%>" class="button">
+                    <span v-text="threeMenu.platform"></span>
+                </a>
+            </div>
+            <div class="link">
+                <a href="/web/rslidar/algorithm/<%=lang%>" class="button active">
+                    <span v-text="threeMenu.algorithm"></span>
+                </a>
+            </div>
+            <div class="link">
+                <a href="/web/prometheus/<%=lang%>" class="button">
+                    <span v-text="threeMenu.prometheus"></span>
+                </a>
+            </div>
+          </div>
+        </navtop>
+    </div>
+    <div id="rslidar">
+        <div class="content-warp">
+            
+        </div>
+    </div>
+
+    <div class="buy-box">
+        <a href="/web/buy/<%=lang%>" target="_blank"><img src="<%=lang=='cn'?'/index/images/buy-icon.png':'/index/images/buy-icon-en.png'%>" /></a>
+    </div>
+    
+    <script src="/index/js/jquery-2.2.4.min.js"></script>
+    <script src="/index/js/aos.js"></script>
+    <script src="/index/js/smooth-scroll.min.js"></script>
+    <script type="text/javascript">
+    </script>
+    <script type="text/javascript">
+        var navtop = new Vue({
+            el: '#navtop',
+            data: {
+                threeMenu: ''
+            }
+        });
+        var footnav = new Vue({
+            el: '#footnav'
+        });
+        var rslidar = new Vue({
+            el: '#rslidar',
+            data: {
+                datas: <%-include("lang_"+lang, {lang: lang})%>
+            },
+            methods: {
+                init: function(){
+                    navtop.threeMenu = this.datas.rslidarIntro.threeMenu;
+                    // AOS.init({
+                    //     easing: 'ease-out-back',
+                    //     duration: 1000
+                    // });
+                }
+            }
+        });
+        rslidar.init();
+    </script>
+</body>
+</html>

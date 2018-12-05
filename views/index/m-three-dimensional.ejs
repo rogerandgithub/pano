@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>深圳速腾聚创科技有限公司</title>
+    <link rel="stylesheet" href="/index/css/m_common.css" type="text/css"> 
+    <link rel="stylesheet" href="/index/css/m_threedimensional.css" type="text/css"> 
+    <link rel="stylesheet" href="/index/css/swiper-3.4.1.min.css" type="text/css">
+    <script src="/index/js/swiper-3.4.1.min.js"></script>
+    <%if(lang=='en'){%>
+        <style type="text/css">
+            #wrapper .section_6 .seeker-line{
+                display: none;
+            }
+            #wrapper .section_2 .desc,#wrapper .section_3 .swiper-container .swiper-slide .textbox .desc{
+                text-align: left;
+            }
+        </style>
+    <%}%>
+</head>
+<body>
+    <%include m_nav%>
+    <%include loading%>
+    <div id="wrapper">
+        <div class="section_1"></div>
+        <div class="section_2">
+            <h2 class="title">
+                <img src="http://qncdn.sz-sti.com/mobile/threedimensional/seeker.png" />
+            </h2>
+            <p class="desc">
+                <span v-text="datas.threedimensional.section_2.p1"></span>
+                <span v-text="datas.threedimensional.section_2.p2"></span>
+                <span v-text="datas.threedimensional.section_2.p3"></span>
+            </p>
+            <a class="knowarg" href="javascript:;" @click.stop="smoothScroll" v-text="datas.threedimensional.section_2.a"></a>
+        </div>
+        <div class="section_3">
+            <div class="swiper-container">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide slide1">
+                        <h4 class="sildepic"></h4>
+                        <div class="textbox">
+                            <div class="wrap">
+                                <h3 v-text="datas.threedimensional.section_3.h1"></h3>
+                                <p class="title" v-text="datas.threedimensional.section_3.span1"></p>
+                                <p class="desc" v-text="datas.threedimensional.section_3.p1"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide slide2">
+                        <h4 class="sildepic"></h4>
+                        <div class="textbox">
+                            <div class="wrap">
+                                <h3 v-text="datas.threedimensional.section_3.h2"></h3>
+                                <p class="title" v-text="datas.threedimensional.section_3.span2"></p>
+                                <p class="desc" v-text="datas.threedimensional.section_3.p2"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide slide3">
+                        <h4 class="sildepic"></h4>
+                        <div class="textbox">
+                            <div class="wrap">
+                                <h3 v-text="datas.threedimensional.section_3.h3"></h3>
+                                <p class="title" v-text="datas.threedimensional.section_3.span3"></p>
+                                <p class="desc" v-text="datas.threedimensional.section_3.p3"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide slide4">
+                        <h4 class="sildepic"></h4>
+                        <div class="textbox">
+                            <div class="wrap">
+                                <h3 v-text="datas.threedimensional.section_3.h4"></h3>
+                                <p class="title" v-text="datas.threedimensional.section_3.span4"></p>
+                                <p class="desc" v-text="datas.threedimensional.section_3.p4"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide slide5">
+                        <h4 class="sildepic"></h4>
+                        <div class="textbox">
+                            <div class="wrap">
+                                <h3 v-text="datas.threedimensional.section_3.h5"></h3>
+                                <p class="title" v-text="datas.threedimensional.section_3.span5"></p>
+                                <p class="desc" v-text="datas.threedimensional.section_3.p5"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-pagination"></div>
+            </div>
+        </div>
+        <div class="section_4">
+            <h2 class="title" v-text="datas.threedimensional.section_4.h2"></h2>
+            <div class="LegendPic">
+                <img src="http://qncdn.sz-sti.com/mobile/threedimensional/legend1.jpg" />
+                <img src="http://qncdn.sz-sti.com/mobile/threedimensional/legend2.jpg" />
+            </div>
+        </div>
+        <div class="section_5">
+            <div class="swiper-container2">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide slide1">
+                        <h4 class="sildepic"></h4>
+                        <div class="reactbox">
+                            <p class="title" v-text="datas.threedimensional.section_5.span1"></p>
+                            <p class="desc" v-text="datas.threedimensional.section_5.span1br"></p>
+                        </div>
+                    </div>
+                    <div class="swiper-slide slide2">
+                        <h4 class="sildepic"></h4>
+                        <div class="reactbox">
+                            <p class="title" v-text="datas.threedimensional.section_5.span2"></p>
+                            <p class="desc" v-text="datas.threedimensional.section_5.span2br"></p>
+                        </div>
+                    </div>
+                    <div class="swiper-slide slide3">
+                        <h4 class="sildepic"></h4>
+                        <div class="reactbox">
+                            <p class="title" v-text="datas.threedimensional.section_5.span3"></p>
+                            <p class="desc" v-text="datas.threedimensional.section_5.span3br"></p>
+                        </div>
+                    </div>
+                    <div class="swiper-slide slide4">
+                        <h4 class="sildepic"></h4>
+                        <div class="reactbox">
+                            <p class="title" v-text="datas.threedimensional.section_5.span4"></p>
+                            <p class="desc" v-text="datas.threedimensional.section_5.span4br"></p>
+                        </div>
+                    </div>
+                    <div class="swiper-slide slide5">
+                        <h4 class="sildepic"></h4>
+                        <div class="reactbox">
+                            <p class="title" v-text="datas.threedimensional.section_5.span5"></p>
+                            <p class="desc" v-text="datas.threedimensional.section_5.span5br"></p>
+                        </div>
+                    </div>
+                    <div class="swiper-slide slide6">
+                        <h4 class="sildepic"></h4>
+                        <div class="reactbox">
+                            <p class="title" v-text="datas.threedimensional.section_5.span6"></p>
+                            <p class="desc" v-text="datas.threedimensional.section_5.span6br"></p>
+                        </div>
+                    </div>
+                    <div class="swiper-slide slide7">
+                        <h4 class="sildepic"></h4>
+                        <div class="reactbox">
+                            <p class="title" v-text="datas.threedimensional.section_5.span7"></p>
+                            <p class="desc" v-text="datas.threedimensional.section_5.span7br"></p>
+                        </div>
+                    </div>
+                    <div class="swiper-slide slide8">
+                        <h4 class="sildepic"></h4>
+                        <div class="reactbox">
+                            <p class="title" v-text="datas.threedimensional.section_5.span8"></p>
+                            <p class="desc" v-text="datas.threedimensional.section_5.span8br"></p>
+                        </div>
+                    </div>
+                    <div class="swiper-slide slide9">
+                        <h4 class="sildepic"></h4>
+                        <div class="reactbox">
+                            <p class="title" v-text="datas.threedimensional.section_5.span9"></p>
+                            <p class="desc" v-text="datas.threedimensional.section_5.span9br"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-button-next"></div>
+            </div>
+        </div>
+        <div class="section_6" id="smoothScroll">
+            <h4 class="seeker-line"><img src="http://qncdn.sz-sti.com/mobile/threedimensional/seeker-line.png" /></h4>
+            <!-- <table border="0" class="table">
+                <tr v-for="list in datas.threedimensional.section_6.tabledata">
+                    <td v-text="list[0]"></td>
+                    <td v-text="list[1]"></td>
+                </tr>
+            </table> -->
+            <ul class="parameterlist">
+                <li v-for="list in datas.threedimensional.section_6.tabledata"><span v-text="list[0]"></span><span v-text="list[1]"></span></li>
+            </ul>
+            <a class="downloadbtn" href="/mobile/resource/<%=lang%>?name=seeker" v-text="datas.threedimensional.downloadbtn"></a>
+        </div>
+    </div>
+    
+    <script src="/index/js/smooth-scroll.min.js"></script>
+    <script type="text/javascript">
+        var wrapper = new Vue({
+            el: '#wrapper',
+            data: {
+                datas: <%-include("mobile_lang_"+lang, {lang: lang})%>
+            },
+            methods: {
+                smoothScroll: function(){
+                    $.smoothScroll({
+                        scrollTarget: '#smoothScroll',
+                        speed: 1200
+                    });
+                }
+            }
+        })
+        var mySwiper = new Swiper('.swiper-container', {
+            autoplay: 5000,  //自动滑动
+            pagination: '.swiper-pagination',  //分页
+            loop: true,  //循环
+            effect: 'flip', //切换效果
+            paginationClickable :true,
+        })
+        var mySwiper2 = new Swiper('.swiper-container2', {
+            autoplay: 5000,  //自动滑动
+            // pagination: '.swiper-pagination',  //分页
+            loop: true,  //循环
+            effect: 'flip', //切换效果
+            prevButton:'.swiper-button-prev',
+            nextButton:'.swiper-button-next'
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,701 @@
+<krpano version="1.18" title="<%=title1%>" onstart="startup();" showerrors="false">
+
+    <include url="/skin/editor-vtourskin.xml" />
+
+    <!-- set skin settings: bingmaps? gyro? thumbnails? tooltips? -->
+    <skin_settings maps="false"
+                   maps_zoombuttons="false"
+                   gyro="true"
+                   title="true"
+                   thumbs="true"
+                   thumbs_width="90" thumbs_height="60" thumbs_padding="10" thumbs_crop="0|40|250|210"
+                   thumbs_opened="false"
+                   thumbs_text="true"
+                   thumbs_dragging="true"
+                   thumbs_onhoverscrolling="true"
+                   thumbs_scrollbuttons="false"
+                   thumbs_scrollindicator="false"
+                   thumbs_loop="false"
+                   tooltips_thumbs="true"
+                   tooltips_hotspots="false"
+                   tooltips_mapspots="false"
+                   loadscene_flags="MERGE"
+                   loadscene_blend="BLEND(0.5)"
+                   controlbar_offset="20"
+    />
+
+    <!-- set optional skin logo url -->
+    <layer name="skin_logo" url="" scale="0.25" opened_onclick="openurl('...',_blank);" />
+    <action name="startup">
+        if(startscene === null, copy(startscene,scene[0].name));
+        loadscene(get(startscene), null, MERGE); 
+        set(newspotnum, '1');set(had_confirm, true);
+        if(device.mobile == true, set(layer[skin_thumbborder].scale, 0.735);set(stagescale,1.5);if(device.ios, set(layer[skin_thumbborder].scale, 0.485);set(stagescale,1);));
+        <%maps=[];%>  
+        <%is_360='1'%>    
+        <%if(is_360!='1'){%>
+        set(layer[hotspot_arrow0].alpha, 1);
+        set(layer[hotspot_arrow0_bg].alpha, 0);
+        layer[hotspot_arrow0].loadstyle(get(layer[skin_arrowborder].parent));
+        <%}%>
+        copy(had_ani_arrow, layer[hotspot_arrow0].name);
+        copy(arrow_type, 0);
+        copy(goscene_id, get(scene[0].id));
+        copy(deleteable, true);
+        copy(is_mosaic, false);
+        copy(is_hotimg, false);
+        set(mosaic_size, 1);
+        <%=romaing[0].imgcomments%>
+    </action>
+
+    <data name="bottom_html">
+        <p><%=text1%></p>
+        <p><%=text2%></p>
+        <p><%=text3%></p>
+    </data>
+
+
+    <!-- 箭头画面开始 -->
+    <layer name="mosaic_container2" state="closed" type="container" preload="true" handcursor="true" enabled="true" bgcolor="0x000000" bgalpha="0.3" children="true" zorder="90" y="160" maskchildren="true" align="leftbottom" keep="true" width="100%" height="0">
+            //在这里继续写马赛克功能
+        <layer name="small_mosaic" x="-120" align="center" crop="0|0|256|256" url="http://qncdn.sz-sti.com/images/tools/smile.png" scale="0.5" size="1" width="100" height="prop" onclick="mosaic_click();" />
+        <layer name="middle_mosaic" x="0" align="center" crop="0|0|256|256" url="http://qncdn.sz-sti.com/images/tools/smile.png" scale="0.65" size="2" width="100" height="prop" onclick="mosaic_click();" />
+        <layer name="big_mosaic" x="120" align="center" crop="0|0|256|256" url="http://qncdn.sz-sti.com/images/tools/smile.png" scale="0.8" size="3" width="100" height="prop" onclick="mosaic_click();" />
+    </layer>
+
+    <action name="mosaic_click">
+        copy(layer[skin_mosaicborder].parent, name);
+        mul(mosaic_size, get(size), 0.3);
+        copy(hotspot[newmosaic].scale, mosaic_size);
+    </action>
+
+    <action name="add_img">
+        addhotspot(addimg);
+        set(hotspot[newspot].visible, false);
+        set(hotspot[addimg].url,http://qncdn.sz-sti.com/images/tools/addimg.png);
+        set(hotspot[addimg].width,50);
+        set(hotspot[addimg].height,prop);
+        set(hotspot[addimg].ath,get(hotspot[newspot].ath));
+        set(hotspot[addimg].atv,get(hotspot[newspot].atv));
+    </action>
+
+    <action name="add_img_cancel">
+        removehotspot(addimg);
+        set(hotspot[newspot].visible, true);
+    </action>
+
+
+    <action name="add_img_sure">
+        txtadd(newaddimgname, addimg, get(newspotnum));
+        txtadd(newspotnum, get(newspotnum), 1);
+        addlayer(%3);
+        set(layer[%3].align, center);
+        set(layer[%3].width, 0);
+        set(layer[%3].height, 'prop');
+        set(layer[%3].url, %1);
+        set(layer[%3].onclick, ifnot(layer[%3].state == 'open', tween(layer[%3].width, 400, 0.5);set(layer[%3].state, 'open') , tween(layer[%3].width, 0, 0.5);set(layer[%3].state, 'hide');););
+        set(hotspot[addimg].onclick, if(deleteable, js(showcomments(%1,%2,%3)) , js(deleteComment(%2,get(newaddimgname)));););
+        copy(hotspot[addimg].name, newaddimgname);
+    </action>
+
+    <action name="add_mosaic">
+        ifnot(hotspot[newmosaic].state == 1, 
+
+            copy(had_confirm, false);
+            addhotspot(newmosaic);
+            set(had_confirm, false); 
+            set(hotspot[newmosaic].url,http://qncdn.sz-sti.com/images/tools/smile.png);
+            set(hotspot[newmosaic].ath,get(hotspot[newspot].ath));
+            set(hotspot[newmosaic].atv,get(hotspot[newspot].atv));
+            mul(newmosaicsize, layer[get(layer[skin_mosaicborder].parent)].size, 0.3);
+            set(hotspot[newmosaic].scale,get(newmosaicsize));
+            set(hotspot[newmosaic].state,1);
+            set(hotspot[newmosaic].distorted, true);
+            set(hotspot[newmosaic].visible,true);
+            set(layer[add_spot_submit].visible, true);
+            set(layer[add_spot_confirm].x, 60);
+            ,
+
+            copy(had_confirm, true);
+            set(hotspot[newmosaic].state,0);
+            set(hotspot[newmosaic].visible,false);
+            set(layer[add_spot_submit].visible, false);
+            set(layer[add_spot_confirm].x, 0);
+        );
+    </action>
+
+
+   
+    <layer name="skin_jump_scene"  keep="true" url="%SWFPATH%/plugins/textfield.swf" align="leftbottom" y="160" html="请选择跳转的场景和箭头样式" height="40" visible="false" background="true" width="100%"  border="false" enabled="true" backgroundalpha="0.3" css="text-align:center; color:#FFFFFF; font-family:黑体; font-size:14px; line-height:40px" />
+
+    <layer name="arrows_container1" type="container" preload="true" handcursor="true" enabled="true" children="true" zorder="90" y="60" maskchildren="true" align="leftbottom" keep="true" width="100%" height="100">
+        <layer name="arrows_container" type="container" preload="true" handcursor="true" enabled="true" children="true" zorder="90" bgcolor="0x000000" bgalpha="0.3" maskchildren="true" align="lefttop" keep="true" width="100%" height="0">
+
+            <%if(is_360=='1'||true){%>
+                <layer name="hotspot_arrow0" x="4%" align="leftcenter" crop="0|10|128|128" url="http://qncdn.sz-sti.com/images/tools/spot0.png" scale="0.6" id="0" width="15%" height="prop" onclick="copy(layer[skin_arrowborder].parent, name);change_to_ani();" />
+                <layer name="hotspot_arrow1" x="16%" align="leftcenter" crop="-12|20|128|128" url="http://qncdn.sz-sti.com/images/tools/spot1.png" scale="0.6" id="1" width="15%"  height="prop" onclick="copy(layer[skin_arrowborder].parent, name);change_to_ani();" />
+                <layer name="hotspot_arrow2" x="28%" align="leftcenter" crop="12|20|128|128" url="http://qncdn.sz-sti.com/images/tools/spot2.png" scale="0.6" id="2" width="15%"  height="prop" onclick="copy(layer[skin_arrowborder].parent, name);change_to_ani();" />
+                <layer name="hotspot_arrow3" x="40%" align="leftcenter" crop="0|20|128|128" url="http://qncdn.sz-sti.com/images/tools/spot3.png" scale="0.6" id="3" width="15%"  height="prop" onclick="copy(layer[skin_arrowborder].parent, name);change_to_ani();" />
+                <layer name="hotspot_arrow4" x="52%" align="leftcenter" crop="0|20|128|128" url="http://qncdn.sz-sti.com/images/tools/spot4.png" scale="0.6" id="4" width="15%"  height="prop" onclick="copy(layer[skin_arrowborder].parent, name);change_to_ani();" />
+                <layer name="hotspot_arrow5" x="64%" align="leftcenter" crop="0|20|128|128" url="http://qncdn.sz-sti.com/images/tools/spot5.png" scale="0.6" id="5" width="15%"  height="prop" onclick="copy(layer[skin_arrowborder].parent, name);change_to_ani();" />
+                <layer name="hotspot_arrow6" x="76%" align="leftcenter" crop="0|20|128|128" url="http://qncdn.sz-sti.com/images/tools/spot6.png" scale="0.6" id="6" width="15%"  height="prop" onclick="copy(layer[skin_arrowborder].parent, name);change_to_ani();" />
+                <layer name="hotspot_arrow7" x="88%" align="leftcenter" crop="5|23|128|128" url="http://qncdn.sz-sti.com/images/tools/spot7.png" scale="0.6" id="7" width="15%"  height="prop" onclick="copy(layer[skin_arrowborder].parent, name);change_to_ani();" />
+            <%}else{%>
+                <layer name="hotspot_arrow0_bg" x="4%" align="leftcenter" crop="0|0|128|128" url="http://qncdn.sz-sti.com/images/tools/spot0.png" scale="0.6" width="15%" height="prop" />
+                <layer name="hotspot_arrow0" x="4%" align="leftcenter" crop="0|20|128|128" scale="0.6" width="15%" id="0" onclick="copy(layer[skin_arrowborder].parent, name);change_to_ani();" height="prop" />
+                <layer name="hotspot_arrow1_bg" x="16%" align="leftcenter" crop="0|0|128|128" url="http://qncdn.sz-sti.com/images/tools/spot1.png" scale="0.6" width="15%" height="prop" />
+                <layer name="hotspot_arrow1" x="16%" align="leftcenter" crop="0|20|128|128" scale="0.6" width="15%" id="1" onclick="copy(layer[skin_arrowborder].parent, name);change_to_ani();" height="prop" />
+                <layer name="hotspot_arrow2_bg" x="28%" align="leftcenter" crop="0|0|128|128" url="http://qncdn.sz-sti.com/images/tools/spot2.png" scale="0.6" width="15%" height="prop" />
+                <layer name="hotspot_arrow2" x="28%" align="leftcenter" crop="0|20|128|128" scale="0.6" width="15%" id="2" onclick="copy(layer[skin_arrowborder].parent, name);change_to_ani();" height="prop" />
+                <layer name="hotspot_arrow3_bg" x="40%" align="leftcenter" crop="0|0|128|128" url="http://qncdn.sz-sti.com/images/tools/spot3.png" scale="0.6" width="15%" height="prop" />
+                <layer name="hotspot_arrow3" x="40%" align="leftcenter" crop="0|20|128|128" scale="0.6" width="15%" id="3" onclick="copy(layer[skin_arrowborder].parent, name);change_to_ani();" height="prop" />
+                <layer name="hotspot_arrow4_bg" x="52%" align="leftcenter" crop="0|0|128|128" url="http://qncdn.sz-sti.com/images/tools/spot4.png" scale="0.6" width="15%" height="prop" />
+                <layer name="hotspot_arrow4" x="52%" align="leftcenter" crop="0|20|128|128" scale="0.6" width="15%" id="4" onclick="copy(layer[skin_arrowborder].parent, name);change_to_ani();" height="prop" />
+                <layer name="hotspot_arrow5_bg" x="64%" align="leftcenter" crop="0|0|128|128" url="http://qncdn.sz-sti.com/images/tools/spot5.png" scale="0.6" width="15%" height="prop" />
+                <layer name="hotspot_arrow5" x="64%" align="leftcenter" crop="0|20|128|128" scale="0.6" width="15%" id="5" onclick="copy(layer[skin_arrowborder].parent, name);change_to_ani();" height="prop" />
+                <layer name="hotspot_arrow6_bg" x="76%" align="leftcenter" crop="0|0|128|128" url="http://qncdn.sz-sti.com/images/tools/spot6.png" scale="0.6" width="15%" height="prop" />
+                <layer name="hotspot_arrow6" x="76%" align="leftcenter" crop="0|20|128|128" scale="0.6" width="15%" id="6" onclick="copy(layer[skin_arrowborder].parent, name);change_to_ani();" height="prop" />
+                <layer name="hotspot_arrow7_bg" x="88%" align="leftcenter" crop="0|0|128|128" url="http://qncdn.sz-sti.com/images/tools/spot7.png" scale="0.6" width="15%" height="prop" />
+                <layer name="hotspot_arrow7" x="88%" align="leftcenter" crop="0|20|128|128" scale="0.6" width="15%" id="7" onclick="copy(layer[skin_arrowborder].parent, name);change_to_ani();" height="prop" />            
+            <%}%>
+        </layer>   
+    </layer>   
+    <!-- 箭头画面结束 -->
+
+    <%if(is_360=='1'){%>
+    <action name="change_to_ani">
+
+        ifnot(had_ani_arrow == name, 
+
+            removehotspot(newspot1);
+            addhotspot(newspot1);
+            copy(arrow_type, id);
+            hotspot[newspot1].loadstyle(get(name));
+            set(hotspot[newspot1].ath,get(hotspot[newspot].ath));
+            set(hotspot[newspot1].atv,get(hotspot[newspot].atv));
+            set(hotspot[newspot1].scale,0.6));
+
+            txtadd(tooltipname, 'arrow_', get(hotspot[newspot1].name));
+            addplugin(get(tooltipname));
+            txtadd(plugin[get(tooltipname)].parent, hotspot[newspot1]);
+            set(plugin[get(tooltipname)].url,'%SWFPATH%/plugins/textfield.swf');
+            set(plugin[get(tooltipname)].align,top);
+            set(plugin[get(tooltipname)].edge,top);
+            set(plugin[get(tooltipname)].x,0);
+            set(plugin[get(tooltipname)].y,0);
+            set(plugin[get(tooltipname)].width,80);
+            set(plugin[get(tooltipname)].autoheight,true);
+            set(plugin[get(tooltipname)].background,true);
+            set(plugin[get(tooltipname)].backgroundcolor,0x000000);
+            set(plugin[get(tooltipname)].roundedge,15);
+            set(plugin[get(tooltipname)].backgroundalpha,0.5);
+            set(plugin[get(tooltipname)].border,true);
+            set(plugin[get(tooltipname)].glow,2);
+            set(plugin[get(tooltipname)].glowcolor,0xFFFFFF);
+            set(plugin[get(tooltipname)].css,'text-align:center; color:#FFFFFF; font-family:Arial; font-weight:bold; font-size:12px;');
+            set(plugin[get(tooltipname)].textshadow,1);
+            set(plugin[get(tooltipname)].textshadowrange,6.0);
+            set(plugin[get(tooltipname)].textshadowangle,90);
+            copy(plugin[get(tooltipname)].html,layer[get(layer[skin_thumbborder].parent)].title);
+            set(plugin[get(tooltipname)].enabled,false);  
+            set(layer[get(back_bg_name)].visible, true);
+            copy(had_ani_arrow, name);
+        );
+    </action>
+    <%}else{%>
+    <action name="change_to_ani">
+
+        ifnot(had_ani_arrow == name, 
+            copy(name, name);
+            set(layer[get(name)].alpha, 1);
+            txtadd(bgname, '_bg');
+            set(layer[get(bgname)].alpha, 0);
+            copy(stylename, name);
+            layer[get(stylename)].loadstyle(get(name));
+            copy(arrow_type, id);
+            removehotspot(newspot1);
+            addhotspot(newspot1);
+            hotspot[newspot1].loadstyle(get(name));
+            set(hotspot[newspot1].ath,get(hotspot[newspot].ath));
+            set(hotspot[newspot1].atv,get(hotspot[newspot].atv));
+            set(hotspot[newspot1].scale,0.6));
+
+            txtadd(tooltipname, 'arrow_', get(hotspot[newspot1].name));
+            addplugin(get(tooltipname));
+            txtadd(plugin[get(tooltipname)].parent, hotspot[newspot1]);
+            set(plugin[get(tooltipname)].url,'%SWFPATH%/plugins/textfield.swf');
+            set(plugin[get(tooltipname)].align,top);
+            set(plugin[get(tooltipname)].edge,top);
+            set(plugin[get(tooltipname)].x,0);
+            set(plugin[get(tooltipname)].y,0);
+            set(plugin[get(tooltipname)].width,80);
+            set(plugin[get(tooltipname)].autoheight,true);
+            set(plugin[get(tooltipname)].background,true);
+            set(plugin[get(tooltipname)].backgroundcolor,0x000000);
+            set(plugin[get(tooltipname)].roundedge,15);
+            set(plugin[get(tooltipname)].backgroundalpha,0.5);
+            set(plugin[get(tooltipname)].border,true);
+            set(plugin[get(tooltipname)].glow,2);
+            set(plugin[get(tooltipname)].glowcolor,0xFFFFFF);
+            set(plugin[get(tooltipname)].css,'text-align:center; color:#FFFFFF; font-family:Arial; font-weight:bold; font-size:12px;');
+            set(plugin[get(tooltipname)].textshadow,1);
+            set(plugin[get(tooltipname)].textshadowrange,6.0);
+            set(plugin[get(tooltipname)].textshadowangle,90);
+            copy(plugin[get(tooltipname)].html,layer[get(layer[skin_thumbborder].parent)].title);
+            set(plugin[get(tooltipname)].enabled,false);  
+
+            set(layer[get(had_ani_arrow)].alpha, 0);
+            txtadd(back_bg_name, get(had_ani_arrow), '_bg');
+            set(layer[get(back_bg_name)].alpha, 1);
+            set(layer[get(back_bg_name)].visible, true);
+            copy(had_ani_arrow, name);
+        );
+    </action>
+    <%}%>
+
+
+    <!-- 底部广告图 -->
+    <hotspot name="bottom_background" url="http://qncdn.sz-sti.com/images/tools/bottom.png" enabled="true" keep="true" visible="" handcursor="false" ath="0" atv="90" rx="0.0" ry="0.0" rz="0.0" width="510" height="510" distorted="true" ondown="skin_view_change_with_hotspot();" />
+
+    <hotspot name="bottom_trademark" url="%SWFPATH%/plugins/textfield.swf" css="text-align:center; color:#494949; font-family:黑体; text-align:center;  font-size:40px;" enabled="true" keep="true" shadowangle="45" shadowrange="4.0" handcursor="false" background="false" ath="0" atv="90" rx="0.0" ry="0.0" rz="0.0" distorted="true" html="data:bottom_html" />
+
+    <!-- 顶部广告图 -->
+    <hotspot name="top_trademark"  type="image" url="<%=trademark%>?v=3" waittime="1" keep="true" devices="all" handcursor="false" ath="0" atv="-90" rx="0.0" ry="0.0" rz="0.0" width="360" height="360" distorted="true" ondown="skin_view_change_with_hotspot();" />
+
+    <hotspot name="preview-pointer" type="image" url="http://qncdn.sz-sti.com/images/tools/pointer.png" keep="true" width="72" height="72" scale="0.4" devices="flash" visible="false" ath="0" atv="0" rx="0.0" ry="0.0" rz="0.0" onclick="set(hotspot[get(name)].visible, false);js(hideeditor(););" />
+
+
+    <!-- 右键菜单 -->
+    <contextmenu fullscreen="false" 
+                native="false"    
+                enterfs="全屏查看"
+                exitfs="退出全屏"
+                touch="true"
+                versioninfo="false"
+                >
+    </contextmenu>
+
+    <style name="buttonstyle" url="http://qncdn.sz-sti.com/tools/editor-button2.png" />
+
+    <%for(i in romaing){%>
+
+        <scene name="scene<%=romaing[i].name%><%=romaing[i].id%>" title="<%=romaing[i].name%>" lat="" lng="" heading="" onstart="" id="<%=romaing[i].id%>" type="<%=romaing[i].key.split('_')[0].length%>" thumburl="<%if((romaing[i].type==5||romaing[i].type==6||romaing[i].type==9)||romaing[i].key.split('_')[0].length==10){%>http://qncdn.sz-sti.com/pano/<%=romaing[i].key.split('_')[0]%>.tiles/mobile_f.jpg<%}else{%>http://qncdn.sz-sti.com/images/scenes/<%=romaing[i].key.split('_')[0]%>/allinone.jpg?imageMogr2/gravity/NorthWest/crop/!1024x1024a0a<%if(romaing[i].scenestyle==3||romaing[i].scenestyle==4){%>70<%}%>0/thumbnail/!25p<%}%>">
+
+            <hotspot name="newspot" type="image" url="http://qncdn.sz-sti.com/images/tools/pointer.png" ath="0" atv="0" scale="0.5" visible="false" ondown="draghotspot()"
+                     />
+
+            <%for(var ic in romaing[i].imgcomments){%>
+                <hotspot name="imgc<%=romaing[i].imgcomments[ic].id%>" url="http://qncdn.sz-sti.com/images/tools/addimg.png" width="50" height="prop" atv="<%=romaing[i].imgcomments[ic].position_y%>" ath="<%=romaing[i].imgcomments[ic].position_x%>" onclick="if(deleteable, js(showcomments('http://qncdn.sz-sti.com/images/slogan/<%=romaing[i].key.split('_')[0]%>/<%=romaing[i].imgcomments[ic].id%>/allinone.jpg',<%=romaing[i].imgcomments[ic].hotimg_name%>,<%=romaing[i].imgcomments[ic].hotimg_des%>));, js(deleteComment(<%=romaing[i].imgcomments[ic].id%>,get(name))););"/> 
+                <layer name="imgcomments<%=romaing[i].imgcomments[ic].id%>" state="hide" url="http://qncdn.sz-sti.com/images/slogan/<%=romaing[i].key.split('_')[0]%>/<%=romaing[i].imgcomments[ic].id%>/allinone.jpg" width="0" height="prop" align="center" onclick="if(state == 'hide', tween(width, 400, 0.5);set(state, 'open') , tween(width, 0, 0.5);set(state, 'hide'););" />
+            <%}%>
+
+            <events keep="true" onclick="if(deleteable, if(had_confirm, move_new_spot();set(layer[add_spot_confirm].visible, true);))"/>
+
+            <action name="move_new_spot">
+                screentosphere(mouse.stagex, mouse.stagey, ath, atv);
+                set(hotspot[newspot].ath, get(ath));
+                set(hotspot[newspot].atv, get(atv));
+                set(hotspot[newspot].visible, true);
+            </action>
+
+            <layer name="add_spot_confirm" style="buttonstyle" crop="27|780|151|60" align="bottomcenter" scale=" <%if(platform.indexOf('pc')!=-1){%>0.5<%}else{%>0.4<%}%>" x="0" y="20" visible="false" 
+            onclick="ifnot(is_mosaic, 
+                ifnot(is_hotimg,
+                    skin_showthumbs();
+                    addspot_confirm1();
+                    addspot_confirm2();
+                    ,
+                    js(callcomment(get(hotspot[newspot].atv), get(hotspot[newspot].ath)));
+                    add_img();
+                )
+                , 
+                skin_showmosaic();
+                add_mosaic();
+            );" html="开始按钮" />
+
+            <layer name="add_spot_add" style="buttonstyle" <%if(platform.indexOf('pc')!=-1){%>align="lefttop" y="20" x="20" <%}else{%>align="lefttop" x="10" y="10"<%}%> crop="0|300|205|60" scale="0.4" 
+            onclick="set(deleteable, true);set(layer[add_spot_add].crop, 0|300|205|60);set(layer[add_spot_delete].crop, 0|360|205|60);
+                set(hotspot[newspot].visible, true);
+                set(layer[switch_add_spot].visible, true);
+                set(layer[switch_add_mosaic].visible, true);
+                set(layer[add_spot_confirm].visible, true);" 
+                html="添加模式"/>
+
+            <layer name="add_spot_delete" style="buttonstyle" <%if(platform.indexOf('pc')!=-1){%>align="lefttop" y="20" x="102"<%}else{%>align="lefttop" x="10" y="40"<%}%> crop="0|360|205|60" scale="0.4" 
+            onclick="set(deleteable, false);
+                set(layer[add_spot_add].crop, 0|480|205|60);
+                set(layer[add_spot_delete].crop, 0|420|205|60);
+                set(hotspot[newspot].visible, false);
+                set(layer[add_spot_confirm].visible, false);
+                <%if(platform.indexOf('pc')==-1){%>
+                    set(layer[switch_add_spot].visible, false);
+                    set(layer[switch_add_mosaic].visible, false);
+                <%}%>
+            " 
+            html="删除模式"/>
+
+
+            <layer name="switch_add_spot" style="buttonstyle" crop="34|180|136.66|60" scale="0.4" <%if(platform.indexOf('pc')!=-1){%>align="righttop" y="20" x="20"<%}else{%>align="centertop" y="10" x="0"<%}%> 
+            onclick="ifnot(hotspot[newmosaic].state == 1, 
+                ifnot(layer[skin_thumbs].state == 'opened', 
+                    set(is_mosaic, false);
+                    set(is_hotimg, false);
+                    set(layer[switch_add_spot].crop, 34|180|136.66|60);
+                    set(layer[switch_add_mosaic].crop, 34|120|136.66|60);
+                    set(layer[switch_add_comment].crop, 34|840|136.66|60);)
+                );" 
+            html="添加指引点"
+            />
+
+            <layer name="switch_add_mosaic" style="buttonstyle" crop="34|120|136.66|60" scale="0.4" <%if(platform.indexOf('pc')!=-1){%>align="righttop" x="74.66" y="20"<%}else{%>align="centertop" y="40" x="0"<%}%> 
+                onclick="ifnot(hotspot[newmosaic].state == 1, 
+                    ifnot(layer[skin_thumbs].state == 'opened', 
+                        set(is_mosaic, true);
+                        set(is_hotimg, false);
+                        set(layer[switch_add_spot].crop, 34|0|136.66|60);
+                        set(layer[switch_add_mosaic].crop, 34|60|136.66|60);
+                        set(layer[switch_add_comment].crop, 34|840|136.66|60);)
+                    );" 
+                html="添加马赛克"/>
+
+            <layer name="switch_add_comment" style="buttonstyle" crop="34|840|138.66|60" <%if(platform.indexOf('pc')!=-1){%> align="topright" scale="0.4" y="20" x="130.31"<%}else{%> visible="false" align="topleft" y="10" scale="0.4" x="10"<%}%> 
+            onclick="<%if(!expire){%>
+                ifnot(hotspot[newmosaic].state == 1, 
+                    ifnot(layer[skin_thumbs].state == 'opened',
+                    set(is_mosaic, false);
+                    set(is_hotimg, true);
+                ));
+                set(layer[switch_add_spot].crop, 34|0|136.66|60);
+                    set(layer[switch_add_mosaic].crop, 34|120|136.66|60);
+                    set(layer[switch_add_comment].crop, 34|540|136.66|60);
+                );<%}else{%>js(showmsg());<%}%>" 
+            html="添加图片热点" />
+
+
+            <layer name="set_view" style="buttonstyle" crop="0|240|205|60"<%if(platform.indexOf('pc')!=-1){%> align="centertop"  x="0" y="20"<%}else{%> align="righttop"  x="10" y="10"<%}%> scale="0.4" onclick="js(setView(get(view.hlookat), get(view.vlookat)));" html="设置默认视角"/>
+
+            <layer name="add_spot_submit" style="buttonstyle" crop="27|720|151|60" align="bottomcenter" scale="<%if(platform.indexOf('pc')!=-1){%>0.5<%}else{%>0.4<%}%>" x="-60" y="20" onclick="ifnot(is_mosaic, sure_add_spot();js(newaddSpot(get(hotspot[newspot].ath), get(hotspot[newspot].atv), get(layer[get(layer[skin_arrowborder].parent)].id), get(layer[get(layer[skin_thumbborder].parent)].goscene_id), get(layer[get(layer[skin_thumbborder].parent)].title)));, sure_add_mosaic());set(layer[add_spot_confirm].crop, 27|780|151|60);" visible="false" />
+
+            <action name="sure_add_mosaic">
+                skin_showmosaic();
+                set(layer[add_spot_submit].visible, false);
+                set(layer[add_spot_confirm].visible, false);
+                set(layer[add_spot_confirm].x, 0);
+                txtadd(newmosaicname, newmosaic, get(newspotnum));
+                txtadd(newspotnum, get(newspotnum), 1);
+                copy(hotspot[newmosaic].name, newmosaicname);
+                copy(had_confirm, true);
+                js(savename(get(newmosaicname)));
+                js(add_comment(get(hotspot[newspot].ath), 
+                    get(hotspot[newspot].atv),get(layer[get(layer[skin_mosaicborder].parent)].size)));set(hotspot[get(newmosaicname)].onclick, 
+                    ifnot(deleteable, 
+                        js(deleteComment(get(newmosaicname), get(newmosaicname)));
+                    )
+                );
+            </action>
+
+
+            <action name="addspot_confirm1">
+                if(had_confirm, 
+                    set(layer[add_spot_confirm].crop, 27|660|151|60);
+                    set(hotspot[newspot].visible, false);
+                    copy(had_confirm, false);
+                    set(layer[add_spot_submit].visible, true);
+                    set(layer[add_spot_confirm].x, 60);
+                    , 
+
+                    set(layer[add_spot_confirm].crop, 27|780|151|60);
+                    removehotspot(newspot1);
+                    removeplugin(get(tooltipname));
+                    set(hotspot(newspot1).visible, false);
+                    copy(had_confirm, true);
+                    set(hotspot[newspot].visible, true);
+                    set(layer[add_spot_submit].visible, false);
+                    set(layer[add_spot_confirm].x, 0);
+                );
+            </action>
+
+            <action name="sure_add_spot">
+                ifnot(scene[get(xml.scene)].id == layer[get(layer[skin_thumbborder].parent)].goscene_id, txtadd(newname, newspot1, get(newspotnum));txtadd(newspotnum, get(newspotnum), 1);copy(hotspot[newspot1].name, newname);skin_showthumbs();copy(had_confirm, true);copy(plugin[get(tooltipname)].name, newname);set(layer[add_spot_confirm].visible, false);set(layer[add_spot_confirm].crop, 27|660|151|60);set(layer[add_spot_submit].visible, false);
+                    set(layer[add_spot_confirm].x, 0);js(savename(get(newname)));set(hotspot[get(newname)].onclick, ifnot(deleteable, js(deleteSpot(get(newname), get(newname)));removeplugin(get(newname));)););
+            </action>
+
+            <action name="addspot_confirm2">
+                ifnot(had_confirm, 
+                    addhotspot(newspot1);
+                    hotspot[newspot1].loadstyle(get(layer[skin_arrowborder].parent));
+                    set(hotspot[newspot1].ath,get(hotspot[newspot].ath));
+                    set(hotspot[newspot1].atv,get(hotspot[newspot].atv));
+                    set(hotspot[newspot1].scale,0.6));
+
+                    
+                    txtadd(tooltipname, 'arrow_', get(hotspot[newspot1].name));
+                    addplugin(get(tooltipname));
+                    txtadd(plugin[get(tooltipname)].parent, 'hotspot[', get(hotspot[newspot1].name), ']');
+                    set(plugin[get(tooltipname)].url,'%SWFPATH%/plugins/textfield.swf');
+                    set(plugin[get(tooltipname)].align,top);
+                    set(plugin[get(tooltipname)].edge,top);
+                    set(plugin[get(tooltipname)].x,0);
+                    set(plugin[get(tooltipname)].y,0);
+                    set(plugin[get(tooltipname)].width,80);
+                    set(plugin[get(tooltipname)].autoheight,true);
+                    set(plugin[get(tooltipname)].background,true);
+                    set(plugin[get(tooltipname)].backgroundcolor,0x000000);
+                    set(plugin[get(tooltipname)].roundedge,15);
+                    set(plugin[get(tooltipname)].backgroundalpha,0.5);
+                    set(plugin[get(tooltipname)].border,true);
+                    set(plugin[get(tooltipname)].glow,4);
+                    set(plugin[get(tooltipname)].glowcolor,0xFFFFFF);
+                    set(plugin[get(tooltipname)].css,'text-align:center; color:#FFFFFF; font-family:Arial; font-weight:bold; font-size:12px;');
+                    set(plugin[get(tooltipname)].textshadow,1);
+                    set(plugin[get(tooltipname)].textshadowrange,6.0);
+                    set(plugin[get(tooltipname)].textshadowangle,90);
+                    copy(plugin[get(tooltipname)].html,scene[0].title);
+                    set(plugin[get(tooltipname)].enabled,false); 
+                    removeplugin(arrow_null);
+                );
+            </action>
+
+
+            <plugin name="hotspotinfo" keep="true" url="%SWFPATH%/plugins/textfield.swf" html="drag the hotspots..." css="font-family:Courier;" border="false" visible="false" selectable="true" align="left" y="-100" width="200" height="80"/>
+
+
+            <action name="draghotspot">
+            <![CDATA[
+                if(%1 != dragging,
+                    spheretoscreen(ath, atv, hotspotcenterx, hotspotcentery);
+                    sub(drag_adjustx, mouse.stagex, hotspotcenterx); 
+                    sub(drag_adjusty, mouse.stagey, hotspotcentery); 
+                    draghotspot(dragging);
+                    ,
+                    if(pressed,
+                    sub(dx, mouse.stagex, drag_adjustx);
+                    sub(dy, mouse.stagey, drag_adjusty);
+                    screentosphere(dx, dy, ath, atv);
+                    copy(print_ath, ath);
+                    copy(print_atv, atv);
+                    roundval(print_ath, 3);
+                    roundval(print_atv, 3);
+                    delayedcall(0, draghotspot(dragging) );
+                );
+             );
+            ]]>
+            </action>
+
+        <%if((rx*ry)==0){%>
+            <%if(romaing[i].is_new==1){%>
+                <view hlookat="<%=-romaing[i].rx%>" vlookat="<%=-romaing[i].ry%>" fovtype="MFOV" fov="110.000" maxpixelzoom=" " fovmin="100" fovmax="110" limitview="auto" />
+            <%}else{%>
+                <view hlookat="<%=-romaing[i].ry%>" vlookat="<%=-romaing[i].rx%>" fovtype="MFOV" fov="110.000" maxpixelzoom=" " fovmin="100" fovmax="110" limitview="auto" />
+            <%}%>
+        <%}else{%>
+            <view hlookat="<%=rx%>" vlookat="<%=ry%>" fovtype="MFOV" fov="110.000" maxpixelzoom=" " fovmin="100" fovmax="110" limitview="auto" />
+        <%}%>
+
+        <%if(romaing[i].type==5||romaing[i].type==6){%>
+
+
+            <view hlookat="<%=romaing[i].is_new==1?-romaing[i].rx:-romaing[i].ry%>" vlookat="0" fovtype="MFOV" fov="120.000" maxpixelzoom="" fovmin="60" fovmax="130" limitview="auto" />
+            
+            <preview url="<%if(romaing[i].type==6){%>http://qncdn.sz-sti.com<%}%>/pano/<%=romaing[i].key.split('_')[0]%>.tiles/preview.jpg" />
+
+            <image type="CUBE" multires="true" tilesize="512">
+                <level tiledimagewidth="<%=romaing[i].width?romaing[i].width.split('|')[0]:''%>" tiledimageheight="<%=romaing[i].width?romaing[i].width.split('|')[0]:''%>">
+                    <cube url="<%if(romaing[i].type==6){%>http://qncdn.sz-sti.com<%}%>/pano/<%=romaing[i].key.split('_')[0]%>.tiles/mres_%s/l2/%v/l2_%s_%v_%h.jpg" />
+                </level>
+                <level tiledimagewidth="<%=romaing[i].width?romaing[i].width.split('|')[1]:''%>" tiledimageheight="<%=romaing[i].width?romaing[i].width.split('|')[1]:''%>">
+                    <cube url="<%if(romaing[i].type==6){%>http://qncdn.sz-sti.com<%}%>/pano/<%=romaing[i].key.split('_')[0]%>.tiles/mres_%s/l1/%v/l1_%s_%v_%h.jpg" />
+                </level>
+
+                <mobile>
+                    <cube url="<%if(romaing[i].type==6){%>http://qncdn.sz-sti.com<%}%>/pano/<%=romaing[i].key.split('_')[0]%>.tiles/mobile_%s.jpg" />
+                </mobile>
+            </image>
+
+        <%}else if(romaing[i].type==9){%>
+
+            <image type="CUBE" multires="true" tilesize="512">]
+                <level tiledimagewidth="<%=romaing[i].width.split('|')[0]%>" tiledimageheight="<%=romaing[i].width.split('|')[0]%>">
+                    <cube url="http://qncdn.sz-sti.com/pano/<%=romaing[i].key.split('_')[0]%>.tiles/mres_%s/l1/%v/l1_%s_%v_%h.jpg"/>
+                </level>
+
+                <mobile>
+                    <cube url="http://qncdn.sz-sti.com/pano/<%=romaing[i].key.split('_')[0]%>.tiles/mobile_%s.jpg"/>
+                </mobile>
+            </image>
+
+        <%}else{%>
+
+            <view hlookat="<%=romaing[i].is_new==1?-romaing[i].rx:-romaing[i].ry%>" vlookat="0" fovtype="MFOV" fov="120.000" maxpixelzoom="" fovmin="60" fovmax="130" limitview="auto" />
+        
+
+            <%if(romaing[i].scenestyle==3||romaing[i].scenestyle==4){%>//电脑端上传的一比二全景
+                <image type="SPHERE">
+                    <sphere url="http://qncdn.sz-sti.com/images/scenes/<%=romaing[i].key.split('_')[0]%>/allinone.jpg?imageMogr2/interlace/0/thumbnail/!100p" flip="" />
+                </image>
+            <%}else{%>
+                <%if(width==5000){width=1248}%>
+                <image type="CUBE"  stereo="true" stereolabels="l|r" tilesize="512">
+                    <% towards=['front','down','left','back','up','right'];%>
+                    <% rotates=[0,90,0,0,270,0];%>
+                    <%for(var s in towards){%>
+                        <<%=towards[s]%>  url="http://qncdn.sz-sti.com/images/scenes/<%=romaing[i].key.split('_')[0]%>/allinone.jpg?imageMogr2/gravity/NorthWest/crop/!<%=width%>x<%=width%>a0a<%=s*width%>/interlace/0/thumbnail/!100p/rotate/<%=rotates[s]%>" flip="" />
+                    <%}%>
+                </image>
+            <%}%>
+        <%}%>
+
+
+
+
+
+        <%if(romaing[i].scenestyle==3||romaing[i].scenestyle==4){%>//电脑端上传的一比二全景
+            <image type="SPHERE">
+                <sphere url="http://qncdn.sz-sti.com/images/scenes/<%=romaing[i].key.split('_')[0]%>/allinone.jpg?imageMogr2/interlace/0/thumbnail/!100p" flip="" />
+            </image>
+        <%}else{%>
+            <%if(width==5000){width=1248}%>
+            <image type="CUBE"  stereo="true" stereolabels="l|r" tilesize="512">
+                <% towards=['front','down','left','back','up','right'];%>
+                <% rotates=[0,90,0,0,270,0];%>
+                <%for(var s in towards){%>
+                    <<%=towards[s]%>  url="http://qncdn.sz-sti.com/images/scenes/<%=romaing[i].key.split('_')[0]%>/allinone.jpg?imageMogr2/gravity/NorthWest/crop/!<%=width%>x<%=width%>a0a<%=s*width%>/interlace/0/thumbnail/!100p/rotate/<%=rotates[s]%>" flip="" />
+                <%}%>
+            </image>
+        <%}%>
+
+        <!-- 自动旋转设置 -->
+        <autorotate enabled="false"
+                    waittime="0.5"
+                    accel="1.0"
+                    speed="12.0"
+                    horizon="0.0"
+                    tofov="off"
+                    />
+
+
+        // 漫游点
+        <%for(var k in romaing[i].links){%>
+            <hotspot name="spot<%=k%>"
+                    url="http://qncdn.sz-sti.com/images/tools/spot<%=romaing[i].links[k].type%>.png?imageMogr2/crop/!128x85a0a30/thumbnail/!200p"
+                    style="skin_hotspotstyle"
+                    <%if(romaing[i].links[k].is_new==1){%>
+                    ath="<%=romaing[i].links[k].position_x%>"
+                    atv="<%=romaing[i].links[k].position_y%>" 
+                    <%}else{%>
+                    ath="<%=romaing[i].links[k].ry%>"
+                    atv="<%=romaing[i].links[k].rx%>" 
+                    <%}%>
+                    scale="0.6"
+                    onloaded="loadstyle(hotspot_arrow<%=romaing[i].links[k].type%>);add_all_the_time_tooltip();"
+                    linkid="<%=romaing[i].links[k].id%>"
+                    onclick="ifnot(deleteable, js(deleteSpot(get(linkid),get(name))));"
+                    linkedscene="scene<%=romaing[i].links[k].text%><%=romaing[i].links[k].scene_id%>" 
+                    />
+        <%}%> 
+
+        // 马赛克
+        <%for(var k in romaing[i].comments){%>
+            <%if(romaing[i].comments[k].is_new==1){%>
+            <hotspot name="comments<%=k%>"
+                    url="http://qncdn.sz-sti.com/images/tools/smile.png"
+                    ath="<%=romaing[i].comments[k].position_x%>"
+                    atv="<%=romaing[i].comments[k].position_y%>" 
+                    handcursor="false"
+                    distorted="true"
+                    onclick="ifnot(deleteable, js(deleteComment(get(commentid),get(name)));ifnot(device.html5, set(visible, false)););"
+                    commentnew="<%=romaing[i].comments[k].is_new%>"
+                    commentid="<%=romaing[i].comments[k].id%>"
+                    <%if(romaing[i].comments[k].is_mosaic==3){%>
+                    scale="0.8"
+                    <%}else if(romaing[i].comments[k].is_mosaic==2){%>
+                    scale="0.6"
+                    <%}else{%>
+                    scale="0.4"
+                    <%}%>
+                    />
+            <%}%>
+        <%}%> 
+    </scene>
+    <%}%>
+
+    //定义行为
+    <action name="add_title">
+        if(skin_settings.title,
+            if(title, txtadd(layer[scene_title].html, get(title), ' - ', get(scene[get(xml.scene)].title) ); , copy(layer[scene_title].html, scene[get(xml.scene)].title ); );
+            delayedcall(0.1, set(layer[scene_title].visible,true) );
+        );
+    </action>
+
+
+
+    <!-- flyout hotspot actions -->
+    <action name="flyout_hotspot">
+        for(set(i,0), i LT hotspot.count, inc(i),
+            copy(hs, hotspot[get(i)]);
+            if(hs.name != name AND hs.style == 'flyoutimage' AND (hs.flying_state == 'out' OR hs.flying_state == 'flyingout'),
+                callwith(hs, flyout_hotspot() );
+              );
+          );
+
+        if(flying_state == 'flyingout',
+            set(flying_state, 'flyingin');
+          ,
+            if(flying_state == 'flyingin',
+                set(flying_state, 'flyingout');
+              );
+          );
+
+        if(flying_state == 'in',
+            calc(backup_state, '0.0|' + rx + '|' + ry + '|' + rz + '|' + scale);
+            copy(backup_zorder, zorder);
+            set(flying_state, 'flyingout');
+          );
+
+        if(flying_state == 'out',
+            set(flying_state, 'flyingin');
+          );
+
+        if(flying_state == 'flyingout',
+            set(zorder, 99);
+            tween(flying|rx|ry|rz|scale, '1.0|0.0|0.0|0.0|1.0', 0.5, default, set(flying_state,'out'); set(capture,true); );
+          );
+
+        if(flying_state == 'flyingin',
+            sub(zorder,1);
+            set(capture,false);
+            tween(flying|rx|ry|rz|scale, get(backup_state), 0.5, default, set(flying_state,'in'); copy(zorder,backup_zorder); );
+          );
+    </action>
+
+    <!-- use a <style> to share the same attriubtes for all hotspots -->
+    <style name="flyoutimage"
+           distorted="true"
+           flying="0.0"
+           backup_state=""
+           backup_zorder=""
+           flying_state="in"
+           capture="false"
+           onclick="flyout_hotspot()"
+           />
+
+
+    <events keep="true"
+            onclick="js(passRxandRy(get(view.hlookat), get(view.vlookat), get(view.fov), get(mouse.x), get(mouse.y), click, get(area.pixelwidth),  get(area.pixelheight))););"
+            onviewchange="js(passRxandRy(get(view.hlookat), get(view.vlookat), get(view.fov), get(mouse.x), get(mouse.y), mousemove););"
+            onloadcomplete="
+                ifnot(device.html5, js(showtips()));
+                js(passRxandRy(get(view.hlookat), get(view.vlookat), get(view.fov), get(mouse.x), get(mouse.y), false););
+                set(control.mousetype, drag2d);
+                js(hideloading());
+                if(device.mobile == true, add(layer[skin_scroll_window].y, 100);
+                    set(layer[skin_thumbborder].scale, 0.48);
+                    if(device.ios, set(layer[skin_thumbborder].scale, 0.485);)
+                );
+                ifnot(layer[skin_title_logo3].enabled,
+                set(layer[skin_title_logo3].enabled,true);
+                set(layer[skin_title_pr].enabled,true);
+                delayedcall(startpic1,1.5,tween(layer[startpic_container].ox,-2500,1));
+                delayedcall(startpic2,2.5,set(layer[startpic_container].enabled,false);set(layer[startpic_container].visible,false));)"
+            />
+</krpano>

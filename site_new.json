@@ -1,0 +1,1600 @@
+{
+    "name": "Microsoft Healthcare Digital Transformation 3D solution",
+    "version": "1.0.0",
+    "header": {
+        "logo": [
+            "/assets/images/ms-logo.png",
+            "/assets/images/ms-logo-empower.jpg"
+        ],
+        "buttons": [
+            {
+                "url": "#",
+                "extraClass": "ui-btn--light ui-btn--small hamburger-link",
+                "label": null,
+                "icon": "icon-hamburger"
+            },
+            {
+                "url": "#",
+                "extraClass": "ui-btn--light ui-btn--large share-link",
+                "label": "Share",
+                "icon": null
+            }
+        ],
+        "menu": [
+            {
+                "label": "Home",
+                "url": "/pillar/0"
+            },
+            {
+                "label": "Engage your patients",
+                "url": "/pillar/1"
+            },
+            {
+                "label": "Empower your care teams",
+                "url": "/pillar/2"
+            },
+            {
+                "label": "Optimize your clinical and operational effectiveness",
+                "url": "/pillar/3"
+            },
+            {
+                "label": "Transform the care continuum",
+                "url": "/pillar/4"
+            }
+        ],
+        "social": {
+            "colorTheme": "dark",
+            "items": [
+                {
+                    "name": "twitter",
+                    "icon": "icon-twitter",
+                    "url": "https://twitter.com/intent/tweet?text=Microsoft%20in%20Health%20Digital%20Transformation%20focuses%20on%20optimizing%20your%20clinical%20needs%20and%20operational%20effectiveness!&url=http://bit.ly/29MfPDe",
+                    "target": "_blank"
+                },
+                {
+                    "name": "linkedin",
+                    "icon": "icon-linkedin",
+                    "url": "https://www.linkedin.com/shareArticle?url=http://bit.ly/29MfPDe&title=Learn%20more%20about%20Microsoft%20digital%20solutions%20in%20healthcare.%20See%20some%20tips%20from%20Microsoft",
+                    "target": "_blank"
+                },
+                {
+                    "name": "facebook",
+                    "icon": "icon-facebook",
+                    "url": "https://www.facebook.com/sharer/sharer.php?u=http://bit.ly/29MfPDe",
+                    "target": "_blank"
+                },
+                {
+                    "name": "email",
+                    "icon": "icon-envelope",
+                    "url": "mailto:?subject=Engage%20your%20patients%20and%20empower%20your%20care%20teams%20with%20the%20help%20of%20Microsoft%20in%20health&amp;body=Check out some helpful hints from%20%23Microsoft%20%20http%3A%2F%2Fhealthdigitaltransformation.com%2F",
+                    "target": "_self"
+                }
+            ]
+        }
+    },
+    "filters": [
+        {
+            "name": "hotspot-filter",
+            "type": "radio",
+            "filterId": 0,
+            "label": "All Content",
+            "value": "*",
+            "isChecked": true
+        },
+        {
+            "name": "hotspot-filter",
+            "type": "radio",
+            "filterId": 1,
+            "label": "Engage Your Paitens",
+            "value": "engage",
+            "isChecked": false
+        },
+        {
+            "name": "hotspot-filter",
+            "type": "radio",
+            "filterId": 2,
+            "label": "Empower your care teams",
+            "value": "empower",
+            "isChecked": false
+        }
+    ],
+    "home": {
+        "content": {
+            "title": "Microsoft in Health Digital Transformation",
+            "subtitle": "",
+            "body": "Health needs are infinite, but your resources finite. Microsoft’s powerful and intelligent cloud platforms can enable your digital transformation, helping you better engage your patients, empower your care teams, optimize your clinical and operational effectiveness, and transform the care continuum for your organization.",
+            "images": [
+                "/assets/images/map/picture-front.jpg"
+            ],
+            "button": {
+                "path": "/pillar/0",
+                "label": "See more"
+            },
+            "autoFadeAwayDelayMilliseconds": 3000,
+            "instruction": [
+                {
+                    "text": "Move your mouse over hotspots to explore",
+                    "img": "/assets/images/mouse.png"
+                },
+                {
+                    "text": "Tap on hotspots to explore",
+                    "img": "/assets/images/pointer.png"
+                }
+            ]
+        }
+    },
+    "pillars": [
+        {
+            "name": "landing",
+            "pid": 0,
+            "hidePageHeader": true,
+            "nodeTeaser": {
+                "title": "Individuals and communities around the world are healthier",
+                "body": "Tap the power and intelligence of the Microsoft Cloud to better engage your patients, empower your care teams, optimize your clinical and operational effectiveness, and transform the care continuum.",
+                "bodyteaser": "Tap the power and intelligence of the Microsoft Cloud to better engage your patients."
+            },
+            "map": {
+                "name": "Microsoft in Health",
+                "mapImgSrc": "/assets/images/map/picture-main2.jpg",
+                "hotspots": [
+                    {
+                        "id": 0,
+                        "label": "Engage your patients",
+                        "path": "/pillar/1",
+                        "teaserTitle": "Engage your patients",
+                        "teaser": "Experiences that engage patients to get —and stay—healthy",
+                        "teaserImage": "/assets/images/teaser/picture-01-engage-b-thumb.jpg",
+                        "x": 1350,
+                        "y": 350,
+                        "anchor": "tr"
+                    },
+                    {
+                        "id": 1,
+                        "label": "Empower your care teams",
+                        "path": "/pillar/2",
+                        "teaserTitle": "Empower your care teams",
+                        "teaser": "Innovation that empowers care teams",
+                        "teaserImage": "/assets/images/teaser/picture-02-empower-02-thumb.jpg",
+                        "x": 633,
+                        "y": 598,
+                        "anchor": "tl"
+                    },
+                    {
+                        "id": 2,
+                        "label": "Optimize your clinical and<br/>operational effectiveness",
+                        "path": "/pillar/3",
+                        "teaserTitle": "Optimize your clinical and operational effectiveness",
+                        "teaser": "Drive better diagnoses and treatment",
+                        "teaserImage": "/assets/images/teaser/picture-03-optimize-02-thumb.jpg",
+                        "x": 654,
+                        "y": 378,
+                        "anchor": "bl"
+                    },
+                    {
+                        "id": 3,
+                        "label": "Transform the care<br/>continuum",
+                        "path": "/pillar/4",
+                        "teaserTitle": "Transform the care continuum",
+                        "teaser": "Raise the quality of care",
+                        "teaserImage": "/assets/images/teaser/picture-04-trans-02-thumb.jpg",
+                        "x": 987,
+                        "y": 522,
+                        "anchor": "tl"
+                    }
+                ]
+            }
+        },
+        {
+            "name": "Engage your patients",
+            "pid": 1,
+            "nodeTeaser": {
+                "title": "Engage patients to get—and stay—healthy",
+                "body": "Enable more efficient access to care, reduce delays in the care experience, and maintain contact with patients outside the care setting.",
+                "bodyteaser": "Enable more efficient access to care, reduce delays ..."
+            },
+            "map": {
+                "isAccordian": true,
+                "name": "Engage your patients",
+                "mapImgSrc": "/assets/images/map/picture-01-engage-b.jpg",
+                "hotspots": [
+                    {
+                        "id": 0,
+                        "label": "Mobile Care Worker",
+                        "path": "/pillar/1/scenario/0",
+                        "teaserTitle": "Mobile Care Worker",
+                        "teaser": "Securely connect care workers and clinicians to the information and people they need, wherever they are.",
+                        "teaserImage": "/assets/images/scenario/more_efficient_access.jpg",
+                        "x": 0,
+                        "y": 0,
+                        "anchor": "tr",
+                        "button": {
+                            "type": "link",
+                            "label": "Learn More",
+                            "extraClass": "ui-btn--large ui-btn--transparent"
+                        },
+                        "icon": "icon-Mobile-Care-Worker"
+                    },
+                    {
+                        "id": 1,
+                        "label": "Patient Engagement",
+                        "path": "/pillar/1/scenario/1",
+                        "teaserTitle": "Patient Engagement",
+                        "teaser": "Enable new ways of connecting with patients before, during and after their interaction with caregivers using Microsoft platforms and technologies.",
+                        "teaserImage": "/assets/images/scenario/more_efficient_engagement.jpg",
+                        "x": 0,
+                        "y": 0,
+                        "anchor": "tr",
+                        "button": {
+                            "type": "link",
+                            "label": "Learn More",
+                            "extraClass": "ui-btn--large ui-btn--transparent"
+                        },
+                        "icon": "icon-Patient-Engagement"
+                    },
+                    {
+                        "id": 2,
+                        "label": "Care Coordination",
+                        "path": "/pillar/1/scenario/2",
+                        "teaserTitle": "Care Coordination",
+                        "teaser": "Leverage an integrated platform to effectively communicate with patients, manage and connect caregivers, and improve quality and reduce costs through workflow automation and optimization.",
+                        "teaserImage": "/assets/images/scenario/more_continous_engagement.jpg",
+                        "x": 0,
+                        "y": 0,
+                        "anchor": "tr",
+                        "button": {
+                            "type": "link",
+                            "label": "Learn More",
+                            "extraClass": "ui-btn--large ui-btn--transparent"
+                        },
+                        "icon": "icon-Care-Coordanation"
+                    },
+                    {
+                        "id": 3,
+                        "label": "Virtual Health",
+                        "path": "/pillar/1/scenario/3",
+                        "teaserTitle": "Virtual Health",
+                        "teaser": "Virtual Health leverages Office 365 & Skype for Business to enable clinical care through telemedicine, telehealth and collaboration at-a-distance.  Connecting clinicians, patients and care teams to provide health services, and coordinate care.",
+                        "teaserImage": "/assets/images/scenario/virtual_care.jpg",
+                        "x": 0,
+                        "y": 0,
+                        "anchor": "tr",
+                        "button": {
+                            "type": "link",
+                            "label": "Learn More",
+                            "extraClass": "ui-btn--large ui-btn--transparent"
+                        },
+                        "icon": "icon-Vistual-Health"
+                    },
+                    {
+                        "id": 4,
+                        "label": "Remote Patient Monitoring",
+                        "path": "/pillar/1/scenario/4",
+                        "teaserTitle": "Remote Patient Monitoring",
+                        "teaser": "Remote Patient Monitoring combined with the promise of Genomics can drastically transform the services that the health industry is providing to patients. Market research is showing that there will be fast adoption of new technologies like the Azure IOT Suite and Cortana Intelligence Suite.",
+                        "teaserImage": "/assets/images/scenario/remote_patient_monitoring.jpg",
+                        "x": 0,
+                        "y": 0,
+                        "anchor": "tr",
+                        "button": {
+                            "type": "link",
+                            "label": "Learn More",
+                            "extraClass": "ui-btn--large ui-btn--transparent"
+                        },
+                        "icon": "icon-Remote-Patient-monitoring"
+                    },
+                    {
+                        "id": 5,
+                        "label": "Genomics",
+                        "path": "/pillar/1/scenario/5",
+                        "teaserTitle": "Genomics",
+                        "teaser": "Provide the capabilities to take raw data from sequencing machines and produce high-quality reports on identified genomic variants. This processing is common to many different genomic applications, and requires large-scale storage, compute, and systems engineering expertise, as well as bioinformatics expertise thru an ecosystem of partners.",
+                        "teaserImage": "/assets/images/scenario/precise_medicine.jpg",
+                        "x": 0,
+                        "y": 0,
+                        "anchor": "tr",
+                        "button": {
+                            "type": "link",
+                            "label": "Learn More",
+                            "extraClass": "ui-btn--large ui-btn--transparent"
+                        },
+                        "icon": "icon-Genomics"
+                    },
+                    {
+                        "id": 6,
+                        "label": "Clinical Analytics",
+                        "path": "/pillar/1/scenario/7",
+                        "teaserTitle": "Clinical Analytics",
+                        "teaser": "Improve quality and outcomes of health services by enabling clinicians and consumers to access and analyze information so they can make more informed choices at the point of decision.",
+                        "teaserImage": "/assets/images/scenario/risk_mitigattion.jpg",
+                        "x": 0,
+                        "y": 0,
+                        "anchor": "tr",
+                        "button": {
+                            "type": "link",
+                            "label": "Learn More",
+                            "extraClass": "ui-btn--large ui-btn--transparent"
+                        },
+                        "icon": "icon-Clinical"
+                    },
+                    {
+                        "id": 7,
+                        "label": "Operational Analytics",
+                        "path": "/pillar/1/scenario/8",
+                        "teaserTitle": "Operational Analytics",
+                        "teaser": "Streamline operations and reduce costs by enabling executives and clinicians to share information and analyze structured and unstructured data, so they can make more-informed choices at the point of decision.",
+                        "teaserImage": "/assets/images/scenario/quality_control.jpg",
+                        "x": 0,
+                        "y": 0,
+                        "anchor": "tr",
+                        "button": {
+                            "type": "link",
+                            "label": "Learn More",
+                            "extraClass": "ui-btn--large ui-btn--transparent"
+                        },
+                        "icon": "icon-Operational_Analytics"
+                    },
+                    {
+                        "id": 8,
+                        "label": "Cybersecurity in Health",
+                        "path": "/pillar/1/scenario/9",
+                        "teaserTitle": "Cybersecurity in Health",
+                        "teaser": "Make it possible for healthcare organizations to provide modern eHealth experiences with robust security for today’s healthcare consumer.",
+                        "teaserImage": "/assets/images/scenario/security.jpg",
+                        "x": 0,
+                        "y": 0,
+                        "anchor": "tr",
+                        "button": {
+                            "type": "link",
+                            "label": "Learn More",
+                            "extraClass": "ui-btn--large ui-btn--transparent"
+                        },
+                        "icon": "icon-Cybersecurity-In-Health"
+                    }
+                ]
+            }
+        },
+        {
+            "name": "Empower your care teams",
+            "pid": 2,
+            "nodeTeaser": {
+                "title": "Improve care team productivity",
+                "body": "Improve care team productivity and strengthen collaboration.",
+                "bodyteaser": "Improve care team productivity and strengthen ..."
+            },
+            "map": {
+                "isAccordian": true,
+                "name": "Empower your care teams",
+                "mapImgSrc": "/assets/images/map/picture-02-empower-b.jpg",
+                "hotspots": [
+                    {
+                        "id": 0,
+                        "label": "Mobile Care Worker",
+                        "path": "/pillar/2/scenario/0",
+                        "teaserTitle": "Mobile Care Worker",
+                        "teaser": "Securely connect care workers and clinicians to the information and people they need, wherever they are.",
+                        "teaserImage": "/assets/images/scenario/more_efficient_access.jpg",
+                        "x": 0,
+                        "y": 0,
+                        "anchor": "tr",
+                        "button": {
+                            "type": "link",
+                            "label": "Learn More",
+                            "extraClass": "ui-btn--large ui-btn--transparent"
+                        },
+                        "icon": "icon-Mobile-Care-Worker"
+                    },
+                    {
+                        "id": 1,
+                        "label": "Care Coordination",
+                        "path": "/pillar/2/scenario/2",
+                        "teaserTitle": "Care Coordination",
+                        "teaser": "Leverage an integrated platform to effectively communicate with patients, manage and connect caregivers, and improve quality and reduce costs through workflow automation and optimization.",
+                        "teaserImage": "/assets/images/scenario/more_continous_engagement.jpg",
+                        "x": 0,
+                        "y": 0,
+                        "anchor": "tr",
+                        "button": {
+                            "type": "link",
+                            "label": "Learn More",
+                            "extraClass": "ui-btn--large ui-btn--transparent"
+                        },
+                        "icon": "icon-Care-Coordanation"
+                    },
+                    {
+                        "id": 2,
+                        "label": "Virtual Health",
+                        "path": "/pillar/2/scenario/3",
+                        "teaserTitle": "Virtual Health",
+                        "teaser": "Virtual Health leverages Office 365 & Skype for Business to enable clinical care through telemedicine, telehealth and collaboration at-a-distance.  Connecting clinicians, patients and care teams to provide health services, and coordinate care.",
+                        "teaserImage": "/assets/images/scenario/virtual_care.jpg",
+                        "x": 0,
+                        "y": 0,
+                        "anchor": "tr",
+                        "button": {
+                            "type": "link",
+                            "label": "Learn More",
+                            "extraClass": "ui-btn--large ui-btn--transparent"
+                        },
+                        "icon": "icon-Vistual-Health"
+                    },
+                    {
+                        "id": 3,
+                        "label": "Medical Data Storage",
+                        "path": "/pillar/2/scenario/6",
+                        "teaserTitle": "Medical Data Storage",
+                        "teaser": "The need for Medical Data Storage is exploding. New and innovative technologies in healthcare are generating more data than before (medical imaging, genomics, Internet of things, etc). Capacity management, legal obligations and cost considerations, but also new cloud enabled possibilities are the main drivers to extent the service with cloud based solutions.",
+                        "teaserImage": "/assets/images/scenario/population_health.jpg",
+                        "x": 0,
+                        "y": 0,
+                        "anchor": "tr",
+                        "button": {
+                            "type": "link",
+                            "label": "Learn More",
+                            "extraClass": "ui-btn--large ui-btn--transparent"
+                        },
+                        "icon": "icon-medical-data-storage"
+                    },
+                    {
+                        "id": 4,
+                        "label": "Clinical Analytics",
+                        "path": "/pillar/2/scenario/7",
+                        "teaserTitle": "Clinical Analytics",
+                        "teaser": "Improve quality and outcomes of health services by enabling clinicians and consumers to access and analyze information so they can make more informed choices at the point of decision.",
+                        "teaserImage": "/assets/images/scenario/risk_mitigattion.jpg",
+                        "x": 0,
+                        "y": 0,
+                        "anchor": "tr",
+                        "button": {
+                            "type": "link",
+                            "label": "Learn More",
+                            "extraClass": "ui-btn--large ui-btn--transparent"
+                        },
+                        "icon": "icon-Clinical"
+                    },
+                    {
+                        "id": 5,
+                        "label": "Operational Analytics",
+                        "path": "/pillar/2/scenario/8",
+                        "teaserTitle": "Operational Analytics",
+                        "teaser": "Streamline operations and reduce costs by enabling executives and clinicians to share information and analyze structured and unstructured data, so they can make more-informed choices at the point of decision.",
+                        "teaserImage": "/assets/images/scenario/quality_control.jpg",
+                        "x": 0,
+                        "y": 0,
+                        "anchor": "tr",
+                        "button": {
+                            "type": "link",
+                            "label": "Learn More",
+                            "extraClass": "ui-btn--large ui-btn--transparent"
+                        },
+                        "icon": "icon-Operational_Analytics"
+                    },
+                    {
+                        "id": 6,
+                        "label": "Cybersecurity in Health",
+                        "path": "/pillar/2/scenario/9",
+                        "teaserTitle": "Cybersecurity in Health",
+                        "teaser": "Make it possible for healthcare organizations to provide modern eHealth experiences with robust security for today’s healthcare consumer.",
+                        "teaserImage": "/assets/images/scenario/security.jpg",
+                        "x": 0,
+                        "y": 0,
+                        "anchor": "tr",
+                        "button": {
+                            "type": "link",
+                            "label": "Learn More",
+                            "extraClass": "ui-btn--large ui-btn--transparent"
+                        },
+                        "icon": "icon-Cybersecurity-In-Health"
+                    }
+                ]
+            }
+        },
+        {
+            "name": "Optimize your clinical and operational effectiveness",
+            "pid": 3,
+            "nodeTeaser": {
+                "title": "Data analytics that improve health outcomes and operational performance",
+                "body": "Harness data from all sources to create actionable insights that improve clinical and operational performance.",
+                "bodyteaser": "Harness data from all sources to create actionable ..."
+            },
+            "map": {
+                "isAccordian": true,
+                "name": "Optimize your clinical and operational effectiveness",
+                "mapImgSrc": "/assets/images/map/picture-03-optimize-02.jpg",
+                "hotspots": [
+                    {
+                        "id": 0,
+                        "label": "Medical Data Storage",
+                        "path": "/pillar/3/scenario/6",
+                        "teaserTitle": "Medical Data Storage",
+                        "teaser": "The need for Medical Data Storage is exploding. New and innovative technologies in healthcare are generating more data than before (medical imaging, genomics, Internet of things, etc). Capacity management, legal obligations and cost considerations, but also new cloud enabled possibilities are the main drivers to extent the service with cloud based solutions.",
+                        "teaserImage": "/assets/images/scenario/population_health.jpg",
+                        "x": 0,
+                        "y": 0,
+                        "anchor": "tr",
+                        "button": {
+                            "type": "link",
+                            "label": "Learn More",
+                            "extraClass": "ui-btn--large ui-btn--transparent"
+                        },
+                        "icon": "icon-medical-data-storage"
+                    },
+                    {
+                        "id": 1,
+                        "label": "Clinical Analytics",
+                        "path": "/pillar/3/scenario/7",
+                        "teaserTitle": "Clinical Analytics",
+                        "teaser": "Improve quality and outcomes of health services by enabling clinicians and consumers to access and analyze information so they can make more informed choices at the point of decision.",
+                        "teaserImage": "/assets/images/scenario/risk_mitigattion.jpg",
+                        "x": 0,
+                        "y": 0,
+                        "anchor": "tr",
+                        "button": {
+                            "type": "link",
+                            "label": "Learn More",
+                            "extraClass": "ui-btn--large ui-btn--transparent"
+                        },
+                        "icon": "icon-Clinical"
+                    },
+                    {
+                        "id": 2,
+                        "label": "Operational Analytics",
+                        "path": "/pillar/3/scenario/8",
+                        "teaserTitle": "Operational Analytics",
+                        "teaser": "Streamline operations and reduce costs by enabling executives and clinicians to share information and analyze structured and unstructured data, so they can make more-informed choices at the point of decision.",
+                        "teaserImage": "/assets/images/scenario/quality_control.jpg",
+                        "x": 0,
+                        "y": 0,
+                        "anchor": "tr",
+                        "button": {
+                            "type": "link",
+                            "label": "Learn More",
+                            "extraClass": "ui-btn--large ui-btn--transparent"
+                        },
+                        "icon": "icon-Operational_Analytics"
+                    },
+                    {
+                        "id": 3,
+                        "label": "Cybersecurity in Health",
+                        "path": "/pillar/3/scenario/9",
+                        "teaserTitle": "Cybersecurity in Health",
+                        "teaser": "Make it possible for healthcare organizations to provide modern eHealth experiences with robust security for today’s healthcare consumer.",
+                        "teaserImage": "/assets/images/scenario/security.jpg",
+                        "x": 0,
+                        "y": 0,
+                        "anchor": "tr",
+                        "button": {
+                            "type": "link",
+                            "label": "Learn More",
+                            "extraClass": "ui-btn--large ui-btn--transparent"
+                        },
+                        "icon": "icon-Cybersecurity-In-Health"
+                    }
+                ]
+            }
+        },
+        {
+            "name": "Transform the care continuum",
+            "pid": 4,
+            "path": "/pillar/4",
+            "nodeTeaser": {
+                "title": "Platforms that provide insight",
+                "body": "Connect smart devices to the Microsoft Cloud to gain valuable insights into patient treatment and operational efficiency.",
+                "bodyteaser": "Connect smart devices to the Microsoft Cloud ..."
+            },
+            "map": {
+                "isAccordian": true,
+                "name": "Transform the care continuum",
+                "mapImgSrc": "/assets/images/map/picture-04-trans-02.jpg",
+                "hotspots": [
+                    {
+                        "id": 0,
+                        "label": "Care Coordination",
+                        "path": "/pillar/4/scenario/2",
+                        "teaserTitle": "Care Coordination",
+                        "teaser": "Leverage an integrated platform to effectively communicate with patients, manage and connect caregivers, and improve quality and reduce costs through workflow automation and optimization.",
+                        "teaserImage": "/assets/images/scenario/more_continous_engagement.jpg",
+                        "x": 0,
+                        "y": 0,
+                        "anchor": "tr",
+                        "button": {
+                            "type": "link",
+                            "label": "Learn More",
+                            "extraClass": "ui-btn--large ui-btn--transparent"
+                        },
+                        "icon": "icon-Care-Coordanation"
+                    },
+                    {
+                        "id": 1,
+                        "label": "Remote Patient Monitoring",
+                        "path": "/pillar/4/scenario/4",
+                        "teaserTitle": "Remote Patient Monitoring",
+                        "teaser": "Remote Patient Monitoring combined with the promise of Genomics can drastically transform the services that the health industry is providing to patients. Market research is showing that there will be fast adoption of new technologies like the Azure IOT Suite and Cortana Intelligence Suite.",
+                        "teaserImage": "/assets/images/scenario/remote_patient_monitoring.jpg",
+                        "x": 0,
+                        "y": 0,
+                        "anchor": "tr",
+                        "button": {
+                            "type": "link",
+                            "label": "Learn More",
+                            "extraClass": "ui-btn--large ui-btn--transparent"
+                        },
+                        "icon": "icon-Remote-Patient-monitoring"
+                    },
+                    {
+                        "id": 2,
+                        "label": "Genomics",
+                        "path": "/pillar/4/scenario/5",
+                        "teaserTitle": "Genomics",
+                        "teaser": "Provide the capabilities to take raw data from sequencing machines and produce high-quality reports on identified genomic variants. This processing is common to many different genomic applications, and requires large-scale storage, compute, and systems engineering expertise, as well as bioinformatics expertise thru an ecosystem of partners.",
+                        "teaserImage": "/assets/images/scenario/precise_medicine.jpg",
+                        "x": 0,
+                        "y": 0,
+                        "anchor": "tr",
+                        "button": {
+                            "type": "link",
+                            "label": "Learn More",
+                            "extraClass": "ui-btn--large ui-btn--transparent"
+                        },
+                        "icon": "icon-Genomics"
+                    },
+                    {
+                        "id": 3,
+                        "label": "Clinical Analytics",
+                        "path": "/pillar/4/scenario/7",
+                        "teaserTitle": "Clinical Analytics",
+                        "teaser": "Improve quality and outcomes of health services by enabling clinicians and consumers to access and analyze information so they can make more informed choices at the point of decision.",
+                        "teaserImage": "/assets/images/scenario/risk_mitigattion.jpg",
+                        "x": 0,
+                        "y": 0,
+                        "anchor": "tr",
+                        "button": {
+                            "type": "link",
+                            "label": "Learn More",
+                            "extraClass": "ui-btn--large ui-btn--transparent"
+                        },
+                        "icon": "icon-Clinical"
+                    },
+                    {
+                        "id": 4,
+                        "label": "Operational Analytics",
+                        "path": "/pillar/4/scenario/8",
+                        "teaserTitle": "Operational Analytics",
+                        "teaser": "Streamline operations and reduce costs by enabling executives and clinicians to share information and analyze structured and unstructured data, so they can make more-informed choices at the point of decision.",
+                        "teaserImage": "/assets/images/scenario/quality_control.jpg",
+                        "x": 0,
+                        "y": 0,
+                        "anchor": "tr",
+                        "button": {
+                            "type": "link",
+                            "label": "Learn More",
+                            "extraClass": "ui-btn--large ui-btn--transparent"
+                        },
+                        "icon": "icon-Operational_Analytics"
+                    },
+                    {
+                        "id": 5,
+                        "label": "Cybersecurity in Health",
+                        "path": "/pillar/4/scenario/9",
+                        "teaserTitle": "Cybersecurity in Health",
+                        "teaser": "Make it possible for healthcare organizations to provide modern eHealth experiences with robust security for today’s healthcare consumer.",
+                        "teaserImage": "/assets/images/scenario/security.jpg",
+                        "x": 0,
+                        "y": 0,
+                        "anchor": "tr",
+                        "button": {
+                            "type": "link",
+                            "label": "Learn More",
+                            "extraClass": "ui-btn--large ui-btn--transparent"
+                        },
+                        "icon": "icon-Cybersecurity-In-Health"
+                    }
+                ]
+            }
+        }
+    ],
+    "scenarios": [
+        {
+            "sid": 0,
+            "content": {
+                "title": "Mobile Care Worker",
+                "subtitle": "",
+                "images": [
+                    "/assets/images/scenario/more_efficient_access.jpg"
+                ],
+                "body": [
+                    "Securely connect care workers and clinicians to the information and people they need, wherever they are.",
+                    {
+                        "type": "content-button",
+                        "text": "Children’s Mercy app brings doctors home, virtually, with babies born with heart disease",
+                        "button": {
+                            "type": "video",
+                            "url": "/assets/download/Mobile_Care_Worker/RP1324_Childrens_Mercy_Surface_Case_Study_041916_1920x1080_10000kbps.mp4",
+                            "label": "Video",
+                            "icon": "icon-video-button",
+                            "extraClass": "ui-btn--vertical video"
+                        }
+                    },
+                    {
+                        "type": "content-button",
+                        "text": "CRM and the  Future of  Healthcare Engagement",
+                        "button": {
+                            "type": "download",
+                            "url": "https://microsoft.docs.contently.com/v/crm-and-the-future-of-healthcare-engagement",
+                            "label": "eBook",
+                            "icon": "icon-file-pdf2",
+                            "extraClass": "ui-btn--vertical download"
+                        }
+                    },
+                    {
+                        "type": "content-button",
+                        "text": "Enterprise Mobility Management: Protecting PHI, Enabling Data Access for Quality Care",
+                        "button": {
+                            "type": "download",
+                            "url": "/assets/download/Mobile_Care_Worker/Microsoft EMS Infographic.pdf",
+                            "label": "Infographic",
+                            "icon": "icon-file-pdf2",
+                            "extraClass": "ui-btn--vertical download"
+                        }
+                    },
+                    {
+                        "type": "content-button",
+                        "text": "Managing Enterprise Mobility in Health: 8 Considerations for CXOs",
+                        "button": {
+                            "type": "download",
+                            "url": "/assets/download/Mobile_Care_Worker/Microsoft_EMM_ExecSummary0216 FINAL.pdf",
+                            "label": "Infographic",
+                            "icon": "icon-file-pdf2",
+                            "extraClass": "ui-btn--vertical download"
+                        }
+                    },
+                    {
+                        "type": "content-button",
+                        "text": "Transform Mobility",
+                        "button": {
+                            "type": "download",
+                            "url": "https://microsoft.docs.contently.com/v/transform-mobility",
+                            "label": "Brochure",
+                            "icon": "icon-file-pdf2",
+                            "extraClass": "ui-btn--vertical download"
+                        }
+                    },
+                    {
+                        "type": "button",
+                        "button": {
+                            "type": "link",
+                            "url": "https://enterprise.microsoft.com/en-us/industries/health/",
+                            "label": "Learn how to engage at Microsoft in health",
+                            "extraClass": "ui-btn--blue ui-btn--large external"
+                        }
+                    },
+                    {
+                        "type": "button",
+                        "button": {
+                            "type": "link",
+                            "url": "http://appsource.microsoft.com/en-us/marketplace/partners?page=1",
+                            "label": "Become a Microsoft Intel partner",
+                            "extraClass": "ui-btn--blue ui-btn--large external"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "sid": 1,
+            "content": {
+                "title": "Patient Engagement",
+                "subtitle": "",
+                "images": [
+                    "/assets/images/scenario/more_efficient_engagement.jpg"
+                ],
+                "body": [
+                    "Enable new ways of connecting with patients before, during and after their interaction with caregivers using Microsoft platforms and technologies.",
+                    {
+                        "type": "content-button",
+                        "text": "NHS Blood and Transplant Scale with Azure",
+                        "button": {
+                            "type": "video",
+                            "url": "https://www.youtube.com/watch?v=HqSZzBUjFzM",
+                            "label": "Video",
+                            "icon": "icon-video-button",
+                            "extraClass": "ui-btn--vertical video"
+                        }
+                    },
+                    {
+                        "type": "content-button",
+                        "text": "Engage your patients",
+                        "button": {
+                            "type": "download",
+                            "url": "/assets/download/Patient_Engagement/Engage you Patients_FY17.pdf",
+                            "label": "Infographic",
+                            "icon": "icon-file-pdf2",
+                            "extraClass": "ui-btn--vertical download"
+                        }
+                    },
+                    {
+                        "type": "content-button",
+                        "text": "6 Ways Your EMR Is Coming Up Short and How a CRM Solution Can Help",
+                        "button": {
+                            "type": "download",
+                            "url": "/assets/download/Patient_Engagement/Health_DT_EMR_Infographic_Final.pdf",
+                            "label": "Infographic",
+                            "icon": "icon-file-pdf2",
+                            "extraClass": "ui-btn--vertical download"
+                        }
+                    },
+                    {
+                        "type": "content-button",
+                        "text": "Patient journey",
+                        "button": {
+                            "type": "video",
+                            "url": "/assets/download/Patient_Engagement/patientjourney_final_ver.mp4",
+                            "label": "Video",
+                            "icon": "icon-video-button",
+                            "extraClass": "ui-btn--vertical video"
+                        }
+                    },
+                    {
+                        "type": "content-button",
+                        "text": "Office 365 use guides",
+                        "button": {
+                            "type": "download",
+                            "url": "/assets/download/Patient_Engagement/Office_365_Usage_Kit_for_Healthcare.zip",
+                            "label": "Guides",
+                            "icon": "icon-file-ZIP",
+                            "extraClass": "ui-btn--vertical download"
+                        }
+                    },
+                    {
+                        "type": "content-button",
+                        "text": "Microsoft Surface Pro 4 | Dr. Brian Levine Chooses Surface Pro 4",
+                        "button": {
+                            "type": "video",
+                            "url": "https://www.youtube.com/watch?v=H5gMFnqXYfA&feature=youtu.be",
+                            "label": "Video",
+                            "icon": "icon-video-button",
+                            "extraClass": "ui-btn--vertical video"
+                        }
+                    },
+                    {
+                        "type": "content-button",
+                        "text": "Transform Mobility",
+                        "button": {
+                            "type": "download",
+                            "url": "https://microsoft.docs.contently.com/v/transform-mobility",
+                            "label": "Brochure",
+                            "icon": "icon-file-pdf2",
+                            "extraClass": "ui-btn--vertical download"
+                        }
+                    },
+                    {
+                        "type": "button",
+                        "button": {
+                            "type": "link",
+                            "url": "https://enterprise.microsoft.com/en-us/industries/health/",
+                            "label": "Learn how to engage at Microsoft in health",
+                            "extraClass": "ui-btn--blue ui-btn--large external"
+                        }
+                    },
+                    {
+                        "type": "button",
+                        "button": {
+                            "type": "link",
+                            "url": "http://appsource.microsoft.com/en-us/marketplace/partners?page=1",
+                            "label": "Become a Microsoft Intel partner",
+                            "extraClass": "ui-btn--blue ui-btn--large external"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "sid": 2,
+            "content": {
+                "title": "Care Coordination",
+                "subtitle": "",
+                "images": [
+                    "/assets/images/scenario/more_continous_engagement.jpg"
+                ],
+                "body": [
+                    "Leverage an integrated platform to effectively communicate with patients, manage and connect caregivers, and improve quality and reduce costs through workflow automation and optimization.",
+                    {
+                        "type": "content-button",
+                        "text": "myRyman is a Windows 10 app that’s helping to revolutionize care and quality in retirement communities",
+                        "button": {
+                            "type": "video",
+                            "url": "/assets/download/Care_Coordination/myRyman_ Its all about people.mp4",
+                            "label": "Video",
+                            "icon": "icon-video-button",
+                            "extraClass": "ui-btn--vertical video"
+                        }
+                    },
+                    {
+                        "type": "content-button",
+                        "text": "Transform Mobility",
+                        "button": {
+                            "type": "download",
+                            "url": "https://microsoft.docs.contently.com/v/transform-mobility",
+                            "label": "Brochure",
+                            "icon": "icon-file-pdf2",
+                            "extraClass": "ui-btn--vertical download"
+                        }
+                    },
+                    {
+                        "type": "button",
+                        "button": {
+                            "type": "link",
+                            "url": "https://enterprise.microsoft.com/en-us/industries/health/",
+                            "label": "Learn how to engage at Microsoft in health",
+                            "extraClass": "ui-btn--blue ui-btn--large external"
+                        }
+                    },
+                    {
+                        "type": "button",
+                        "button": {
+                            "type": "link",
+                            "url": "http://appsource.microsoft.com/en-us/marketplace/partners?page=1",
+                            "label": "Become a Microsoft Intel partner",
+                            "extraClass": "ui-btn--blue ui-btn--large external"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "sid": 3,
+            "content": {
+                "title": "Virtual Health",
+                "subtitle": "",
+                "images": [
+                    "/assets/images/scenario/virtual_care.jpg"
+                ],
+                "body": [
+                    "Virtual Health leverages Office 365 & Skype for Business to enable clinical care through telemedicine, telehealth and collaboration at-a-distance.  Connecting clinicians, patients and care teams to provide health services, and coordinate care.",
+                    {
+                        "type": "content-button",
+                        "text": "Silver Chain boosts healthcare services with Dynamics 365",
+                        "button": {
+                            "type": "video",
+                            "url": "/assets/download/Virtual_Health/Silver Chain 3 min_full res.mp4",
+                            "label": "Video",
+                            "icon": "icon-video-button",
+                            "extraClass": "ui-btn--vertical video"
+                        }
+                    },
+                    {
+                        "type": "content-button",
+                        "text": "Empower your care teams",
+                        "button": {
+                            "type": "download",
+                            "url": "/assets/download/Virtual_Health/Empower you Care Teams_FY17 -- infographic.pdf",
+                            "label": "Infographic",
+                            "icon": "icon-file-pdf2",
+                            "extraClass": "ui-btn--vertical download"
+                        }
+                    },
+                    {
+                        "type": "content-button",
+                        "text": "Patient journey",
+                        "button": {
+                            "type": "video",
+                            "url": "/assets/download/Virtual_Health/patientjourney_final_ver.mp4",
+                            "label": "Video",
+                            "icon": "icon-video-button",
+                            "extraClass": "ui-btn--vertical video"
+                        }
+                    },
+                    {
+                        "type": "content-button",
+                        "text": "Office 365 use guides",
+                        "button": {
+                            "type": "download",
+                            "url": "/assets/download/Virtual_Health/Office_365_Usage_Kit_for_Healthcare.zip",
+                            "label": "eBook",
+                            "icon": "icon-file-ZIP",
+                            "extraClass": "ui-btn--vertical download"
+                        }
+                    },
+                    {
+                        "type": "content-button",
+                        "text": "CRM and the  Future of  Healthcare Engagement",
+                        "button": {
+                            "type": "download",
+                            "url": "https://microsoft.docs.contently.com/v/crm-and-the-future-of-healthcare-engagement",
+                            "label": "eBook",
+                            "icon": "icon-file-pdf2",
+                            "extraClass": "ui-btn--vertical download"
+                        }
+                    },
+                    {
+                        "type": "content-button",
+                        "text": "Health Analytics for everyone",
+                        "button": {
+                            "type": "download",
+                            "url": "/assets/download/Virtual_Health/Optimize your Clinical and Operational Effectiveness Customer Brief FY17.pdf",
+                            "label": "Brochure",
+                            "icon": "icon-file-pdf2",
+                            "extraClass": "ui-btn--vertical download"
+                        }
+                    },
+                    {
+                        "type": "button",
+                        "button": {
+                            "type": "link",
+                            "url": "https://enterprise.microsoft.com/en-us/industries/health/",
+                            "label": "Learn how to engage at Microsoft in health",
+                            "extraClass": "ui-btn--blue ui-btn--large external"
+                        }
+                    },
+                    {
+                        "type": "button",
+                        "button": {
+                            "type": "link",
+                            "url": "http://appsource.microsoft.com/en-us/marketplace/partners?page=1",
+                            "label": "Become a Microsoft Intel partner",
+                            "extraClass": "ui-btn--blue ui-btn--large external"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "sid": 4,
+            "content": {
+                "title": "Remote Patient Monitoring",
+                "subtitle": "",
+                "images": [
+                    "/assets/images/scenario/remote_patient_monitoring.jpg"
+                ],
+                "body": [
+                    "Remote Patient Monitoring combined with the promise of Genomics can drastically transform the services that the health industry is providing to patients. Market research is showing that there will be fast adoption of new technologies like the Azure IOT Suite and Cortana Intelligence Suite.",
+                    {
+                        "type": "content-button",
+                        "text": "Nordic Health Innovation – Virtual Care Rooms",
+                        "button": {
+                            "type": "video",
+                            "url": "https://www.youtube.com/watch?v=MI2NM6MF9LE",
+                            "label": "Video",
+                            "icon": "icon-video-button",
+                            "extraClass": "ui-btn--vertical video"
+                        }
+                    },
+                    {
+                        "type": "content-button",
+                        "text": "Transform the care continuum",
+                        "button": {
+                            "type": "download",
+                            "url": "/assets/download/Remote_Patient_Monitoring/Transform the Care Continuum_FY17.pdf",
+                            "label": "Infographic",
+                            "icon": "icon-file-pdf2",
+                            "extraClass": "ui-btn--vertical download"
+                        }
+                    },
+                    {
+                        "type": "content-button",
+                        "text": "Advancing healthcare with the Microsoft Cloud",
+                        "button": {
+                            "type": "download",
+                            "url": "http://news.microsoft.com/health/cloudmap/",
+                            "label": "Website",
+                            "icon": "icon-geography12",
+                            "extraClass": "ui-btn--vertical download"
+                        }
+                    },
+                    {
+                        "type": "content-button",
+                        "text": "Patient journey",
+                        "button": {
+                            "type": "video",
+                            "url": "/assets/download/Remote_Patient_Monitoring/patientjourney_final_ver.mp4",
+                            "label": "Video",
+                            "icon": "icon-video-button",
+                            "extraClass": "ui-btn--vertical video"
+                        }
+                    },
+                    {
+                        "type": "content-button",
+                        "text": " A Practical Guide to  DESIGNING SECURE  HEALTH SOLUTIONS  Using Microsoft Azure",
+                        "button": {
+                            "type": "download",
+                            "url": "https://microsoft.docs.contently.com/v/a-practical-guide-to-designing-secure-health-solutions-using-microsoft-azure",
+                            "label": "eBook",
+                            "icon": "icon-file-pdf2",
+                            "extraClass": "ui-btn--vertical download"
+                        }
+                    },
+                    {
+                        "type": "button",
+                        "button": {
+                            "type": "link",
+                            "url": "https://enterprise.microsoft.com/en-us/industries/health/",
+                            "label": "Learn how to engage at Microsoft in health",
+                            "extraClass": "ui-btn--blue ui-btn--large external"
+                        }
+                    },
+                    {
+                        "type": "button",
+                        "button": {
+                            "type": "link",
+                            "url": "http://appsource.microsoft.com/en-us/marketplace/partners?page=1",
+                            "label": "Become a Microsoft Intel partner",
+                            "extraClass": "ui-btn--blue ui-btn--large external"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "sid": 5,
+            "content": {
+                "title": "Genomics",
+                "subtitle": "",
+                "images": [
+                    "/assets/images/scenario/precise_medicine.jpg"
+                ],
+                "body": [
+                    "Provide the capabilities to take raw data from sequencing machines and produce high-quality reports on identified genomic variants. This processing is common to many different genomic applications, and requires large-scale storage, compute, and systems engineering expertise, as well as bioinformatics expertise thru an ecosystem of partners.",
+                    {
+                        "type": "content-button",
+                        "text": "Using data analysis on Azure for cancer research",
+                        "button": {
+                            "type": "video",
+                            "url": "https://www.youtube.com/watch?v=WgFhPbSioOY",
+                            "label": "Video",
+                            "icon": "icon-video-button",
+                            "extraClass": "ui-btn--vertical video"
+                        }
+                    },
+                    {
+                        "type": "content-button",
+                        "text": "Transform the care continuum",
+                        "button": {
+                            "type": "download",
+                            "url": "/assets/download/Genomics/Transform the Care Continuum_FY17.pdf",
+                            "label": "Infographic",
+                            "icon": "icon-file-pdf2",
+                            "extraClass": "ui-btn--vertical download"
+                        }
+                    },
+                    {
+                        "type": "content-button",
+                        "text": "Advancing healthcare with the Microsoft Cloud",
+                        "button": {
+                            "type": "download",
+                            "url": "http://news.microsoft.com/health/cloudmap/",
+                            "label": "Website",
+                            "icon": "icon-geography12",
+                            "extraClass": "ui-btn--vertical download"
+                        }
+                    },
+                    {
+                        "type": "content-button",
+                        "text": "Patient journey",
+                        "button": {
+                            "type": "video",
+                            "url": "/assets/download/Genomics/patientjourney_final_ver.mp4",
+                            "label": "Video",
+                            "icon": "icon-video-button",
+                            "extraClass": "ui-btn--vertical video"
+                        }
+                    },
+                    {
+                        "type": "content-button",
+                        "text": "Health IT and the clould",
+                        "button": {
+                            "type": "download",
+                            "url": "/assets/download/Genomics/Healthcare IT and the Cloud Infographic_FY17 (1).pdf",
+                            "label": "Infographic",
+                            "icon": "icon-file-pdf2",
+                            "extraClass": "ui-btn--vertical download"
+                        }
+                    },
+                    {
+                        "type": "content-button",
+                        "text": "A Practical Guide to  DESIGNING SECURE  HEALTH SOLUTIONS  Using Microsoft Azure",
+                        "button": {
+                            "type": "download",
+                            "url": "https://microsoft.docs.contently.com/v/a-practical-guide-to-designing-secure-health-solutions-using-microsoft-azure",
+                            "label": "eBook",
+                            "icon": "icon-file-pdf2",
+                            "extraClass": "ui-btn--vertical download"
+                        }
+                    },
+                    {
+                        "type": "content-button",
+                        "text": "Innovation and Insight in the Cloud",
+                        "button": {
+                            "type": "download",
+                            "url": "/assets/download/Genomics/Transform the Care Continuum Customer Brief FY17.pdf",
+                            "label": "Brochure",
+                            "icon": "icon-file-pdf2",
+                            "extraClass": "ui-btn--vertical download"
+                        }
+                    },
+                    {
+                        "type": "button",
+                        "button": {
+                            "type": "link",
+                            "url": "https://enterprise.microsoft.com/en-us/industries/health/",
+                            "label": "Learn how to engage at Microsoft in health",
+                            "extraClass": "ui-btn--blue ui-btn--large external"
+                        }
+                    },
+                    {
+                        "type": "button",
+                        "button": {
+                            "type": "link",
+                            "url": "http://appsource.microsoft.com/en-us/marketplace/partners?page=1",
+                            "label": "Become a Microsoft Intel partner",
+                            "extraClass": "ui-btn--blue ui-btn--large external"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "sid": 6,
+            "content": {
+                "title": "Medical Data Storage",
+                "subtitle": "",
+                "images": [
+                    "/assets/images/scenario/population_health.jpg"
+                ],
+                "body": [
+                    "The need for Medical Data Storage is exploding. New and innovative technologies in healthcare are generating more data than before (medical imaging, genomics, Internet of things, etc). Capacity management, legal obligations and cost considerations, but also new cloud enabled possibilities are the main drivers to extent the service with cloud based solutions.",
+                    {
+                        "type": "content-button",
+                        "text": "Epimed uses Azure to significantly reduce HAIs and mortality rates",
+                        "button": {
+                            "type": "video",
+                            "url": "/assets/download/Medical_Data_Storage/EPIMED_BETTER_DATA_101016 (1).mp4",
+                            "label": "Video",
+                            "icon": "icon-video-button",
+                            "extraClass": "ui-btn--vertical video"
+                        }
+                    },
+                    {
+                        "type": "content-button",
+                        "text": "Optimize your clinical and operational effectiveness",
+                        "button": {
+                            "type": "download",
+                            "url": "/assets/download/Medical_Data_Storage/Optimize your Clinical and Operational Effectiveness_FY17.pdf",
+                            "label": "Infographic",
+                            "icon": "icon-file-pdf2",
+                            "extraClass": "ui-btn--vertical download"
+                        }
+                    },
+                    {
+                        "type": "content-button",
+                        "text": "Advanced Analytics in Health",
+                        "button": {
+                            "type": "download",
+                            "url": "https://microsoft.docs.contently.com/v/advanced-analytics-in-health",
+                            "label": "eBook",
+                            "icon": "icon-file-pdf2",
+                            "extraClass": "ui-btn--vertical download"
+                        }
+                    },
+                    {
+                        "type": "button",
+                        "button": {
+                            "type": "link",
+                            "url": "https://enterprise.microsoft.com/en-us/industries/health/",
+                            "label": "Learn how to engage at Microsoft in health",
+                            "extraClass": "ui-btn--blue ui-btn--large external"
+                        }
+                    },
+                    {
+                        "type": "button",
+                        "button": {
+                            "type": "link",
+                            "url": "http://appsource.microsoft.com/en-us/marketplace/partners?page=1",
+                            "label": "Become a Microsoft Intel partner",
+                            "extraClass": "ui-btn--blue ui-btn--large external"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "sid": 7,
+            "content": {
+                "title": "Clinical Analytics",
+                "subtitle": "",
+                "images": [
+                    "/assets/images/scenario/risk_mitigattion.jpg"
+                ],
+                "body": [
+                    "Improve quality and outcomes of health services by enabling clinicians and consumers to access and analyze information so they can make more informed choices at the point of decision.",
+                    {
+                        "type": "content-button",
+                        "text": "Microsoft Cloud helping Fortis change the face of healthcare",
+                        "button": {
+                            "type": "video",
+                            "url": "https://www.youtube.com/watch?v=_x9yKnXADiA",
+                            "label": "Video",
+                            "icon": "icon-video-button",
+                            "extraClass": "ui-btn--vertical video"
+                        }
+                    },
+                    {
+                        "type": "content-button",
+                        "text": "Optimize your clinical and operational effectiveness",
+                        "button": {
+                            "type": "download",
+                            "url": "/assets/download/Clinical_Analytics/Optimize your Clinical and Operational Effectiveness_FY17.pdf",
+                            "label": "Infographic",
+                            "icon": "icon-file-pdf2",
+                            "extraClass": "ui-btn--vertical download"
+                        }
+                    },
+                    {
+                        "type": "content-button",
+                        "text": "Advanced Analytics in Health",
+                        "button": {
+                            "type": "download",
+                            "url": "https://microsoft.docs.contently.com/v/advanced-analytics-in-health",
+                            "label": "eBook",
+                            "icon": "icon-file-pdf2",
+                            "extraClass": "ui-btn--vertical download"
+                        }
+                    },
+                    {
+                        "type": "content-button",
+                        "text": "Health Analytics for everyone",
+                        "button": {
+                            "type": "download",
+                            "url": "/assets/download/Clinical_Analytics/Optimize your Clinical and Operational Effectiveness Customer Brief FY17.pdf",
+                            "label": "Brochure",
+                            "icon": "icon-file-pdf2",
+                            "extraClass": "ui-btn--vertical download"
+                        }
+                    },
+                    {
+                        "type": "content-button",
+                        "text": "All in Health",
+                        "button": {
+                            "type": "download",
+                            "url": "http://www.democratizing-ai-in-health.com",
+                            "label": "Website",
+                            "icon": "icon-geography12",
+                            "extraClass": "ui-btn--vertical download"
+                        }
+                    },
+                    {
+                        "type": "button",
+                        "button": {
+                            "type": "link",
+                            "url": "https://enterprise.microsoft.com/en-us/industries/health/",
+                            "label": "Learn how to engage at Microsoft in health",
+                            "extraClass": "ui-btn--blue ui-btn--large external"
+                        }
+                    },
+                    {
+                        "type": "button",
+                        "button": {
+                            "type": "link",
+                            "url": "http://appsource.microsoft.com/en-us/marketplace/partners?page=1",
+                            "label": "Become a Microsoft Intel partner",
+                            "extraClass": "ui-btn--blue ui-btn--large external"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "sid": 8,
+            "content": {
+                "title": "Operational Analytics",
+                "subtitle": "",
+                "images": [
+                    "/assets/images/scenario/quality_control.jpg"
+                ],
+                "body": [
+                    "Streamline operations and reduce costs by enabling executives and clinicians to share information and analyze structured and unstructured data, so they can make more-informed choices at the point of decision.",
+                    {
+                        "type": "content-button",
+                        "text": "NHS Blood and Transplant Scale with Azure",
+                        "button": {
+                            "type": "video",
+                            "url": "https://www.youtube.com/watch?v=HqSZzBUjFzM",
+                            "label": "Video",
+                            "icon": "icon-video-button",
+                            "extraClass": "ui-btn--vertical video"
+                        }
+                    },
+                    {
+                        "type": "content-button",
+                        "text": "Optimize your clinical and operational effectiveness",
+                        "button": {
+                            "type": "download",
+                            "url": "/assets/download/Operational_Analytics/Optimize your Clinical and Operational Effectiveness_FY17.pdf",
+                            "label": "Infographic",
+                            "icon": "icon-file-pdf2",
+                            "extraClass": "ui-btn--vertical download"
+                        }
+                    },
+                    {
+                        "type": "content-button",
+                        "text": "Advanced Analytics in Health",
+                        "button": {
+                            "type": "download",
+                            "url": "https://microsoft.docs.contently.com/v/advanced-analytics-in-health",
+                            "label": "eBook",
+                            "icon": "icon-file-pdf2",
+                            "extraClass": "ui-btn--vertical download"
+                        }
+                    },
+                    {
+                        "type": "content-button",
+                        "text": "Health Analytics for everyone",
+                        "button": {
+                            "type": "download",
+                            "url": "/assets/download/Operational_Analytics/Optimize your Clinical and Operational Effectiveness Customer Brief FY17.pdf",
+                            "label": "Brochure",
+                            "icon": "icon-file-pdf2",
+                            "extraClass": "ui-btn--vertical download"
+                        }
+                    },
+                    {
+                        "type": "button",
+                        "button": {
+                            "type": "link",
+                            "url": "https://enterprise.microsoft.com/en-us/industries/health/",
+                            "label": "Learn how to engage at Microsoft in health",
+                            "extraClass": "ui-btn--blue ui-btn--large external"
+                        }
+                    },
+                    {
+                        "type": "button",
+                        "button": {
+                            "type": "link",
+                            "url": "http://appsource.microsoft.com/en-us/marketplace/partners?page=1",
+                            "label": "Become a Microsoft Intel partner",
+                            "extraClass": "ui-btn--blue ui-btn--large external"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "sid": 9,
+            "content": {
+                "title": "Cybersecurity in Health",
+                "subtitle": "",
+                "images": [
+                    "/assets/images/scenario/security.jpg"
+                ],
+                "body": [
+                    "Make it possible for healthcare organizations to provide modern eHealth experiences with robust security for today’s healthcare consumer.",
+                    {
+                        "type": "content-button",
+                        "text": "Fullerton Health Uses Machine Learning to Improve Operational Effectiveness",
+                        "button": {
+                            "type": "video",
+                            "url": "/assets/download/Cybersecurity_In_Health/FH_Fraud_LONG-Final-1080 (1).mp4",
+                            "label": "Video",
+                            "icon": "icon-video-button",
+                            "extraClass": "ui-btn--vertical video"
+                        }
+                    },
+                    {
+                        "type": "content-button",
+                        "text": "Health IT and the cloud",
+                        "button": {
+                            "type": "download",
+                            "url": "/assets/download/Cybersecurity_In_Health/Healthcare IT and the Cloud Infographic_FY17.pdf",
+                            "label": "Infographic",
+                            "icon": "icon-file-pdf2",
+                            "extraClass": "ui-btn--vertical download"
+                        }
+                    },
+                    {
+                        "type": "content-button",
+                        "text": "YOUR COMPLIANCE, YOUR WAY - Get flexibility and choice with your HIPAA BAA",
+                        "button": {
+                            "type": "download",
+                            "url": "https://microsoft.docs.contently.com/v/your-compliance-your-way-get-flexibility-and-choice-with-your-hipaa-baa",
+                            "label": "Whitepaper",
+                            "icon": "icon-file-pdf2",
+                            "extraClass": "ui-btn--vertical download"
+                        }
+                    },
+                    {
+                        "type": "content-button",
+                        "text": " A Practical Guide to  DESIGNING SECURE  HEALTH SOLUTIONS  Using Microsoft Azure",
+                        "button": {
+                            "type": "download",
+                            "url": "https://microsoft.docs.contently.com/v/a-practical-guide-to-designing-secure-health-solutions-using-microsoft-azure",
+                            "label": "eBook",
+                            "icon": "icon-file-pdf2",
+                            "extraClass": "ui-btn--vertical download"
+                        }
+                    },
+                    {
+                        "type": "content-button",
+                        "text": "It’s time for a security intervention in healthcare",
+                        "button": {
+                            "type": "download",
+                            "url": "https://enterprise.microsoft.com/en-us/industries/health/time-security-intervention-healthcare/",
+                            "label": "Blog Post",
+                            "icon": "icon-file-text2",
+                            "extraClass": "ui-btn--vertical download"
+                        }
+                    },
+                    {
+                        "type": "button",
+                        "button": {
+                            "type": "link",
+                            "url": "https://enterprise.microsoft.com/en-us/industries/health/",
+                            "label": "Learn how to engage at Microsoft in health",
+                            "extraClass": "ui-btn--blue ui-btn--large external"
+                        }
+                    },
+                    {
+                        "type": "button",
+                        "button": {
+                            "type": "link",
+                            "url": "http://appsource.microsoft.com/en-us/marketplace/partners?page=1",
+                            "label": "Become a Microsoft Intel partner",
+                            "extraClass": "ui-btn--blue ui-btn--large external"
+                        }
+                    }
+                ]
+            }
+        }
+    ],
+    "footer": {
+        "text": "<span class=\"link\">&copy; 2016 Microsoft</span><a class=\"link\" href=\"https://support.microsoft.com/en-us/contactus?ws=mscom&forceorigin=esmc\" target=\"_blank\">Contact</a><a class=\"link\" href=\"https://privacy.microsoft.com/en-us/privacystatement\" target=\"_blank\">Privacy & cookies</a><a class=\"link\" href=\"https://www.microsoft.com/en-us/legal/intellectualproperty/copyright/default.aspx\" target=\"_blank\">Terms of use</a><a class=\"link\" href=\"http://www.microsoft.com/health/\" target=\"_blank\">Microsoft in Health</a><span class=\"link tablet-hide\">Follow</span>",
+        "menu": [
+            {
+                "label": "Home",
+                "url": "/pillar/0"
+            },
+            {
+                "label": "Engage your patients",
+                "url": "/pillar/1"
+            },
+            {
+                "label": "Empower your care teams",
+                "url": "/pillar/2"
+            },
+            {
+                "label": "Optimize your clinical and operational effectiveness",
+                "url": "/pillar/3"
+            },
+            {
+                "label": "Transform the care continuum",
+                "url": "/pillar/4"
+            }
+        ],
+        "social": {
+            "colorTheme": "light",
+            "items": [
+                {
+                    "name": "twitter",
+                    "icon": "icon-twitter",
+                    "url": " https://twitter.com/Health_IT",
+                    "target": "_blank"
+                },
+                {
+                    "name": "facebook",
+                    "icon": "icon-facebook",
+                    "url": "https://www.facebook.com/MicrosoftHealth",
+                    "target": "_blank"
+                },
+                {
+                    "name": "youtube",
+                    "icon": "icon-youtube",
+                    "url": "https://www.youtube.com/user/MicrosoftinHealth",
+                    "target": "_blank"
+                },
+                {
+                    "name": "linkedin",
+                    "icon": "icon-linkedin",
+                    "url": "https://www.linkedin.com/company/microsoft-health?trk=biz-companies-cym",
+                    "target": "_blank"
+                }
+            ]
+        }
+    }
+}

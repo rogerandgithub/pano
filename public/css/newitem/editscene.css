@@ -1,0 +1,54 @@
+/*
+#editpano{
+  margin-left: 20px;
+  padding-left: 20px;
+  padding-right: 45px;
+  float: right;
+  width: 20%;
+  border-left: 1px solid #e6ebf5;
+  margin-top: 50px;
+  height: calc(100% - 78px);
+}
+
+@media (max-width: 1557px){
+    #editpano{
+        display: none;
+    }
+}
+
+@media (min-width: 1558px){
+  .scene-wrapper{
+    max-width: 980px;
+  }
+}
+@media (max-width: 1200px){
+  .scene-wrapper{
+    padding: 0;
+  }
+}
+.edit-container{
+    height: calc(100% - 52px);
+    padding: 0;
+}
+.scene-wrapper{
+    width: 100%; 
+    height: 100%;
+    float: left;
+    padding: 50px;
+}
+@media (max-width:767px){
+    .scene-wrapper{
+        width: 100%;
+        height: calc(100% - 52px);
+    } 
+}
+.scene-one{
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+.scene-content{
+    height: 100%!important;
+    padding-bottom: 0!important;
+    margin-bottom: 0!important;
+}*/

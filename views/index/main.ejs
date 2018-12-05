@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="description" content="RoboSense(速腾聚创)是全球领先的激光雷达公司。注册资本1000万。利用公司自主研发的具有世界领先水平的机器人感知产品，将激光雷达传感器硬件方案、三维数据处理算法和深度学习技术相结合。通过持续的技术创新，让机器人拥有超越人类眼睛的环境感知能力。公司注册于2014年，初期由哈工大博士团队创建。经过7年的科研沉淀与3年的商业化转换。目前速腾聚创成功建立起围绕激光雷达环境感知为核心的产销研一体化经营体系.速腾聚创研发与运营中心位于中国深圳南山区，并在北京与硅谷设有办事处。截止至2017年4月，公司全职员工超过百名（不含生产基地员工），其中核心研发团队研究生占比超过60%。并长期与麻省理工、清华、哈工大等国内外一流学府及研究机构保持着人才输送和学术研究合作。">
+    <title><%=lang=='cn'?'深圳速腾聚创科技有限公司':'Robosense'%></title>
+    <link rel="stylesheet" href="/index/css/common.css" type="text/css"> 
+    <link rel="stylesheet" href="/index/css/main.css" type="text/css">
+    <link rel="prefetch" href="http://qncdn.sz-sti.com/prometheus/prometheus_car.png" />
+    <link rel="prefetch" href="http://qncdn.sz-sti.com/prometheus/new/title.png" />
+    <link rel="prefetch" href="http://qncdn.sz-sti.com/prometheus/content1.png" />
+    <link rel="prefetch" href="http://qncdn.sz-sti.com/prometheus/content2.png" />
+    <link rel="prefetch" href="http://qncdn.sz-sti.com/prometheus/content3.png" />
+    <link rel="prefetch" href="http://qncdn.sz-sti.com/prometheus/content4.png" />
+    <link rel="prefetch" href="http://qncdn.sz-sti.com/prometheus/content5.png" />
+    <link rel="prefetch" href="http://qncdn.sz-sti.com/prometheus/content6.png" />
+    <link rel="prefetch" href="http://qncdn.sz-sti.com/prometheus/content7.png" />
+    <link rel="prefetch" href="http://qncdn.sz-sti.com/prometheus/content8.png" />
+    <link rel="prefetch" href="http://qncdn.sz-sti.com/prometheus/content9.png" />
+    <link rel="prefetch" href="http://qncdn.sz-sti.com/prometheus/content10.png" />
+    <link rel="prefetch" href="http://qncdn.sz-sti.com/prometheus/content11.png" />
+    <link rel="prefetch" href="http://qncdn.sz-sti.com/prometheus/content12.png" />
+</head>
+<body>
+    <%include nav%>
+    <div id="navtop">
+        <navtop border="borderBot"></navtop>
+    </div>
+	<div class="flexslider" id="flexslider">
+		<ul class="slides">
+            <li class="threeBox">
+                <div class="detailBox clearfix">
+                    <div class="seeker">
+                        <h2 v-text="datas.main.slide_3.h2"></h2>
+                        <p v-text="datas.main.slide_3.p"></p>
+                        <a href="/web/rslidar/platform/<%=lang%>" class="checkBtn" v-text="datas.main.slide_1.checkbtn"></a>
+                        <a href="/web/buy/<%=lang%>" class="checkBtn" target="_blank"><%=lang=='cn'?'预约购买':'Place an order'%></a>
+                    </div>
+                </div>
+            </li>
+            <li class="rslidarBox">
+                <div class="detailBox clearfix">
+                    <div class="rslidar" style="float:right;margin-top:180px;">
+                        <h2 v-text="datas.main.slide_1.h2"></h2>
+                        <p v-text="datas.main.slide_1.p"></p>
+                        <a href="/web/rslidar/<%=lang%>" class="checkBtn" v-text="datas.main.slide_1.checkbtn"></a>
+                        <a href="/web/buy/<%=lang%>" class="checkBtn" target="_blank"><%=lang=='cn'?'预约购买':'Place an order'%></a>
+                    </div>
+                </div>
+            </li>
+            <li class="seekerBox">
+                <div class="detailBox clearfix">
+                    <div class="seeker">
+                        <h2 v-text="datas.main.slide_2.h2"></h2>
+                        <p v-text="datas.main.slide_2.p1"></p>
+                        <p v-text="datas.main.slide_2.p2"></p>
+                        <a href="/web/three-dimensional/<%=lang%>" class="checkBtn" v-text="datas.main.slide_2.checkbtn"></a>
+                        <a href="/web/buy/<%=lang%>" class="checkBtn" target="_blank"><%=lang=='cn'?'预约购买':'Place an order'%></a>
+                    </div>
+                </div>
+            </li>
+        </ul>
+	</div>
+    <script src="/index/js/jquery.js"></script>
+    <script src="/index/js/jquery.flexslider-min.js"></script>
+    <script src="/index/js/move.js"></script>
+	<script>
+        var navtop = new Vue({
+            el: '#navtop'
+        });
+        var flexslider = new Vue({
+            el: '#flexslider',
+            data: {
+                datas: <%-include("lang_"+lang, {lang: lang})%>
+            }
+        })
+	</script>
+    <script>
+        $(function(){
+            $('.flexslider').flexslider({
+                directionNav: true,
+                pauseOnAction: false
+            });
+            move('#navtop').delay('0.7s').ease('snap').set('top',0).duration('0.5s').end();
+            move('.flexslider .slides li .detailBox .rslidar').delay('1s').translate(0).set('opacity',1).duration('1s').end();
+        })
+    </script>
+</body>
+</html>

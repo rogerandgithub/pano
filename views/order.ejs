@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>订单后台管理</title>
+    <link rel="stylesheet" href="/css/feedback.css" type="text/css">
+    <link href="/css/newitem/common.css" rel="stylesheet" type="text/css" /> 
+    <!-- <link href="/css/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css" />  -->
+    <script src="/js/new/vue.min.js"></script> 
+    <script src="/js/jquery-1.8.3.min.js"></script>
+    <style type="text/css">
+        /*.posfix{
+            width: 94%;
+            left: 3%;
+            position: fixed;
+            top: 0;
+        }*/
+    </style>
+</head>
+<body>
+    <%include toast%>
+
+    <%if(!isadmin){%>
+        <div id="trashpano" class="toast-content">
+            <div class="toast-center-wrapper">
+                <div class="m-header">
+                    <h1 class="text-center"><img width="35" src="/images/lock.png" /></h1>
+                    <h6 class="toast-title text-center">密码认证</h6>
+                </div>
+                <div>
+                    <div class="toast-body">
+                        <div class="form-group"> 
+                            <input id="psw" class="form-control" type="password" placeholder="请输入您的密码" autocomplete="off" @keyup.enter="submit" v-model="psw" />
+                        </div>
+                    </div>
+                    <div class="m-footer">
+                        <div class="text-center">
+                            <button class="btn btn-cancel btn-lg" type="button" @click="hide">取消</button>
+                            <button class="btn btn-primary btn-setter btn-lg" :disabled="disabled" type="submit" @click="submit">确定</button> 
+                        </div>
+                    </div>
+                </div>
+            </div>   
+        </div>
+        <script type="text/javascript">
+            var login = new Vue({
+                el: '#trashpano',
+                data: {
+                    psw: ''
+                },
+                methods: {
+                    hide: function() {
+                        location.href = '/joinus';
+                    },
+                    submit: function(){
+                        if(!this.psw){
+                            toast.showmsg('密码不能为空', true);
+                            return;
+                        }
+                        $.post('/supermaster/order/login', {
+                            psw: this.psw
+                        }, function(res){
+                            if(res.code!=0){
+                                toast.showmsg(res.msg, true);
+                                return;
+                            }
+                            toast.showmsg('登录成功');
+                            setTimeout(function(){
+                                location.href = '/supermaster/order';
+                            }, 1000);
+                        });
+                    }
+                }
+            });
+        </script>
+    <%}else{%>
+        <div id="feedback">    
+            <header id="header" class="clearfix">
+                <img width="35" src="/images/robologo.png" />
+                <button class="btn btn-primary pull-right" style="margin-left:10px;" @click="logout">退出登录</button>
+            </header>
+            <div class="feedback-content clearfix" style="width:94%;">
+                <!-- <div class="row-fluid">
+                    <h3 class="title" style="padding:15px 0;">订单列表</h3> -->
+                    <table class="table table-hover">
+                        <thead id="posfix">
+                            <tr>
+                                <th style="width:10%;">企业名称</th>
+                                <th style="width:4%;">姓名</th>
+                                <th style="width:8%;">职位</th>
+                                <th style="width:8%;">手机</th>
+                                <th style="width:8%;">邮箱</th>
+                                <th style="width:4%;">产品</th>
+                                <th style="width:8%;">用途</th>
+                                <th style="width:4%;">数量</th>
+                                <th style="width:8%;">收货日期</th>
+                                <th style="width:14%;">建议</th>
+                                <th style="width:8%;" class="align-right">提交时间</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="feedback in feedbacks | limitBy limit offset">
+                                <td>
+                                    <span v-text="feedback.organization"></span>
+                                </td>
+                                <td>
+                                    <span v-text="feedback.name"></span>
+                                </td>
+                                <td>
+                                    <span v-text="feedback.position"></span>
+                                </td>
+                                <td>
+                                    <span v-text="feedback.mobilephone"></span>
+                                </td>
+                                <td>
+                                    <span v-text="feedback.email"></span>
+                                </td>
+                                <td>
+                                    <span v-text="feedback.product"></span>
+                                </td>
+                                <td>
+                                    <span v-text="feedback.application"></span>
+                                </td>
+                                <td>
+                                    <span v-text="feedback.quantity"></span>
+                                </td>
+                                <td>
+                                    <span v-text="feedback.deliverdate"></span>
+                                </td>
+                                <td>
+                                    <span v-text="feedback.suggest"></span>
+                                </td>
+                                <td class="align-right">
+                                    <span v-text="feedback.createdAt"></span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                <!-- </div> -->
+
+                <div class="pagination pull-right" v-if="count>limit">
+                    <ul>
+                        <li :class="{'disabled': 1 == pagindex}"><a href="javascript:;" @click="load(1)">&#8249;&#8249;</a></li>
+                        <li :class="{'disabled': 1 == pagindex}" class="child"><a href="javascript:;" @click="load(pagindex-1)">&#8249;</a></li>
+                        <li v-for="cur in pages" v-if="pagindex>3&&pages-2>pagindex?(cur+1<=pagindex+2&&cur+1>=pagindex-2):(pagindex<=3?cur+1<=5:cur+1>=pages-4)" :class="{'active': cur+1 == pagindex}">
+                            <a href="javascript:;" @click="load(cur+1)" v-text="cur+1"></a>
+                        </li>
+                        <li :class="{'disabled': pages == pagindex}" class="child"><a href="javascript:;" @click="load(pagindex+1)">&#8250;</a></li>
+                        <li :class="{'disabled': pages == pagindex}"><a href="javascript:;" @click="load(pages)">&#8250;&#8250;</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+
+        <script type="text/javascript">
+            $(function(){
+                $(window).scroll(function(){ 
+                    var top = $(document).scrollTop();
+                    if(top >= 140){
+                        $('#posfix').addClass('posfix');
+                    }else{
+                        $('#posfix').removeClass('posfix');
+                    }
+                })
+            })
+        </script>
+        <script type="text/javascript">
+            var feedback = new Vue({
+                el: '#feedback',
+                data: {
+                    count:0,
+                    pagindex:1,
+                    limit:8,
+                    pages:0,
+                    feedbacks: []
+                },
+                computed: {
+                    offset: function(){
+                        return (this.pagindex-1)*this.limit;
+                    },
+                    pages: function(){
+                        return Math.ceil(this.count/this.limit);
+                    }
+                },
+                created: function(){
+                    var _this = this;
+                    $.get('/supermaster/order/data', function(res){
+                        if(res.code != 0){
+                            console.log('error');
+                        }
+                        // var orderlists = JSON.parse(res.orders);
+                        for(var i in res.orders){
+                            var createdAt;
+                            var time = new Date(res.orders[i].createdAt);
+                            createdAt = time.getFullYear();
+                            createdAt += '-'+(parseInt(time.getMonth())+1<10?'0':'')+(parseInt(time.getMonth())+1);
+                            createdAt += '-'+(time.getDate()<10?'0':'')+time.getDate();
+                            createdAt += ' '+(time.getHours()<10?'0':'')+time.getHours();
+                            createdAt += ':'+(time.getMinutes()<10?'0':'')+time.getMinutes();
+                            createdAt += ':'+(time.getSeconds()<10?'0':'')+time.getSeconds();
+                            res.orders[i].createdAt = createdAt;
+                            _this.feedbacks.push(res.orders[i]);
+                        }
+                        _this.count = res.orders.length;
+                    });
+                },
+                methods: {
+                    <%if(name=='admin'&&token){%> 
+                    logout: function(){
+                        location.href = '/supermaster/order/logout';
+                    },
+                    <%}%>
+                    load: function(cur){
+                        if(cur!=this.pagindex){
+                            if(cur<1){
+                                toast.showmsg('当前就是首页了！', true);
+                                return;
+                            }
+                            if(cur>this.pages){
+                                toast.showmsg('没有下一页了', true);
+                                return;
+                            }
+                            this.pagindex = cur;
+                        }
+                    }
+                }
+            });
+        </script>
+    <%}%>
+</body>
+</html>

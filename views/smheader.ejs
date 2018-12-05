@@ -1,0 +1,501 @@
+
+    <div class="navbar navbar-inverse">
+        <div class="navbar-inner">
+            <button type="button" class="btn btn-navbar visible-phone" id="menu-toggler">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            
+            <a class="brand" href="/supermaster"><img style="height:36px;" src="/images/newlogo.png" /></a>
+
+            <ul class="nav pull-right">                
+<!--                 <li class="hidden-phone">
+                    <input class="search" type="text" />
+                </li> -->
+                <li class="notification-dropdown hidden-phone">
+                    <a href="#" class="trigger">
+                        <i class="icon-warning-sign"></i>
+                        <span class="count">8</span>
+                    </a>
+                    <div class="pop-dialog">
+                        <div class="pointer right">
+                            <div class="arrow"></div>
+                            <div class="arrow_border"></div>
+                        </div>
+                        <div class="body">
+                            <a href="#" class="close-icon"><i class="icon-remove-sign"></i></a>
+                            <div class="notifications">
+                                <h3>You have 6 new notifications</h3>
+                                <a href="#" class="item">
+                                    <i class="icon-signin"></i> New user registration
+                                    <span class="time"><i class="icon-time"></i> 13 min.</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle hidden-phone" data-toggle="dropdown">
+                        admin
+                        <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="personal-info.html">Personal info</a></li>
+                        <li><a href="#">Account settings</a></li>
+                        <li><a href="#">Billing</a></li>
+                        <li><a href="#">Export your data</a></li>
+                        <li><a href="#">Send feedback</a></li>
+                    </ul>
+                </li>
+                <li class="settings hidden-phone">
+                    <a href="/supermaster/logout" role="button">
+                        <i class="icon-share-alt"></i>
+                    </a>
+                </li>
+            </ul>            
+        </div>
+    </div>
+    <!-- sidebar -->
+    <div id="sidebar-nav">
+        <ul id="dashboard-menu">
+            <li class="active">                
+                <a href="/supermaster">
+                    <i class="icon-home"></i>
+                    <span>Home</span>
+                </a>
+            </li>
+            <li class="active">
+                <a href="/supermaster/setpermission">
+                    <i class="icon-user"></i>
+                    <span>Permission</span>
+                </a>
+            </li>            
+            <li>
+                <a class="btn-newuser" href="javascript:;">
+                    <i class="icon-signal"></i>
+                    <span>新建用户</span>
+                </a>
+            </li>
+            <li>
+                <a class="btn-newappid" href="javascript:;">
+                    <i class="icon-group"></i>
+                    <span>APPid账户</span>
+                    <!-- <i class="icon-chevron-down"></i> -->
+                </a>
+ <!--                <ul class="submenu">
+                    <li><a href="user-list.html">User list</a></li>
+                    <li><a href="new-user.html">New user form</a></li>
+                    <li><a href="user-profile.html">User profile</a></li>
+                </ul> -->
+            </li>
+            <li>
+                <a class="btn-bindchild" href="javascript:;">
+                    <i class="icon-edit"></i>
+                    <span>关联子母</span>
+                    <!-- <i class="icon-chevron-down"></i> -->
+                </a>
+<!--                 <ul class="submenu">
+                    <li><a href="form-showcase.html">Form showcase</a></li>
+                    <li><a href="form-wizard.html">Form wizard</a></li>
+                </ul> -->
+            </li>
+            <li>
+                <a class="btn-addchild" href="javascript:;">
+                    <i class="icon-picture"></i>
+                    <span>添加子账户</span>
+                </a>
+            </li>
+            <li>
+                <a href="/supermaster/father">
+                    <i class="icon-user-md"></i>
+                    <span>母账号管理</span>
+                </a>
+            </li>
+            <!-- <li>
+                <a href="calendar.html">
+                    <i class="icon-calendar-empty"></i>
+                    <span>Calendar</span>
+                </a>
+            </li>
+            <li>
+                <a class="dropdown-toggle ui-elements" href="#">
+                    <i class="icon-code-fork"></i>
+                    <span>UI Elements</span>
+                    <i class="icon-chevron-down"></i>
+                </a>
+                <ul class="submenu">
+                    <li><a href="ui-elements.html">UI Elements</a></li>
+                    <li><a href="icons.html">Icons</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="personal-info.html">
+                    <i class="icon-cog"></i>
+                    <span>My Info</span>
+                </a>
+            </li>
+            <li>
+                <a class="dropdown-toggle" href="#">
+                    <i class="icon-share-alt"></i>
+                    <span>Extras</span>
+                    <i class="icon-chevron-down"></i>
+                </a>
+                <ul class="submenu">
+                    <li><a href="code-editor.html">Code editor</a></li>
+                    <li><a href="grids.html">Grids</a></li>
+                    <li><a href="signin.html">Sign in</a></li>
+                    <li><a href="signup.html">Sign up</a></li>
+                </ul>
+            </li> -->
+        </ul>
+    </div>
+    <!-- end sidebar -->
+    <!-- scripts -->
+    <script src="/js/jquery-latest.js"></script>
+    <script src="/js/supermaster/bootstrap.min.js"></script>
+    <script src="/js/supermaster/theme.js"></script>
+    <script src="/js/bootstrap/bootstrap-datetimepicker.min.js" charset="UTF-8"></script>
+    <script src="/js/template-native.js"></script>
+    <script src="/js/template-native.js?v=<%=version%>"></script>
+    <script>
+        template.config('openTag','<#');
+        template.config('closeTag','#>');
+
+        $(function(){
+
+            var html='';
+            var lastdate = new Date().valueOf();
+            var searchkey = '';
+
+            function alertClick(type){
+                if(!!html||type=='newappid'){
+                    
+                    if(type=='bind'){
+                        bindAlert(html);
+                    }else if(type=='newuser'){
+                        newuserAlert(html);
+                    }else if(type=='newappid'){
+                        newappidAlert();
+                    }else if(type=='addchild'){
+                        addchild();
+                    }
+                }else{
+                    $.get('/supermaster/getfathers', function(result){
+                        if(result.code!=0){
+                            alert(result.msg);
+                        }else{
+                            for(var i in result.fathers){
+                                html+='<option value='+result.fathers[i].id+'>'+result.fathers[i].name+'</option>';
+                            }
+                            if(type=='bind'){
+                                bindAlert(html);
+                            }else if(type=='newuser'){
+                                newuserAlert(html);
+                            }else if(type=='addchild'){
+                                addchild();
+                            }
+                        }
+                    });
+                }
+            }
+
+
+
+            function addchild(){
+
+                $('.alert-wrap').css('visibility','visible');
+                initAlert('',{
+                    title:'添加子账户',
+                    content:'<select class="input-bind-father"><option value="0">父账号(可选)</option>'+html+'</select>\
+                            <input class="input-bind-name" placeholder="子账号用户名"><input type="password" class="input-bind-password" placeholder="密码">',
+                    buttons:[
+                    {
+                        text:'取消'
+                    },{
+                        text:'确定',
+                        color:'red',
+                        callBack:function(){
+
+                            if($('.input-bind-password').val()==""){
+                                alert('子账号密码不能为空');
+                                return;
+                            }
+                            if($('.input-bind-father').val()==0){
+                                alert('请选择父账号');
+                                return;
+                            }
+
+                            $.ajax({
+                                url:'/supermaster/addchild',
+                                type:'post',
+                                data:{
+                                    username:$('.input-bind-name').val(),
+                                    password:$('.input-bind-password').val(),
+                                    father:$('.input-bind-father').val()||undefined
+                                },
+                                async:false,
+                                success:function(r){
+                                    if(r.code!=0){
+                                        alert(r.msg);
+                                        return;
+                                    }
+                                    alert(r.msg);
+                                    $('.alert-wrap').css('visibility','hidden');
+                                }
+                            });
+                        }
+                    }]
+                });
+            }
+
+            function newappidAlert(){
+
+                $('.alert-wrap').css('visibility','visible');
+                initAlert('',{
+                    title:'创建APPID账户',
+                    content:'<input class="input-appid-name" placeholder="绑定用户名"><input class="input-appid-password" placeholder="密码">',
+                    buttons:[
+                    {
+                        text:'取消'
+                    },{
+                        text:'确定',
+                        color:'red',
+                        callBack:function(){
+
+                            if($('.input-appid-name').val()==""||$('.input-appid-password').val()==""){
+                                alert('账号密码不能为空');
+                                return;
+                            }
+
+                            $.ajax({
+                                url:'/supermaster/newappiduser',
+                                type:'post',
+                                data:{
+                                    username:$('.input-appid-name').val(),
+                                    password:$('.input-appid-password').val()
+                                },
+                                async:false,
+                                success:function(r){
+                                    if(r.code!=0){
+                                        alert(r.msg);
+                                        return;
+                                    }
+                                    initAlert('',{
+                                        title:r.msg,
+                                        content:'<input value='+r.appid+'><input value='+r.appsecret+'>',
+                                        buttons:[
+                                        {
+                                            text:'确定',
+                                            color:'red',
+                                            callBack:function(){
+                                                $('.alert-wrap').css('visibility','hidden');
+                                            }
+                                        }]
+                                    });
+                                }
+                            });
+                        }
+                    }]
+                });
+            }
+
+            function bindAlert(html){
+                $('.alert-wrap').css('visibility','visible');
+                initAlert('',{
+                    title:'关联子母账号',
+                    content:'<input class="input-bind-name" placeholder="子账号用户名"><input class="input-bind-password" placeholder="密码"><select class="input-bind-father">\
+                        <option value="0">父账号(可选)</option>'+html+'</select>',
+                    buttons:[
+                    {
+                        text:'取消'
+                    },{
+                        text:'确定',
+                        color:'red',
+                        callBack:function(){
+
+                            if($('.input-bind-password').val()==""){
+                                alert('子账号密码不能为空');
+                                return;
+                            }
+                            if($('.input-bind-father').val()==0){
+                                alert('请选择父账号');
+                                return;
+                            }
+
+                            $.ajax({
+                                url:'/supermaster/bindfather',
+                                type:'post',
+                                data:{
+                                    username:$('.input-bind-name').val(),
+                                    password:$('.input-bind-password').val(),
+                                    father:$('.input-bind-father').val()||undefined
+                                },
+                                async:false,
+                                success:function(r){
+                                    if(r.code!=0){
+                                        alert(r.msg);
+                                        return;
+                                    }
+                                    alert(r.msg);
+                                    $('.alert-wrap').css('visibility','hidden');
+                                }
+                            });
+                        }
+                    }]
+                });
+            }
+
+            //<input type="text" class="input-bind" /><input type="text" class="input-company" />
+            function newuserAlert(html){
+                $('.alert-wrap').css('visibility','visible');
+                initAlert('',{
+                    title:'新建用户',
+                    content:'<input class="input-newuser-name" placeholder="用户名"><input class="input-newuser-password" placeholder="密码"><input type="text" class="input-itcmstertel" placeholder="绑定设备"><input type="text" class="input-company" placeholder="公司名称"><select class="input-bind-father">\
+                        <option value="0">父账号(可选)</option>'+html+'</select>\
+                        <select id="expire"><option value="0">选择有效期</option><option value="1">一个月</option><option value="3">三个月</option><option value="6">半年</option><option value="9">九个月</option><option value="12">一年</option><option value="18">一年半</option><option value="-1">手动选择</option></select>\
+                        <input class="newdate" id="datetimepicker" placeholder="点击选择日期" />',
+                    buttons:[
+                    {
+                        text:'取消'
+                    },{
+                        text:'确定',
+                        color:'red',
+                        callBack:function(){
+
+                            if($('.input-newuser-password').val()==""){
+                                alert('密码不能为空');
+                                return;
+                            }
+                            var expire, date = new Date();
+                            console.log($('#expire').val());
+                            var month = (date.getMonth()+parseInt($('#expire').val())+1);
+                            var year = date.getFullYear() + parseInt(month/12-0.01);
+                            expire = $('#expire').val()!=-1?year+'-'+(month==12?month:(month%12))+'-'+date.getDate():$('#datetimepicker').val();
+                            console.log(expire);
+                            if(!expire){
+                                alert('谢总，您好！请选择日期，谢谢！');
+                                return;
+                            }
+                            $.ajax({
+                                url:'/supermaster/newuser',
+                                type:'post',
+                                data:{
+                                    username:$('.input-newuser-name').val(),
+                                    password:$('.input-newuser-password').val(),
+                                    father:$('.input-bind-father').val()||undefined,
+                                    expire: expire?expire:'1970-01-01 08:00:00',
+                                    company: $('.input-company').val(),
+                                    itcmstertel: $('.input-itcmstertel').val()
+                                },
+                                async:false,
+                                success:function(r){
+                                    if(r.code!=0){
+                                        alert(r.msg);
+                                        return;
+                                    }else{
+                                        $('contentbox').html(r.msg);
+                                        setTimeout(function(){
+                                            location.reload();
+                                        }, 1000);
+                                    }
+                                }
+                            });
+                        }
+                    }]
+                });
+
+                $('#expire').on('change', function(){
+                    $(this).val()==-1?$('#datetimepicker').show():$('#datetimepicker').hide();
+                });
+
+                $('#datetimepicker').hide().datetimepicker({
+                        startDate:new Date(),
+                        autoclose: 1,
+                        todayHighlight: 1,
+                        startView: 2,
+                        minView: 2,
+                        forceParse: 0
+                });
+                $('#datetimepicker').on('change', function(){
+                    $('#datetimepicker').val($('#datetimepicker').val().split(' ')[0]);
+                });
+            }
+
+            function setexpire(){
+                var _this = this;
+                $('.alert-wrap').css('visibility','visible');
+                initAlert('',{
+                    title: '账号 ('+$(this).attr('data-username')+') 账号续费',
+                    content:'<input class="newdate" id="datetimepicker" placeholder="点击选择日期" />\
+                            <input class="adminpsw" type="password" placeholder="管理员密码" />',
+                    buttons:[
+                    {
+                        text:'取消'
+                    },{
+                        text:'确定',
+                        color:'red',
+                        callBack:function(){
+
+                            if($('#datetimepicker').val()==""){
+                                alert('请选择日期');
+                                return;
+                            }
+                            if($('.adminpsw').val()==""){
+                                alert('密码不能为空');
+                                return;
+                            }
+                            $.ajax({
+                                url:'/supermaster/setexpire',
+                                type:'post',
+                                data:{
+                                    newdate:$('#datetimepicker').val(),
+                                    password:$('.adminpsw').val(),
+                                    userid:$(_this).attr('data-userid'),
+                                    username:$(_this).attr('data-username')
+                                },
+                                async:false,
+                                success:function(r){
+                                    if(r.code!=0){
+                                        alert(r.msg);
+                                        return;
+                                    }else{
+                                        alert('修改成功');
+                                        $(_this).parents('.first').find('.expiredate').html($('#datetimepicker').val());
+                                        $('.alert-wrap').css('visibility','hidden');
+                                    }
+                                }
+                            });
+                        }
+                    }]
+                });
+
+                $('#datetimepicker').datetimepicker({
+                        startDate:new Date(),
+                        autoclose: 1,
+                        todayHighlight: 1,
+                        startView: 2,
+                        minView: 2,
+                        forceParse: 0
+                });
+                $('#datetimepicker').on('change', function(){
+                    $('#datetimepicker').val($('#datetimepicker').val().split(' ')[0]);
+                });
+            }
+
+
+            $('.btn-glow').on('click',setexpire);      
+            $('.btn-newappid').on('click',function(){
+                alertClick('newappid');
+            });
+            $('.btn-newuser').on('click',function(){
+                alertClick('newuser');
+            });
+            $('.btn-bindchild').on('click',function(){
+                alertClick('bind');
+            });
+            $('.btn-addchild').on('click', function(){
+                alertClick('addchild');
+            })
+        });
+    </script>

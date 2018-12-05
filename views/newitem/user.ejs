@@ -1,0 +1,1892 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>STi 速腾聚创-后台</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href="/css/newitem/bootstrap.css" rel="stylesheet" />
+    <link href="/css/newitem/bootstrap-responsive.css" rel="stylesheet" />
+    <link href="/css/newitem/bootstrap-overrides.css" type="text/css" rel="stylesheet" />
+    <link href="/css/newitem/font-awesome.css" type="text/css" rel="stylesheet" />   
+    <link href="/css/newitem/layout.css" rel="stylesheet" type="text/css" />
+    <link href="/css/newitem/icons.css" rel="stylesheet" type="text/css" />
+    <link href="/css/newitem/common.css" rel="stylesheet" type="text/css" /> 
+    <link href="/css/newitem/reset.css" rel="stylesheet" type="text/css" />  
+    <link href="/css/newitem/user.css" type="text/css" rel="stylesheet" media="screen" />
+    <link rel="stylesheet" href="/css/newitem/index.css" type="text/css">
+    <!-- <link rel="stylesheet" href="/css/newitem/upload.css" type="text/css"> -->
+    <script src="/js/newitem/vue.min.js"></script>
+    <script src="/js/newitem/jquery-2.2.4.min.js"></script>   
+    <script src="/js/newitem/director.min.js"></script>
+    <style type="text/css">
+        *{
+            -webkit-tap-highlight-color: transparent;  
+            -webkit-appearance: none; 
+        }
+        .btn-red{background-color: #eb5a6f;color: #fff;}
+        .apiinput label{float: left;width: 8em;line-height: 40px;}
+        .apiinput div{float: left;}
+        .apiinput input{border: 1px solid #e7e7eb;padding: 0 10px;font-size: 14px;vertical-align: middle;line-height: 30px;box-shadow: none;-moz-box-shadow: none;-webkit-box-shadow: none;border-radius: 0;-moz-border-radius: 0;-webkit-border-radius: 0;margin: 5px 10px 5px 0;}
+        .apiinput input:focus{border: 1px solid #e7e7eb !important;}
+        .apiinput p{margin-bottom: 0;}
+        .apiinput .fail_msg{color: #F7615E;}
+
+        #personalHome{
+            width:94%;max-width:1300px;margin: 0 auto;padding-top:80px;
+        }
+        #personalHome .wrapper{
+            margin: 0 auto;
+        }
+        #personalHome .userHeader{
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        #personalHome .userHeader .avatar{
+            margin: 0 auto 30px auto;
+            width: 100px;
+            height: 100px;
+            background: #fff;
+            /*border:2px solid #e72420;*/
+            overflow: hidden;
+            border-radius: 50%;
+            -webkit-border-radius: 50%;
+            -moz-border-radius: 50%;
+            -ms-border-radius: 50%;
+            cursor: pointer;
+            position: relative;
+        }
+        #personalHome .userHeader .avatar img{
+            display: block;
+            position: relative;
+            left: 50%;
+            transform: translateX(-50%);
+            -webkit-transform: translateX(-50%);
+            -moz-transform: translateX(-50%);
+            -ms-transform: translateX(-50%);
+            height: 100%;
+        }
+        #personalHome .userHeader .username{
+            text-align: center;
+            color: #333;
+            padding-bottom: 20px;
+            font-size: 20px;
+        }
+        #personalHome .userHeader .telephone{
+            text-align: center;
+            padding-bottom: 40px;
+        }
+        #personalHome .userHeader .telephone span{
+            display: inline-block;
+            position: relative;
+            bottom: -5px;
+            padding-left: 10px;
+            font-size: 18px;
+            color: #333;
+        }
+        #personalHome .listWrap .title{
+            max-width: 1000px;
+            margin: 0 auto;
+            color: #333;
+            font-weight: normal;
+            margin-bottom: 20px;
+        }
+        #personalHome .listWrap .title img{
+            padding-right: 10px;
+        }
+        #personalHome .listWrap .title span{
+            position: relative;
+            bottom: -4px;
+        }
+        #personalHome a.scenebox{
+            display: block;
+            width:30%;
+            float: left;
+            margin-bottom: 20px;
+            color: #fff;
+            overflow: hidden;
+            padding: 10px;
+            background: #fff;
+            border-radius: 6px;
+        }
+        #personalHome a.scenebox:nth-child(3n-1){
+            margin: 0 5%;
+        }
+        #personalHome a.scenebox:hover{
+            text-decoration: none;
+        }
+        #personalHome .scenebox .thumbpic{
+            width:100%; 
+            max-height: 200px;
+            position: relative;
+            background: #999;
+            overflow: hidden;
+            border-radius: 5px;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            -ms-border-radius: 5px;
+        }
+        #personalHome .scenebox .thumbpic img.picurl{
+            display: block;
+            width: 100%;
+        }
+        #personalHome .scenebox .thumbpic .address{
+            position: absolute;
+            text-align: center;
+            /*line-height: 40px;*/
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            /*height: 40px;*/
+            background: rgba(51,51,51,0.8);
+            overflow: hidden;
+            font-size: 12px;
+            padding: 5px 0;
+            text-overflow:ellipsis;
+            white-space: nowrap;
+        }
+        #personalHome .scenebox .thumbpic .visited{
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+        #personalHome .scenebox .thumbpic .visited span{
+            padding-left: 5px;
+            position: relative;
+            bottom: -2px;
+        }
+        #personalHome .checkmore{
+            display: block;
+            color: #e72420;    
+            text-align: center;
+            padding: 20px 0;   
+            cursor: pointer;     
+        }
+        #personalHome .noscene{
+            font-size: 30px;
+            font-weight: normal;
+            text-align: center;
+            color: #666;
+            padding-top: 40px;
+        }
+        #personalHome .tipimg{
+            margin-top: 90px;
+        }
+        #personalHome .tipimg img{
+            display: block;
+            width: 100%;
+        }
+        body.overflow{
+            height: 100%;
+            overflow: hidden;
+        }
+        .qrcode-container{
+            position: fixed;
+            right: 30px;
+            bottom: 30px;
+        }
+    </style>
+</head>  
+<body @click="hidepopt" :class="{ overflow: showpersonHome }">
+
+    <%include loading%>
+    <%include toast%>
+    <%include trash%>
+    <div id="wrapper">
+        <!-- sidebar -->
+        <%include nav%>
+        <%include menu%>
+        
+        <div id="changepsw" class="toast-content" transition="qrtoast" v-show="showchangepsw">
+            <span @click="showchangepsw = false"><i class="close-pop ico-close"></i></span>
+            <div class="toast-center-wrapper">
+                <div class="m-header">
+                    <h1 class="text-center"><i class="icon-lock"></i></h1>
+                    <h6 class="toast-title text-center">修改 {{username}} {{ischild===false?'房源删除':''}}密码</h6>
+                </div>
+                <div>
+                    <div class="toast-body">
+                        <div class="form-group"> 
+                            <input id="oldpsw" class="form-control" type="password" autocomplete="off" placeholder="{{placeholder}}" @keyup.enter="submit" v-model="oldpsw" />
+                            <p class="cutoff-line"></p >
+                            <input id="newpsw" class="form-control" type="password" autocomplete="off" placeholder="请输入新密码" @keyup.enter="submit" v-model="newpsw" />
+                            <input id="comfirmpsw" class="form-control" type="password" autocomplete="off" placeholder="请确认新密码" @keyup.enter="submit" v-model="comfirmpsw" />
+                        </div>
+                    </div>
+                    <div class="m-footer">
+                        <div class="text-center">
+                            <button class="btn btn-cancel btn-lg" type="button" @click="showchangepsw = false">取消</button>
+                            <button class="btn btn-primary btn-setter btn-lg" :disabled="disabled" type="submit" @click="submit">确定</button> 
+                        </div>
+                    </div>
+                </div>
+            </div>   
+        </div>
+
+
+        <div id="trashchild" class="toast-content" transition="qrtoast" v-show="showtptoast">
+            <span @click="hide"><i class="close-pop ico-close"></i></span>
+            <div class="toast-center-wrapper">
+                <div class="m-header">
+                    <h1 class="text-center"><i class="icon-lock"></i></h1>
+                    <h6 class="toast-title text-center">密码认证</h6>
+                </div>
+                <div>
+                    <div class="toast-body">
+                        <p class="text-center">请输入您的密码</p >
+                        <div class="form-group"> 
+                            <input id="deletepsw" class="form-control" type="password" placeholder="请输入您的密码" autocomplete="off" @keyup.enter="submit" v-model="delepsw" />
+                        </div>
+                    </div>
+                    <div class="m-footer">
+                        <div class="text-center">
+                            <button class="btn btn-cancel btn-lg" type="button" @click="hide">取消</button>
+                            <button class="btn btn-primary btn-setter btn-lg" :disabled="!delepsw" type="submit" @click="submit">确定</button> 
+                        </div>
+                    </div>
+                </div>
+            </div>   
+        </div>
+
+        <div id="changename" class="toast-content" transition="qrtoast" v-show="showchangename">
+            <span @click="showchangename = false"><i class="close-pop ico-close"></i></span>
+            <div class="toast-center-wrapper">
+                <div class="m-header">
+                    <h1 class="text-center"><i class="icon-lock"></i></h1>
+                    <h6 class="toast-title text-center">修改 {{username}} 的用户名</h6>
+                </div>
+                <div>
+                    <div class="toast-body">
+                        <p class="text-center">请输入新用户名</p >
+                        <div class="form-group"> 
+                            <input id="newname" class="form-control" type="text" placeholder="请输入新用户名" autocomplete="off" @keyup.enter="submit" v-model="newname" />
+                        </div>
+                    </div>
+                    <div class="m-footer">
+                        <div class="text-center">
+                            <button class="btn btn-cancel btn-lg" type="button" @click="showchangename = false">取消</button>
+                            <button class="btn btn-primary btn-setter btn-lg" :disabled="!newname" type="submit" @click="submit">确定</button> 
+                        </div>
+                    </div>
+                </div>
+            </div>   
+        </div>
+        <div id="changeUsername" class="toast-content" transition="qrtoast" v-show="showchangeUsername">
+            <span @click="hide"><i class="close-pop ico-close"></i></span>
+            <div class="toast-center-wrapper">
+                <div class="m-header">
+                    <h1 class="text-center"><i class="icon-lock"></i></h1>
+                    <h6 class="toast-title text-center">修改 {{username}} 的用户名</h6>
+                </div>
+                <div>
+                    <div class="toast-body">
+                        <div class="form-group"> 
+                            <input id="newname" class="form-control" type="text" placeholder="请输入新用户名" autocomplete="off" @keyup.enter="submit" v-model="newname" />
+                        </div>
+                        <p class="text-center" style="color:#e72420;">*账号修改后，重新登录时需要输入新的账号</p >
+                    </div>
+                    <div class="m-footer">
+                        <div class="text-center">
+                            <button class="btn btn-cancel btn-lg" type="button" @click="hide">取消</button>
+                            <button class="btn btn-primary btn-setter btn-lg" :disabled="!newname" type="submit" @click="submit">确定</button> 
+                        </div>
+                    </div>
+                </div>
+            </div>   
+        </div>
+        <div class="content">
+
+            <div id="menubox">
+                <menulist>
+                    <span slot="readcount" v-text="readcount" v-if="readcount>0"></span>
+                </menulist>
+            </div>
+
+            <div class="container-fluid">
+                <div id="user-profile" class="user-body">
+
+                    <div id="router-content" class="row-fluid profile">
+
+                        <div class="item" v-show="routes.index" transition="routes">
+                            <div id="routerbox" class="profile-head clearfix">
+
+                                <div class="has-identity">
+                                    <h6>账号信息</h6>
+                                    <div class="tablelist">
+                                        <table class="table profile-table table-loading">
+                                            <tbody>
+                                                <tr>
+                                                    <td><span class="line">昵称</span></td>
+                                                    <td>
+                                                        <span v-text="realusername" v-show="!issetrealname"></span>
+                                                        <i class="icon-edit" title="点击修改昵称" v-show="!issetrealname" @click="setrealname"></i>     
+                                                        <p class="edit-area" v-show="issetrealname">
+                                                            <input id="input_1" type="text" v-model="realname.content1" placeholder="xx地产" @keyup="validate1 | debounce 100"> - <input id="input_2" type="text" v-model="realname.content2" placeholder="xx名称" @keyup="validate2 | debounce 100">
+                                                            <label>
+                                                                <i class="icon-ok ishow" @click="sub_realname"></i><i class="icon-remove ishow" @click="cancel_realname"></i>
+                                                            </label>
+                                                        </p>
+                                                    </td>
+                                                    <td class="align-left" style="border-bottom: 1px solid #f0f3fa;"><button style="padding:0 12px;" class="btn red" @click="showpersonalHome(userid)">个人店铺</button></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><span class="line">账号</span></td>
+                                                    <td>
+                                                        <span v-text="name.back" v-show="!issetname"></span>
+                                                        <span v-show="!issetname&&false">（ ID: {{userid}} ）</span>
+                                                        <!-- <i class="icon-edit" title="点击修改账号" v-show="!issetname" @click="setname"></i>     
+                                                        <p class="edit-area" v-show="issetname">
+                                                            <input id="editname" type="text" v-model="name.content">
+                                                            <label>
+                                                                <i class="icon-ok ishow" @click="sub_name"></i><i class="icon-remove ishow" @click="cancel_name"></i>
+                                                            </label>
+                                                        </p> -->
+                                                    </td>
+                                                    <td class="align-left"><button class="btn red" @click="changeusername(name.back,userid)">更改</button></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><span class="line">更改密码</span></td>
+                                                    <td v-if="is_default_psw">当前为默认密码，建议立即修改密码</td>
+                                                    <td v-else>建议定时更改密码</td>
+                                                    <td class="align-left"><button class="btn red" @click="changepsw()">更改</button></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><span class="line">更改删除密码</span></td>
+                                                    <td v-if="is_default_delpsw">当前为默认密码，建议立即修改密码</td>
+                                                    <td v-else>建议定时更改密码</td>
+                                                    <td class="align-left"><button class="btn red" @click="changepsw(false)">更改</button></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="has-identity has-resource">
+                                    <h6>上传全景</h6>
+                                    <div id="wrapperbox" style="background: #fff;box-shadow: 0 0 10px rgba(0,0,0,0.2) !important;">
+                                        <div class="app-resource clearfix">
+                                            <div class="titlename col-xs-3" @click="showuploads">
+                                                <p class="upload">上传全景</p>
+                                            </div>
+                                            <div class="contentbox col-xs-9">
+                                                <h4>支持二比一、一比六，不支持同时上传两种格式的图片</h4>
+                                                <div id="upload12" class="upload12" transition="onehalf" v-show="showupload">
+                                                    <div id="uploadForm">
+                                                        <section class="q-item">
+                                                            <div class="item clearfix">
+                                                                <div class="item-title">第一步：选择全景图</div>
+                                                                <div class="item-body" style="margin-top: 20px;">
+                                                                   <div class="andArea">
+                                                                       <div class="filePicker">点击选择全景图</div>
+                                                                       <input id="fileImage" type="file" size="30" multiple="true" :disabled="locked">
+                                                                   </div>
+                                                                   <div id="fileDragArea">
+                                                                       <span id="fileDragArea" v-if="!locked" class="upload_drag_area">或者将全景图拖到此处</span>
+                                                                   </div>
+                                                               </div>
+                                                            </div>
+                                                        </section>
+                                                        <section class="q-item" v-if="!groupid">
+                                                            <div class="item clearfix">
+                                                                <div class="item-title">第二步：填写全景信息</div>
+                                                                <div class="item-body" style="margin-top: 20px;font-size:16px;">
+                                                                    <div class="status_bar clearfix" id="cityregion">
+                                                                        <div id="location" class="showRange clearfix">
+                                                                            <div class="btn" @click.stop="citySelShow">
+                                                                                <span class="rangeData1" style="font-size:16px;" id="city" v-text="location"></span>
+                                                                                <span class="caret"></span>
+                                                                            </div>
+                                                                            <div id="PoPy" align="left" @click.stop="" v-show="showcitySel">
+                                                                                <div class="_citys">
+                                                                                    <span><i class="close-pop ico-close" @click="showcitySel = false"></i></span>
+                                                                                    <ul id="_citysheng" class="_citys0">
+                                                                                        <li :class="{citySel:showpro}">省份</li>
+                                                                                        <li :class="{citySel:showcity}">城市</li>
+                                                                                        <li :class="{citySel:showregion}">区县</li>
+                                                                                    </ul>
+                                                                                    <div id="_citys0" class="_citys1" v-show="showpro">
+                                                                                        <a v-for="pro in province" v-text="pro.name" @click="selPro($index)"></a>
+                                                                                    </div>
+                                                                                    <div id="_citys1" class="_citys1" v-show="showcity">
+                                                                                        <a v-for="city in cities" v-text="city.name" @click="selCity(city.id, city.name)"></a>
+                                                                                    </div>
+                                                                                    <div id="_citys2" class="_citys1" v-show="showregion">
+                                                                                        <a v-for="region in regions" v-text="region.name" @click="selRegion(region.id, region.name)"></a>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div id="where" class="showRange clearfix" style="margin-bottom:10px;">
+                                                                            <div class="btn" v-show="!showeditwhere" @click.stop="showeditwhere = true;">
+                                                                                <span v-text="where" style="font-size:16px;" ></span>
+                                                                                <i class="icon-edit" title="点击编辑"></i>
+                                                                            </div>
+
+                                                                            <div class="btn edit-area clearfix" v-else @click.stop>
+                                                                                <input id="bussiness" type="text" class="pull-left" placeholder="商圈" v-model="selected.area"/>
+                                                                                <span class="date-separator pull-left">&nbsp;&nbsp;-&nbsp;&nbsp;</span>
+                                                                                <input id="community" type="text" class="pull-left" placeholder="小区" v-model="selected.community"/>
+                                                                                <span class="date-separator pull-left">&nbsp;&nbsp;-&nbsp;&nbsp;</span>
+                                                                                <input id="building" type="text" class="pull-left" placeholder="栋号" v-model="selected.building"/>
+                                                                                <span class="date-separator pull-left">&nbsp;&nbsp;-&nbsp;&nbsp;</span>
+                                                                                <input id="room" type="text" class="pull-left" placeholder="房号" v-model="selected.room"/>
+                                                                                <label>
+                                                                                    <i class="icon-ok" @click="showeditwhere = false"></i>
+                                                                                </label>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div>
+                                                                            <input id="price" type="text" name="price" v-model="price" placeholder="请输入此房源售价" />
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </section>
+                                                        <section class="q-item">
+                                                            <div class="item clearfix">
+                                                                <div class="item-title" v-text="groupid?'第二步：确认上传':'第三步：确认上传'"></div>
+                                                                    <br/>
+                                                                    <div id="fileSubmit" class="uploadBtn fileSubmit" style="margin-left:0;">快速上传</div>
+                                                                    <div class="uploadBtn fileSubmit" highupload="true">高级上传</div>
+                                                                    <br/>
+                                                                </div>
+                                                            </div>
+                                                        </section>
+                                                        <section class="q-item preview-container">
+                                                            <div class="item clearfix">
+                                                                <div class="item-title">上传图片预览</div>
+                                                                    <br/>
+                                                                    <div id="preview" class="upload_preview"></div>
+                                                                </div>
+                                                            </div>
+                                                        </section>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="has-identity has-resource" style="margin-bottom:20px;">
+                                    <h6>更多</h6>
+                                    <div id="wrapperbox">
+                                        <div class="app-resource clearfix" v-if="children.length">
+                                            <div class="titlename col-xs-3" @click="showlogs=!showlogs">
+                                                <p>操作日志</p>
+                                            </div>
+                                            <div class="contentbox col-xs-9">
+                                                <h4>
+                                                    上传、删除、登录的各种记录
+                                                    <a class="selectbtn" v-show="showlogs" @click="showchildren=!showchildren">
+                                                        <span></span><span></span><span></span>
+                                                        <ul class="searchbox" transition="onehalf" v-show="showchildren">
+                                                            <li v-for="user in children | filterBy filtername" v-text="user" @click="selectchild(user)"></li>
+                                                        </ul>
+                                                    </a>
+                                                </h4>
+                                                <div class="profile-box logs-box" transition="onehalf" v-show="showlogs">
+                                                    <table class="table border-bottom" style="margin-top:30px;border: 1px solid #f0f3fa;">
+                                                        <tbody>
+                                                            <tr>
+                                                                <th class="align-left">用户名</th>
+                                                                <th>全景</th>
+                                                                <th>操作</th>
+                                                                <th>时间</th>
+                                                                <th class="align-right">平台</th>
+                                                            </tr>
+                                                            <tr v-for="log in logs | filterBy filtername in 'user_name' | limitBy log_limit log_offset">
+                                                                <td class="align-left" v-text="log.user_name"></td>
+                                                                <td v-text="log.group_name"></td>
+                                                                <td class="text-success" v-text="log.operate"></td>
+                                                                <td v-text="log.time"></td>
+                                                                <td class="align-right">{{log.platform}}<img :src="'/images/newitem/browser/'+log.platform.split('-')[1]+'.png'"/></td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <div class="container-fluid" v-show="showlogs" v-if="log_count>log_limit">
+                                                    <div class="pagination">
+                                                        <ul>
+                                                            <li :class="{'disabled': 1 == log_pagindex}"><a href="javascript:;" @click="loadlog(1)">首页</a></li>
+                                                            <li :class="{'disabled': 1 == log_pagindex}" class="child"><a href="javascript:;" @click="loadlog(log_pagindex-1)">上一页</a></li>
+                                                            <li v-for="cur in log_pages" v-if="log_pagindex>3&&log_pages-2>log_pagindex?(cur+1<=log_pagindex+2&&cur+1>=log_pagindex-2):(log_pagindex<=3?cur+1<=5:cur+1>=log_pages-4)" :class="{'active': cur+1 == log_pagindex}">
+                                                                <a href="javascript:;" @click="loadlog(cur+1)" v-text="cur+1"></a>
+                                                            </li>
+                                                            <li :class="{'disabled': log_pages == log_pagindex}" class="child"><a href="javascript:;" @click="loadlog(log_pagindex+1)">下一页</a></li>
+                                                            <li :class="{'disabled': log_pages == log_pagindex}"><a href="javascript:;" @click="loadlog(log_pages)">尾页</a></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="app-resource clearfix">
+                                            <div class="titlename col-xs-3" @click="showhelp=!showhelp">
+                                                <p>帮助文档</p>
+                                            </div>
+                                            <div class="contentbox col-xs-9">
+                                                <h4>快速入门及操作常见的问题</h4>
+                                                <div class="item w640" transition="onehalf" v-show="showhelp">
+                                                    <div class="document-content">
+                                                        <h1 id="ios" change-eid="true">注意事项</h1>
+                                                        <p><strong>1. 充电注意事项</strong></p>
+                                                        <ul>
+                                                            <li>全景相机充电时必须处于关机状态，开机充电容易导致设备过热，忌边拍摄边充电，充电时间宜为1.5~2个小时，充满即可，不宜连续长时间充电，如一整夜充电等，连续长时间充电容易造成设备过热</li>
+                                                            <li>设备处于充电状态时，充电器指示灯为红色，充满电后，充电器指示灯变成绿色</li>
+                                                            <li>拔充电器时，若设备与充电器的接口过紧，可以尝试用旋转的方式慢慢往外拔，忌用力粗暴</li>
+                                                        </ul>
+                                                        <p><strong>2. 拍摄注意事项</strong></p>
+                                                        <ul>
+                                                            <li>每次出门拍摄前记得检查相机是否满电，带齐相应器件：支架、全景相机、抹布等</li>
+                                                            <li>开机拍摄前检查下鱼眼镜头是否沾有灰尘、手印等。若有，可用抹布轻轻擦拭干净</li>
+                                                            <li>在拍摄完一套房子后，关机可以有效节省电源并且防止过热</li>
+                                                        </ul>
+                                                        <h1 id="ios" change-eid="true">操作疑问</h1>
+                                                        <p><strong>1. 曝光过度？</strong></p>
+                                                        <ul>
+                                                            <li>直接升级固件和app到最新版本，可以调整曝光度值</li>
+                                                            <li>拍摄时在强光线的环境下容易造成过度曝光，可尝试拉上窗帘或把相机的位置尽量靠近强光一侧</li>
+                                                        </ul>
+                                                        <p><strong>2. 漏拍场景？</strong></p>
+                                                        <ul>
+                                                            <li>直接更新到最新版本可在本地作品中添加漏拍场景</li>
+                                                        </ul>
+                                                        <p><strong>3. 上传时出现漏传场景？</strong></p>
+                                                        <ul>
+                                                            <li>检查下网络是否存在问题</li>
+                                                            <li>删掉已经上传的全景，重新上传</li>
+                                                            <li>升级app版本</li>
+                                                        </ul>
+                                                        <p><strong>4. 有时拍摄会出现连接失败？</strong></p>
+                                                        <ul>
+                                                            <li>造成连接失败的原因有两种第一是距离过远，中间隔的墙太多，导致传图失败，建议拍摄时不要距离过远；第二是设备电量不足，会出现wifi不稳定，导致传图失败。建议出门前先把电充满，拍摄完毕后尽快关机节省电量来以此可拍摄更多房源</li>
+                                                        </ul>
+                                                        <p><strong>5. vr看房该如何使用？</strong></p>
+                                                        <p><img src="http://wx.sz-sti.com/images/pic.png"/></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- <div class="app-resource clearfix">
+                                            <div class="titlename col-xs-3" @click="showapi=!showapi">
+                                                <p>全景列表接口</p>
+                                            </div>
+                                            <div class="contentbox col-xs-9">
+                                                <h4>房源全景的嵌入</h4>
+                                                <div class="item w640" transition="onehalf" v-show="showapi">
+                            <div class="document-content">
+                                <p><strong>1. 数据获取接口</strong></p>
+                                <p>用于获取本账号及其子孙账号的全景数据，可用于获取全景的URL和缩略图的URL。 </p>
+                                <ul>
+                                    <li>在后端发送 GET 请求，传入必选参数，即可返回 JSON 格式的全景数据 ( nodejs 示例 )：</li>
+                                </ul>
+                                <div class="highlight">
+                                    <pre><code class="language- hljs ruby"><span class="hljs-keyword">var</span> <span class="hljs-class">request <span class="hljs-title">=</span> require(<span class="hljs-keyword">'request'</span>);
+
+    request({
+        <span class="hljs-string">url</span>: <span class="hljs-title">'http://wx.sz-sti.com/api/fatherauth?appid=</span><span class="hljs-string">[APPID]</span><span class="hljs-title">&appsecret=</span><span class="hljs-string">[APPSECRET]</span>'</span>,
+    }, <span class="hljs-keyword">function</span>(<span class="hljs-params">error, response, body</span>){
+        res.json(body);
+    });</code></pre>
+                                </div>
+                                <ul>
+                                    <li>该接口还提供了共二十一个可选参数，可分页，筛选全景数据列表</li>
+                                </ul>
+                                <div class="highlight">
+
+    <pre><code class="language- hljs ruby">
+    <span class="hljs-string">children_id</span>: <span class="hljs-title">[string]</span>,  //筛选特定子账号的数据返回值，格式如'b074|s074|a074'
+    <span class="hljs-string">city</span>: <span class="hljs-title">[string]</span>,  //筛选城市为该值的漫游*
+    <span class="hljs-string">region</span>: <span class="hljs-title">[string]</span>,  //筛选区域为该值的漫游*
+    <span class="hljs-string">business_circle</span>: <span class="hljs-title">[string]</span>,  //筛选商圈为该值的漫游*
+    <span class="hljs-string">community</span>: <span class="hljs-title">[string]</span>,  //筛选小区为该值的漫游*
+    <span class="hljs-string">start_created_time</span>: <span class="hljs-title">[datestamp]</span>,  //筛选创建日期在此之后的漫游
+    <span class="hljs-string">end_created_time</span>: <span class="hljs-title">[datestamp]</span>,
+    <span class="hljs-string">start_updated_time</span>: <span class="hljs-title">[datestamp]</span>, //筛选更新日期在此之后的漫游 
+    <span class="hljs-string">end_updated_time</span>: <span class="hljs-title">[datestamp]</span>,
+    <span class="hljs-string">min_area</span>: <span class="hljs-title">[int]</span>,  //筛选面积在此之上的漫游
+    <span class="hljs-string">area</span>: <span class="hljs-title">[int]</span>,  //筛选面积为该值的漫游
+    <span class="hljs-string">max_area</span>: <span class="hljs-title">[int]</span>,
+    <span class="hljs-string">min_rooms</span>: <span class="hljs-title">[int]</span>,  //筛选房间数在此之上的漫游
+    <span class="hljs-string">apartment_halls</span>: <span class="hljs-title">[int]</span>,  //筛选客厅数为该值的漫游
+    <span class="hljs-string">apartment_bathrooms</span>: <span class="hljs-title">[int]</span>,  //筛选卫生间数为该值的漫游
+    <span class="hljs-string">apartment_rooms</span>: <span class="hljs-title">[int]</span>,  //筛选卧室数为该值的漫游
+    <span class="hljs-string">room</span>: <span class="hljs-title">[int]</span>,
+    <span class="hljs-string">building</span>: <span class="hljs-title">[string]</span>,
+    <span class="hljs-string">face</span>: <span class="hljs-title">[string]</span>,
+    <span class="hljs-string">page</span>: <span class="hljs-title">[int]</span>,  //第几页，传0将忽略
+    <span class="hljs-string">limit</span>: <span class="hljs-title">[int]</span>  //每页条数，传0将忽略，page不为空时默认为10</code></pre>
+                                </div>
+                                <p>注：带 * 字段支持模糊搜索</p>
+                                <ul>
+                                    <li>正确返回值格式如下：</li>
+                                </ul>
+                                <div class="highlight">
+                <pre><code class="language- hljs javascript">{
+        <span class="hljs-string">count</span>: <span class="hljs-title">[int]</span>,  //漫游总数
+        <span class="hljs-string">romaing</span>: 
+            [{
+                <span class="hljs-string">id</span>: <span class="hljs-title">[string]</span>, //该漫游key 
+                <span class="hljs-string">key</span>: <span class="hljs-title">[string]</span>,  //该漫游的主场景 scene 的 key 值
+                <span class="hljs-string">city</span>: <span class="hljs-title">[int]</span>,  
+                <span class="hljs-string">region</span>: <span class="hljs-title">[int]</span>,  
+                <span class="hljs-string">business_circle</span>: <span class="hljs-title">[string]</span>,  
+                <span class="hljs-string">community</span>: <span class="hljs-title">[string]</span>,  
+                <span class="hljs-string">apartment_bathrooms</span>: <span class="hljs-title">[int]</span>,  
+                <span class="hljs-string">apartment_halls</span>: <span class="hljs-title">[int]</span>,  
+                <span class="hljs-string">apartment_rooms</span>: <span class="hljs-title">[int]</span>,  
+                <span class="hljs-string">area</span>: <span class="hljs-title">[int]</span>,  
+                <span class="hljs-string">building</span>: <span class="hljs-title">[string]</span>, 
+                <span class="hljs-string">floor</span>: <span class="hljs-title">[int]</span>,  
+                <span class="hljs-string">room</span>: <span class="hljs-title">[int]</span>,  
+                <span class="hljs-string">scenes_id</span>: <span class="hljs-title">[string]</span>,  //子账户id 数组字符串，如 '[1824,1826,1823]'
+                <span class="hljs-string">scenes</span>:
+                    [{
+                        <span class="hljs-string">id</span>: <span class="hljs-title">[int]</span>,  
+                        <span class="hljs-string">key</span>: <span class="hljs-title">[string]</span>,  //该场景key
+                        <span class="hljs-string">user_id</span>: <span class="hljs-title">[int]</span>,  
+                        <span class="hljs-string">advertisement</span>: <span class="hljs-title">[string]</span>,  //该场景顶部商标图 url
+                        <span class="hljs-string">prefix</span>: <span class="hljs-title">[string]</span>,  
+                        <span class="hljs-string">visited</span>: <span class="hljs-title">[int]</span>,  //该场景浏览量
+                        <span class="hljs-string">telephone</span>: <span class="hljs-title">[string]</span>,  //该场景联系电话
+                        <span class="hljs-string">name</span>: <span class="hljs-title">[string]</span>,  
+                        <span class="hljs-string">groups_id</span>: <span class="hljs-title">[int]</span>,  
+                        <span class="hljs-string">introduction</span>: <span class="hljs-title">[string]</span>,  //该场景语音播报
+                        <span class="hljs-string">rx</span>: <span class="hljs-title">[int]</span>,  //该场景默认视角的x轴的偏转角度
+                        <span class="hljs-string">ry</span>: <span class="hljs-title">[int]</span>,  //该场景默认视角的y轴的偏转角度
+                        <span class="hljs-string">cfov</span>: <span class="hljs-title">[int]</span>,  //该场景的实际方位角度
+                        <span class="hljs-string">createdAt</span>: <span class="hljs-title">[datestamp]</span>,  
+                        <span class="hljs-string">updatedAt</span>: <span class="hljs-title">[datestamp]</span>
+                    }, ...]
+                <span class="hljs-string">createdAt</span>: <span class="hljs-title">[datestamp]</span>,
+                <span class="hljs-string">updatedAt</span>: <span class="hljs-title">[datestamp]</span>
+            }, ...]
+    }
+
+    <span class="hljs-params">注：</span><span>漫游的云端链接为</span> <span class="hljs-title">wx.sz-sti.com/scene?key=</span><span class="hljs-string">[romaing中任一项的key]</span>
+
+    <span class="hljs-params">注：</span><span>该漫游的场景的预览图:</span> <span class="hljs-title">http://qncdn.sz-sti.com/images/scenes/</span><span class="hljs-string">[scene 的 key]</span><span class="hljs-title">/allinone.jpg?v=&imageMogr2/crop/!1024x1024a0a0/thumbnail/!20p </span>
+    <span>( 试试将 !1024x1024a0a0/thumbnail/!20p 换成 !512x1024a0a500/thumbnail/!50p )</span></code></pre>
+                                </div>
+                            </div>
+                        </div>
+                                            </div>
+                                        </div> -->
+                                        <div class="app-resource clearfix" v-if="isfather">
+                                            <div class="titlename col-xs-3" @click="showaccount=!showaccount">
+                                                <p>子账户管理</p>
+                                            </div>
+                                            <div class="contentbox col-xs-9">
+                                                <h4>管理下面子账号，查看、添加、删除(带小图标的账号为自己创建的子账号，解绑账号会删除整个子账号)</h4>
+                                                <div class="profile-box accounts-box" transition="onehalf" v-show="showaccount">
+                                                    <button class="addCAccount" v-if="permission_hidetitle" @click="showaddaccount">添加子账号</button>
+                                                    <table class="table border-bottom" style="margin-top:30px;border: 1px solid #f0f3fa;">
+                                                        <tbody>
+                                                            <tr>
+                                                                <th class="align-left">账号</th><th>创建时间</th><th class="align-right">操作</th>
+                                                            </tr>
+                                                            <tr v-if="childarr.length==0">
+                                                                <td></td>
+                                                                <td>暂未绑定子账户</td>
+                                                                <td></td>
+                                                            </tr>
+                                                            <tr v-else v-for="child in childarr| limitBy child_limit child_offset">
+                                                                <td class="align-left">{{child.name}}<img style="width:20px;" v-if="child.itcmstertel == 'inherit'" src="/images/inhert.png"></td>
+                                                                <td v-text="child.createdAt"></td>
+                                                                <td class="align-right">
+                                                                    <button class="btn btn-red" @click="changechildname(child.name)">修改名称</button>
+                                                                    <button class="btn btn-red" @click="changechildpsw(child.name)">修改密码</button>
+                                                                    <button class="btn btn-red" @click="delchild(child.name, $index)">删除账户</button>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+
+                                                <div class="container-fluid" transition="onehalf" v-show="showaccount" v-if="child_count>child_limit">
+                                                    <div class="pagination pull-right">
+                                                        <ul>
+                                                            <li :class="{'disabled': 1 == child_pagindex}"><a href="javascript:;" @click="loadchild(1)">&#8249;&#8249;</a></li>
+                                                            <li :class="{'disabled': 1 == child_pagindex}" class="child"><a href="javascript:;" @click="loadchild(child_pagindex-1)">&#8249;</a></li>
+                                                            <li v-for="cur in child_pages" v-if="child_pagindex>3&&child_pages-2>child_pagindex?(cur+1<=child_pagindex+2&&cur+1>=child_pagindex-2):(child_pagindex<=3?cur+1<=5:cur+1>=child_pages-4)" :class="{'active': cur+1 == child_pagindex}">
+                                                                <a href="javascript:;" @click="loadchild(cur+1)" v-text="cur+1"></a>
+                                                            </li>
+                                                            <li :class="{'disabled': child_pages == child_pagindex}" class="child"><a href="javascript:;" @click="loadchild(child_pagindex+1)">&#8250;</a></li>
+                                                            <li :class="{'disabled': child_pages == child_pagindex}"><a href="javascript:;" @click="loadchild(child_pages)">&#8250;&#8250;</a></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="app-resource clearfix" v-if="permission_api">
+                                            <div class="titlename col-xs-3" @click="showjoggle=!showjoggle">
+                                                <p>接口设置</p>
+                                            </div>
+                                            <div class="contentbox col-xs-9">
+                                                <h4>验证，设置房源列表接口</h4>
+                                                <div class="item w640" transition="onhalf" v-show="showjoggle">
+                            <div class="document-content">
+                                <h2 id="ios" change-eid="true"><strong>房源列表数据接口</strong></h2>
+                                <br/>
+                                <ul>
+                                    <li>1. 设置房源列表接口，可以在APP端使用该账号拍摄照片时，显示该接口返回的房源列表</li>
+                                    <li>2. 接口的数据格式固定，填入前先点击验证接口合法性</li>
+                                    <li>3. 为了交互的完整性，请配合上传回调接口一起使用</li>
+                                </ul>
+                                <br/>
+                                <div class="apiinput clearfix">
+                                    <label>房源列表接口</label>
+                                    <div>
+                                        <p>
+                                            <input type="text" v-model="listapi.content" @click="listapi.showerrmsg=false" />
+                                            <button class="btn btn-red" :disabled="listapi_disable" @click="saveapi('listapi')">保存</button>
+                                        </p>
+                                        <p class="fail_msg" v-show="listapi.showerrmsg" v-text="listapi.errmsg"></p>
+                                    </div>
+                                </div>
+                                <br/>
+                                <br/>
+                                <h2 id="ios" change-eid="true"><strong>上传回调接口</strong></h2>
+                                <br/>
+                                <ul>
+                                    <li>1. 设置上传回调接口，可以在APP将全景上传到云端成功之后调用，从而同步自己的房源状态</li>
+                                    <li>2. 回调时会回传全景的标识符，可以拼接成全景链接，全景图片链接</li>
+                                </ul>
+                                <br/>
+                                <div class="apiinput clearfix">
+                                    <label>上传回调接口</label>
+                                    <div>
+                                        <p>
+                                            <input type="text" v-model="callbackapi.content" @click="callbackapi.showerrmsg=false" />
+                                            <button class="btn btn-red" :disabled="callbackapi_disable" @click="saveapi('callbackapi')">保存</button>
+                                        </p>
+                                        <p class="fail_msg" v-show="callbackapi.showerrmsg" v-text="callbackapi.errmsg"></p>
+                                    </div>
+                                </div>
+                                <br/>
+                                <br/>
+                                <br/>
+                                <div class="document-title">*注意事项</div>
+                                <ul>
+                                    <li>1. 支持 http 和 https，不支持IP地址</li>
+                                    <li>2. 填上去的链接需带上协议头，如 http://www.aaa.com</li>
+                                    <li>3. 接口返回值需要满足以下格式要求</li>
+                                </ul>
+                                <br/>
+                                <h2 id="ios" change-eid="true">房源列表接口返回值格式：</h2>
+                                <br/>
+                                <div>获取房源平台上的房源数据后，app会在拍照信息页面渲染出房源列表，供拍摄者选择，进行拍摄</div>
+                                <br/>
+                                <div class="highlight">
+
+    <pre><code class="language- hljs ruby">
+<span class="hljs-title">{</span>
+    <span class="hljs-string">houses: </span><span class="hljs-title">[{</span>
+        <span class="hljs-string">key</span>: <span class="hljs-title">[string]</span>,  //房源的唯一标识号
+        <span class="hljs-string">signature</span>: <span class="hljs-title">[string]</span>,  //选填，房源的附带信息，会在调用上传接口的时候返回
+        <span class="hljs-string">province</span>: <span class="hljs-title">[string]</span>,  //所在省份
+        <span class="hljs-string">city</span>: <span class="hljs-title">[string]</span>,  //所在城市
+        <span class="hljs-string">region</span>: <span class="hljs-title">[string]</span>,  //所在区域
+        <span class="hljs-string">business_circle</span>: <span class="hljs-title">[string]</span>,  //所在商圈
+        <span class="hljs-string">community</span>: <span class="hljs-title">[string]</span>,  //小区名称
+        <span class="hljs-string">building</span>: <span class="hljs-title">[string]</span>,  //栋号
+        <span class="hljs-string">room</span>: <span class="hljs-title">[string]</span>, //房间号
+        <span class="hljs-string">createdAt</span>: <span class="hljs-title">[datestamp]</span>, //创建日期，格式为0000-00-00
+        <span class="hljs-string">rooms_count</span>: <span class="hljs-title">[int]</span>,  //房间数量
+        <span class="hljs-string">halls_count</span>: <span class="hljs-title">[int]</span>,  //客厅数量
+        <span class="hljs-string">bathrooms_count</span>: <span class="hljs-title">[int]</span>,  //卫生间数量
+        <span class="hljs-string">imgurl</span>: <span class="hljs-title">[string]</span>  //缩略图链接
+    <span class="hljs-title">}, ...]</span>
+<span class="hljs-title">}</span></code></pre>
+                                </div>
+                                <br/>
+                                <h2 id="ios" change-eid="true">上传回调接口格式：</h2>
+                                <br/>
+                                <div>拍摄者拍完之后上传房源到云端，上传时会调用上传回调接口，并将以下格式的数据传过去</div>
+                                <br/>
+                                <div class="highlight">
+    <pre><code class="language- hljs ruby">
+<span class="hljs-title">{</span>
+    <span class="hljs-string">key</span>: <span class="hljs-title">[string]</span>,  //房源的唯一标识号
+    <span class="hljs-string">scenekey</span>: <span class="hljs-title">[string]</span>,  //全景的标识符
+    <span class="hljs-string">signatrue</span>: <span class="hljs-title">[string]</span>  //选填，房源的附带信息
+<span class="hljs-title">}</span></code></pre>
+                                </div>
+                                <br/>
+                                <div>平台将全景标识符写入对应房源的数据库，然后返回以下格式的数据</div>
+                                <br/>
+                                <div class="highlight">
+    <pre><code class="language- hljs ruby">
+<span class="hljs-title">{</span>
+    <span class="hljs-string">code</span>: <span class="hljs-title">[int]</span>,  //同步状态值，0或者非0
+    <span class="hljs-string">errmsg</span>: <span class="hljs-title">[string]</span>  //同步信息
+<span class="hljs-title">}</span></code></pre>
+                                </div>
+                            </div>
+                        </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+
+        <div id="addChildAccount" class="toast-content qrtoast-transition" v-show="addChildAccount">
+            <span><i class="close-pop ico-close" @click="hide"></i></span>
+            <div class="toast-center-wrapper">
+                <div class="m-header">
+                    <h6 class="toast-title text-center">添加子账号</h6>
+                </div>
+                <div>
+                    <div class="toast-body">
+                        <div class="form-group"> 
+                            <input id="accountname" class="form-control" type="text" autocomplete="off" placeholder="请输入用户名" v-model="accountname" @keyup="verifyname | debounce 800">
+                            <input id="accountpsw" class="form-control" type="password" autocomplete="off" placeholder="请输入用户密码" v-model="accountpsw">
+                            <input id="comfirmpsw" class="form-control" type="password" autocomplete="off" placeholder="请确认用户密码" v-model="comfirmpsw" @keyup="verifypsw | debounce 500">
+                        </div>
+                    </div>
+                    <div class="m-footer">
+                        <div class="text-center">
+                            <button class="btn btn-cancel btn-lg" type="button" @click="hide">取消</button>
+                            <button class="btn btn-primary btn-setter btn-lg" type="submit" :disabled="disabled" @click="submit">确定</button> 
+                        </div>
+                    </div>
+                </div>
+            </div>   
+        </div>
+        <!--上传成功-->
+        <div id="uploadtoast" transition="qrtoast" class="toast-content-half" v-show="uploadshow">
+            <span><i class="close-pop ico-close" @click="hide"></i></span>
+            <div class="toast-center-wrapper">
+                <div>
+                    <div id="uploadcoder" class="toast-body">
+                        <div class="uploadwrap clearfix">
+                            <div class="uploadbox">
+                                <a href="/panoitem">
+                                    <img src="../images/newitem/icons/panolist.png">
+                                    <p>回到作品列表</p>
+                                </a>
+                            </div>
+                            <div class="uploadbox">
+                                <a target="_blank" href='http://wx.sz-sti.com/scene?key={{scenekey}}'>
+                                    <img src="../images/newitem/icons/seek.png">
+                                    <p>查看上传的全景</p>
+                                </a>
+                            </div>
+                            <div class="uploadbox">
+                                <a href="javascript:;" @click="reloadwindow">
+                                    <img src="../images/newitem/icons/uploadagain.png">
+                                    <p>继续上传</p>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>   
+        </div>
+        <div id="qrtoast" class="toast-content" transition="qrtoast" v-show="showqrtoast" style="overflow-y: auto;background: #f3f3f3">
+            <span @click="hide"><i class="close-pop ico-close"></i></span>
+            <div class="toast-center-wrappers">
+                <div id="personalHome">
+                    <div class="wrapper">
+                        <div class="userHeader" transition="qrtoast">
+                            <h2 class="avatar"><img :src="logopic?logopic:'http://ipano3.sz-sti.com/images/tools/botimg.png'" /></h2>
+                            <p class="username" v-text="name"></p>
+                            <p class="telephone" v-if="telephone"><img class="iconTel" src="/images/iconTel.png" /><span v-text="telephone"></span></p>
+                        </div>
+                        <div class="listWrap clearfix">
+                            <h4 class="title"><img width="28" src="/images/recommend.png" /><span>推荐房源</span></h4>
+                            <div v-if="count>0" class="clearfix" style="max-width: 1000px;margin: 0 auto;">
+                                <a :href="'/scene?groupkey='+list.key" target="_blank" class="scenebox clearfix" v-for="list in lists | limitBy limit">
+                                    <div class="thumbpic">
+                                        <img class="picurl" :src="list.thumbsrc" />
+                                        <p class="address">
+                                            {{list.address1}}<br/>
+                                            {{list.address2}}
+                                        </p>
+                                        <p class="visited"><img src="/images/scenevisited.png" /><span v-text="list.visited"></span></p>
+                                    </div>
+                                </a>
+                            </div>
+                            <div v-else>
+                                <!-- <h4 class="noscene">暂时没有推荐房源</h4> -->
+                                <div class="tipimg">
+                                    <img src="http://qncdn.sz-sti.com/nohouse-tip.png">
+                                </div>
+                            </div>
+                        </div>
+                        <a v-if="count>limit" class="checkmore" @click="checkmore">更多房源...</a>
+                    </div>
+                </div>
+                <div class="qrcode-container">
+                    <div id="qrcoder" class="toast-body clearfix"></div>
+                    <div class="m-footer">
+                        <p class="text-center">店铺二维码</p>
+                    </div>
+                </div>
+            </div>   
+        </div>
+
+
+
+    <script src="/js/newitem/smooth-scroll.min.js"></script>
+    <script src="/js/newitem/qrcode.min.js"></script>
+    <script src="/js/newitem/highlight.min.js"></script>
+    <script src="/js/newitem/qsonuploader.js"></script>
+    <script src="/js/newitem/qsonupload.js"></script>
+    <script src="/js/newitem/cityJson.js"></script>
+    <script type="text/javascript">
+            var uuid = parseInt(Math.random()*100000000)+'qson';
+            var menubox = new Vue({
+                el: '#menubox',
+                data: {
+                    readcount: ''
+                }
+            });
+            var uploadtoast = new Vue({
+                el: '#uploadtoast',
+                data: {
+                    uploadshow: false,
+                    scenekey: ''
+                },
+                methods: {
+                    hide: function(){
+                        this.uploadshow = false;
+                        location.reload();
+                    },
+                    reloadwindow: function(){
+                        location.reload();
+                    }
+                }
+            });
+            var qrcode = new QRCode(document.getElementById("qrcoder"), {width : 100,height : 100});
+            var qrtoast = new Vue({
+                el: '#qrtoast',
+                data: {
+                    showqrtoast: false,
+                    limit: 6,
+                    count: '',
+                    logopic: '<%=user.logo%>',
+                    transform: ["零", "一", "二", "三", "四", "五", "六", "七", "八", "九",'十'],
+                    avatarurl: '',
+                    avatarpic: '<%=user.avatar%>',
+                    name: '',
+                    username: '<%-user.name%>',
+                    realname: '<%-user.realname%>',
+                    telephone: '<%=user.itcregion%>',
+                    lists: []
+                    // showheader: true
+                },
+                methods: {
+                    show: function(text){
+                        qrcode.makeCode(text);
+                        var _this = this;
+                        this.name = nav.username;
+                        $.get('/scene/lists/scenes/<%=user.id%>',function(res){
+                            if(res.code!=0){
+                                return;
+                            };
+                            _this.avatarpic=='null'? _this.avatarurl = 'http://ipano3.sz-sti.com/images/tools/botimg.png':_this.avatarurl = 'http://qncdn.sz-sti.com/avatar/' + _this.avatarpic + '.jpg';
+                            for(var i in res.scenes){
+                                res.scenes[i].address1 = res.scenes[i].city.replace('市','').replace('市','').replace('区','').replace('区','')+'-' + res.scenes[i].region.replace('市','').replace('市','').replace('区','').replace('区','')+'-'+ res.scenes[i].community+' ' ;
+                                res.scenes[i].address2 = _this.transform[res.scenes[i].apartment_rooms]+'房'+_this.transform[res.scenes[i].apartment_halls]+'厅'+' '+res.scenes[i].area+'㎡'+' '+res.scenes[i].price;
+                                _this.lists.push(res.scenes[i]);
+                                console.log(_this.lists);
+                                
+                            }
+                            _this.count = _this.lists.length;
+                            _this.showqrtoast = true;
+                            body.showpersonHome = true;
+                        })
+                    },
+                    hide: function(){
+                        body.showpersonHome = false;
+                        this.showqrtoast = false;
+                        this.lists = [];
+                        // this.showheader = true;
+                    },
+                    checkmore: function(){
+                        this.limit = this.count;
+                        // this.showheader = false;
+                    },
+                    closehome: function(){
+                        $('#personalHome').hide()
+                    }
+                }
+            });
+            var groupid = <%=group?group.id:''%>+0;
+
+            $("#upload12").upload({
+                itemWidth  : "200px",
+                itemHeight : "100px"
+            });
+
+            var type = 2;
+
+            nav.current.center = true;
+
+            var upload = new Vue({
+                el:'#upload12',
+                data:{
+                    showupload: false,
+                    groupid : groupid,
+                    showcitySel: false,
+                    showpro: true,
+                    showcity: false,
+                    showregion: false,
+                    showeditwhere: false,
+                    showeditwhich: false,
+                    province: province,
+                    locked: <%=locked%>,
+                    cities: [],
+                    regions: [],
+                    selected: {
+                        province: '',
+                        city: '',
+                        region: '',
+                        area: '',
+                        community: '',
+                        building: '',
+                        room: '',
+                        start: '2015/01/01',
+                        end: (new Date()).getFullYear()+'/'+(parseInt((new Date()).getMonth())+1)+'/'+(new Date()).getDate()
+                    },
+                    price: ''
+                },
+                computed: {
+                    location: function(){
+                        var location = '';
+                        if(!this.selected.province){
+                            location = '省份 - 城市 - 区域';
+                            this.selected.city = this.selected.region = '';
+                        }else{
+                            location = this.selected.province.replace('省','');
+                            if(this.selected.city){
+                                location += ' - ' + this.selected.city.replace('市','');
+                                if(this.selected.region)
+                                    location += ' - ' + this.selected.region;
+                            }else{
+                                this.selected.city = this.selected.region = '';
+                            }
+                        }
+                        return location;
+                    },
+                    where: function(){
+                        var where = '';
+                        var str1 = '商圈';
+                        var str2 = '小区';
+                        if(!this.selected.area&&!this.selected.community){
+                            where = str1 + " - " + str2;
+                        }else if(this.selected.area&&!this.selected.community){
+                            where = str1+': ' + this.selected.area + " - " + str2;
+                        }else if(!this.selected.area&&this.selected.community){
+                            where = str1 + " - " + str2+': ' + this.selected.community;
+                        }else{
+                            where = str1+': ' + this.selected.area + ' - ' + str2+': ' + this.selected.community;
+                        }
+
+                        var str3 = '栋号';
+                        var str4 = '房号';
+                        if(!this.selected.building&&!this.selected.room){
+                            where += " - " + str3 + " - " + str4;
+                        }else if(this.selected.building&&!this.selected.room){
+                            where += " - " + str3+': ' + this.selected.building + " - " + str4;
+                        }else if(!this.selected.building&&this.selected.room){
+                            where += " - " + str3 + " - " + str4+': ' + this.selected.room;
+                        }else{
+                            where += " - " + str3+': ' + this.selected.building + ' - ' + str4+': ' + this.selected.room;
+                        }
+                        return where;
+                    }
+                },
+                methods:{
+                    citySelShow: function(){
+                        this.showcitySel = true;
+                        this.selected.province = '';
+                        this.proshow();
+                    },
+                    proshow: function(){
+                        this.showpro = true;
+                        this.showcity = this.showregion = false;
+                    },
+                    cityshow: function(){
+                        this.showregion =this.showpro = false;
+                        this.showcity = true;
+                    },
+                    regionshow: function(){
+                        this.showcity =this.showpro = false;
+                        this.showregion = true;
+                    },
+                    selPro: function(index){
+                        this.cities.splice(0);
+                        for(var i in province[index].city){
+                            this.cities.push(province[index].city[i]);
+                        }
+                        this.cityshow();
+                        this.selected.province = province[index].name;
+                    },
+                    selCity: function(id, name){
+                        this.regions.splice(0);
+                        for(var i in area){
+                            if(area[i].pid == id)
+                                this.regions.push(area[i]);
+                        }
+                        this.selected.city = name;
+                        this.regionshow();
+                    },
+                    selRegion: function(id, name){
+                        this.selected.region = name;
+                        this.proshow();
+                        this.showcitySel = false;
+                    },
+                    mapconfirm: function(){
+                        panolist.searchobj.city = this.selected.city.replace('市','');
+                        panolist.searchobj.region = this.selected.region.replace('区','').replace('县','');
+                        panolist.searchobj.area = this.selected.area;
+                        panolist.searchobj.community = this.selected.community;
+                        panolist.searchobj.building = this.selected.building;
+                        panolist.searchobj.room = this.selected.room;
+                        panolist.searchobj.start = new Date(this.selected.start);
+                        panolist.searchobj.end = new Date(this.selected.end);
+                        panolist.pagindex = 1;
+                        panolist.isshowload2 = true;
+                        setTimeout(function(){
+                            panolist.isshowload2 = false;
+                        }, 500);
+                    }
+                }
+            });
+            
+        </script> 
+    <script type="text/javascript">
+
+        loading1.isshow = false;
+        var addaccount = new Vue({
+            el: '#addChildAccount',
+            data:{
+                addChildAccount: false,
+                accountname: '',
+                accountpsw: '',
+                comfirmpsw: '',
+                permission_hidetitle: '<%=permission_hidetitle%>',
+                verifypass: {
+                    accountname: false,
+                    accountpsw: false
+                }
+            },
+            computed:{
+                disabled: function(){
+                    return (this.verifypass.accountname&&this.verifypass.accountpsw)?false:true;
+                }
+            },
+            methods:{
+                hide: function(){
+                    this.addChildAccount = false;
+                    this.accountname = '';
+                    this.accountpsw = '';
+                    this.comfirmpsw = '';
+                },
+                verifyname: function(){
+                    if(this.accountname.length<3||this.accountname.length>18){
+                        toast.showmsg('请输入3位～18位字符作为用户名',true);
+                        return;
+                    }
+                    this.verifypass.accountname = true;
+                },
+                verifypsw: function(){
+                    if(this.accountpsw && this.comfirmpsw){
+                        if(this.accountpsw!=this.comfirmpsw){
+                            toast.showmsg('两次输入密码不一致，请重新输入',true);
+                            this.verifypass.accountpsw = false;
+                            return;
+                        } 
+                        this.verifypass.accountpsw = true;
+                    }else{
+                        toast.showmsg('密码不能为空',true);
+                    }
+                    
+                },
+                submit: function(){
+                    var data = {
+                        login_account:this.accountname,
+                        login_password:this.accountpsw
+                    };
+                    var _this = this;
+                    $.post('/useritem/addchildaccount',data,function(res){
+                        if(res.code!=0){
+                            toast.showmsg(res.msg,true);
+                        }else{
+                            res.child.createdAt = res.child.createdAt.substr(0, 10);
+                            user.childarr.push(res.child);
+                            toast.showmsg('添加成功');
+                            setTimeout(function(){
+                                _this.addChildAccount = false;
+                                _this.accountname = '';
+                                _this.accountpsw = '';
+                                _this.comfirmpsw = '';
+                            },400);
+                        }
+                    }); 
+                }
+            }
+        });
+        var errmsg_default = '域名或路径格式不正确，请参考注意事项';
+        var user = new Vue({
+            el: '#router-content',
+            data: {
+                logs: [],
+                showlogs: false,
+                showhelp: false,
+                showapi: false,
+                showaccount: false,
+                showjoggle: false,
+                log_count: 0,
+                log_pages: 0,
+                log_pagindex: 1,
+                log_limit: 10,
+                log_index: 1,
+                isloadinglog: true,
+                isshowdownload: false,
+                children: [],
+                childarr: [],
+                child_count: 0,
+                child_pages: 0,
+                child_pagindex: 1,
+                child_limit: 10,
+                child_index: 1,
+                isloadingchild: true,
+                filtername: '',
+                showchildren: false,
+                realusername: '',
+                routes: {
+                    index: true,
+                    log: false,
+                    help: false,
+                    api: false,
+                    account: false,
+                    listapi: false
+                },
+                expire: new Date('<%=expire%>').valueOf()<new Date().valueOf(),
+                showlistapi: false,
+                listapi: {
+                    content: '',
+                    back: '',
+                    errmsg: '',
+                    showerrmsg: false,
+                    disabled: false
+                },
+                callbackapi: {
+                    content: '',
+                    back: '',
+                    errmsg: '',
+                    showerrmsg: false,
+                    disabled: false
+                },
+                issetname: false,
+                issetrealname: false,
+                issetrealname: '',
+                name: {
+                    content: '',
+                    back: ''
+                },
+                realname: {
+                    content1: '',
+                    content2: '',
+                    back1: '',
+                    back2: ''
+                },
+                isfather: false,
+                permission_api: <%=permission_api%>,
+                permission_hidetitle: <%=permission_hidetitle%>,
+                is_default_psw: <%=is_default_psw%>,
+                is_default_delpsw: <%=is_default_delpsw%>,
+                expiredate:'<%=expire%>',
+                userid: ''
+            },
+            computed: {
+                log_offset: function(){
+                    return (this.log_pagindex-1)*this.log_limit;
+                },
+                log_pages: function(){
+                    return Math.ceil(this.log_count/this.log_limit);
+                },
+                child_offset: function(){
+                    return (this.child_pagindex-1)*this.child_limit;
+                },
+                child_pages: function(){
+                    return Math.ceil(this.child_count/this.child_limit);
+                },
+                listapi_disable: function(){
+                    return this.listapi.disabled&&!this.listapi.content||this.listapi.content==this.listapi.back;
+                },
+                callbackapi_disable: function(){
+                    return this.callbackapi.disabled&&!this.callbackapi.content||this.callbackapi.content==this.callbackapi.back;
+                }
+            },
+            methods: {
+                showuploads: function(){
+                    upload.showupload = !upload.showupload;
+                },
+                showaddaccount: function(){
+                    // if(!addaccount.permission_hidetitle){
+                    //     toast.showmsg('该功能为商业版功能，开通请联系销售经理',true);
+                    //     return;
+                    // }
+                    if(this.checkexpire())return;
+                    addaccount.addChildAccount = true;
+                },
+                changechildpsw: function(name){
+                    changepsw.changepsw(name);
+                },
+                changechildname: function(name){
+                    changename.changename(name);
+                },
+                delchild: function(name, index){
+                    var _this = this;
+                    trashchild.show(name, function(){
+                        _this.childarr.splice(index, 1);
+                    });
+                },
+                loadlog: function(cur){
+                    if(cur!=this.log_pagindex){
+                        if(cur<1){
+                            toast.showmsg('当前就是首页了！', true);
+                            return;
+                        }
+                        if(cur>this.log_pages){
+                            toast.showmsg('没有下一页了', true);
+                            return;
+                        }
+                        this.log_isloadinglog = true;
+                        var _this = this;
+                        setTimeout(function(){
+                            _this.log_isloadinglog = false;
+                            _this.log_pagindex = cur;
+                        }, 500);
+                    }
+                },
+                loadchild: function(cur){
+                    if(cur!=this.child_pagindex){
+                        if(cur<1){
+                            toast.showmsg('当前就是首页了！', true);
+                            return;
+                        }
+                        if(cur>this.child_pages){
+                            toast.showmsg('没有下一页了', true);
+                            return;
+                        }
+                        this.child_isloadinglog = true;
+                        var _this = this;
+                        setTimeout(function(){
+                            _this.child_isloadinglog = false;
+                            _this.child_pagindex = cur;
+                        }, 500);
+                    }
+                },
+                validate1: function(){
+                    if(this.realname.content1.length>10){
+                        toast.showmsg('公司名称的长度不能超过10位',true);
+                    }
+                },
+                validate2: function(){
+                    if(this.realname.content2.length>10){
+                        toast.showmsg('用户名称的长度不能超过10位',true);
+                    }
+                },
+                focus: function(){
+                    this.showchildren = true;
+                    this.filtername = ''
+                },
+                showdownload: function(){
+                    this.isshowdownload = true;
+                },
+                selectchild: function(user){
+                    this.filtername = user;
+                    var filter_length = 0;
+                    for(var i in this.logs){
+                        if(this.logs[i].user_name.indexOf(user)!=-1)
+                            filter_length++;
+                    }
+                    this.count = filter_length;
+                },
+                saveapi: function(which){
+                    if(this[which].showerrmsg)this[which].showerrmsg = false;
+                    var check = this.checkurl(this[which].content);
+                    if(check){
+                        this[which].errmsg = errmsg_default;
+                        this[which].showerrmsg = true;
+                        return;
+                    }
+                    this[which].disabled = true;
+                    var _this = this;
+                    $.post('/api/saveapi/'+which, {
+                        url: this[which].content
+                    }, function(res){
+                        if(res.code!=0){
+                            toast.showmsg(res.msg);
+                            return;
+                        }
+                        toast.showmsg('保存成功');
+                    });
+                },
+                checkurl: function (url) {
+                    var ipreg = /^(https|http)?:\/\/(\d+)\.(\d+)\.(\d+)\.(\d+)\/?([0-9a-z][0-9a-z-]{0,61})?$/;
+                    return ipreg.test(url)||!/^(https|http)?:\/\//.test(url);
+                },
+                changepsw: function(name){
+                    changepsw.changepsw(name);
+                },
+                changedelpsw: function(){
+                    changedelpsw.showchangedelpsw = true;
+                    changedelpsw.oldpsw = changedelpsw.newpsw = changedelpsw.comfirmpsw ='';
+                    this.$nextTick(function(){
+                        $('#oldpsw').focus();
+                    });
+                },
+                changeusername: function(name, id){
+                    changeUsername.showchangeUsername = true;
+                    changeUsername.username = name;
+                },
+                setrealname: function(){
+                    this.issetrealname = !this.issetrealname;
+                    this.$nextTick(function(){
+                        $("#input_1").focus();
+                    })
+                },
+                cancel_realname: function(){
+                    this.issetrealname = !this.issetrealname;
+                    this.realname.content1 = this.realname.back1;
+                    this.realname.content2 = this.realname.back2;
+                },
+                setname: function(){
+                    this.issetname = true;
+                    this.$nextTick(function(){
+                        $("#editname").focus();
+                    })
+                },
+                cancel_name: function(){
+                    this.issetname = false;
+                    this.name.content = this.name.back;
+                },
+                sub_realname: function(){
+                    if( !this.realname.content1 && !this.realname.content2 ){
+                        toast.showmsg('公司名称或用户名称不能为空',true);
+                        return;
+                    }
+                    var _this = this;
+                    $.post('/setitem/change_realname',{
+                        realname: {
+                            content1: this.realname.content1,
+                            content2: this.realname.content2
+                        }
+                    },function(res){
+                        toast.showmsg(res.msg, res.code!=0);
+                        if(res.code==0){
+                            _this.realname.back1 = _this.realname.content1;
+                            _this.realname.back2 = _this.realname.content2;
+                            _this.realname.content1?_this.realname.content2?_this.realusername = _this.realname.content1+'-'+_this.realname.content2:_this.realusername = content1:_this.realusername = _this.realname.content2;
+                            nav.username = _this.realusername;
+                            console.log(nav.username);
+                            _this.issetrealname = false;
+                        }
+                    });
+
+                },
+                sub_name: function(){
+                    if(this.name.content == this.name.back){
+                        this.cancel_name();
+                        return;
+                    }
+                    var _this = this;
+                    $.post('/setitem/change_nickname',{
+                        nickname: this.name.content
+                    },function(res){
+                        toast.showmsg(res.msg, res.code!=0);
+                        if(res.code==0){
+                            _this.name.back = _this.name.content;
+                            _this.issetname = false;
+                            nav.user.name = _this.name.content;
+                        }
+                    });
+                },
+                showpersonalHome: function(userid){
+                    var url = 'http://wx.sz-sti.com/scene/lists/'+userid;
+                    qrtoast.show(url);
+                },
+                checkexpire: function(){
+                    if(this.expire){
+                        toast.showmsg('该功能为商业版功能，开通请联系销售经理',true);
+                        return true;
+                    }else{
+                        return false;
+                    }
+                },
+                skin: function(src){
+                    if(src=='/uploadsitem'){
+                        if(this.expire&&'<%=sceneCount%>'>=200){
+                            toast.showmsg('体验版最多发布200个房间', true);
+                            return;
+                        };
+                    }else if(src == '/useritem#/account'){
+                        if(this.checkexpire())return;
+                    }
+                    window.location.href = src;
+                },
+                showdownload: function(){
+                    user.showdownload();
+                },
+                init: function(){
+                    var _this = this;
+                    var timer = setInterval(function(){
+                        console.log('user页面获取nav的user：' + nav.user.realname)
+                        if(nav.user.name){
+                            clearInterval(timer);
+                            _this.name.content = nav.user.name;
+                            _this.name.back = nav.user.name;
+                            nav.user.realname!='{}'?_this.issetrealname=false:_this.issetrealname=true;
+                            if(nav.user.realname!='{}'){
+                                var realname = JSON.parse(nav.user.realname);
+                                var content1 = realname.content1;
+                                var content2 = realname.content2;
+                                content1?content2?_this.realusername = content1+'-'+content2:_this.realusername = content1:_this.realusername = content2;
+                                _this.realname.content1 = content1;
+                                _this.realname.content2 = content2;
+                                _this.realname.back1 = content1;
+                                _this.realname.back2 = content2;
+
+                            }
+
+                            changepsw.username =  nav.user.name;
+                            user.listapi.content = user.listapi.back = nav.user.listapi;
+                            user.callbackapi.content = user.callbackapi.back = nav.user.callbackapi;
+                            if(nav.children.length>0){  
+                                for(var i in nav.children){
+                                    _this.children.push(nav.children[i]);
+                                }
+                                if(_this.children.indexOf(nav.user.name)==-1){
+                                    _this.children.push(nav.user.name);
+                                }
+                            }
+                        }
+                        console.log(_this.children.length);
+                        console.log(_this.children);
+                        _this.isfather = _this.children.length > 1;
+                        _this.userid = nav.user.id;
+                    }, 30);
+                    nav.current.center = true;
+                    $.get('/useritem/logs', function(res){
+                        for(var i in res){
+                            var time = new Date(res[i].createdAt);
+                            res[i].time = time.getFullYear();
+                            res[i].time += '-'+(parseInt(time.getMonth())+1);
+                            res[i].time += '-'+(time.getDate()<10?'0':'')+time.getDate();
+                            res[i].time += ' '+(time.getHours()<10?'0':'')+time.getHours();
+                            res[i].time += ':'+(time.getMinutes()<10?'0':'')+time.getMinutes();
+                            _this.logs.unshift(res[i]);
+                        }
+                        _this.log_count = res.length;
+                        _this.log_pagindex = 1;
+                    });
+                    $.get('/useritem/detail', function(res){
+                        if(res.code!=0){
+                            toast.showmsg(res.msg, true);
+                            return;
+                        }
+                        if(res.user.childarr.length > 0){
+                            for(var i in res.user.childarr){
+                                res.user.childarr[i].createdAt = res.user.childarr[i].createdAt.substr(0, 10);
+                                _this.childarr.push(res.user.childarr[i]);
+                            }
+                        }
+                        _this.child_count = res.user.childarr.length;
+                        _this.child_pagindex = 1;
+                    });
+                    // if(!which||this.routes[which]==undefined){
+                    //     var _this = this;
+                    //     var timer = setInterval(function(){
+                    //         if(nav.user.name){
+                    //             clearInterval(timer);
+                    //             routerbox.name.content = nav.user.name;
+                    //             routerbox.name.back = nav.user.name;
+                    //             changepsw.username =  nav.user.name;
+                    //             user.listapi.content = user.listapi.back = nav.user.listapi;
+                    //             user.callbackapi.content = user.callbackapi.back = nav.user.callbackapi;
+                    //             if(nav.children.length>0){  
+                    //                 for(var i in nav.children){
+                    //                     _this.children.push(nav.children[i]);
+                    //                 }
+                    //                 if(_this.children.indexOf(nav.user.name)==-1){
+                    //                     _this.children.push(nav.user.name);
+                    //                 }
+                    //             }
+                    //         }
+                    //         routerbox.isfather = _this.children.length != 0;
+                    //         routerbox.userid = nav.user.id;
+                    //     }, 30);
+                    //     nav.current.center = true;
+                    // }
+                    // switch (which){
+                    //     case 'log':
+                    //         var _this = this;
+                    //         this.logs.splice(0);
+                    //         _this.isloadinglog = true;
+                    //         $.get('/useritem/logs', function(res){
+                    //             for(var i in res){
+                    //                 var time = new Date(res[i].createdAt);
+                    //                 res[i].time = time.getFullYear();
+                    //                 res[i].time += '-'+(parseInt(time.getMonth())+1);
+                    //                 res[i].time += '-'+(time.getDate()<10?'0':'')+time.getDate();
+                    //                 res[i].time += ' '+(time.getHours()<10?'0':'')+time.getHours();
+                    //                 res[i].time += ':'+(time.getMinutes()<10?'0':'')+time.getMinutes();
+                    //                 _this.logs.unshift(res[i]);
+                    //             }
+                    //             console.log(res[i]);
+                    //             _this.log_count = res.length;
+                    //             _this.log_pagindex = 1;
+                    //             setTimeout(function(){
+                    //                 _this.isloadinglog = false;
+                    //             }, 1000);
+                    //         });
+                    //         break;    
+                    //     case 'account':
+                    //         if(this.childarr.length)return;
+                    //         var _this = this;
+                    //         $.get('/useritem/detail', function(res){
+                    //             if(res.code!=0){
+                    //                 toast.showmsg(res.msg, true);
+                    //                 return;
+                    //             }
+                    //             if(res.user.childarr.length > 0){
+                    //                 for(var i in res.user.childarr){
+                    //                     res.user.childarr[i].createdAt = res.user.childarr[i].createdAt.substr(0, 10);
+                    //                     _this.childarr.push(res.user.childarr[i]);
+                    //                 }
+                    //             }
+                    //             _this.child_count = res.user.childarr.length;
+                    //             _this.child_pagindex = 1;
+                    //             setTimeout(function(){
+                    //                 _this.isloadingchild = false;
+                    //             }, 1000);
+                    //         });
+                    //         break;
+                    // }
+                }
+            }
+        });
+
+        user.init();
+
+        var trashchild = new Vue({
+            el: '#trashchild',
+            data: {
+                showtptoast: false,
+                delepsw: '',
+                name: '',
+                callback: null
+            },
+            methods: {
+                show: function(name, fun){
+                    this.showtptoast = true;
+                    this.name = name;
+                    this.callback = fun?fun:null;
+                    this.$nextTick(function(){
+                        $('#deletepsw').focus();
+                    });
+                },
+                hide: function(){
+                    this.showtptoast = false;
+                    this.delepsw = '';
+                },
+                submit: function(){
+                    var data = {
+                        deletepsw: this.delepsw,
+                        name: this.name
+                    };
+                    var _this = this;
+                    $.post('/setitem/delchild',data,function(res){
+                        if(res.code!=0){
+                            toast.showmsg(res.msg, true);
+                            return;
+                        }
+                        for(var i in user.childarr){
+                            if(user.childarr[i].name == _this.name){
+                                user.childarr.splice(i, 0);
+                                user.child_count--;
+                            }
+                        }
+                        toast.showmsg('删除成功');
+                        if(_this.callback)_this.callback();
+                        setTimeout(function(){
+                            _this.hide();
+                        }, 300);
+                    });
+                }
+            }
+        });
+
+        
+        var changepsw = new Vue({
+            el: '#changepsw',
+            data: {
+                showchangepsw: false,
+                oldpsw: '',
+                newpsw: '',
+                comfirmpsw: '',
+                ischild: false,
+                username: ''
+            },
+            computed: {
+                disabled: function(){
+                    return !this.oldpsw||!this.newpsw||!this.comfirmpsw;
+                },
+                placeholder: function(){
+                    return !!this.ischild?'请输入母账户密码':'请输入您的密码'
+                },
+                submiturl: function(){
+                    return this.ischild === false?'/setitem/deletepsw':!this.ischild?'/setitem/changepsw':'/setitem/changechildpsw'
+                }
+            },
+            methods: {
+                changepsw: function(name){
+                    this.ischild = name;
+                    this.showchangepsw = true;
+                    this.oldpsw = this.newpsw = this.comfirmpsw ='';
+                    this.$nextTick(function(){
+                        $('#oldpsw').focus();
+                    });
+                },
+                submit: function(){
+                    if(this.newpsw!=this.comfirmpsw){
+                        toast.showmsg('两次密码不一致', true);
+                        return;
+                    }
+                    var _this = this;
+                    $.post(this.submiturl,
+                        {
+                            oldpsw: this.oldpsw,
+                            newpsw: this.newpsw,
+                            repsw: this.comfirmpsw,
+                            name: this.ischild
+                        },
+                        function(res){
+                            if(res.code!=0){
+                                toast.showmsg(res.msg, true);
+                                return;
+                            }
+                            toast.showmsg('修改成功');
+                            _this.ischild === false?routerbox.is_default_delpsw = false:routerbox.is_default_psw = false;
+                            setTimeout(function(){
+                                _this.showchangepsw = false;
+                            }, 300);
+                        }
+                    );
+                }
+            }
+        });
+        var changeUsername = new Vue({
+            el: '#changeUsername',
+            data: {
+                showchangeUsername: false,
+                username: '',
+                newname: ''
+            },
+            methods: {
+                hide: function(){
+                    this.showchangeUsername = false;
+                    this.username = '';
+                    this.newname = '';
+                },
+                submit: function(){
+                    if(this.newname.length<=3){
+                        toast.showmsg('名字长度太短了', true);
+                        return;
+                    }
+                    var _this = this;
+                    $.post('/setitem/changeusername',
+                        {
+                            newname: this.newname
+                        },
+                        function(res){
+                            if(res.code!=0){
+                                toast.showmsg(res.msg, true);
+                                return;
+                            }
+                            _this.username = _this.newname;
+                            _this.showchangeUsername = false;
+                            user.name.back = _this.newname;
+                            user.name.content = _this.newname;
+                            nav.user.name = _this.newname;
+                            _this.newname = '';
+                            toast.showmsg('修改成功');
+                        }
+                    );
+                }
+            }
+
+        })
+
+        var changename = new Vue({
+            el: '#changename',
+            data: {
+                showchangename: false,
+                newname: '',
+                ischild: false
+            },
+            methods: {
+                changename: function(name){
+                    this.ischild = name;
+                    this.showchangename = true;
+                    this.newname = '';
+                    this.$nextTick(function(){
+                        $('#newname').focus();
+                    });
+                },
+                submit: function(){
+                    if(this.newname.length<=3){
+                        toast.showmsg('名字长度太短了', true);
+                        return;
+                    }
+                    var _this = this;
+                    $.post('/setitem/changename',
+                        {
+                            name: this.ischild,
+                            newname: this.newname
+                        },
+                        function(res){
+                            if(res.code!=0){
+                                toast.showmsg(res.msg, true);
+                                return;
+                            }
+                            toast.showmsg('修改成功');
+                            for(var i in user.childarr){
+                                if(user.childarr[i].name == _this.ischild){
+                                    user.childarr[i].name = _this.newname;
+                                }
+                            }
+                            setTimeout(function(){
+                                _this.showchangename = false;
+                            }, 300);
+                        }
+                    );
+                }
+            }
+        });
+
+        var body = new Vue({
+            el: 'body',
+            data: {
+                showpersonHome: false
+            },
+            methods: {
+                hidepopt: function(){
+                    nav.display = false;
+                }
+            }
+        });
+
+    </script>
+</body>
+</html>

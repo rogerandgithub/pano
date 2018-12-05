@@ -1,0 +1,256 @@
+#index {
+    background: url(http://7xk1dv.com1.z0.glb.clouddn.com/control/background.png) center no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    position: absolute;
+    overflow: auto;
+}
+#index .a_alert {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    width: 380px;
+    height: 0px;
+    background: #fff;
+    z-index: 999999;
+    transition: all .5s linear;
+    -moz-transition: all .5s linear;
+    -ms-transition: all .5s linear;
+    -webkit-transition: all .5s linear;
+    -ms-transition: all .5s linear;
+}
+#index .alert_left {
+    float: left;
+    width: 20%;
+    height: 100%;
+    background: #df0024;
+}
+#index .alert_left .alert_icon {
+    display: block;
+    width: 50px;
+    height: 50px;
+    margin: 0 auto;
+    margin-top: 30px;
+    background: url(http://qncdn.sz-sti.com/images/tools/dollar_coin.png) center;
+    background-size: 100%;
+}
+#index .alert_right {
+    float: left;
+    width: 80%;
+    padding-top: 20px;
+}
+#index .alert_right .alert_close {
+    position: absolute;
+    right: 0;
+    top: 0;
+    background: #a2a2a2;
+    color: #fff;
+    cursor: pointer;
+}
+#index .line {
+    border-right: 1px solid #fff;
+    height: 100%;
+}
+.line {
+    border-right: 1px solid #333;
+    height: 20px;
+    width: 0;
+    margin-right: 8px;
+}
+#index .alert_msg .alert_title {
+    font-weight: bold;
+}
+#index .alert_msg p {
+    padding: 0 20px;
+}
+#index .alert_msg p {
+    padding: 0 20px;
+}
+.alert-wrap {
+    width: 100%;
+    position: fixed;
+    height: 100%;
+    left: 0;
+    top: 0;
+    z-index: 50;
+    visibility: hidden;
+    background-color: rgba(0,0,0,0.5);
+}
+.alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+.alert {
+    display: inline-block;
+    background-color: #dedfdf;
+    width: 450px;
+    min-height: 390px;
+    padding: 45px 75px;
+    max-height: 100%;
+    overflow: auto;
+}
+.alert .title {
+    min-height: 45px;
+    font-size: 16px;
+    color: #565656;
+    text-align: left;
+    margin-bottom: 20px;
+}
+.alert .contentbox {
+    font-size: 16px;
+    word-break: break-all;
+    min-height: 300px;
+    background-color: #fff;
+}
+.buttons {
+    margin-top: 36px;
+    text-align: center;
+}
+#index .qrcode {
+    position: absolute;
+    width: 100%;
+    min-width: 860px;
+    top: 0;
+    height: 100%;
+    z-index: 10000;
+    background-color: rgba(0,0,0,0.4);
+    display: none;
+}
+#index .qrcode .chooseqr {
+    width: 80%;
+    min-width: 860px;
+    margin: 0 auto;
+    text-align: right;
+    margin-top: 150px;
+}
+#index .qrcode .genern1 {
+    background-position: -839px -194px;
+}
+#index .qrcode .icon {
+    display: inline-block;
+    width: 58px;
+    height: 70px;
+    cursor: pointer;
+    margin-left: 20px;
+}
+.icon {
+    background: url(http://qncdn.sz-sti.com/images/tool.png?v=9) no-repeat;
+}
+#index .qrcode .genern2 {
+    background-position: -897px -194px;
+    margin-right: 50px;
+}
+#index .qrcode .qrcodebox {
+    position: absolute;
+    width: 100%;
+    height: 240px;
+    text-align: center;
+    top: 50%;
+    margin-top: -120px;
+}
+#index .qrcode .closeqr {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-position: -955px -194px;
+}
+#index .qrcode .qr1 {
+    display: none;
+}
+#index .qrcode .qr img {
+    width: 300px;
+    margin: 0 40px;
+}
+.sti-container {
+    width: 80%;
+    min-width: 860px;
+    margin: 0 auto;
+    max-width: 1200px;
+    position: relative;
+}
+#index .nav {
+    margin-top: 68px;
+    height: 96px;
+    position: relative;
+}
+#index .logo {
+    background-position: -329px -891px;
+    width: 346px;
+    height: 96px;
+    display: inline-block;
+}
+#index .nav-item {
+    text-align: right;
+    display: inline-block;
+    position: absolute;
+    top: 38px;
+    right: 0;
+}
+#index .nav-item a {
+    margin-right: 10px;
+}
+#index .line {
+    border-right: 1px solid #fff;
+    height: 100%;
+}
+.line {
+    border-right: 1px solid #333;
+    height: 20px;
+    width: 0;
+    margin-right: 8px;
+}
+#index .download {
+    margin-right: 10px;
+    cursor: pointer;
+}
+#index .menu {
+    padding: 60px 5% 0;
+    margin-bottom: 50px;
+}
+#index .menu a {
+    display: inline-block;
+    height: 236px;
+    position: relative;
+    margin: 2%;
+}
+#index .romaing {
+    background-color: #df0024;
+    width: 55%;
+}
+#index .search {
+    width: 36%;
+    background-color: #ef9c00;
+}
+#index .setall {
+    background-color: #9f0052;
+}
+#index .set {
+    width: 28.82%;
+}
+#index .setacount {
+    background-color: #4f167e;
+}
+#index .management {
+    background-color: #007375;
+}
+#lists {
+    position: absolute;
+    width: 60px;
+    bottom: 2%;
+    right: -60px;
+}
+#lists a {
+    display: block;
+    width: 60px;
+    padding: 10px 0;
+    margin-top: 10px;
+    background-color: red;
+    color: #fff;
+    text-align: center;
+    font-weight: bold;
+    vertical-align: middle;
+    text-decoration: none;
+}
+

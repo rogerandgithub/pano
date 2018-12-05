@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>深圳速腾聚创科技有限公司</title>
+    <link rel="stylesheet" href="/index/css/m_common.css" type="text/css"> 
+    <link rel="stylesheet" href="/index/css/m_company.css" type="text/css"> 
+
+    <%if(lang=='en'){%>
+        <style type="text/css">
+            #wrapper .section_2 p{
+                text-align: left;
+            }
+        </style>
+    <%}%>
+</head>
+<body>
+    <%include m_nav%>
+    <%include loading%>
+    <div id="wrapper">
+        <div class="section_1"></div>
+        <div class="section_2">
+            <p v-text="datas.company.p1"></p>
+            <p v-text="datas.company.p2"></p>
+            <p v-text="datas.company.p3"></p>
+        </div>
+        <div class="section_3">
+            <span class="redline"></span>
+            <h2 class="ceopic">
+                <img src="http://qncdn.sz-sti.com/mobile/company/ceo.jpg" />
+            </h2>
+            <div class="desc">
+                <h4 class="name" v-text="datas.company.p4"></h4>
+                <p class="position" v-text="datas.company.p5"></p>
+                <p class="info"><span v-text="datas.company.p6"></span>;<br/><span v-text="datas.company.p7"></span></p>
+            </div>
+        </div>
+    </div>
+    
+    <script type="text/javascript">
+        var wrapper = new Vue({
+            el: '#wrapper',
+            data: {
+                datas: <%-include("mobile_lang_"+lang, {lang: lang})%>
+            },
+            methods: {
+                smoothScroll: function(){
+                    $.smoothScroll({
+                        scrollTarget: '#smoothScroll',
+                        speed: 1200
+                    });
+                }
+            }
+        })
+    </script>
+</body>
+</html>

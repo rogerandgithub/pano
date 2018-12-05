@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+    <title><%=title%></title>
+		<meta charset="utf-8">
+        <meta name="format-detection" content="telephone=no">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="/css/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="/css/bootstrap-datetimepicker.min.css">
+        <link rel="stylesheet" type="text/css" href="/css/layout.css" />
+        <link rel="stylesheet" type="text/css" href="/css/suteng.css?v=<%=version%>">
+        <style>
+            .content{padding-right: 40px;padding-left: 40px;}
+            .scene-list .item {padding: 0;border: 0;}
+            .romaing-title{height:40px;font-size:15px;text-align:center;line-height:40px;}
+            .table-info td{min-width:40px;}
+            .btn-setintroduction{-webkit-box-flex:1}
+            @media screen and (min-width:700px){
+            }
+            .sname{position: absolute;top: 0;left: 20px;width: 70px;text-align: center;height: 50px;line-height: 50px;background-color: #565656;font-size:16px;color:#fff;font-weight: 600;}
+            .sname:after{content: "";position: absolute;top: 100%;left: 0;width: 0px;height: 0px;border-left: 35px solid transparent;border-right: 35px solid transparent;border-bottom: 20px solid transparent;border-top: 0;border-left-color: #565656;border-right-color: #565656;}
+            .sname.active{background-color: #e6212a;}
+            .sname.active:after{border-left-color: #e6212a;border-right-color: #e6212a;}
+            .editor{position: absolute;bottom: 0;right: 0;background-color: rgba(255,255,255,0.6);}
+            .editor .btn{display: inline-block;background: none;width: auto;font-weight: 600;color: #535353;padding: 0 10px;}
+            .editor .line{margin: 0;}
+            .btn-delete-scene{color: #dd0025 !important;}
+            .confirm{padding: 40px 30px;line-height: 50px;font-size: 20px;}
+            .groupname{height: 64px;line-height: 64px;margin: 20px 0;}
+            .icon-toggle{width: 13px;height: 13px;display: inline-block;background-position: -179px -150px;margin-top: 25px;}
+            .avatar{width:64px;margin: 0 10px;}
+            .nickname{font-weight: 800;color: red;margin-right: 15px;width: 10%;text-overflow: ellipsis;overflow: hidden;text-align: center;    line-height: 64px;}
+            .name{width: 28%;text-overflow: ellipsis;overflow: hidden;height: 64px;}
+            .fr-icon i{display: inline-block;width: 26px;height: 23px;margin-right: 7px;margin-bottom: -6px;cursor: pointer;}
+            .createat{margin-right: 30px;}
+            .fr{float: right;}
+            .scene-list .item{margin: 0 0 30px;}
+            .back{margin-right: 10px;cursor: pointer;}
+            .setname{padding: 40px;}
+            .input-name{margin-top: 20px;border-radius: 5px;border: 1px solid #585858;text-align: center;width: 80%;background: #eee;}
+            @media screen and (max-width:860px){
+                .createat{display: none;}
+            }
+        </style>
+        <script src="http://qncdn.sz-sti.com/sqing/jquery-latest.min.js"></script>
+        <script src="/js/sti-common.min.js"></script>
+        <script src="/js/bootstrap/bootstrap.min.js"></script>
+        <script src="/js/bootstrap/bootstrap-datetimepicker.min.js" charset="UTF-8"></script>
+        <script src="/js/template-native.js?v=<%=version%>"></script>
+        <script type="text/javascript">
+            function downloadscene(){
+                $('.alert-wrap').css('visibility','visible');
+                initAlert('',{
+                    title:'提示',
+                    content:'<div class="middle">该功能为商业版功能，开通请联系销售经理</div>',
+                    buttons:[
+                    {
+                        text:'取消'
+                    }
+                    ]
+                });
+            }
+        </script>
+	</head>
+	<body ondrag="return false">
+    
+        <!-- alert -->
+        <%include alert%>
+
+        <!-- sidebar -->
+        <%include sidebar%>
+        <!-- main container -->
+        <div class="content">
+            <div class="groupname">
+<!--                 <img class="avatar fl" src="/images/avatar.png"/>
+                <span class="nickname fl"><%=nickname%></span> -->
+                <span class="name fl"><%=title%></span>
+                <span onclick="location.href='/romaing?user=<%=userquery%>';" class="back fr">返回</span><!-- <span class="line fr" style="margin-top:22px;"></span> -->
+                <button class="btn red flex1 fr goupload" style="line-height:30px;margin-right:20px;margin-top: 10px;">在该组添加场景</button>
+               <!--  <span onclick="location.href='/upload12/upload16?groupkey=<%=groupkey%>'" class="back fr">在该组添加全景</span> -->
+                <span class="fr createat">创建时间：<%var t=new Date(scenes[0].createdAt);function pad(num, n) {return Array(n-(''+num).length+1).join(0)+num;}%><%=t.getFullYear()+' '+pad(t.getMonth()+1,2)+'-'+pad(t.getDate(),2)%></span>
+            </div>
+            <div class="vertical h100">
+                <div class="scene-list flex1 overflow">
+                    <%for(var i in scenes){%>
+                    <div class="item lightgray" data-id="<%=scenes[i].id%>" data-key="<%=scenes[i].key%>" data-introduction="<%=scenes[i].introduction%>" id="scene<%=i%>">
+                        <img width="100%" style="max-height: 300px;" src="<%if(scenes[i].type>=5){%>http://qncdn.sz-sti.com/pano/<%=scenes[i].key.split('_')[0]%>.tiles/pano_s.jpg<%}else{%><%=cdnImagesPath%>/scenes/<%=scenes[i].key.split('_')[0]%>/allinone.jpg?v=<%=serverDate%>&imageMogr2/gravity/NorthWest/crop/!1024x356a0a500/thumbnail/!75p<%}%>" onclick="location.href='/scene?key=<%=scenes[i].key%>&groupkey=<%=groupkey%>&preview=1&track=scene<%=i%><%if(platform=='ios-app'||platform=='android-app'){%>&platform=<%=platform%><%}%>';">
+                        <div class="sname <%if(scenes[i].id==cover_id){%>active<%}%>" data-id="<%=scenes[i].id%>" data-name="<%=scenes[i].name%>" <%if(scenes[i].name.length>4){%>style="line-height:22px;"<%}%>>
+                            <%=scenes[i].name%>
+                        </div>
+                        <div class="editor">
+                            <button class="btn btn-edit flex1" onclick="location.href='/scene/edit?type=edit&viewer=kr&key=<%=scenes[i].key%>'">编辑场景</button><span class="line"></span><button class="btn btn-name flex1">修改名称</button><span class="line"></span><button class="btn btn-preview flex1" onclick="window.open('/scene?key=<%=scenes[i].key%>&preview=1');">预览</button><span class="line"></span><button class="btn btn-setcover flex1">设置封面</button><span class="line"></span><button class="btn btn-setintroduction">设置语音播报</button><span class="line"></span><button class="btn btn-edit flex1" onclick="<%if(Date.parse(user.expiredate)<Date.now()){%>downloadscene()<%}else{%>location.href='<%if(scenes[i].type>=5 || scenes[i].key.split('_')[0].lenght == 10){%>http://wx.sz-sti.com/newitem/download/pano/<%=scenes[i].key.split('_')[0]%>?name=<%=scenes[i].name%><%}else{%>http://qncdn.sz-sti.com/images/scenes/<%=scenes[i].key.split('_')[0]%>/allinone.jpg?download<%}%>'<%}%>">下载全景图</button><span class="line"></span></span><button class="btn btn-delete-scene flex1">永久删除</button>
+                        </div>
+                    </div>
+                    <%}%>
+                </div>
+            </div>
+        </div>
+
+    <script>
+    $(function(){
+        if(top!=self){
+            $('.back').css('display','none')
+        }
+        function goupload(){
+            <%if(Date.parse(user.expiredate)<Date.now()&&Date.parse(user.expiredate)!=0&&sceneCount>=200){%>
+                $('.alert-wrap').css('visibility','visible');
+                initAlert('',{
+                    title:'提示',
+                    content:'<div class="middle">体验版最多发布200个房间</div>',
+                    buttons:[
+                    {
+                        text:'取消'
+                    }
+                    ]
+                });
+            <%}else{%>
+                location.href='/upload12<%if(scenes[0].scenestyle!=3&&scenes[0].scenestyle!=4){%>/upload16<%}%>?groupkey=<%=groupkey%>';
+            <%}%>
+        }
+        $('.goupload').on('click',goupload);
+        var callSettingAd=function(e){
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            var scene_ids=[];
+            $('.item').each(function(){
+                scene_ids.push($(this).attr('data-id'));
+            });
+            <%
+                var ad=scenes[0].advertisement?scenes[0].advertisement.split('</div>'):[''];
+                var ad1,ad2,ad3;
+                if( ad.length>0){
+                    ad1= ad[0].split('<div>').length>1 ? (ad[0].split('<div>'))[1] : ad[0];
+                }
+                if( ad.length>1){
+                    ad2= ad[1].split('<div>').length>1 ? (ad[1].split('<div>'))[1] : ad[1];
+                }
+                if( ad.length>2){
+                    ad3= ad[2].split('<div>').length>1 ? (ad[2].split('<div>'))[1] : ad[2];
+                }
+            %>
+            $('.alert-wrap').css('visibility','visible');
+            initAlert('',{
+                title:'设置底部广告',
+                content:'<div><input class="input-ad-1" placeholder="联系人" value="<%=ad1%>"></div>\
+                <div style="margin-top:5px"><input class="input-ad-2" placeholder="电话" value="<%=ad2%>"></div>\
+                <div style="margin-top:5px"><input class="input-ad-3" placeholder="其他" value="<%=ad3%>"></div>',
+                buttons:[
+                {
+                    text:'取消'
+                },{
+                    text:'确定',
+                    className:'btn-confirm',
+                    color:'red',
+                    callBack:function(){
+                        $.ajax({
+                            url:'/romaing/set_advertisements',
+                            type:'POST',
+                            async:false,
+                            data:{
+                                advertisement:$('.input-ad-1').val()+$('.input-ad-2').val()+$('.input-ad-3').val()==''?'':'<div>'+$('.input-ad-1').val()+'</div>'+
+                                '<div>'+$('.input-ad-2').val()+'</div>'+
+                                '<div>'+$('.input-ad-3').val()+'</div>',
+                                scene_ids:JSON.stringify(scene_ids)
+                            },
+                            timeout:1000,
+                            success:function(result){
+                                if(result.code!=0){
+                                    alert(result.msg);
+                                }
+                                window.location.reload();
+                            },
+                            error:function(e){
+                                alert(e);
+                            }
+                        })
+                    }
+                    }
+                ]
+            });
+        }
+
+        function callSetName(e){
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            var name=$(this).closest('.item').find('.sname').attr('data-name');
+            var id=$(this).closest('.item').find('.sname').attr('data-id');
+            $('.alert-wrap').css('visibility','visible');
+            initAlert('',{
+                title:'修改场景名称',
+                content:'<div class="setname"><div class="hcenter vcenter f14 ">新名称:</div>\
+                    <div class="input-wrap flex1"><input class="input-name" value="'+name+'"></div></div>',
+                buttons:[
+                {
+                    text:'取消'
+                },{
+                    text:'确定',
+                    className:'btn-confirm',
+                    color:'red',
+                    callBack:function(){
+                        if($('.input-name').val()==name){
+                            return alert('请填写新名称');
+                        }
+                        $.ajax({
+                            type:'POST',
+                            url:'/settings/change_name',
+                            data:{
+                                id:id,
+                                name:$('.input-name').val()
+                            },
+                            async:false,
+                            success:function(result){
+                                if(result.code!=0){
+                                    alert(result.msg);
+                                    return;
+                                }
+                                if($('.item').size()==1){
+                                    location.href='/romaing';
+                                }else{
+                                    window.location.reload();
+                                }
+                            },
+                            error:function(e){
+                                alert(e);
+                            }
+                        });
+                    }
+                }]
+            });
+        }
+
+        function callSettingCover(e){
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            var id=($(this).closest('.item').attr('data-id'));
+
+            $.ajax({
+                    url:'/romaing/setcover',
+                    async:false,
+                    type:'POST',
+                    data:{
+                        id:id,
+                        groupkey:'<%=groupkey%>'
+                    },
+                    success:function(r){
+                        if(r.code!=0){
+                            alert(r.msg);
+                        }
+
+                        $('.sname').removeClass('active');
+                        $(e.target).parent().prev().addClass('active');
+
+                        $('.alert-wrap').css('visibility','visible');
+                        initAlert('',{
+                            title:'提示',
+                            content:'<div class="middle">设置封面成功</div>',
+                            buttons:[
+                            {
+                                text:'确定',
+                                color:'red',
+                                className:'btn-setcover-finish',
+                                callBack:function(){
+                                    setTimeout(function(){$('.alert-wrap').css('visibility','hidden');},100);
+                                }
+                            }]
+                        });
+
+                    }
+            });
+        }
+
+        function deleteScene(e){
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            var key=$(this).closest('.item').attr('data-key');
+            $('.alert-wrap').css('visibility','visible');
+
+            initAlert('',{
+                title:'提示',
+                content:'<div class="confirm">确定要删除吗？其他场景中跳转到此场景的漫游点不会同时删除,请记得手动删除</div><%if(Date.parse(user.expiredate)>Date.now()||Date.parse(user.expiredate)==0){%><div class="input-wrap"><input type="password" id="deletepsw" style="border:1px solid #666;width:50%;" placeholder="请输入删除密码" class=""></div><%}%>',
+                buttons:[
+                {
+                    text:'取消'
+                },{
+                    text:'确定',
+                    className:'btn-confirm',
+                    color:'red',
+                    callBack:function(){
+                        var deletepsw = $('#deletepsw').val();
+                        if(!deletepsw){
+                            alert('删除密码不能为空');
+                            $('#deletepsw').focus();
+                            return;
+                        }
+                        $.ajax({
+                            type:'POST',
+                            url:'/works/delete',
+                            data:{
+                                scene_key:key,
+                                deletepsw:deletepsw
+                            },
+                            async:false,
+                            success:function(result){
+                                if(result.code!=0){
+                                    alert(result.msg);
+                                    return;
+                                }
+                                if($('.item').size()==1&&<%=redir!='0'%>){
+                                    location.href='/romaing?user=<%=userquery%>';
+                                }else{
+                                    window.location.reload();
+                                }
+                            },
+                            error:function(e){
+                            alert(e);
+                            }
+                        });
+                    }
+                }]
+            });
+        }
+
+        function callIntroduction(e){
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            var scene_key=$(this).closest('.item').attr('data-key');
+            $('.alert-wrap').css('visibility','visible');
+            <%if(Date.parse(user.expiredate)<Date.now()&&Date.parse(user.expiredate)!=0){%>
+                initAlert('',{
+                    title:'提示',
+                    content:'<div class="middle">该功能为商业版功能，开通请联系销售经理</div>',
+                    buttons:[
+                    {
+                        text:'取消'
+                    }
+                    ]
+                });
+            <%}else{%>
+                initAlert('',{
+                    title:'设置语音播报',
+                    content:'<textarea class="input-introduction">'+$(this).closest('.item').attr('data-introduction')+'</textarea>',
+                    buttons:[
+                    {
+                        text:'取消'
+                    },{
+                        text:'确定',
+                        className:'btn-title-confirm',
+                        color:'red',
+                        callBack:function(){
+                            $.ajax({
+                                url:'/romaing/set-introduction',
+                                type:'POST',
+                                async:false,
+                                data:{
+                                    introduction:$('.input-introduction').val(),
+                                    scene_key:scene_key
+                                },
+                                timeout:1000,
+                                success:function(result){
+                                    if(result.code!=0){
+                                        alert(result.msg);
+                                    }
+                                    setTimeout(function(){$('.alert-wrap').css('visibility','hidden');},100);
+                                },
+                                error:function(e){
+                                    alert(e);
+                                }
+                            })
+                        }
+                        }
+                    ]
+                });
+            <%}%>
+        }
+        function setPrefix(e){
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            $('.alert-wrap').css('visibility','visible');
+            <%if(!user.permission_prefix){%>
+                initAlert('',{
+                    title:'设置标题前缀',
+                    content:'抱歉，你没有此权限，请联系我们销售经理',
+                    buttons:[
+                    {
+                        text:'确定',
+                        color:'red',
+                        className:'btn-trademark-finish',
+                        callBack:function(){
+                            setTimeout(function(){$('.alert-wrap').css('visibility','hidden');},100);
+                        }
+                    }]
+                });
+            <%}else{%>
+            initAlert('',{
+                title:'设置标题前缀',
+                content:'<textarea class="input-prefix" placeholder="例如:某某地产"><%=scenes[0].prefix%></textarea>',
+                buttons:[
+                {
+                    text:'取消'
+                },{
+                    text:'确定',
+                    className:'btn-title-confirm',
+                    color:'red',
+                    callBack:function(){
+                        $.ajax({
+                            url:'/romaing/set-prefix',
+                            type:'POST',
+                            async:false,
+                            data:{
+                                prefix:$('.input-prefix').val(),
+                                groupkey:'<%=groupkey%>'
+                            },
+                            timeout:1000,
+                            success:function(result){
+                                if(result.code!=0){
+                                    alert(result.msg);
+                                }
+                                setTimeout(function(){$('.alert-wrap').css('visibility','hidden');},100);
+                            },
+                            error:function(e){
+                                alert(e);
+                            }
+                        })
+                    }
+                    }
+                ]
+            });
+            <%}%>
+        }
+
+
+        if(top!=self){
+            $('#sidebar-nav').remove();
+            $('.content').css('margin-left', 0);
+        }
+
+        if ( checkMobile() ) {
+            bindClick($('.btn-setcover'),callSettingCover);
+            bindClick($('.btn-setting-ad'),callSettingAd);
+            bindClick($('.btn-delete-scene'),deleteScene);
+            bindClick($('.btn-setting-prefix'),setPrefix);
+            bindClick($('.btn-setintroduction'),callIntroduction);
+            bindClick($('.btn-name'),callSetname);
+
+        } else {
+            $('.btn-name').          on('mouseup',callSetName);
+            $('.btn-setcover').      on('mouseup',callSettingCover);
+            $('.btn-setting-ad').    on('mouseup',callSettingAd);
+            $('.btn-delete-scene').  on('mouseup',deleteScene);
+            $('.btn-setting-prefix').on('mouseup',setPrefix);
+            $('.btn-setintroduction').on('mouseup',callIntroduction);
+        }
+
+    });
+    </script>
+    </body>
+</html>

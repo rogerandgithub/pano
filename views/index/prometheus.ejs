@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title><%=lang=='cn'?'普罗米修斯':'Prometheus'%></title>
+    <link rel="stylesheet" href="/index/css/common.css" type="text/css"> 
+    <link rel="stylesheet" href="/index/css/prometheus.css" type="text/css">
+    <style type="text/css">
+        /*#langlist{
+            display: none;
+        }
+        #navtop .changeLang:hover #langlist{
+            display: block;
+        }*/
+        <%if(lang=='en'){%>
+            #prometheus .silde-wrapper li:nth-of-type(1) .content1 .item:nth-of-type(2) {
+                background: url(http://qncdn.sz-sti.com/prometheus/content2_en.png) center top no-repeat;
+                background-size: auto 100%;
+            }
+            #prometheus .silde-wrapper li:nth-of-type(1) {
+                background: url(http://qncdn.sz-sti.com/prometheus/title_en.png) center 90% no-repeat,
+                            url(http://qncdn.sz-sti.com/prometheus/prometheus_car.png) center 82% no-repeat,
+                            url(http://qncdn.sz-sti.com/prometheus/slide1.jpg) center bottom no-repeat;
+                background-size: 35%, 85%, cover;
+            }
+            #prometheus .silde-wrapper li:nth-of-type(2) .content1 .content12 {
+                position: absolute;
+                width: 22.42%;
+                left: 27.08%;
+                top: 8px;
+                opacity: 0;
+            }
+            #prometheus .silde-wrapper li:nth-of-type(2) .content1 .plat {
+                width: 8.33%;
+                left: 9.08%;
+            }
+            #prometheus .silde-wrapper li:nth-of-type(2) .content1 .content12 {
+                width: 25.31%;
+                left: 26.08%;
+            }
+            #prometheus .silde-wrapper li:nth-of-type(2) .content1 .content11 {
+                width: 14.06%;
+                left: 67.08%;
+            }
+            #prometheus .silde-wrapper li:nth-of-type(3) .content1 .item:nth-of-type(1) {
+                width: 25.21%;
+            }
+            #prometheus .silde-wrapper li:nth-of-type(3) .content1 .item:nth-of-type(2) {
+                width: 16.09%;
+            }
+            #prometheus .silde-wrapper li:nth-of-type(3) .content1 .item:nth-of-type(3) {
+                width: 25.83%;
+            }
+            #prometheus .silde-wrapper li:nth-of-type(3) .content1 .item:nth-of-type(4) {
+                width: 28.8%;
+                top: -20px !important;
+            }
+            #prometheus .silde-wrapper li:nth-of-type(4) {
+                background: url(http://qncdn.sz-sti.com/prometheus/prometheus_car.png) center 82% no-repeat,
+                            url(http://qncdn.sz-sti.com/prometheus/slide4_en.png) center 20% no-repeat;
+                background-size: 85%, 35%;
+            }
+        <%}%>
+    </style> 
+</head>
+<body>
+    <!-- <div id="navtop">
+        <div id="header">                        
+            <div id="nav">                            
+                <h2 class="logo fl"><a href="/web/main/cn"><img src="http://qncdn.sz-sti.com/images/icon/logo.png" alt="速腾聚创logo"></a></h2>
+                <p class="menu">                                
+                    <a href="/web/rslidar/<%=lang%>"><%=lang=='cn'?'HAD激光雷达感知方案':'HAD LiDAR Perception Solution'%></a>                                
+                    <a href="/web/three-dimensional/<%=lang%>"><%=lang=='cn'?'静态激光雷达':'SEEKER'%></a>                                
+                    <a href="/web/company/<%=lang%>"><%=lang=='cn'?'企业介绍':'About'%></a>                                
+                    <a href="/web/contact/<%=lang%>"><%=lang=='cn'?'联系我们':'Contact'%></a>                                
+                    <a href="/web/news/<%=lang%>"><%=lang=='cn'?'新闻中心':'Media'%></a>                                
+                    <a href="/web/resource/<%=lang%>"><%=lang=='cn'?'资源中心':'Downloads'%></a>                                
+                    <a href="/web/recruitment/<%=lang%>"><%=lang=='cn'?'人才招聘':'Careers'%></a>                                
+                    <a target="_blank" href="http://robopano.com/"><%=lang=='cn'?'旗下子公司':'Subsidiary'%></a>                            
+                </p>                            
+                <div class="fr changeLang">
+                    <a href="javascript:;">
+                        <img src="<%={'cn':'/index/images/icon/chinese.png','en':'/index/images/icon/english.png'}[lang]%>" />
+                    </a>
+                    <div id="langlist">
+                        <a class="lang" href="/web/prometheus/<%=lang=='cn'?'en':'cn'%>"><img src="<%={'cn':'/index/images/icon/chinese.png','en':'/index/images/icon/english.png'}[lang=='cn'?'en':'cn']%>" /></a>
+                    </div>                            
+                </div>                        
+            </div>                                                                    
+        </div>
+    </div> -->
+    <%include nav%>
+    <%include footer%>
+    <div id="navtop">
+        <navtop>
+          <div class="three-menu" slot="navbottom">
+            <div class="link">
+                <a href="/web/rslidar/<%=lang%>" class="button">
+                    <span v-text="threeMenu.rslidar"></span>
+                </a>
+            </div>
+            <div class="link">
+                <a href="/web/rslidar/platform/<%=lang%>" class="button">
+                    <span v-text="threeMenu.platform"></span>
+                </a>
+            </div>
+            <div class="link">
+                <a href="/web/rslidar/algorithm/<%=lang%>" class="button">
+                    <span v-text="threeMenu.algorithm"></span>
+                </a>
+            </div>
+            <div class="link">
+                <a href="/web/prometheus/<%=lang%>" class="button active">
+                    <span v-text="threeMenu.prometheus"></span>
+                </a>
+            </div>
+          </div>
+        </navtop>
+    </div>
+    <div id="prometheus">
+        <ul class="silde-wrapper" id="silde-wrapper">
+            <li>
+                <div class="content1" id="content1">
+                    <div class="item"></div>
+                    <div class="item"></div>
+                    <div class="item"></div>
+                </div>
+            </li>
+            <li>
+                <div class="content1" id="content3">
+                    <img class="bg" src="http://qncdn.sz-sti.com/prometheus/content8.png" />
+                    <img class="light light1" src="http://qncdn.sz-sti.com/prometheus/content9.png">
+                    <img class="light light2" src="http://qncdn.sz-sti.com/prometheus/content9.png">
+                    <img class="light light3" src="http://qncdn.sz-sti.com/prometheus/content9.png">
+                    <img class="plat" src="<%=lang=='cn'?'http://qncdn.sz-sti.com/prometheus/content10.png':'http://qncdn.sz-sti.com/prometheus/content10_en.png'%>">
+                    <img class="content11" src="<%=lang=='cn'?'http://qncdn.sz-sti.com/prometheus/content11.png':'http://qncdn.sz-sti.com/prometheus/content11_en.png'%>">
+                    <img class="content12" src="<%=lang=='cn'?'http://qncdn.sz-sti.com/prometheus/content12.png':'http://qncdn.sz-sti.com/prometheus/content12_en.png'%>">
+                </div>
+            </li>
+            <li>
+                <div class="content1" id="content2">
+                    <div class="item">
+                        <img src="<%=lang=='cn'?'http://qncdn.sz-sti.com/prometheus/content4.png':'http://qncdn.sz-sti.com/prometheus/content4_en.png'%>" />
+                    </div>
+                    <div class="item">
+                        <img src="<%=lang=='cn'?'http://qncdn.sz-sti.com/prometheus/content5.png':'http://qncdn.sz-sti.com/prometheus/content5_en.png'%>" />
+                    </div>
+                    <div class="item">
+                        <img src="<%=lang=='cn'?'http://qncdn.sz-sti.com/prometheus/content6.png':'http://qncdn.sz-sti.com/prometheus/content6_en.png'%>" />
+                    </div>
+                    <div class="item">
+                        <img src="<%=lang=='cn'?'http://qncdn.sz-sti.com/prometheus/content7.png':'http://qncdn.sz-sti.com/prometheus/content7_en.png'%>" />
+                    </div>
+                </div>
+            </li>
+            <li></li>
+        </ul>
+        <div class="controller">
+            <a class="prev" id="prev"><img src="http://qncdn.sz-sti.com/prometheus/prev.png" /></a>
+            <a class="next" id="next"><img src="http://qncdn.sz-sti.com/prometheus/next.png" /></a>
+        </div>
+    </div>
+    <script type="text/javascript" src="/index/js/jquery-2.2.4.min.js"></script>
+    <script type="text/javascript">
+        var navtop = new Vue({
+            el: '#navtop',
+            data: {
+                threeMenu: ''
+            }
+        });
+        var prometheus = new Vue({
+            el: '#prometheus',
+            data: {
+                datas: <%-include("lang_"+lang, {lang: lang})%>
+            },
+            methods: {
+                init: function(){
+                    navtop.threeMenu = this.datas.rslidarIntro.threeMenu;
+                    // AOS.init({
+                    //     easing: 'ease-out-back',
+                    //     duration: 1000
+                    // });
+                }
+            }
+        });
+        prometheus.init();
+        window.onload = function(){
+            var len = $('#silde-wrapper li').size();
+            var index = 0;
+
+            showFirstItem();
+            function showFirstItem(){
+                setTimeout(function(){
+                    $('#content1 .item').eq(0).animate({'opacity': '1'}, 'slow', function(){
+                        $('#content1 .item').eq(1).animate({'opacity': '1'}, 'slow', function(){
+                            $('#content1 .item').eq(2).animate({'opacity': '1'}, 'slow');
+                        })
+                    }); 
+                },400)
+            }
+            function hideFirstItem(){
+               $('#content1 .item').eq(0).stop(true,true);       
+               $('#content1 .item').eq(1).stop(true,true);       
+               $('#content1 .item').eq(2).stop(true,true); 
+
+                $('#content1 .item').eq(0).css({'opacity': '0'});
+                $('#content1 .item').eq(1).css({'opacity': '0'});
+                $('#content1 .item').eq(2).css({'opacity': '0'});
+            }
+            function showSecondItem(){
+                setTimeout(function(){
+                    // $('#content3 .light1').animate({'opacity': '1'}, 'slow', function(){
+                    //     $('#content3 .plat').animate({'opacity': '1'}, 'slow');
+                    // })
+                    // $('#content3 .light2').animate({'opacity': '1'}, 'slow', function(){
+                    //     $('#content3 .content12').animate({'opacity': '1'}, 'slow');
+                    // })
+                    // $('#content3 .light3').animate({'opacity': '1'}, 'slow', function(){
+                    //     $('#content3 .content11').animate({'opacity': '1'}, 'slow');
+                    // })
+                    $('#content3 .light1').animate({'opacity': '1'}, 'slow', function(){
+                        $('#content3 .plat').animate({'opacity': '1'}, 'slow', function(){
+                            $('#content3 .light2').animate({'opacity': '1'}, 'slow', function(){
+                                $('#content3 .content12').animate({'opacity': '1'}, 'slow', function(){
+                                    $('#content3 .light3').animate({'opacity': '1'}, 'slow', function(){
+                                        $('#content3 .content11').animate({'opacity': '1'}, 'slow');
+                                    })
+                                });
+                            })
+                        });
+                    })
+                },1000)
+            }
+            function hideSecondItem(){
+                $('#content3 .light1').stop(true, true);
+                $('#content3 .plat').stop(true, true);
+                $('#content3 .light2').stop(true, true);
+                $('#content3 .content12').stop(true, true);
+                $('#content3 .light3').stop(true, true);
+                $('#content3 .content11').stop(true, true);
+                // setTimeout(function(){
+                    $('#content3 .light1').animate({'opacity': '0'}, 'slow', function(){
+                        $('#content3 .plat').animate({'opacity': '0'}, 'slow');
+                    })
+                    $('#content3 .light2').animate({'opacity': '0'}, 'slow', function(){
+                        $('#content3 .content12').animate({'opacity': '0'}, 'slow');
+                    })
+                    $('#content3 .light3').animate({'opacity': '0'}, 'slow', function(){
+                        $('#content3 .content11').animate({'opacity': '0'}, 'slow');
+                    })
+                // },1000)
+            }
+
+            function showItem(){
+                <%if(lang=='en'){%>
+                    $('#content2 .item').eq(0).animate({
+                        'opacity': '1',
+                        'left': '5.21%'
+                    }, 'slow', function(){
+                        $('#content2 .item').eq(1).animate({
+                            'opacity': '1',
+                            'left': '28.33%'
+                        }, 'slow',function(){
+                            $('#content2 .item').eq(2).animate({
+                                'opacity': '1',
+                                'left': '46.88%'
+                            }, 'slow',function(){
+                                $('#content2 .item').eq(3).animate({
+                                    'opacity': '1',
+                                    'left': '65.83%'
+                                }, 'slow');
+                            });
+                        });
+                    });
+                <%}else{%>
+                $('#content2 .item').eq(0).animate({
+                    'opacity': '1',
+                    'left': '10.62%'
+                }, 'slow', function(){
+                    $('#content2 .item').eq(1).animate({
+                        'opacity': '1',
+                        'left': '20.083%'
+                    }, 'slow',function(){
+                        $('#content2 .item').eq(2).animate({
+                            'opacity': '1',
+                            'left': '51.31%'
+                        }, 'slow',function(){
+                            $('#content2 .item').eq(3).animate({
+                                'opacity': '1',
+                                'left': '79.48%'
+                            }, 'slow');
+                        });
+                    });
+                });
+                <%}%>
+            }
+            function hideItem(){
+                $('#content2 .item').eq(0).stop(true, true);
+                $('#content2 .item').eq(1).stop(true, true);
+                $('#content2 .item').eq(2).stop(true, true);
+
+                $('#content2 .item').eq(0).animate({
+                    'opacity': '0',
+                    'left': '100%'
+                }, 'slow', function(){
+                    $('#content2 .item').eq(1).css({
+                        'opacity': '0',
+                        'left': '100%'
+                    });
+
+                    $('#content2 .item').eq(2).css({
+                        'opacity': '0',
+                        'left': '100%'
+                    });
+                    $('#content2 .item').eq(3).css({
+                        'opacity': '0',
+                        'left': '100%'
+                    });
+                });
+            }
+
+            $('#prev').on('click', function(){
+                index --;
+                if(index<0){
+                    index = 3;
+                }
+                for(var i=0; i<len; i++){
+                    $('#silde-wrapper li').eq(i).css('opacity', 0);
+                }
+                $('#silde-wrapper li').eq(index%4).css('opacity', 1);
+                if(index == 0){
+                    showFirstItem();
+                }else{
+                    hideFirstItem();
+                }
+                if(index == 1){
+                    showSecondItem();
+                }else{
+                    hideSecondItem();
+                }
+                if(index == 2){
+                    $('#content2').animate({'width': '100%'}, 'slow', showItem);
+                }else{
+                    $('#content2').animate({'width': '0'}, 'slow', hideItem);
+                }
+            })
+            $('#next').on('click', function(){
+                index ++;
+                if(index>3){
+                    index = 0;
+                }
+                for(var i=0; i<len; i++){
+                    $('#silde-wrapper li').eq(i).css('opacity', 0);
+                }
+                $('#silde-wrapper li').eq(index%4).css('opacity', 1);
+                if(index == 0){
+                    showFirstItem();
+                }else{
+                    hideFirstItem();
+                }
+                if(index == 1){
+                    showSecondItem();
+                }else{
+                    hideSecondItem();
+                }
+                if(index == 2){
+                    $('#content2').animate({'width': '100%'}, 'slow', showItem);
+                }else{
+                    $('#content2').animate({'width': '0'}, 'slow', hideItem);
+                }
+            })
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,172 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<script src="http://suteng.oss-cn-shenzhen.aliyuncs.com/js/zepto.min.js?v=2015-4-19"></script>
+</head>
+<body style="width:100%">
+   <div style="margin:auto;width:700;height:auto">
+ 请输入数据:<br>
+	<textarea id="datas"   placeholder="请输入要下载的数据，用逗号分开"  style="width:500px;height:500px;">
+	<%=data%>
+	</textarea>
+	<a id="download" href="#" download>下载</a>
+	<a id="createDirectirt" href="#" onClick="saveIMG()">生成目录</a>
+</body>
+
+<script>
+
+	window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
+
+	var download_flag = (function(){
+	     var flag = false;
+		 return {
+		    set:function(f){
+			   flag = f;
+			},
+			get:function(){
+			   return flag;
+			}
+		 }
+	})();
+
+	document.getElementById("download").onclick = function(){
+	   //  var data = ['你好,你好,你好/nd,e,f'];   
+		 var data = document.getElementById("datas").value;
+		
+	     if(download_flag.get()==true){
+		     download_flag.set(false);
+			 return true;
+		 }else{
+		     saveHTML(data);     //下载
+			 return false;
+		 }
+	}
+
+	//保存html和xml文件
+	function saveHTML(_data){
+
+		window.webkitStorageInfo.requestQuota(window.PERSISTENT, 1024*1024, function(grantedBytes) {
+			console.log(grantedBytes);
+
+			window.requestFileSystem(window.PERSISTENT, 1024*1024, function(){
+				fs.root.getFile('/scene/index.html', {create: true}, function(fileEntry) {
+
+				console.log(fileEntry);
+
+				fileEntry.createWriter(function(fileWriter) {
+					console.log(fileWriter);
+					fileWriter.onwriteend = function(e) {
+						var url = fileEntry.toURL();
+					    document.getElementById("download").href = url;		//此处把下载代码写入下载的链接中
+						download_flag.set(true);
+						document.getElementById("download").click();
+					};
+					fileWriter.onerror = function(e) {
+						//文件创建失败
+					};
+					/**************************************************************/
+					var _data = document.getElementById("datas").value;
+					var bolb = new Blob([_data],{type:'text/plain'});
+					fileWriter.write(bolb);
+				
+				}, errorHandler);
+
+			}, errorHandler);
+			}, function(e){
+				console.log(e.name);
+			});  
+
+		}, function(e) {
+			errorHandler(e);
+		});
+	}
+
+	//创建文件夹
+	function onInitFs(fs) {  
+
+		fs.root.getDirectory('scene', {create: true}, function(dirEntry) {
+
+			console.log(dirEntry);
+
+			dirEntry.getFile('/scene/index.html', {create: true}, function(fileEntry) {
+
+				console.log(fileEntry);
+
+				fileEntry.createWriter(function(fileWriter) {
+					console.log(fileWriter);
+					fileWriter.onwriteend = function(e) {
+						var url = fileEntry.toURL();
+					    document.getElementById("download").href = url;		//此处把下载代码写入下载的链接中
+						download_flag.set(true);
+						document.getElementById("download").click();
+					};
+					fileWriter.onerror = function(e) {
+						//文件创建失败
+					};
+					/**************************************************************/
+					var _data = document.getElementById("datas").value;
+					var bolb = new Blob([_data],{type:'text/plain'});
+					fileWriter.write(bolb);
+				
+				}, errorHandler);
+
+			}, errorHandler);
+
+			dirEntry.getFile('/scene/index.xml', {create: true}, function(fileEntry) {
+
+				console.log(fileEntry);
+
+				fileEntry.createWriter(function(fileWriter) {
+					console.log(fileWriter);
+					fileWriter.onwriteend = function(e) {
+						var url = fileEntry.toURL();
+					    document.getElementById("download").href = url;		//此处把下载代码写入下载的链接中
+						download_flag.set(true);
+						document.getElementById("download").click();
+					};
+					fileWriter.onerror = function(e) {
+						//文件创建失败
+					};
+					/**************************************************************/
+					var _data = document.getElementById("datas").value;
+					var bolb = new Blob([_data],{type:'text/plain'});
+					fileWriter.write(bolb);
+				
+				}, errorHandler);
+
+			}, errorHandler);
+
+
+		});
+	}  
+
+	
+
+	function errorHandler(e) {  
+		var msg = '';  
+
+		switch (e.code) {  
+		case FileError.QUOTA_EXCEEDED_ERR:  
+			msg = 'QUOTA_EXCEEDED_ERR';  
+			break;  
+		case FileError.NOT_FOUND_ERR:  
+			msg = 'NOT_FOUND_ERR';  
+			break;  
+		case FileError.SECURITY_ERR:  
+			msg = 'SECURITY_ERR';  
+			break;  
+		case FileError.INVALID_MODIFICATION_ERR:  
+			msg = 'INVALID_MODIFICATION_ERR';  
+			break;  
+		case FileError.INVALID_STATE_ERR:  
+			msg = 'INVALID_STATE_ERR';  
+			break;  
+		default:  
+			msg = 'Unknown Error';  
+			break;  
+		};  
+		console.log('Error: ' + msg);  
+	}  
+</script>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>STi 速腾聚创 资源中心</title>
+		<meta charset="utf-8">
+        <meta name="format-detection" content="telephone=no">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <link rel="stylesheet" type="text/css" href="/css/common.css">
+		<style>
+            input{
+                border: none;
+                -webkit-box-flex: 1;
+                font-size: 13px;
+                color: #545454;
+                height: 35px;
+                border-bottom: 1px solid #e3e3e3;
+                width: 100%;
+            }
+            .mask{display:none;}
+            .mask:before{
+                content:'';
+                position:absolute;
+                top:0;left:0;width:100%;height:100%;background-color:rgba(0,0,0,0.5);z-index:1;
+            }
+            .mask:after{content:'抱歉，微信浏览器无法直接下载apk 请点击右上角“在浏览器打开”进行下载 ';position:absolute;display:block;width:250px;margin-left:50%;left:-125px;background-color:#fff;z-index:30;border-bottom-left-radius:5px;border-bottom-right-radius:5px;text-align:center;padding:10px;color:#494949;box-sizing:border-box;}
+        </style>
+	</head>
+	<body>
+    <script src="/js/new/jquery-2.2.4.min.js"></script>
+    <%include ../alert%>
+    <div class="mask">
+    </div>
+    <div class="content">
+        <div class="margin10">App下载</div>
+        <div class="buttons">
+            <button class="btn bloodred hcenter vcenter flex1" onClick="location.href='<%=body['android-app-address-2']%>'">Android App （当前版本 <%=body['android-version-name-2']%>）</button>
+        </div>
+        <div class="buttons">
+            <button class="btn gray hcenter vcenter flex1" onClick="location.href='/new'">返回首页</button>
+        </div>
+    </div>
+    <script>
+        $(function(){
+            if(navigator.userAgent.indexOf("Android")!=-1){
+                navigator.userAgent.indexOf("MicroMessenger")!=-1?
+                    $('.mask').show():
+                    location.href="<%=body['android-app-address-2']%>";
+            }
+        });
+    </script>
+    </body>
+</html>

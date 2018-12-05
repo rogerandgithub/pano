@@ -1,0 +1,537 @@
+<!-- <script src="http://qtestbucket.qiniudn.com/demo/qiniu.uploader.js?id=2"></script> -->
+<script src="/js/qnuploader.js"></script>
+<script src="/js/Popt.js"></script>
+<script src="/js/cityJson.js"></script>
+<!-- sidebar -->
+<div class="box">
+    <div id="sidebar-nav">
+
+        <div class="logo">
+            <div class="icon nav-logo" onClick="location.href='/'"></div>
+        </div>
+        <ul id="dashboard-menu">
+            <%if(is_father){%>
+            <li>                
+                <a id="link_romaing" href="#">
+                    <i class="icon icon-list"></i>
+                    <span>查看作品</span>
+                </a>
+                    <ul class="submenu<%if(children_name.length>3){%> issue<%}%>">
+                        <li><a href="/romaing">全部作品</a></li>
+                        <%for(i in children_name){%>
+                        <li><a href="/romaing?user=<%=children_name[i]%>"><%=children_name[i]%></a></li>
+                        <%}%>
+                    </ul>
+            </li>  
+            <%}else{%>
+            <li>                
+                <a id="link_romaing" href="/romaing">
+                    <i class="icon icon-list"></i>
+                    <span>查看作品</span>
+                </a>
+            </li> 
+            <%}%>         
+            <li>
+                <a id="link_rearch" class="rearch">                    
+                    <i class="icon icon-rearch"></i>
+                    <span>作品查找</span>
+                </a>
+            </li>
+            <li>
+                <a id="link_settings" href="/settings">
+                    <i class="icon icon-setall"></i>
+                    <span>全局设置</span>
+                </a>
+            </li>
+            <li>
+                <a id="link_account" class="account" href="/settings/account">
+                    <i class="icon icon-setaccount"></i>
+                    <span>账号设置</span>
+                    <i class="icon icon-chevron-down"></i>
+                </a>
+                <!-- <ul class="submenu">
+                    <li><a href="form-showcase.html">Form showcase</a></li>
+                    <li><a href="form-wizard.html">Form wizard</a></li>
+                </ul> -->
+            </li>
+            <%if(is_father){%>
+            <li class="active">
+                <a id="link_management" href="/management">
+                    <i class="icon icon-management"></i>
+                    <span>子账号管理</span>
+                </a>
+            </li>
+            <%}%>
+            <li>                
+                <a id="link_romaing" href="#">
+                    <i class="icon icon-upload"></i>
+                    <span>上传全景</span>
+                </a>
+                <ul class="submenu">
+                    <li><a href="/upload12">上传1:2</a></li>
+                    <li><a href="/upload12/upload16">上传1:6</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <!-- end sidebar -->
+
+    <script id="hidden-html" type="text/html">
+        <div class="alert">
+            <div class="alertbox">
+                <div class="title"></div>
+                <div class="contentbox"></div>
+                <div class="buttons clearfix"></div>
+            </div>
+        </div>
+    </script>
+
+    <script id="filter-html" type="text/html">
+        <div class="form-group">
+            <div style="text-align:start;margin-bottom:3px;">创建时间:</div>
+            <div class="input-group date form_date_start" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                <input class="form-control" size="16" type="text" value="<#=start_created_time#>" readonly>
+                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+            </div>
+            <input type="hidden" id="dtp_input2" value="" />
+        </div>
+        <div class="form-group">
+            <div class="input-group date form_date_end" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input3" data-link-format="yyyy-mm-dd">
+                <input class="form-control" size="16" type="text" value="<#=end_created_time#>" readonly>
+                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+            </div>
+            <input type="hidden" id="dtp_input3" value="" />
+        </div>
+        <div class="horizontal vcenter">
+            <div>城&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;区：</div>
+            <div class="input-warp" style="padding:3px;">
+                <input class="filter-city" onClick="SelCity(this,event);" placeholder="不限" value="<#=city#>">
+            </div>
+        </div>
+        <div class="horizontal vcenter hide">
+            <div>区&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;域：</div>
+            <div class="input-warp" style="padding:3px;">
+                <input class="filter-region" placeholder="不限" value="<#=region#>">
+            </div>
+        </div>
+        <div class="horizontal vcenter">
+            <div>商&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;圈：</div>
+            <div class="input-warp" style="padding:3px;">
+                <input class="filter-business_circle" placeholder="不限" value="<#=business_circle#>">
+            </div>
+        </div>
+        <div class="horizontal vcenter">
+            <div>小&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;区：</div>
+            <div class="input-warp" style="padding:3px;">
+                <input class="filter-community" placeholder="不限" value="<#=community#>">
+            </div>
+        </div>
+        <div class="horizontal vcenter">
+            <div>朝&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;向：</div>
+            <div class="input-warp" style="padding:3px;">
+                <input class="filter-face" placeholder="不限" value="<#=face#>">
+            </div>
+        </div>
+        <div class="horizontal vcenter">
+            <div>面&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;积：</div>
+            <div class="flex1" style="padding:3px;">
+                <input class="filter-min-area" type="tel" placeholder="不限" value="<#=min_area#>">
+            </div>
+            <div>~</div>
+            <div class="flex1" style="padding:3px;">
+                <input class="filter-max-area" type="tel" placeholder="不限" value="<#=max_area#>">
+            </div>
+            <div>㎡</div>
+        </div>
+        <div class="horizontal vcenter">
+            <div>房&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;型：</div>
+            <div class="flex1" style="padding:3px;">
+                <input class="filter-halls" placeholder="不限" value="<#=apartment_halls#>">
+            </div>
+            <div>房</div>
+            <div class="flex1" style="padding:3px;">
+                <input class="filter-rooms" placeholder="不限" value="<#=apartment_rooms#>">
+            </div>
+            <div>室</div>
+            <div class="flex1" style="padding:3px;">
+                <input class="filter-bathrooms" placeholder="不限" value="<#=apartment_bathrooms#>">
+            </div>
+            <div>卫</div>
+        </div>
+    </script>
+
+
+    <script id="template-setaccount" type="text/html">
+        <div class="alertbox" style="margin-bottom:20px;">
+            <div class="title">修改昵称</div>
+            <div class="contentbox">
+                <div class="horizontal" style="margin:20px auto;width:80%;">
+                    <div class="hcenter vcenter f14 ">新昵称:</div>
+                    <div class="input-wrap flex1"><input class="input-nickname" value="<%=user.nickname%>"></div>
+                </div>
+            </div>
+            <div class="buttons clearfix">
+                <button class="btn gray flex1 btn-11325" onClick="cancel()">取消</button>
+                <button onClick="changeNickname()" class="btn red flex1 btn-96428">确定</button>
+            </div>
+        </div>
+
+        <div class="alertbox">
+            <div class="title">修改密码</div>
+            <div class="contentbox">
+                <div class="horizontal marginb10">
+                    <div class="hcenter vcenter f14 ">旧密码:</div>
+                    <div class="input-wrap flex1"><input type="password" class="input-oldpassword"></div>
+                </div>
+                <div class="horizontal marginb10">
+                    <div class="hcenter vcenter f14 ">新密码:</div>
+                    <div class="input-wrap flex1"><input type="password" class="input-newpassword"></div>
+                </div>
+                <div class="horizontal">
+                    <div class="hcenter vcenter f14 ">重复新密码:</div>
+                    <div class="input-wrap flex1"><input type="password" class="input-newpassword-repeat"></div>
+                </div>
+            </div>
+            <div class="buttons clearfix">
+                <button class="btn gray flex1 btn-11325" onClick="cancel()">取消</button>
+                <button onClick="changePassword()" class="btn red flex1 btn-96428">确定</button>
+            </div>
+        </div>
+    </script>
+
+    <script type="text/javascript">
+
+        var hasup=0;
+
+        function uptrade(groupkey,type){
+            if(document.getElementById('input-file').files.length==0){
+                return;
+            }
+            if(hasup){
+                return;
+            }
+            hasup=1;
+
+            var data;
+            if (type=='global') {
+                data = {type:'global'}
+            }else{                
+                data = {
+                    type:'',
+                    groupkey:groupkey
+                }
+            };
+
+            $.post('/upload/trademark/token',data,function(res){
+                var token = res.token;
+                var key = res.imgurl;
+                Q.addEvent("progress", function(p, s) {
+                    update((p==100?99:p)+'%', s);
+                });
+                //上传完成回调
+                //fsize:文件大小(MB)
+                //res:上传返回结果，默认为{hash:<hash>,key:<key>}
+                Q.addEvent("putFinished", function(fsize, res, taking) {
+                    uploadSpeed = 1024 * fsize / (taking * 1000);
+                    if (uploadSpeed > 1024) {
+                        formatSpeed = (uploadSpeed / 1024).toFixed(2) + "Mb\/s";
+                    } else {
+                        formatSpeed = uploadSpeed.toFixed(2) + "Kb\/s";
+                    };
+                    var res = {
+                        key: res.key,
+                        hash: res.hash,
+                        speed: formatSpeed
+                    };
+                    update('上传成功');
+                    hasup=0;
+                    location.reload();
+                });
+                Q.SetToken(token);
+                Q.Upload(document.getElementById('input-file').files[0], key);
+            });
+        };
+
+        function upload(){
+            $('#input-file').click();
+        };
+
+        function update(a,b){
+            $('.middle').text(a+' '+(b?b:''));
+        }
+
+
+
+        function rearch(){
+            $('.alert-wrap').css('visibility','visible');
+            var params={};
+            var tstr=location.href.split('?');
+            tstr=tstr.length>1?tstr[1].split('&'):[];
+            for(var i in tstr){
+                var x=tstr[i].split('=');
+                if(x.length==2){
+                    params[x[0]]=urldecode(x[1]);
+                }
+            }
+            var city=params.province?params.province:'';
+            city+=params.city?'-'+params.city+'市':'';
+            city+=params.region?'-'+params.region+'区':'';
+            params.city=city;
+            initAlert('filter',{
+                title:'筛选',
+                content:'<div class="filterbox">'+template('filter-html',params)+'</div>',
+                buttons:[
+                    {
+                        text:'取消'
+                    },
+                    {
+                        color:'bloodred',
+                        text:'确定',
+                        callBack:function(){
+                            var city=$('.filter-city').val().split('-');
+                            // return;
+                            var d={
+                                province:(city[0]||'').replace('省',''),
+                                city:(city[1]||'').replace('市',''),
+                                region:(city[2]||'').replace('区',''),
+                                face:$('.filter-face').val(),
+                                community:$('.filter-community').val(),
+                                min_area:$('.filter-min-area').val(),
+                                max_area:$('.filter-max-area').val(),
+                                apartment_rooms:$('.filter-rooms').val(),
+                                apartment_bathrooms:$('.filter-bathrooms').val(),
+                                apartment_halls:$('.filter-halls').val(),
+                                business_circle:$('.filter-business_circle').val(),
+                                start_created_time:$('.form_date_start').find('input').val(),
+                                end_created_time:$('.form_date_end').find('input').val()
+                            };
+                            var data={},datastr='';
+                            for(var i in d){
+                                if(d[i]){
+                                    data[i]=d[i];
+                                }
+                            }
+                            for(var i in data){
+                                datastr+=i+'='+data[i]+'&';
+                            }
+                            location.href=location.href.split('?')[0]+'?'+datastr;
+                        }
+                    }
+                ]
+            });
+            if(!$('.form_date_start').find('.form-control').val()||!$('.form_date_end').find('.form-control').val()){
+                $('.form_date_start').find('.form-control').val(dateformat(new Date(new Date().valueOf()-60*1000*60*24*7),'yyyy-MM-dd'));
+                $('.form_date_end').find('.form-control').val(dateformat(new Date(),'yyyy-MM-dd'));
+            }
+
+            $('.form_date_end').datetimepicker({
+                    endDate:new Date(),
+                    autoclose: 1,
+                    todayHighlight: 1,
+                    startView: 2,
+                    minView: 2,
+                    forceParse: 0
+            });
+            $('.form_date_start').datetimepicker({
+                    endDate:new Date(),
+                    autoclose: 1,
+                    todayHighlight: 1,
+                    startView: 2,
+                    minView: 2,
+                    forceParse: 0
+            });
+        };
+
+        function changePassword(){
+            var old=$('.input-oldpassword').val();
+            var n1=$('.input-newpassword').val();
+            var n2=$('.input-newpassword-repeat').val();
+            if(n1!=n2){
+                alert('密码不符合要求');
+                return;
+            }else if(n1.length<3){
+                alert('密码不符合要求');
+                return;
+            }
+            $.post('/settings/change_password',{old_password:hex_sha1(old+'letian'),new_password:hex_sha1(n1+'letian')},function(r){
+                if(r.code!=0){
+                    alert(r.msg);
+                    return;
+                }
+                $('.alert-wrap').css('visibility','hidden');
+                $('.alert-td').html(template('hidden-html'));
+            });
+        };
+
+        function cancel(){
+            $('.alert-wrap').css('visibility','hidden');
+            $('.alert-td').html(template('hidden-html'));
+        }
+
+        function setaccount() {
+            $('.alert-wrap').css('visibility','visible');
+            $('.alert').addClass('alert_acount');
+            $('.alert').html(template('template-setaccount'));
+        }
+
+        function SelCity(obj,e) {
+            var ths = obj;
+            var dal = '<div class="_citys"><span title="关闭" id="cColse" >×</span><ul id="_citysheng" class="_citys0"><li class="citySel">省份</li><li>城市</li><li>区县</li></ul><div id="_citys0" class="_citys1"></div><div style="display:none" id="_citys1" class="_citys1"></div><div style="display:none" id="_citys2" class="_citys1"></div></div>';
+            Iput.show({ id: ths, event: e, content: dal,width:"470"});
+            $("#cColse").click(function () {
+                Iput.colse();
+            });
+            var tb_province = [];
+            var b = province;
+            for (var i = 0, len = b.length; i < len; i++) {
+                tb_province.push('<a data-level="0" data-id="' + b[i]['id'] + '" data-name="' + b[i]['name'] + '">' + b[i]['name'] + '</a>');
+            }
+            $("#_citys0").append(tb_province.join(""));
+            $("#_citys0 a").click(function () {
+                var g = getCity($(this));
+                $("#_citys1 a").remove();
+                $("#_citys1").append(g);
+                $("._citys1").hide();
+                $("._citys1:eq(1)").show();
+                $("#_citys0 a,#_citys1 a,#_citys2 a").removeClass("AreaS");
+                $(this).addClass("AreaS");
+                var lev = $(this).data("name");
+                ths.value = $(this).data("name");
+                if (document.getElementById("hcity") == null) {
+                    var hcitys = $('<input>', {
+                        type: 'hidden',
+                        name: "hcity",
+                        "data-id": $(this).data("id"),
+                        id: "hcity",
+                        val: lev
+                    });
+                    $(ths).after(hcitys);
+                }
+                else {
+                    $("#hcity").val(lev);
+                    $("#hcity").attr("data-id", $(this).data("id"));
+                }
+                $("#_citys1 a").click(function () {
+                    $("#_citys1 a,#_citys2 a").removeClass("AreaS");
+                    $(this).addClass("AreaS");
+                    var lev =  $(this).data("name");
+                    if (document.getElementById("hproper") == null) {
+                        var hcitys = $('<input>', {
+                            type: 'hidden',
+                            name: "hproper",
+                            "data-id": $(this).data("id"),
+                            id: "hproper",
+                            val: lev
+                        });
+                        $(ths).after(hcitys);
+                    }
+                    else {
+                        $("#hproper").attr("data-id", $(this).data("id"));
+                        $("#hproper").val(lev);
+                    }
+                    var bc = $("#hcity").val();
+                    ths.value = bc+ "-" + $(this).data("name");
+
+                    var ar = getArea($(this));
+
+                    $("#_citys2 a").remove();
+                    $("#_citys2").append(ar);
+                    $("._citys1").hide();
+                    $("._citys1:eq(2)").show();
+
+                    $("#_citys2 a").click(function () {
+                        $("#_citys2 a").removeClass("AreaS");
+                        $(this).addClass("AreaS");
+                        var lev = $(this).data("name");
+                        if (document.getElementById("harea") == null) {
+                            var hcitys = $('<input>', {
+                                type: 'hidden',
+                                name: "harea",
+                                "data-id": $(this).data("id"),
+                                id: "harea",
+                                val: lev
+                            });
+                            $(ths).after(hcitys);
+                        }
+                        else {
+                            $("#harea").val(lev);
+                            $("#harea").attr("data-id", $(this).data("id"));
+                        }
+                        var bc = $("#hcity").val();
+                        var bp = $("#hproper").val();
+                        ths.value = bc + "-" + bp + "-" + $(this).data("name");
+                        Iput.colse();
+                    });
+
+                });
+            });
+            $("#_citysheng li").click(function () {
+                $("#_citysheng li").removeClass("citySel");
+                $(this).addClass("citySel");
+                var s = $("#_citysheng li").index(this);
+                $("._citys1").hide();
+                $("._citys1:eq(" + s + ")").show();
+            });
+        }
+
+        function getCity(obj) {
+            var c = obj.data('id');
+            var e = province;
+            var f;
+            var g = '';
+            for (var i = 0, plen = e.length; i < plen; i++) {
+                if (e[i]['id'] == parseInt(c)) {
+                    f = e[i]['city'];
+                    break
+                }
+            }
+            for (var j = 0, clen = f.length; j < clen; j++) {
+                g += '<a data-level="1" data-id="' + f[j]['id'] + '" data-name="' + f[j]['name'] + '" title="' + f[j]['name'] + '">' + f[j]['name'] + '</a>'
+            }
+            $("#_citysheng li").removeClass("citySel");
+            $("#_citysheng li:eq(1)").addClass("citySel");
+            return g;
+        }
+
+        function getArea(obj) {
+            var c = obj.data('id');
+            var e = area;
+            var f = [];
+            var g = '';
+            for (var i = 0, plen = e.length; i < plen; i++) {
+                if (e[i]['pid'] == parseInt(c)) {
+                    f.push(e[i]);
+                }
+            }
+            for (var j = 0, clen = f.length; j < clen; j++) {
+                g += '<a data-level="1" data-id="' + f[j]['id'] + '" data-name="' + f[j]['name'] + '" title="' + f[j]['name'] + '">' + f[j]['name'] + '</a>'
+            }
+
+            $("#_citysheng li").removeClass("citySel");
+            $("#_citysheng li:eq(2)").addClass("citySel");
+            return g;
+        }
+
+        $('#dashboard-menu li a[href="#"]').on('click', function(e){
+            e.preventDefault();
+            if($(this).next('.submenu').attr('isshow')!="false"){
+                $(this).next('.submenu').slideDown(200).attr('isshow', 'false');
+            }else{
+                $(this).next('.submenu').slideUp(200).attr('isshow', 'true');
+            }
+        });
+
+        function init(){
+            template.config('openTag','<#');
+            template.config('closeTag','#>');
+
+            $('#link_'+$('body').attr('name')).addClass('active');
+            $('#dashboard-menu a').on('click',function(){
+                $('#dashboard-menu a').removeClass('active');
+                $(this).addClass('active');
+            });
+            $('.setaccount').on('click',setaccount);
+            $('.rearch').on('click',rearch);
+        }
+        init();
+    </script>

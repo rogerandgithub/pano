@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>深圳速腾聚创科技有限公司</title>
+    <link rel="stylesheet" href="/index/css/m_common.css" type="text/css"> 
+    <link rel="stylesheet" href="/index/css/m_rslidar.css" type="text/css"> 
+    <link rel="stylesheet" href="/index/css/swiper-3.4.1.min.css" type="text/css">
+    <script src="/index/js/swiper-3.4.1.min.js"></script>
+    <%if(lang=='en'){%>
+        <style type="text/css">
+            #wrapper .section_2 .desc{
+                text-align: left;
+            }
+            #wrapper .section_3 .desclists .desc{
+                text-align: left;
+            }
+            #wrapper .section_4 .swiper-button-prev{
+                left: 0.05rem !important;
+            }
+            #wrapper .section_4 .swiper-button-next{
+                right: 0.05rem !important;
+            }
+        </style>
+    <%}%>
+    <style type="text/css">
+        #bottommenu a{
+            width: 25%;
+        }
+    </style>
+</head>
+<body>
+    <%include m_nav%>
+    <%include loading%>
+    <div id="wrapper">
+        <div class="section_1"></div>
+        <div class="section_2">
+            <h2 class="title">
+                <img src="http://qncdn.sz-sti.com/mobile/rslidar/section_2.png?v=1" />
+            </h2>
+            <p class="desc">
+                <span v-text="datas.rslidarIntro.section_2.p1"></span><br/>
+                <span v-text="datas.rslidarIntro.section_2.p2"></span><br/>
+                <span v-text="datas.rslidarIntro.section_2.p3"></span>
+            </p>
+            <a class="knowarg" href="javascript:;" @click.stop="smoothScroll" v-text="datas.rslidarIntro.section_2.a"></a>
+        </div>
+        <div class="section_3">
+            <h2 class="gifpic">
+                <img src="http://qncdn.sz-sti.com/%E6%95%B0%E6%8D%AE-%E6%8B%BC%E6%8E%A51.gif" />
+            </h2>
+            <div class="desclists">
+                <div class="list clearfix">
+                    <span class="fl icon"></span>
+                    <p class="fl textinfo">
+                        <span class="title" v-text="datas.rslidarIntro.section_3.span1"></span>
+                        <span class="desc" v-text="datas.rslidarIntro.section_3.p1"></span>
+                    </p>
+                </div>
+                <div class="list clearfix">
+                    <span class="fl icon"></span>
+                    <p class="fl textinfo">
+                        <span class="title" v-text="datas.rslidarIntro.section_3.span2"></span>
+                        <span class="desc" v-text="datas.rslidarIntro.section_3.p2"></span>
+                    </p>
+                </div>
+                <div class="list clearfix">
+                    <span class="fl icon"></span>
+                    <p class="fl textinfo">
+                        <span class="title" v-text="datas.rslidarIntro.section_3.span3"></span>
+                        <span class="desc" v-text="datas.rslidarIntro.section_3.p3"></span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="section_4">
+            <div class="swiper-container">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide slide1">
+                        <h4 class="sildepic"></h4>
+                        <div class="reactbox">
+                            <p class="title" v-text="datas.rslidarIntro.section_4.p1"></p>
+                            <p class="desc" v-text="datas.rslidarIntro.section_4.span1"></p>
+                        </div>
+                    </div>
+                    <div class="swiper-slide slide2">
+                        <h4 class="sildepic"></h4>
+                        <div class="reactbox">
+                            <p class="title" v-text="datas.rslidarIntro.section_4.p2"></p>
+                            <p class="desc" v-text="datas.rslidarIntro.section_4.span2"></p>
+                        </div>
+                    </div>
+                    <div class="swiper-slide slide3">
+                        <h4 class="sildepic"></h4>
+                        <div class="reactbox">
+                            <p class="title" v-text="datas.rslidarIntro.section_4.p3"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-button-next"></div>
+            </div>
+        </div>
+        <div class="section_5" id="smoothScroll">
+            <ul class="parameterlist">
+                <li v-for="list in datas.rslidarIntro.section_5.tabledata"><span v-text="list[0]"></span><span v-text="list[1]"></span></li>
+            </ul>
+            <p class="robosense"><img src="http://qncdn.sz-sti.com/mobile/rslidar/robosense.png?v=1" /></p>
+            <a class="downloadbtn" href="/mobile/resource/<%=lang%>" v-text="datas.rslidarIntro.downloadbtn"></a>
+        </div>
+        
+        <div id="bottommenu">
+            <a class="fl active" href="/mobile/rslidar/<%=lang%>" v-text="datas.platform.threeMenu.rslidar"></a>
+            <a class="fl" href="/mobile/rslidar/platform/<%=lang%>" v-text="datas.platform.threeMenu.platform"></a>
+            <a class="fl" href="/mobile/rslidar/algorithm/<%=lang%>" v-text="datas.platform.threeMenu.algorithm"></a>
+            <a class="fl" href="/mobile/rslidar/promethus/<%=lang%>" v-text="datas.platform.threeMenu.prometheus"></a>
+        </div>
+        </div>
+    </div>
+    
+    <script src="/index/js/smooth-scroll.min.js"></script>
+    <script type="text/javascript">
+        var wrapper = new Vue({
+            el: '#wrapper',
+            data: {
+                datas: <%-include("mobile_lang_"+lang, {lang: lang})%>
+            },
+            methods: {
+                smoothScroll: function(){
+                    $.smoothScroll({
+                        scrollTarget: '#smoothScroll',
+                        speed: 1200
+                    });
+                }
+            }
+        })
+        var mySwiper = new Swiper('.swiper-container', {
+            autoplay: 5000,  //自动滑动
+            pagination: '.swiper-pagination',  //分页
+            loop: true,  //循环
+            effect: 'flip', //切换效果
+            prevButton:'.swiper-button-prev',
+            nextButton:'.swiper-button-next'
+        })
+    </script>
+</body>
+</html>

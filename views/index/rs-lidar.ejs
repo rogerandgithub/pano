@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title><%=lang=='cn'?'HAD激光雷达感知方案-RS-LiDAR':'RS-LiDAR Products'%></title>
+    <link rel="stylesheet" href="/index/css/common.css" type="text/css"> 
+    <link rel="stylesheet" href="/index/css/rslidar.css" type="text/css"> 
+    <link rel="stylesheet" href="/index/css/aos.css" type="text/css"> 
+    <style type="text/css">
+        <%if(lang=='en'){%>
+            .buy-box a {
+                display: block;
+                width: 110px;
+            }
+        <%}%>
+    </style>
+</head>
+<body>
+    <%include nav%>
+    <%include footer%>
+    <div id="navtop">
+        <navtop>
+          <div class="three-menu" slot="navbottom">
+            <div class="link">
+                <a href="/web/rslidar/<%=lang%>" class="button active">
+                    <span v-text="threeMenu.rslidar"></span>
+                </a>
+            </div>
+            <div class="link">
+                <a href="/web/rslidar/platform/<%=lang%>" class="button">
+                    <span v-text="threeMenu.platform"></span>
+                </a>
+            </div>
+            <div class="link">
+                <a href="/web/rslidar/algorithm/<%=lang%>" class="button">
+                    <span v-text="threeMenu.algorithm"></span>
+                </a>
+            </div>
+            <div class="link">
+                <a href="/web/prometheus/<%=lang%>" class="button">
+                    <span v-text="threeMenu.prometheus"></span>
+                </a>
+            </div>
+          </div>
+        </navtop>
+    </div>
+    <div id="rslidar">
+        <div class="content-warp">
+            <div class="section_1">
+                <img class="car" src="/index/images/rslidar/car.png">
+                <div class="jg_box" id="jg_box"></div>
+            </div>
+            <div class="section_2">
+                <div class="content clearfix">
+                    <div class="pic"><img aos-once="true"  aos="fade-right" aos-easing="ease" src="/index/images/rslidar/rslidar.png"></div>
+                    <div class="text">
+                        <div aos-once="true"  aos="fade-left" aos-easing="ease">
+                            <p v-text="datas.rslidarIntro.section_2.p1"></p>
+                            <p v-text="datas.rslidarIntro.section_2.p2"></p>
+                            <p v-text="datas.rslidarIntro.section_2.p3"></p>
+                            <a class="checkArg" href="javascript:;" @click.stop="smoothScroll" v-text="datas.rslidarIntro.section_2.a"></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="section_3">
+                <div class="content clearfix">
+                    <div class="fl">
+                        <div class="vedioBox">
+                            <img src="http://qncdn.sz-sti.com/gif.gif" />
+                        </div>
+                    </div>
+                    <div class="fr">
+                        <div aos-once="true" aos="flip-up" aos-easing="ease" aos-delay="100" class="listBox">
+                            <span v-text="datas.rslidarIntro.section_3.span1"></span>
+                            <p v-text="datas.rslidarIntro.section_3.p1"></p>
+                        </div>
+                        <div aos-once="true" aos="flip-up" aos-easing="ease" aos-delay="300"  class="listBox">
+                            <span v-text="datas.rslidarIntro.section_3.span2"></span>
+                            <p v-text="datas.rslidarIntro.section_3.p2"></p>
+                        </div>
+                        <div aos-once="true" aos="flip-up" aos-easing="ease"  aos-delay="500" class="listBox">
+                            <span v-text="datas.rslidarIntro.section_3.span3"></span>
+                            <p v-text="datas.rslidarIntro.section_3.p3"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="section_4 clearfix">
+                <div class="application">
+                    <div class="maskbox"></div>
+                    <img src="/index/images/rslidar/driverless.jpg">
+                    <a target="_blank" href="http://www.robosense.cn/pillar/2/scenario/0?lang=<%=lang%>"><p class="border">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </p></a>
+                    <div class="text-info">
+                        <p v-text="datas.rslidarIntro.section_4.p1"></p>
+                        <span><a href="javascript:;"><%=lang=='cn' ? '了解详情' : 'Read more'%></a></span>
+                    </div>
+                </div>
+                <div class="application">
+                    <div class="maskbox"></div>
+                    <img src="/index/images/rslidar/roober.jpg">
+                    <a target="_blank" href="http://www.robosense.cn/pillar/2/scenario/1?lang=<%=lang%>"><p class="border">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </p></a>
+                    <div class="text-info">
+                        <p v-text="datas.rslidarIntro.section_4.p2"></p>
+                        <span><a href="javascript:;"><%=lang=='cn' ? '了解详情' : 'Read more'%></a></span>
+                    </div>
+                </div>
+                <div class="application">
+                    <div class="maskbox"></div>
+                    <img src="/index/images/rslidar/uav.jpg">
+                    <a href="http://www.robosense.cn/pillar/2/scenario/1?lang=<%=lang%>"><p class="border">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </p></a>
+                    <div class="text-info">
+                        <p v-text="datas.rslidarIntro.section_4.p3"></p>
+                        <span><a href="javascript:;"><%=lang=='cn' ? '了解详情' : 'Read more'%></a></span>
+                    </div>
+                </div>
+            </div>
+            <div class="section_5" id="smoothScroll">
+                <div class="rslidar clearfix">
+                    <div class="rslidar_pic fl">
+                        <img aos-once="true" aos="fade-right" aos-easing="ease" src="/index/images/rslidar/rslidar_line.png" />
+                    </div>
+                    <div aos-once="true"  aos="fade-left" aos-easing="ease" class="rslidar_info fr">
+                        <table border="0" cellpadding="5" class="parameter">
+                            <tr v-for="table in datas.rslidarIntro.section_5.tabledata">
+                                <td align="right" v-text="table[0]"></td>
+                                <td>…………</td>
+                                <td v-text="table[1]"></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <a class="download" href="/web/resource/<%=lang%>" v-text="datas.rslidarIntro.downloadbtn"></a>
+        </div>
+        <div id="footnav">
+            <footnav></footnav>
+        </div>
+    </div>
+
+    <div class="buy-box">
+        <a href="/web/buy/<%=lang%>" target="_blank"><img src="<%=lang=='cn'?'/index/images/buy-icon.png':'/index/images/buy-icon-en.png'%>" /></a>
+    </div>
+    
+    <script src="/index/js/jquery-2.2.4.min.js"></script>
+    <script src="/index/js/aos.js"></script>
+    <script src="/index/js/smooth-scroll.min.js"></script>
+    <script type="text/javascript">
+        $(function(){
+            $('#rslidar .section_1').height($(window).height());
+            $('#rslidar .section_1 .jg_box').height($(window).height());
+        })
+        window.onresize = function(){
+            console.log(1);
+            $('#rslidar .section_1').height($(window).height());
+            $('#rslidar .section_1 .jg_box').height($(window).height());
+        }
+        window.onload = function(){
+            var jg_box = document.getElementById('jg_box');
+            var index = 1;
+            var step = 0;
+            var timer = null;
+            var bg_timer = null;
+            var opacity_timer = null;
+            var bodyWidth = document.body.offsetWidth;
+            var animation = ['linear','ease','ease-in','ease-out','ease-in-out'];
+            timer = setInterval(function(){
+                var howAnimate = Math.floor(Math.random()*5)
+                if( (55*index)>(bodyWidth+800) ){
+                    clearInterval(timer);
+                    clearInterval(bg_timer);
+                    var opacity = 1;
+                    opacity_timer = setInterval(function(){
+                        if(opacity<0){
+                            clearInterval(opacity_timer);
+                        }
+                        opacity = opacity - 0.01;
+                        jg_box.setAttribute("style", "opacity:"+opacity); 
+                    },30);
+                    
+                }
+                var span = document.createElement('span');
+                span.setAttribute("class", "line"); 
+                span.setAttribute("style", "margin-left:"+(55*index)+"px;"); 
+                jg_box.appendChild(span);
+                index++;
+                var spans = jg_box.getElementsByTagName('span');
+                setTimeout(function(){
+                    jg_box.removeChild(spans[0]);
+                },2000);
+            },250);
+
+            bg_timer = setInterval(function(){
+                step+=5.5;
+                var docWidth = document.body.clientWidth;
+                jg_box.style['background-position'] = (step-docWidth*2-230)+'px'+' 0';
+            },30);
+        }
+    </script>
+    <script type="text/javascript">
+        var navtop = new Vue({
+            el: '#navtop',
+            data: {
+                threeMenu: ''
+            }
+        });
+        var footnav = new Vue({
+            el: '#footnav'
+        });
+        var rslidar = new Vue({
+            el: '#rslidar',
+            data: {
+                datas: <%-include("lang_"+lang, {lang: lang})%>
+            },
+            methods: {
+                init: function(){
+                    navtop.threeMenu = this.datas.rslidarIntro.threeMenu;
+                    AOS.init({
+                        easing: 'ease-out-back',
+                        duration: 1000
+                    });
+                },
+                smoothScroll: function(){
+                    $.smoothScroll({
+                        scrollTarget: '#smoothScroll',
+                        speed: 1200
+                    });
+                }
+            }
+        });
+        rslidar.init();
+    </script>
+</body>
+</html>

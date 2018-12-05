@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>STi 速腾聚创 资源中心</title>
+		<meta charset="utf-8">
+        <meta name="format-detection" content="telephone=no">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="/css/common.css?v=<%=version%>">
+		<style>
+            input{
+                border: none;
+                -webkit-box-flex: 1;
+                font-size: 13px;
+                color: #545454;
+                height: 35px;
+                border-bottom: 1px solid #e3e3e3;
+                width: 100%;
+            }
+            .mask{display:none;}
+            .mask:before{
+                content:'';
+                position:absolute;
+                top:0;left:0;width:100%;height:100%;background-color:rgba(0,0,0,0.5);z-index:1;
+            }
+            .mask:after{content:'抱歉，微信浏览器无法直接下载apk 请点击右上角“在浏览器打开”进行下载 ';position:absolute;display:block;width:250px;margin-left:50%;left:-125px;background-color:#fff;z-index:30;border-bottom-left-radius:5px;border-bottom-right-radius:5px;text-align:center;padding:10px;color:#494949;box-sizing:border-box;}
+            .header{visibility:hidden;}
+            .content{display:none;}
+        </style>
+	</head>
+	<body>
+    <!--<script src="<%=cdnJsPath%>/zepto.min.js?v=<%=libVersion%>"></script>-->
+    <script src="/js/zepto.min.js"></script>
+    <script src="/js/sti-common.min.js?<%=version%>"></script>
+    <%include alert%>
+    <div class="mask">
+    </div>
+    <%include header%>
+    <div class="content">
+        <div class="margin10">App下载</div>
+        <div class="buttons">
+            <button class="btn bloodred hcenter vcenter flex1" onClick="location.href='http://qncdn.sz-sti.com/ipano2-v1.3.3-16.apk">Android App</button>
+<!--             <button class="btn gray hcenter vcenter flex1" onClick="alert('iPhone App正在准备中...')">iPhone App</button> -->
+        </div>
+        <div class="buttons">
+            <button class="btn gray hcenter vcenter flex1" onClick="location.href='/'">返回首页</button>
+        </div>
+    </div>
+    <script>
+    $(function(){
+            if(checkMobile()==3){
+                $('.mask').show();
+            }else{
+                $('.header').css('visibility','visible');
+                $('.content').show();
+                if(isAndroid()){
+                    location.href="http://qncdn.sz-sti.com/ipano2-v1.3.3-16.apk";
+                }
+            }
+    });
+    </script>
+    </body>
+</html>

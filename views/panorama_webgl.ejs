@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+        <title><%=title%></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="/css/common.css">
+        <link rel="stylesheet" type="text/css" href="/css/sti-pano.css">
+        <link rel="stylesheet" type="text/css" href="/css/panorama.css">
+        <script>
+        function webgl_detect(return_context)
+        {
+            if (!!window.WebGLRenderingContext) {
+                var canvas = document.createElement("canvas"),
+                     names = ["webgl", "experimental-webgl", "moz-webgl", "webkit-3d"],
+                   context = false;
+        
+                for(var i=0;i<4;i++) {
+                    try {
+                        context = canvas.getContext(names[i]);
+                        if (context && typeof context.getParameter == "function") {
+                            // WebGL is enabled
+                            if (return_context) {
+                                // return WebGL object if the function's argument is present
+                                return {name:names[i], gl:context};
+                            }
+                            // else, return just true
+                            return true;
+                        }
+                    } catch(e) {}
+                }
+                // WebGL is supported, but disabled
+                return false;
+            }
+        
+            // WebGL not supported
+            return false;
+        }
+        if(!webgl_detect()){
+            var u=location.href;
+            u=u.replace('/panorama_webgl','');
+            location.href=u;
+        }
+        </script>
+        <script src="<%=cdnJsPath%>/zepto.min.js?v=<%=libVersion%>"></script>
+        <script src="/js/sti-common.min.js?v=<%=version%>"></script>
+        <script src="/js/sti-pano-utils.min.js?v=<%=version%>"></script>
+        <script src="/js/tween.min.js?v=<%=version%>"></script>
+        <script src="/js/template-native.js?v=<%=version%>"></script>
+        <script>
+        template.config('openTag','<#');
+        template.config('closeTag','#>');
+        </script>
+		<style>
+			body {
+				margin: 0px;
+				overflow: hidden;
+			}
+            <%if(permission_hidetitle){%>
+            .header{display:none;}
+            .visited-wrap{display:none;}
+            .options-wrap{display:none;}
+            <%}%>
+            <%if(platform.indexOf('pc')==0&&mode=='viewer'){%>
+            @media(min-width:1000px){
+                #container{
+                    width:1000px;
+                    height:600px;
+                    margin-left: auto;
+                    margin-right: auto;
+                    margin-top:50px;
+                }
+            }
+            <%}%>
+		</style>
+	</head>
+	<body>
+
+        <%include alert%>
+		<div id="container"></div>
+
+        <%include header%>
+
+        <div class="visited-wrap horizontal">
+            <i class="icon eye"></i><div id="visited" style="margin-left:5px;line-height:18px;"><%=scene.visited%></div>
+        </div>
+        <%include panorama_switches%>
+        <%include panorama_slider%>
+        <table class="loader">
+            <tbody>
+            <tr>
+                <td>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <script src="<%=cdnJsPath%>/three.min.js"></script>
+        <script src="/js/three.patch.js"></script>
+		<script src="/js/Detector.js"></script>
+		<script src="/js/Projector.js"></script>
+        <!--<script src="/js/CanvasRenderer.js?v=<%=new Date().valueOf()%>"></script>-->
+		<script src="/js/sti-pano-webgl.min.js?v=2015"></script>
+        <%if(platform.indexOf('wechat')>=0){%>
+            <%include panorama_wechat_sharing%>
+        <%}%>
+        <script>
+            var config={
+                cdnPath:'http://qncdn.sz-sti.com',
+                scene_key:'<%=scene.key%>',
+                times:0,
+                loaderDom:$('.loader')
+            }
+            var switchConfig={};
+            config.cdnImagesPath=config.cdnPath+'/images';
+            function changeScene(key){
+                config.loaderDom.show();
+                $.get('/scene?key='+key+'&type=json',function(r){
+                    var mapDom=$('.icon.switch[data-type="maps"]');
+                    if(mapDom.hasClass('on')){
+                        mapDom.removeClass('on');
+                        mapDom.addClass('off');
+                        $('.maps-wrap').hide();
+                    }
+                    $('.map-spot').removeClass('current');
+                    $('.map-spot[key="'+r.sceneKey+'"]').addClass('current');
+                    config.scene_key=key;
+                    $('#title').text(r.title);
+                    switchConfig.introduction={
+                        status:false,
+                        value:r.introduction
+                    }
+                    initSwitches(switchConfig);
+                    config.spots=JSON.parse(unicode2Chr(r.spots));
+                    config.trademark=unicode2Chr(r.trademark);
+                    config.advertisement=unicode2Chr(r.advertisement);
+                    config.comments=JSON.parse(unicode2Chr(r.comments));
+                    config.ry=r.ry-180;
+                    config.rx=0;
+                    config.rigid=1;
+                    setTimeout(function(){
+                            sti.rigid=0.17;
+                    },500);
+                    config.times++;
+                    sti.init(config);
+                    <%if(platform.indexOf('wechat')>=0){%>
+                        configWechatSharing(location.href.split('#')[0],'<%=cdnImagesPath%>/scenes/'+r.sceneKey+'/allinone.jpg?imageMogr2/gravity/NorthWest/crop/!1024x1024a0a0/interlace/0/thumbnail/!10p',r.title);
+                    <%}%>
+                });
+            }
+            function onObjectClick(data){
+                if(data.objectType=='spot'){
+                    changeScene(data.sceneKey);
+                }
+            }
+            config.onObjectClick=onObjectClick;
+
+            config.loaderDom.show();
+            $.get('/scene?key='+config.scene_key+'&type=json',function(r){
+                $.get('<%=cdnImagesPath%>/scenes/'+config.scene_key+'/allinone.jpg?imageInfo',function(info){
+                    //config.renderer=isAndroid()?'canvas':'webgl';
+                    config.renderer='webgl';
+                    config.cubeSize=info.width;
+                    config.spots=JSON.parse(unicode2Chr(r.spots));
+                    config.trademark=unicode2Chr(r.trademark);
+                    config.ry=r.ry-180;
+                    config.rx=0;
+                    config.advertisement=unicode2Chr(r.advertisement);
+                    config.comments=JSON.parse(unicode2Chr(r.comments));
+                    config.rigid=1;
+
+                    var maxfov=100;
+                    var minfov=60;
+                    var fov=70;
+                    if(checkMobile()){
+                        var maxfov=110;
+                        var minfov=90;
+                        var fov=100;
+                    }
+                    config.maxfov=maxfov;
+                    config.minfov=minfov;
+                    config.fov=fov;
+
+                    setTimeout(function(){
+                            sti.rigid=0.17;
+                    },500);
+                    if(isAndroid()){
+                        setTimeout(function(){
+                                changeScene(config.scene_key)
+                        },2000);
+                    }
+                    sti.init(config);
+
+                    switchConfig={
+                        cdnImagesPath:config.cdnImagesPath,
+                        curSceneKey:r.sceneKey,
+                        audio:{
+                            status:false,
+                            value:config.cdnImagesPath+'/tools/785.mp3'
+                        },
+                        introduction:{
+                            status:false,
+                            value:r.introduction
+                        },
+                        rotate:{
+                            status:true,
+                            value:0.1
+                        },
+                        <%if(platform.indexOf('pc')!=0){%>
+                        vr:{
+                            status:false
+                        },
+                        <%}%>
+                        maps:r.maps,
+                        telephone:r.telephone
+                    };
+                    var sliderConfig={
+                        permission_hidetitle:<%-permission_hidetitle?'true':'false'%>,
+                        cdnImagesPath:config.cdnImagesPath,
+                        romaing:r.romaing
+                    };
+                    initSlider(sliderConfig);
+                    initSwitches(switchConfig);
+                    <%if(platform.indexOf('wechat')>=0){%>
+                        configWechatSharing(location.href.split('#')[0],'<%=cdnImagesPath%>/scenes/'+r.sceneKey+'/allinone.jpg?imageMogr2/gravity/NorthWest/crop/!1024x1024a0a0/interlace/0/thumbnail/!10p',r.title);
+                    <%}%>
+                    bindZoom($('#container'),function(diff){sti.setFov(sti.fov+diff);});
+                    bindOrientation(function(w,x,y,z){
+
+                            //sti.setQuaternion(w,x,y,z);
+                            //return;
+
+                            var e=quaternion2euler(w,x,y,z);
+                            var a=e[0]
+                            var b=e[1]
+                            var c=e[2]
+
+                            a*=180/Math.PI;
+                            b*=180/Math.PI;
+                            c*=180/Math.PI;
+
+                            sti.setRx(a-90);
+                            sti.setRy(-c);
+                            sti.setRz(-b);
+
+                    });
+                });
+            });
+            $(window).resize(function(){
+                //location.reload();
+            });
+        </script>
+
+	</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title><%=lang=='cn'?'公司简介':'About US'%></title>
+    <link rel="stylesheet" href="/index/css/common.css" type="text/css"> 
+    <link rel="stylesheet" href="/index/css/company.css" type="text/css"> 
+</head>
+<body>
+    <%include nav%>
+    <%include footer%>
+    <div id="navtop">
+        <navtop>
+            <div class="three-menu" slot="navbottom">
+                <div class="link">
+                    <a href="/web/company/<%=lang%>" class="button active">
+                        <span v-text="threeMenu"></span>
+                    </a>
+                </div>
+            </div>
+        </navtop>
+    </div>
+    <div class="company-wrap" id="companywrap">
+        <div class="banner"></div>
+        <div class="robosense-company">
+            <div class="wrap">
+                <p v-text="datas.company.p1"></p>
+                <p v-text="datas.company.p2"></p>
+                <p v-text="datas.company.p3"></p>
+            </div>
+            <div class="owner">
+                <h2 class="avator"><img src="/index/images/company/avator.jpg"></h2>
+                <p v-text="datas.company.p4"></p>
+                <p v-text="datas.company.p5"></p>
+                <p v-text="datas.company.p6">;</p>
+                <p v-text="datas.company.p7"></p>
+            </div>
+        </div>
+    </div>
+
+    <div id="footnav">
+        <footnav></footnav>
+    </div>
+
+    <script type="text/javascript">
+        var navtop = new Vue({
+            el: '#navtop',
+            data: {
+                threeMenu: ''
+            }
+        });
+        var footnav = new Vue({
+            el: '#footnav'
+        });
+        var companywrap = new Vue({
+            el: '#companywrap',
+            data: {
+                datas: <%-include("lang_"+lang, {lang: lang})%>
+            },
+            methods: {
+                init: function(){
+                    navtop.threeMenu = this.datas.company.threeMenu;
+                }
+            }
+        });
+        companywrap.init();
+    </script>
+</body>
+</html>

@@ -1,0 +1,1543 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title><%=title%></title>
+        <meta charset="utf-8">
+        <meta name="format-detection" content="telephone=no">
+        <meta name="test-conteng" content="<%=platform.indexOf('ie')%>">
+        <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        <style>
+        .moreBtn{display: block;height: 30px;margin:0 auto;padding: 0 15px;background-color: #E24A4A;border: 0;border-radius: 5px;color:#fff;}
+        </style>
+        <!-- global styles -->
+        <script src="/js/jquery-latest.js"></script>
+        <script src="/js/localstorage.js"></script>
+        <script>
+            var storage = window.localStorage; 
+            //封装函数           
+            function publicFn(type){
+                var urlArr = [
+                    '/js/qrcode.min.js',
+                    '/js/bootstrap/bootstrap.min.js',
+                    '/js/jquery.versatileTouchSlider.min.js',
+                    '/js/bootstrap/bootstrap-datetimepicker.min.js',
+                    '/js/jquery.touchSwipe.min.js',
+                    '/js/mediaelement-and-player.min.js',
+                    '/js/sti-common.min.js',
+                    '/js/template-native.js',
+                    '/js/ZeroClipboard.js',
+                    '/css/bootstrap/css/bootstrap.min.css',
+                    '/css/bootstrap-datetimepicker.min.css',
+                    '/css/layout.css','/css/suteng.css'
+                ];
+                var len = urlArr.length;
+                var index = 0;
+                var str = '';
+                for(var i=0;i<len;i++){
+                    index = urlArr[i].lastIndexOf('.')+1;
+                    str = urlArr[i].substr(index);
+                    if(str == 'js'){
+                        if(type == 'load'){
+                            whir.res[type+'Js'](urlArr[i],urlArr[i]);
+                        }else{
+                            whir.res[type+'Js'](storage.getItem(urlArr[i]));
+                        }
+                        
+                    }else{
+                        if(type == 'load'){
+                            whir.res[type+'Css'](urlArr[i],urlArr[i]);
+                        }else{
+                            whir.res[type+'Css'](storage.getItem(urlArr[i]));
+                        }
+                    }
+                }
+            }
+            //设置cookie
+            function setCookie(c_name,value,expiredays){
+                var exdate=new Date()
+                exdate.setDate(exdate.getDate()+expiredays)
+                document.cookie=c_name+ "=" +escape(value)+((expiredays==null) ? "" : ";expires="+exdate.toGMTString())
+            }
+            //删除cookie
+            function delCookie(name){
+               var date = new Date();
+               date.setTime(date.getTime() - 10000);
+               document.cookie = name + "=a; expires=" + date.toGMTString();
+            }
+            //设置版本
+            var version = "muwenhu1.4";
+
+        </script>
+            <%if(false&&!is_first&&platform.indexOf('ie')==-1){%>
+                <script>
+                    publicFn("write");
+                    if(localStorage.getItem('lsversion')!=version){
+                        delCookie("isFirst"); 
+                        console.log('删除了cookies');
+                    }
+                </script>
+            <%}else{%>
+                <link href="/css/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+                <link href="/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+                <link rel="stylesheet" type="text/css" href="/css/layout.css" />
+                <link rel="stylesheet" type="text/css" href="/css/suteng.css">
+                <script src="/js/qrcode.min.js"></script>
+                <script src="/js/sti-common.min.js"></script>
+                <script src="/js/bootstrap/bootstrap.min.js"></script>
+                <script src="/js/bootstrap/bootstrap-datetimepicker.min.js" charset="UTF-8"></script>
+                <script src="/js/template-native.js"></script>
+                <script src="/js/jquery.touchSwipe.min.js"></script> 
+                <script src="/js/jquery.versatileTouchSlider.min.js"></script> 
+                <script src="/js/mediaelement-and-player.min.js"></script> 
+                <script src="/js/ZeroClipboard.js"></script> 
+                <script type="text/javascript">
+
+                if(window.localStorage){
+                    // publicFn("load");
+                    setCookie("isFirst",version,365);  
+                    console.log('保存了cookies');
+                    localStorage.setItem('lsversion', version);
+                }
+                </script>
+            <%}%>
+        </script>
+        <style type="text/css">
+            #copy_box{width: 100%;height: 64px;position: fixed;top: 0;left: 0;background: rgba(223,0,36,0.9);color: #fff;text-align: center;line-height: 64px;display: none;}
+        </style>
+        <!-- bootstrap -->
+    </head>
+    <body id="romaing" name="romaing">
+        <!-- alert -->
+        <%include alert%>
+
+        <!-- sidebar -->
+        <%include sidebar%>
+
+        <!-- main container -->
+        <div class="content">
+            <div class="operate">
+                <%if(user.nickname=='132'){%>
+                <div style="float:left;text-align:left;width:270px;"><input type="text" class="span5 search" placeholder="多个账号请用“ | ”分隔"><a href="javascript:;" class="btn-flat btn-search success pull-right">确定</a></div>
+                <!-- <button class="btn tiny red btn_upload12" onclick="location.href='/upload12'">上传一比二全景</button> -->
+                <%}%>
+                <%if(!is_father&&romaing[0]){%>
+                <span class="" style="font-weight: 800;color: red;float:left;">账户：<%=romaing[0].user_id.nickname%></span>
+                <%}%>
+                <p style="position:relative;display:inline-block;">
+                <%if(!is_father&&romaing[0]){%>
+                <%}%>
+                <span class="selectall">全选</span>
+                <span class="line"></span>
+                <span class="toggle">展开</span>
+                </p>
+                <!-- <span class="line"></span> -->
+                <!-- <span class="delete">删除</span> -->
+            </div>
+            <div class="scene-list flex1 overflow">
+                <%if(romaing[0]){%>
+                <%for(var i in romaing){%>
+                <div class="item lightgray hideitem" data-groupname="<%=romaing[i].name%>" data-url="http://wx.sz-sti.com/scene?key=<%=romaing[i].scene_key%>" data-secnesid="<%=romaing[i].scenes_id%>" data-groupkey="<%=romaing[i].key%>" data-scenekey="<%=romaing[i].scene_key%>" data-bottrademark="<%=romaing[i].bottrademark%>">
+                    <div class="togone" style="z-index:99;"></div>
+                    <div class='flex1 vertical'>
+                        <div class="groupname" style="position:relative;">
+                            <!-- <i class="icon icon-toggle fl"></i> -->
+                            <%if(romaing[i].type == 7){%>
+                                <span class="spantext" style="position:absolute;color: #fff;width: 66px;height: 66px;text-align: center;line-height: 66px;">处理中</span>
+                                <img class="avatar fl" src="http://qncdn.sz-sti.com/normal_thumbs_1.jpg"/>
+                            <%}else{%>
+                                <%if(romaing[i].scene_key.split('_')[0].length!=10){%>
+                                    <img class="avatar fl" src="<%=cdnImagesPath%>/scenes/<%=romaing[i].scene_key.split('_')[0]%>/allinone.jpg?v=<%=serverDate%>&imageMogr2/gravity/NorthWest/crop/!1248x1248a0a0/thumbnail/!10p"/>
+                                <%}else{%>
+                                    <img class="avatar fl" src="http://qncdn.sz-sti.com/pano/<%=romaing[i].scene_key.split('_')[0]%>.tiles/mobile_f.jpg"/>
+                                <%}%>
+                            <%}%>
+                            <%if(is_father){%>
+                            <span class="nickname fl"><%if(romaing[i].user_id){%><%=romaing[i].user_id.nickname%><%}else{%><%=user.nickname%><%}%></span>
+                            <%}%>
+                            <span class="name fl"><%=romaing[i].name%></span>
+                            <span class="nickname fl"></span>
+                            <span class="fr fr-icon">
+                                <%if(!is_grandchild){%>
+                                <i class="icon icon-edit" onclick="location.href='/romaing/list?groupkey=<%=romaing[i].key%>&user=<%=romaing[i].user_id?romaing[i].user_id.nickname:user.nickname%>'"></i>
+                                <%}%>
+                                <i class="icon hide <%if(romaing[i].plant_status){%>icon-plant-y<%}else{%>icon-plant-n<%}%> icon-toggleplant" data-plant="<%=romaing[i].plant_status%>" data-url="/scene?key=<%=romaing[i].scene_key%>"></i>
+                                <i class="icon icon-download" data-name="<%=romaing[i].name%>" data-url="/scene?key=<%=romaing[i].scene_key%>"></i>
+                                <i class="icon icon-qrcode"></i>
+                                <%if(user.nickname!='132'&&(user.level>1||user.permission_delete!=0)&&!is_grandchild){%>
+                                <i class="icon icon-delete" data-delete="<%=user.permission_delete%>"></i>
+                                <%}%>
+                            </span>
+                            <span class="fr createat">创建时间：<%var t=new Date(romaing[i].createdAt);function pad(num, n) {return Array(n-(''+num).length+1).join(0)+num;}%><%=t.getFullYear()+' '+pad(t.getMonth()+1,2)+'-'+pad(t.getDate(),2)%></span>
+                        </div>
+                        <div class="scenebox margintop10">
+                            <div class="setting clearfix">
+                                <div class="imgbox">
+                                    <%if(romaing[i].type == 7){%>
+                                        <span class="spantext" style="position:absolute;color: #fff;width: 100%;height: 30px;text-align: center;line-height: 30px;background: #adadad;">处理中</span>
+                                        <img class="sceneimg" src="http://qncdn.sz-sti.com/normal_thumbs_1.jpg"/>
+                                    <%}else{%>
+                                        <%if(romaing[i].scene_key.split('_')[0].length!=10){%>
+                                        <img class="sceneimg" src="<%=cdnImagesPath%>/scenes/<%=romaing[i].scene_key.split('_')[0]%>/allinone.jpg?v=<%=serverDate%>&imageMogr2/gravity/NorthWest/crop/!1024x1000a0a500/thumbnail/!50p">
+                                        <%}else{%>
+                                        <img class="sceneimg" src="http://qncdn.sz-sti.com/pano/<%=romaing[i].scene_key.split('_')[0]%>.tiles/mobile_f.jpg"/>
+                                        <%}%>
+                                    <%}%>
+                                    <i class="icon icon-magenify"></i>
+                                </div>
+                                
+                                <div class='setscene'>
+                                    <!-- <div class='horizontal vcenter hcenter' style="font-size:12px;display:none">
+                                        <div>仅自己可见</div>
+                                        <div class="input-wrap" style="display:inline-block;width:20px">
+                                            <input class="btn-check" type='checkbox' <%if(romaing[i].show%10==0){%>checked='checked'<%}else{%><%}%>>
+                                        </div>
+                                    </div> -->
+                                    <button class="btn btn-map"><i class="icon icon-map"></i>户型图</button>
+                                    <button class="btn btn-houseinfo"><i class="icon icon-houseinfo"></i>房源信息</button>
+                                    <button class="btn btn-bottomad"><i class="icon icon-bottomad"></i>底部广告</button>
+                                    <button class="btn btn-phone"><i class="icon icon-phone"></i>联系电话</button>
+                                    <button class="btn btn-trademark"><i class="icon icon-trademark"></i>顶部商标</button>
+                                    <button class="btn btn-prefix"><i class="icon icon-prefix"></i>标题前缀</button>
+                                    <!-- <button class="btn gray tiny marginbottom10 btn-qrcode">二维码</button> -->
+                                    <!-- <button class="btn bloodred tiny marginbottom10 btn-delete">删除</button> -->
+                                </div>
+                                <div style="clear:both;height:0;"></div>
+                            </div>
+                            <div class="iframebox">
+                                <iframe class="previewscene" src=""></iframe>
+                                <i class="icon icon-closepreview"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="checkbox" type="checkbox"/>
+                    <span class="radiobox"><i class="icon icon-ok"></i></span>
+
+                </div>
+                <%}%>
+                <%}else{%>
+                    <div style="text-align: center;line-height: 40px;font-size: 22px;">还没有作品哟</div>
+                    <div style="text-align: center;line-height: 40px;font-size: 16px;">
+                        <a href="/romaing">点击返回列表页</a>
+                    </div>
+                <%}%>
+            </div>
+            <%if(count>10){%>
+                <div class="buttons" style="-webkit-box-pack:end">
+                    <span class="icon btn-pre"></span>
+                    <span class="pagenum">showing&nbsp;<input type="text" id="page" value="1"/>&nbsp;&nbsp;of&nbsp;&nbsp;<%=pagenums%></span>
+                    <span class="icon btn-next"></span>
+                </div>
+            <%}%>
+        </div>
+        <!-- end main container -->
+
+        <script id="bottomad-template" type="text/html">
+            <div class="adbox">
+                <label><span>联系人：</span><input class="input-ad-1" placeholder="联系人" value="<#=ad1#>"></label>
+                <label><span>电话：</span><input class="input-ad-2" placeholder="电话" value="<#=ad2#>"></label>
+                <label><span>其他：</span><input class="input-ad-3" placeholder="其他" value="<#=ad3#>"></label>
+                <button class="moreBtn" style="margin-top: 20px;" data-groupkey="<#=groupkey#>" data-bottrademark="<#=bottrademark#>" onclick=<%if(Date.parse(user.expire)<Date.now()&&Date.parse(user.expire)!=0){%>callexpire()<%}else{%>callbottrademark(event,$(this).attr('data-groupkey'),$(this).attr('data-bottrademark'))<%}%>>上传底部商标图</button>
+            </div>
+        </script>
+
+        <script id="romaing-template" type="text/html">
+            <#for(var i in romaing){#>
+                <div class="item lightgray hideitem" data-groupname="<#=romaing[i].name#>" data-url="http://wx.sz-sti.com/scene?key=<#=romaing[i].scene_key#>" data-secnesid="<#=romaing[i].scenes_id#>" data-groupkey="<#=romaing[i].key#>" data-scenekey="<#=romaing[i].scene_key#>" data-bottrademark="<#=romaing[i].bottrademark#>">
+
+                    <div class="togone"></div>
+                    <div class='flex1 vertical'>
+                        <div class="groupname">
+
+                            <#if(romaing[i].scene_key.split('_')[0].length!=10){#>
+                            <img class="avatar fl" src="<%=cdnImagesPath%>/scenes/<#=romaing[i].scene_key.split('_')[0]#>/allinone.jpg?v=<#=serverDate#>&imageMogr2/gravity/NorthWest/crop/!1248x1248a0a0/thumbnail/!10p"/>
+                            <#}else{#>
+                            <img class="avatar fl" src="http://qncdn.sz-sti.com/pano/<#=romaing[i].scene_key.split('_')[0]#>.tiles/mobile_f.jpg"/>
+                            <#}#>
+                            <%if(is_father){%>
+                            <span class="nickname fl"><#if(romaing[i].user_id){#><#=romaing[i].user_id.nickname#><#}else{#><#=user.nickname#><#}#></span>
+                            <%}%>
+                            <span class="name fl"><#=romaing[i].name#></span>
+                            <span class="nickname fl"></span>
+                            <span class="fr fr-icon">
+                                <i class="icon icon-edit" onclick="location.href='/romaing/list?groupkey=<#=romaing[i].key#>&user=<#=romaing[i].user_id?romaing[i].user_id.nickname:user.nickname#>'"></i>
+                                <i class="icon hide <#if(romaing[i].plant_status){#>icon-plant-y<#}else{#>icon-plant-n<#}#> icon-toggleplant" data-plant="<#=romaing[i].plant_status#>" data-url="/scene?key=<#=romaing[i].scene_key#>"></i>
+                                <i class="icon icon-download" data-name="<#=romaing[i].name#>" data-url="/scene?key=<#=romaing[i].scene_key#>"></i>
+                                <i class="icon icon-qrcode"></i>
+                                <%if(user.nickname!='132'&&(user.level>1||user.permission_delete!=0)){%>
+                                <i class="icon icon-delete" data-delete="<%=user.permission_delete%>"></i>
+                                <%}%>
+                            </span>
+                            <span class="fr createat">创建时间：<#=romaing[i].createdAt#></span>
+                        </div>
+                        <div class="scenebox margintop10">
+                            <div class="setting clearfix">
+                                <div class="imgbox">
+
+                                    <#if(romaing[i].scene_key.split('_')[0].length!=10){#>
+                                    <img class="sceneimg" src="<%=cdnImagesPath%>/scenes/<#=romaing[i].scene_key.split('_')[0]#>/allinone.jpg?v=<#=serverDate#>&imageMogr2/gravity/NorthWest/crop/!1024x1000a0a500/thumbnail/!100p">
+                                    <i class="icon icon-magenify"></i>
+                                    <#}else{#>
+                                    <img class="sceneimg" src="http://qncdn.sz-sti.com/pano/<#=romaing[i].scene_key.split('_')[0]#>.tiles/mobile_f.jpg"/>
+                                    <#}#>
+                                </div>
+                                
+                                <div class='setscene'>
+                                    <!-- <div class='horizontal vcenter hcenter' style="font-size:12px;display:none">
+                                        <div>仅自己可见</div>
+                                        <div class="input-wrap" style="display:inline-block;width:20px">
+                                            <input class="btn-check" type='checkbox' <#if(romaing[i].show%10==0){#>checked='checked'<#}else{#><#}#>>
+                                        </div>
+                                    </div> -->
+                                    <button class="btn btn-map"><i class="icon icon-map"></i>户型图</button>
+                                    <button class="btn btn-houseinfo"><i class="icon icon-houseinfo"></i>房源信息</button>
+                                    <button class="btn btn-bottomad"><i class="icon icon-bottomad"></i>底部广告</button>
+                                    <button class="btn btn-phone"><i class="icon icon-phone"></i>联系电话</button>
+                                    <button class="btn btn-trademark"><i class="icon icon-trademark"></i>顶部商标</button>
+                                    <button class="btn btn-prefix"><i class="icon icon-prefix"></i>标题前缀</button>
+                                    <!-- <button class="btn gray tiny marginbottom10 btn-qrcode">二维码</button> -->
+                                    <!-- <button class="btn bloodred tiny marginbottom10 btn-delete">删除</button> -->
+                                </div>
+                            </div>
+                            <div class="iframebox">
+                                <iframe class="previewscene" src=""></iframe>
+                                <i class="icon icon-closepreview"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="checkbox" type="checkbox"/>
+                    <span class="radiobox"><i class="icon icon-ok"></i></span>
+                </div>
+            <#}#>
+        </script>
+
+        <script id="mapsspotedit" type="text/html">
+            <div class="romaing-editor overflow">
+                <div class="romaing-list">
+                    <#for(var i in romaing){#>
+                    <div class="item" data-id="<#=romaing[i].id#>" data-name="<#=romaing[i].name#>">
+                        <div style="-webkit-box-flex:1;">
+                            <#=romaing[i].name#>
+                        </div>
+                        <div class="icon check hide"></div>
+                    </div>
+                    <#}#>
+                </div>
+                <div class="horizontal vcenter" style="padding:0 50px;margin:10px 0;">
+                    <div>场景名称:</div>
+                    <div class="input-wrap flex1">
+                        <input class="romaing-input" disabled="true" placeholder="">
+                    </div>
+                </div>
+            </div>
+        </script>
+
+        <!-- this page scripts -->
+        <script type="text/javascript">
+
+            if(top!=self){
+                $('#sidebar-nav').remove();
+                $('.content').css('margin-left', 0);
+            }
+
+            var loadflag=1;
+            var cur_page=1;
+            var upflag=0;
+            var MAX_HEIGHT = 300;
+            var pagenow=1;
+            var no_more=false;
+            var loadedpage={};
+            var lastdate=0;
+            var curX,curY;
+            var curLinkId;
+            var mapkey;
+            function callMap(e){
+                var groupkey = $(this).closest('.item').attr('data-groupkey');
+                $.ajax({
+                    type:'GET',
+                    url:'/maps?type=json&groupkey='+groupkey+'&platform=<%=platform%>',
+                    success:function(r){
+                        $('.alert-wrap').css('visibility','visible');
+                        if(!r.maps[0]){               
+                            initAlert('',{
+                                title:'上传户型图',
+                                content:'<div class="middle">你目前没上传户型图</div><input onChange=up("'+groupkey+'") type="file" id="input-file" style="display:none">',
+                                buttons:[
+                                {
+                                    text:'取消'
+                                },{
+                                    text:'上传',
+                                    color:'red',
+                                    callBack:upload
+                                }
+                                ]
+                            });       
+                        }else{       
+                        // '<img class="map-img" onMousedown="mapImgMouseDown(event)" onMouseup="mapImgMouseUp(event)" height="100%" src="<%=cdnImagesPath%>/maps/'+r.maps[0].key+'.jpg" map-id="'+r.maps[0].key+'">'+template('mapsspotedit', r),          
+                            initAlert('',{
+                                title:'户型图',
+                                content:'<img class="map-img" height="100%" src="<%=cdnImagesPath%>/maps/'+r.maps[0].key+'.jpg"/>',
+                                buttons:[
+                                {
+                                    text:'编辑',
+                                    color:'red',
+                                    callBack:function(){
+                                        location.href="/maps?groupkey="+groupkey
+                                    }
+                                },
+                                {
+                                    text:'取消'
+                                },
+                                {
+                                    text:'删除',
+                                    color:'red',
+                                    callBack:function(){
+                                        if(confirm('确定要删除吗？')){
+                                            $.ajax({
+                                                type:'POST',
+                                                url:'/maps/delete',
+                                                async:false,
+                                                data:{
+                                                    mapkey:r.maps[0].key
+                                                },
+                                                success:function(res){
+                                                    if(res.code==0){
+                                                        location.reload();
+                                                    }else{
+                                                        alert(res.msg);
+                                                    }
+                                                }
+                                        });
+                                    }
+                                }
+                            }]
+                            });
+                        }
+                    }
+                });
+            }
+            function qrcode(){
+                $('.alert-wrap').css('visibility','visible');
+                initAlert('',{
+                    title:'微信扫二维码查看全景',
+                    content:'<div id="qrcode"></div>',
+                    buttons:[
+                        {
+                            text:'取消'
+                        },
+                        {
+                            color:'bloodred',
+                            text:'确定',
+                            callBack:function(){
+                                $('.alert-wrap').css('visibility','hidden');
+                            }
+                        }
+                    ]
+                });
+                var qrcode = new QRCode(document.getElementById("qrcode"), {
+                    width : 220,
+                    height : 220
+                });
+                qrcode.makeCode($(this).closest('.item').attr('data-url'));
+            }
+
+            
+            function deleteone(){
+                var papa = $(this).closest('.item');
+                $('.alert-wrap').css('visibility','visible');
+                <%if(Date.parse(user.expire)<Date.now()&&Date.parse(user.expire)!=0){%>
+                initAlert('',{
+                    title:'确定删除吗?',
+                    content:'<div class="middle">将会删除该组所有信息</div>',
+                    buttons:[
+                        {
+                            text:'取消'
+                        },
+                        {
+                            color:'bloodred',
+                            text:'确定',
+                            callBack:function(){
+                                $.post('/romaing/delete',{groupkey:papa.attr('data-groupkey')},function(result){
+                                        if(result.code==0){
+                                            $('.alert-wrap').css('visibility','hidden');
+                                            location.href='/romaing';
+                                        }else{
+                                            alert(result.msg);
+                                        }
+                                });
+                            }
+                        }
+                    ]
+                });
+                <%}else{%>
+                initAlert('',{
+                    title:'确定删除吗?',
+                    content:'<div class="middle">将会删除该组所有信息</div><div class="input-wrap"><input type="password" id="deletepsw" style="border:1px solid #666;width:50%;" placeholder="请输入删除密码"></div>',
+                    buttons:[
+                        {
+                            text:'取消'
+                        },
+                        {
+                            color:'bloodred',
+                            text:'确定',
+                            callBack:function(){
+                                var deletepsw = $('#deletepsw').val();
+                                if(!deletepsw){
+                                    alert('删除密码不能为空');
+                                    $('#deletepsw').focus();
+                                    return;
+                                }
+                                $.post('/romaing/delete',{deletepsw:deletepsw,groupkey:papa.attr('data-groupkey')},function(result){
+                                        if(result.code==0){
+                                            $('.alert-wrap').css('visibility','hidden');
+                                            location.href='/romaing';
+                                        }else{
+                                            alert(result.msg);
+                                        }
+                                });
+                            }
+                        }
+                    ]
+                });
+                <%}%>
+            };
+
+            $('.btn-pre').on('click',preClick);
+            $('.btn-next').on('click',nextClick);
+            $('#page').on('blur',function(){
+                var page=$(this).val();
+                if (page==pagenow) {
+                    return;
+                };
+                if (page<=0||(page*10)%10!=0) {
+                    return alert('您请求的页数格式不对');
+                };
+                if (page><%=pagenums%>) {
+                    return alert('您请求的页数超过总页数');
+                };
+                loadMore($(this).val());
+            });
+
+            function preClick(){
+                if(no_more){
+                    cur_page--;
+                }
+                if(cur_page==1){
+                    return alert('当前页已经是第一页');
+                }
+                cur_page--;
+                no_more=false;
+                loadMore(cur_page);
+            }
+
+            function nextClick(){
+                if(!no_more){
+                    cur_page++;
+                }else{
+                    alert('没有了哦。。。');
+                    return;
+                }
+                loadMore(cur_page);
+            }
+
+            function loadMore(cur_page){
+                unbind();
+                if(new Date().valueOf()-lastdate>300){
+                    // loadedpage[cur_page]=true;
+
+                    lastdate = new Date().valueOf();
+                    $.get(location.href+(location.href.indexOf('?')>-1?'':'?')+'&type=json&cur_page='+cur_page,function(res){
+                        if(res.romaing.length==0){
+                            no_more=true;
+                            return alert('没有了哦。。');
+                        }
+                        for(var i in res.romaing){
+                            var t=new Date(res.romaing[i].createdAt);
+                            res.romaing[i].createdAt=t.getFullYear()+' '+pad(t.getMonth()+1,2)+'-'+pad(t.getDate(),2);
+                        }
+                        $('.scene-list').html(template('romaing-template',res));
+                        $('.icon-qrcode').on('click',qrcode);
+                        $('.icon-delete').on('click',deleteone);
+                        copyinit();
+                        $('#page').val(cur_page);
+                        loadflag=1;
+                        pagenow=cur_page;
+                        bind();
+                    });
+                }
+            };
+
+            function togglechecked(){
+                $(this).attr('checked')?
+                $(this).attr('checked',false):
+                $(this).attr('checked',true);
+            };
+
+            function toggleshow() {
+                if($(this).parents('.item').attr('class').indexOf('hideitem')!=-1)
+                {   
+                    $('.groupname .spantext').hide();
+                    $(this).parents('.item').removeClass('hideitem');
+                    $(this).parents('.item').find('.avatar').hide();
+                }else{
+                    $('.groupname .spantext').show();
+                    $(this).parents('.item').addClass('hideitem');
+                    $(this).parents('.item').find('.avatar').show();
+                }
+                
+                if('<%=platform.substr(0, 10)%>'.indexOf('pc-ie')!=-1){
+                    $(this).parents('.item').attr('class').indexOf('hideitem')!=-1?
+                    $(this).parents('.item').css('min-height', 266):
+                    $(this).parents('.item').css('min-height', 0);
+                }
+            };
+
+            function callSettingTelephone(e){
+                var groupkey = $(this).closest('.item').attr('data-groupkey');
+                $.ajax({
+                    type:'GET',
+                    url:'/romaing/list?type=json&groupkey='+groupkey,
+                    success:function(r){
+                        $('.alert-wrap').css('visibility','visible');
+                        
+                        var scene_ids=[];
+                        for(var i in r.scenes){
+                            scene_ids.push(r.scenes[i].id);
+                        }
+                        var tel = r.scenes[0].telephone?r.scenes[0].telephone:'';
+                        initAlert('',{
+                            title:'设置联系电话',
+                            content:'<textarea class="input-tel" type="tel" placeholder="请输入6位以上电话号码">'+tel+'</textarea>',
+                            buttons:[
+                            {
+                                text:'取消'
+                            },{
+                                text:'确定',
+                                color:'red',
+                                callBack:function(){
+                                    $.ajax({
+                                        url:'/romaing/telephone-post',
+                                        type:'POST',
+                                        async:false,
+                                        data:{
+                                            telephone:$('.input-tel').val(),
+                                            scene_ids:JSON.stringify(scene_ids)
+                                        },
+                                        timeout:1000,
+                                        success:function(result){
+                                            if(result.code!=0){
+                                                alert(result.msg);
+                                            }
+                                            setTimeout(function(){$('.alert-wrap').css('visibility','hidden');},100);
+                                        },
+                                        error:function(e){
+                                            alert(e);
+                                        }
+                                    })
+                                }
+                            }
+                            ]
+                        });
+                    }
+                });
+            }
+
+
+            function calltrademark(e){
+                var groupkey = $(this).closest('.item').attr('data-groupkey');
+                $.ajax({
+                    type:'GET',
+                    url:'/trademarks?type=json&groupkey='+groupkey,
+                    success:function(r){
+                        var type = r.type?r.type:'';
+                        $('.alert-wrap').css('visibility','visible');
+                        if(!r.trademark){               
+                            initAlert('',{
+                                title:'上传商标图',
+                                content:'<div class="middle">你目前没上传商标图</div><div class="toptip" style="font-size:12px;">请上传正方形或圆形图片</div><div id="preview" style="display:none;" class="upshow middle"><canvas id="myCanvas"></canvas></div><input onchange=onchangerender("'+groupkey+'") type="file" id="input-file" style="display:none">',
+                                buttons:[
+                                {
+                                    text:'取消'
+                                },{
+                                    text:'选择文件上传',
+                                    color:'red',
+                                    callBack:upload
+                                }
+                                ]
+                            });       
+                        }else{   
+                            var cutflag=0;      
+                            var hasup=0;  
+                            var data; 
+                            initAlert('',{
+                                title:'商标图',
+                                content:'<div id="preview" class="upshow middle"><canvas id="myCanvas"></canvas></div>',
+                                // '<img class="map-img" height="100%" src="'+r.trademark+'">',
+                                buttons:[
+                                {
+                                    text:'取消'
+                                },{
+                                    text:'裁切',
+                                    color:'red',
+                                    callBack:function(){
+                                        if(cutflag){
+                                            render(r.trademark);
+                                        }else{
+                                            render(r.trademark,1,groupkey);
+                                        }
+                                        cutflag = !cutflag;
+                                    }
+                                },{
+                                    text:'删除',
+                                    color:'red',
+                                    callBack:function(){
+                                        if(confirm('确定要删除吗？')){
+                                            $.ajax({
+                                                    type:'POST',
+                                                    url:'/trademarks/delete',
+                                                    async:false,
+                                                    data:{
+                                                        type:type,
+                                                        groupkey:groupkey
+                                                    },
+                                                    success:function(res){
+                                                        if(res.code==0){
+                                                            setTimeout(function(){$('.alert-wrap').css('visibility','hidden');},100);
+                                                        }else{
+                                                            alert(res.msg);
+                                                        }
+                                                    }
+                                            });
+                                        }
+                                    }
+                                }]
+                            });
+                            render(r.trademark, upflag);
+                        }
+                    }
+                });
+            }
+
+
+
+            function callbottrademark(e,groupkey,bottrademark){
+                $('.alert-wrap').css('visibility','visible');
+
+                if(!bottrademark){               
+                    initAlert('',{
+                        title:'上传底部商标图',
+                        content:'<div class="middle">你目前没上传底部商标图</div><div class="toptip" style="font-size:12px;">请上传正方形或圆形图片</div><div id="preview" style="display:none;" class="upshow middle"><canvas id="myCanvas"></canvas></div><input onchange=onchangerender("'+groupkey+'",1) type="file" id="input-file" style="display:none">',
+                        buttons:[
+                        {
+                            text:'取消'
+                        },{
+                            text:'选择文件上传',
+                            color:'red',
+                            callBack:upload
+                        }
+                        ]
+                    });       
+                }else{   
+                    var cutflag=0;      
+                    var hasup=0;  
+                    var data; 
+                    initAlert('',{
+                        title:'商标图',
+                        content:'<div id="preview" class="upshow middle"><canvas id="myCanvas"></canvas></div>',
+                        // '<img class="map-img" height="100%" src="'+bottrademark+'">',
+                        buttons:[
+                        {
+                            text:'取消'
+                        },{
+                            text:'裁切',
+                            color:'red',
+                            callBack:function(){
+                                if(cutflag){
+                                    render(bottrademark,0,groupkey,true);
+                                }else{
+                                    render(bottrademark,1,groupkey,true);
+                                }
+                                cutflag = !cutflag;
+                            }
+                        },{
+                            text:'删除',
+                            color:'red',
+                            callBack:function(){
+                                if(confirm('确定要删除吗？')){
+                                    $.ajax({
+                                        type:'POST',
+                                        url:'/settings/delete_bottrademarks',
+                                        async:false,
+                                        data:{
+                                            groupkey:groupkey
+                                        },
+                                        success:function(res){
+                                            if(res.code==0){
+                                                location.reload();
+                                                setTimeout(function(){$('.alert-wrap').css('visibility','hidden');},100);
+                                            }else{
+                                                alert(res.msg);
+                                            }
+                                        }
+                                    });
+                                }
+                            }
+                        }]
+                    });
+                    render(bottrademark, upflag, groupkey, true);
+                }
+            }
+
+            function render(src, flag, groupkey, is_bot){
+
+                var height = 400;
+
+                var image = new Image();
+                image.crossOrigin = "*";
+
+                image.onload = function(){
+                    var canvas = document.getElementById("myCanvas");
+                    var ctx = canvas.getContext("2d");
+
+                    if(height){
+                        canvas.height = height;
+                        canvas.width = image.width*height/image.height;
+                    }else{
+                        canvas.height = image.height;
+                        canvas.width = image.width;
+                    }
+                    
+                    var margintop = (300-(image.height*(450/image.width)))/2;
+                    margintop=image.height*(450/image.width)>300?0:margintop;
+                    $(canvas).css({'margin-top':margintop});
+
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                    if (flag) {
+
+                        canvas.height = 300;
+                        canvas.width = 300;
+                        $(canvas).css({'margin-top':0})
+
+                        var pattern = ctx.createPattern(image, "no-repeat");
+                        if (image.height < image.width) {
+                            ctx.translate(0, 0);
+                            ctx.scale(MAX_HEIGHT/image.height,MAX_HEIGHT/image.height);
+                            ctx.arc(image.height/2, image.height/2, Math.min(image.width, image.height) / 2, 0, 2 * Math.PI);
+                        }else{
+                            ctx.translate(0, 0);
+                            ctx.scale(MAX_HEIGHT/image.width,MAX_HEIGHT/image.width);
+                            ctx.arc(image.width/2, image.width/2, Math.min(image.width, image.height) / 2, 0, 2 * Math.PI);
+                        };
+                        ctx.fillStyle = pattern;
+                        ctx.fill();  
+
+                    }else{
+
+                        // if(image.height > image.width) {
+                            // image.height *= MAX_HEIGHT / image.width;
+                            // image.width = MAX_HEIGHT;
+                            if(height){
+                                ctx.drawImage(image, 0, 0, image.width*height/image.height, height);
+                            }else{
+                                ctx.drawImage(image, 0, 0, image.width, image.height);
+                            }
+                            
+                        // }else{
+                            // image.width *= MAX_HEIGHT / image.height;
+                            // image.height = MAX_HEIGHT;
+                            // ctx.drawImage(image, 0, 0, image.width, image.height);
+                        // }
+                    }
+
+                    $(".upshow").show();
+                    $(".tramarkbox").hide();
+                    if(flag){
+                        var data = document.getElementById("myCanvas").toDataURL('image/png').replace("data:image/png;base64,", "");
+                        if(groupkey){
+                            if(confirm('已裁切成圆形，是否重新上传?')){
+                                upnewtrademark(data,groupkey,is_bot);
+                            };
+                        }
+                    }
+                };
+
+                image.src = src;
+            };
+
+            function getObjectUrl(file){
+                var url = undefined;
+                if (window.createObjectURL) {
+                    url = createObjectURL(file);
+                }else if(window.URL){
+                    url = URL.createObjectURL(file);
+                }else if(window.webkitURL){
+                    url = webkitURL.createObjectURL(file);
+                }
+                return url;
+            }
+
+
+            function onchangerender(groupkey,is_bot){
+
+                var src = getObjectUrl(document.getElementById("input-file").files[0]), cutflag=0;
+                render(src,0,groupkey,is_bot);
+                $('.middle').hide();
+                $('.toptip').hide();
+                $('.preview').show();
+                
+                if($('.alertbox .buttons').html().indexOf('保存')==-1){
+                    // console.log($('.alertbox .buttons').html().indexOf('保存'));
+                    $('.alertbox .buttons').append('<div class="buttons clearfix"><button class="btn red flex1 btn-cut">裁切</button><button class="btn red flex1 btn-up">保存</button></div>');
+                    $('.btn-cut').on('click',function(){
+                        if(cutflag){
+                            render(src,0,groupkey,is_bot);
+                        }else{
+                            render(src,1,groupkey,is_bot);
+                        }
+                        cutflag = !cutflag;
+                    });
+                    $('.btn-up').on('click',function(){
+                        var data = document.getElementById("myCanvas").toDataURL('image/png').replace("data:image/png;base64,", "");
+                        upnewtrademark(data,groupkey,is_bot);
+                    });
+                }
+            }
+
+            function upnewtrademark(data,groupkey,is_bot){
+                if(hasup){return;}
+                hasup=1;
+                var url = is_bot?'/upload/bottrademark/token':'/upload/trademark/token';
+
+                $.post(url,{
+                    type:'',
+                    groupkey:groupkey
+                },function(res){
+                    var token = res.token;
+                    var key = res.imgurl;
+                    Q.addEvent("progress", function(p, s) {
+                        update((p==100?99:p)+'%', s);
+                    });
+                    Q.addEvent("putFinished", function(fsize, res, taking) {
+                        uploadSpeed = 1024 * fsize / (taking * 1000);
+                        if (uploadSpeed > 1024) {
+                            formatSpeed = (uploadSpeed / 1024).toFixed(2) + "Mb\/s";
+                        } else {
+                            formatSpeed = uploadSpeed.toFixed(2) + "Kb\/s";
+                        };
+                        var res = {
+                            key: res.key,
+                            hash: res.hash,
+                            speed: formatSpeed
+                        };
+                        update('上传成功');
+                        location.reload();
+                    });
+                    Q.SetToken(token);
+                    Q.Upload_base64(data, key);
+                });
+            };
+            function up(groupkey){
+                if(document.getElementById('input-file').files.length==0){
+                    return;
+                }
+                if(hasup){
+                    return;
+                }
+                hasup=1;
+                $.post('/upload/maptoken',{groupkey:groupkey},function(res){
+                    var token = res.token;
+                    var key = res.key;
+                    Q.addEvent("progress", function(p, s) {
+                        update((p==100?99:p)+'%', s);
+                    });
+                    //上传完成回调
+                    //fsize:文件大小(MB)
+                    //res:上传返回结果，默认为{hash:<hash>,key:<key>}
+                    Q.addEvent("putFinished", function(fsize, res, taking) {
+                        uploadSpeed = 1024 * fsize / (taking * 1000);
+                        if (uploadSpeed > 1024) {
+                            formatSpeed = (uploadSpeed / 1024).toFixed(2) + "Mb\/s";
+                        } else {
+                            formatSpeed = uploadSpeed.toFixed(2) + "Kb\/s";
+                        };
+                        var res = {
+                            key: res.key,
+                            hash: res.hash,
+                            speed: formatSpeed
+                        };
+                        update('上传成功');
+                        hasup=0;
+                        setTimeout(function(){$('.alert-wrap').css('visibility','hidden');},100);
+                    });
+                    Q.SetToken(token);
+                    Q.Upload(document.getElementById('input-file').files[0], key);
+                });
+            };
+            <%if(Date.parse(user.expire)<Date.now()&&Date.parse(user.expire)!=0){%>
+                function callexpire(){
+                    $('.alert-wrap').css('visibility','visible');
+                    initAlert('',{
+                        title:'提示',
+                        content:'<div class="middle">该功能为商业版功能，开通请联系销售经理</div>',
+                        buttons:[
+                        {
+                            text:'取消'
+                        }
+                        ]
+                    });
+                } 
+            <%}%>
+            <%if(Date.parse(user.expire)>=Date.now()||Date.parse(user.expire)==0){%>
+            
+            function callSettingAd(e,groupkey,bottrademark){
+                e.preventDefault();
+                e.stopImmediatePropagation();
+
+                console.log(e);
+
+                $.ajax({
+                    type:'GET',
+                    url:'/romaing/list?type=json&groupkey='+groupkey,
+                    success:function(r){
+                        $('.alert-wrap').css('visibility','visible');
+                        
+                        var scene_ids=[];
+                        for(var i in r.scenes){
+                            scene_ids.push(r.scenes[i].id);
+                        }
+
+                        var ad=r.scenes[0].advertisement?r.scenes[0].advertisement.split('</div>'):[''];
+
+                        var ad1,ad2,ad3;
+                        if( ad.length>0){
+                            ad1= ad[0].split('<div>').length>1 ? (ad[0].split('<div>'))[1] : ad[0];
+                        }
+                        if( ad.length>1){
+                            ad2= ad[1].split('<div>').length>1 ? (ad[1].split('<div>'))[1] : ad[1];
+                        }
+                        if( ad.length>2){
+                            ad3= ad[2].split('<div>').length>1 ? (ad[2].split('<div>'))[1] : ad[2];
+                        }
+                        ad1=ad1?ad1:'';
+                        ad2=ad2?ad2:'';
+                        ad3=ad3?ad3:'';
+
+                        var ad={
+                            ad1:ad1,
+                            ad2:ad2,
+                            ad3:ad3,
+                            groupkey:groupkey,
+                            bottrademark:bottrademark
+                        }
+
+                        initAlert('',{
+
+                            title:'设置底部广告',
+                            content:template('bottomad-template',ad),
+                            buttons:[
+                            {
+                                text:'取消'
+                            },{
+                                text:'确定',
+                                className:'btn-confirm',
+                                color:'red',
+                                callBack:function(){
+                                    $.ajax({
+                                        url:'/romaing/set_advertisements',
+                                        type:'POST',
+                                        async:false,
+                                        data:{
+                                            advertisement:$('.input-ad-1').val()+$('.input-ad-2').val()+$('.input-ad-3').val()==''?'':'<div>'+$('.input-ad-1').val()+'</div>'+
+                                            '<div>'+$('.input-ad-2').val()+'</div>'+
+                                            '<div>'+$('.input-ad-3').val()+'</div>',
+                                            scene_ids:JSON.stringify(scene_ids)
+                                        },
+                                        timeout:1000,
+                                        success:function(result){
+                                            if(result.code!=0){
+                                                alert(result.msg);
+                                            }
+                                            setTimeout(function(){$('.alert-wrap').css('visibility','hidden');},100);
+                                        },
+                                        error:function(e){
+                                            alert(e);
+                                        }
+                                    })
+                                }
+                            }]
+                        });
+                    }
+                });
+            }
+
+            function callSettingInfo(e){
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                var groupkey = $(this).closest('.item').attr('data-groupkey');
+                $.ajax({
+                    type:'GET',
+                    url:'/romaing/list?type=json&groupkey='+groupkey,
+                    success:function(r){
+                        $('.alert-wrap').css('visibility','visible');
+                        initAlert('',{
+                            title:'设置房源信息',
+                            content:'<div class="table"><table class="table-info">\
+                                        <tbody>\
+                                            <tr>\
+                                                <td class="tdhead">城市</td>\
+                                                <td><input class="table-info-city" value="'+r.group.city+'"></td>\
+                                            </tr>\
+                                            <tr>\
+                                                <td class="tdhead">区域</td>\
+                                                <td><input class="table-info-region" value="'+r.group.region+'"></td>\
+                                            </tr>\
+                                            <tr>\
+                                                <td class="tdhead">商圈</td>\
+                                                <td><input class="table-info-business" value="'+r.group.business_circle+'"></td>\
+                                            </tr>\
+                                            <tr>\
+                                                <td class="tdhead">小区</td>\
+                                                <td><input class="table-info-community" value="'+r.group.community+'"></td>\
+                                            </tr>\
+                                            <tr>\
+                                                <td class="tdhead">栋</td>\
+                                                <td><input class="table-info-building" value="'+r.group.building+'"></td>\
+                                            </tr>\
+                                            <tr>\
+                                                <td class="tdhead">房号</td>\
+                                                <td><input class="table-info-room" value="'+r.group.room+'"></td>\
+                                            </tr>\
+                                            <tr>\
+                                                <td class="tdhead">厅数</td>\
+                                                <td><input class="table-info-apartmenthalls" value="'+r.group.apartment_halls+'"></td>\
+                                            </tr>\
+                                            <tr>\
+                                                <td class="tdhead">卧室数</td>\
+                                                <td><input class="table-info-apartmentrooms" value="'+r.group.apartment_rooms+'"></td>\
+                                            </tr>\
+                                            <tr>\
+                                                <td class="tdhead">卫生间数</td>\
+                                                <td><input class="table-info-apartmentbathrooms" value="'+r.group.apartment_bathrooms+'"></td>\
+                                            </tr>\
+                                            <tr>\
+                                                <td class="tdhead">面积</td>\
+                                                <td><input class="table-info-area" value="'+r.group.area+'"></td>\
+                                            </tr>\
+                                            <tr>\
+                                                <td class="tdhead">楼层</td>\
+                                                <td><input class="table-info-floor" value="'+r.group.floor+'"></td>\
+                                            </tr>\
+                                            <tr>\
+                                                <td class="tdhead">总楼层</td>\
+                                                <td><input class="table-info-totalfloor" value="'+r.group.total_floor+'"></td>\
+                                            </tr>\
+                                            <tr>\
+                                                <td class="tdhead">朝向</td>\
+                                                <td><input class="table-info-face" value="'+r.group.face+'"></td>\
+                                            </tr>\
+                                            <tr>\
+                                                <td class="tdhead">名称</td>\
+                                                <td><input class="table-info-group_name" value="'+(r.group.name?r.group.name:'')+'"></td>\
+                                            </tr>\
+                                            <tr style="width:100%">\
+                                                <td class="tdhead">描述</td>\
+                                                <td style="width: 83%;"><div contenteditable="true" style="border-radius: 5px;border: 1px solid #565656;font-size: 14px;height:50px;overflow:auto;padding:5px 0;background-color:#fff;text-align:left;" class="table-info-extra">'+(r.group.extra!='{}'?r.group.extra:'')+'</div>\
+                                            </tr>\
+                                        </tbody>\
+                                    </table></div>',
+                            buttons:[
+                            {
+                                text:'取消'
+                            },
+                            {
+                                text:'确定',
+                                color:'red',
+                                callBack:function(e){
+                                    console.log(e);
+                                    var re= /select|update|delete|exec|count/i;
+                                    if ( re.test($('.table-info-extra').html()) ){
+                                        alert("请您不要输入SQL关键字(select update delete exec count)");
+                                        return;
+                                    }
+                                    var data={
+                                        city:$('.table-info-city').val(),
+                                        region:$('.table-info-region').val(),
+                                        business_circle:$('.table-info-business').val(),
+                                        community:$('.table-info-community').val(),
+                                        building:$('.table-info-building').val(),
+                                        room:$('.table-info-room').val(),
+                                        apartment_halls:$('.table-info-apartmenthalls').val(),
+                                        apartment_rooms:$('.table-info-apartmentrooms').val(),
+                                        apartment_bathrooms:$('.table-info-apartmentbathrooms').val(),
+                                        area:getFloat($('.table-info-area').val()),
+                                        floor:$('.table-info-floor').val(),
+                                        total_floor:$('.table-info-totalfloor').val(),
+                                        face:$('.table-info-face').val(),
+                                        key:groupkey,
+                                        group_name:$('.table-info-group_name').val(),
+                                        extra:$('.table-info-extra').html()
+                                    }
+                                    $.ajax({
+                                            url:'/romaing/modify-info',
+                                            type:'POST',
+                                            async:false,
+                                            data:data,
+                                            success:function(r){
+                                                if(r.code!=0){
+                                                    alert(r.msg);
+                                                    return;
+                                                }
+                                                setTimeout(function(){$('.alert-wrap').css('visibility','hidden');},100);
+                                            }
+                                    });
+                                }
+                            }]
+                        });
+                        $('.table-info-extra').on('keydown', function(e){
+                            if(e.keyCode == 13)return false;
+                        });
+                    }
+                });
+            };
+
+            function setPrefix(e){
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                var groupkey = $(this).closest('.item').attr('data-groupkey');
+                $.ajax({
+                    type:'GET',
+                    url:'/romaing/list?type=json&groupkey='+groupkey,
+                    success:function(r){
+                        $('.alert-wrap').css('visibility','visible');
+
+                        if(!r.permission_prefix){
+                            initAlert('',{
+                                title:'设置标题前缀',
+                                content:'该功能为商业版功能，开通请联系销售经理',
+                                buttons:[
+                                {
+                                    text:'确定',
+                                    color:'red',
+                                    className:'btn-trademark-finish',
+                                    callBack:function(){
+                                        setTimeout(function(){$('.alert-wrap').css('visibility','hidden');},100);
+                                    }
+                                }]
+                            });
+                        }else{
+                            var prefix = r.scenes[0].prefix?r.scenes[0].prefix:'';
+                            initAlert('',{
+                                title:'设置标题前缀',
+                                content:'<textarea class="input-prefix" placeholder="例如:某某地产">'+prefix+'</textarea>',
+                                buttons:[
+                                {
+                                    text:'取消'
+                                },{
+                                    text:'确定',
+                                    className:'btn-title-confirm',
+                                    color:'red',
+                                    callBack:function(){
+                                        $.ajax({
+                                            url:'/panoitem/setprefix',
+                                            type:'POST',
+                                            async:false,
+                                            data:{
+                                                prefix:$('.input-prefix').val(),
+                                                groupkey:groupkey
+                                            },
+                                            timeout:1000,
+                                            success:function(result){
+                                                if(result.code!=0){
+                                                    alert(result.msg);
+                                                }
+                                                setTimeout(function(){$('.alert-wrap').css('visibility','hidden');},100);
+                                            },
+                                            error:function(e){
+                                                alert(e);
+                                            }
+                                        })
+                                    }
+                                }]
+                            });
+                        }
+                    }
+                });
+            }
+
+            function setTrademark(e){
+                <%if(!1){%>
+                $('.alert-wrap').css('visibility','visible');
+                    initAlert('',{
+                        title:'设置trademark',
+                        content:'该功能为商业版功能，开通请联系销售经理',
+                        buttons:[
+                        {
+                            text:'确定',
+                            color:'red',
+                            className:'btn-trademark-finish',
+                            callBack:function(){
+                                setTimeout(function(){$('.alert-wrap').css('visibility','hidden');},100);
+                            }
+                        }]
+                    });
+                <%}else{%>
+                    location.href='/trademarks?groupkey=<%=romaing.groupkey%><%if(platform=='android-app'||platform=='ios-app'){%>&platform=<%=platform%><%}%>';
+                <%}%>
+            }
+
+            function callIntroduction(e){
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                var scene_key=$(this).closest('.item').attr('data-key');
+                $('.alert-wrap').css('visibility','visible');
+                initAlert('',{
+                    title:'设置语音播报',
+                    content:'<textarea class="input-introduction">'+$(this).closest('.item').attr('data-introduction')+'</textarea>',
+                    buttons:[
+                    {
+                        text:'取消'
+                    },{
+                        text:'确定',
+                        className:'btn-title-confirm',
+                        color:'red',
+                        callBack:function(){
+                            $.ajax({
+                                url:'/romaing/set-introduction',
+                                type:'POST',
+                                async:false,
+                                data:{
+                                    introduction:$('.input-introduction').val(),
+                                    scene_key:scene_key
+                                },
+                                timeout:1000,
+                                success:function(result){
+                                    if(result.code!=0){
+                                        alert(result.msg);
+                                    }
+                                    setTimeout(function(){$('.alert-wrap').css('visibility','hidden');},100);
+                                },
+                                error:function(e){
+                                    alert(e);
+                                }
+                            })
+                        }
+                        }
+                    ]
+                });
+            };
+            function callMore(ev){
+                var ev = event||window.event;
+                ev.preventDefault();
+                ev.stopImmediatePropagation();
+                var scene_key=$(this).closest('.item').attr('data-key');
+                $('.alert-wrap').css('visibility','visible');
+                initAlert('',{
+                    title:'设置语音播报',
+                    content:'<textarea class="input-introduction"></textarea>',
+                    buttons:[
+                    {
+                        text:'取消'
+                    },{
+                        text:'确定',
+                        className:'btn-title-confirm',
+                        color:'red',
+                        callBack:function(){
+                            $.ajax({
+                                url:'/romaing/set-introduction',
+                                type:'POST',
+                                async:false,
+                                data:{
+                                    introduction:$('.input-introduction').val(),
+                                    scene_key:scene_key
+                                },
+                                timeout:1000,
+                                success:function(result){
+                                    if(result.code!=0){
+                                        alert(result.msg);
+                                    }
+                                    setTimeout(function(){$('.alert-wrap').css('visibility','hidden');},100);
+                                },
+                                error:function(e){
+                                    alert(e);
+                                }
+                            })
+                        }
+                        }
+                    ]
+                });
+            };
+            <%}%>
+            function downloadscene(){
+                $('.alert-wrap').css('visibility','visible');
+                initAlert('',{
+                        title:'提示',
+                        content:'<div class="middle" style="line-height:110px;height:110px;">该功能尚未上线</div>'+'<div class="middle" style="line-height:110px;height:110px;font-size: 18px;">程序猿正在快马加鞭的开发中，请耐心等候</div>',
+                        buttons:[
+                        {
+                            text:'关闭'
+                        }]
+                    }
+                )
+            };
+
+            function openpreview(){
+                var papa=$(this).closest('.item');
+                // console.log(id);return;
+                papa.find('.previewscene').css({height:'450px',opacity:1});
+                papa.find('.setting').css('opacity', '0').hide();
+                papa.find('.iframebox').css({height:'auto',opacity:1});
+                var url='/scene?key='+papa.attr('data-scenekey')+'&preview=2';
+                if(!papa.find('.previewscene').attr('src')){
+                    papa.find('.previewscene').attr('src', url);
+                }
+                $('.icon-closepreview').show(100);
+            };
+
+            function closepreview(){
+                var papa=$(this).closest('.item');
+                $('.icon-closepreview').hide(100);
+                papa.find('.setting').css('opacity', '1').show();
+                papa.find('.iframebox').css({height:0,opacity:0});
+                papa.find('.previewscene').css({height:0,opacity:0});
+            };
+
+            function callcallSettingAd(event){
+                var groupkey = $(this).closest('.item').attr('data-groupkey');
+                var bottrademark = $(this).closest('.item').attr('data-bottrademark');
+                callSettingAd(event,groupkey,bottrademark);
+            };
+
+            function toggleplant(){
+                var groupkey = $(this).closest('.item').attr('data-groupkey');
+                var data = {
+                    groupkey: groupkey,
+                    state: $(this).attr('data-plant')=='1'?0:1
+                };
+                var _this = this;
+                // return;
+                $.post('/settings/setplant', data, function(res){
+                    if(res.code!=0){
+                        alert(res.msg);
+                        return;
+                    }
+                    if(res.plant_status==0){
+                        $(_this).removeClass('icon-plant-y').addClass('icon-plant-n');
+                        alert('已关闭该组的小行星视角');
+                    }else{
+                        $(_this).removeClass('icon-plant-n').addClass('icon-plant-y');
+                        alert('已打开该组的小行星视角');
+                    }
+                    $(_this).attr('data-plant', res.plant_status);
+                });
+            };
+
+            function bind() {
+                $('.checkbox').on('click',togglechecked);
+                // $('.icon-toggle').on('click', toggleshow);
+                $('.icon-magenify').on('click', openpreview);
+                $('.icon-closepreview').on('click', closepreview);
+                $('.icon-qrcode').on('click',qrcode);
+                $('.icon-delete').on('click',deleteone);
+                $('.icon-toggleplant').on('click',toggleplant);
+                <%if(Date.parse(user.expire)<Date.now()&&Date.parse(user.expire)!=0){%>
+                $('.btn-houseinfo').on('click',callexpire);
+                $('.btn-bottomad').on('click',callexpire);
+                $('.btn-phone').on('click',callexpire);
+                $('.btn-prefix').on('click',callexpire);
+                $('.btn-map').on('click',callMap);
+                $('.btn-trademark').on('click',callexpire);
+                $('.btn_setbottrademark').on('click',callexpire);
+                //$('.moreBtn').on('click',callexpire);
+                <%}else{%>
+                $('.btn-houseinfo').on('click',callSettingInfo);
+                $('.btn-bottomad').on('click',callcallSettingAd);
+                $('.btn-phone').on('click',callSettingTelephone);
+                $('.btn-prefix').on('click',setPrefix);
+                $('.btn-map').on('click',callMap);
+                $('.btn-trademark').on('click',calltrademark);
+                //$('.moreBtn').on('click',callMore);
+                <%}%>
+                // $('.icon-download').on('click',downloadscene);
+                $('.togone').on('click',toggleshow);
+            };
+
+            function unbind(){
+                $('.checkbox').off('click',togglechecked);
+                // $('.icon-toggle').off('click', toggleshow);
+                $('.icon-magenify').off('click', openpreview);
+                $('.icon-closepreview').off('click', closepreview);
+                $('.icon-qrcode').off('click',qrcode);
+                $('.icon-delete').off('click',deleteone);
+                $('.icon-toggleplant').off('click',toggleplant);
+                <%if(Date.parse(user.expire)<Date.now()&&Date.parse(user.expire)!=0){%>
+                $('.btn-houseinfo').off('click',callexpire);
+                $('.btn-bottomad').off('click',callexpire);
+                $('.btn-phone').off('click',callexpire);
+                $('.btn-prefix').off('click',callexpire);
+                $('.btn-map').off('click',callexpire);
+                $('.btn-trademark').off('click',callexpire);
+                $('.btn_setbottrademark').off('click',callexpire);
+                //$('.moreBtn').on('click',callexpire);
+                <%}else{%>
+                $('.btn-houseinfo').off('click',callSettingInfo);
+                $('.btn-bottomad').off('click',callcallSettingAd);
+                $('.btn-phone').off('click',callSettingTelephone);
+                $('.btn-prefix').off('click',setPrefix);
+                $('.btn-map').off('click',callMap);
+                $('.btn-trademark').off('click',calltrademark);
+                //$('.moreBtn').on('click',callMore);
+                <%}%>
+                // $('.icon-download').off('click',downloadscene);
+                $('.togone').off('click',toggleshow);
+            };
+
+            (function init(){
+
+                $('.selectall').on('click',function(){
+                    $('.checkbox[checked=checked]').length == $('.checkbox').length?
+                    $('.checkbox').attr('checked',false):
+                    $('.checkbox').attr('checked',true);
+                });
+
+                $('.toggle').on('click', function(){
+                    $('.checkbox[checked=checked]').parent().each(function(){
+                        $(this).attr('class').indexOf('hideitem')!=-1?
+                        $(this).removeClass('hideitem'):
+                        $(this).addClass('hideitem');
+                    });
+                });
+
+                $('.btn-search').on('click', function(){
+                    if(!$('.search').val()){
+                        alert('请输入账号用户名，多个账号用“ | ”分隔');
+                        return;
+                    }
+                    location.href='/romaing?user='+$('.search').val();
+                });
+
+                bind();
+            })();
+
+            function copyinit(){
+                var clip = new ZeroClipboard($(".icon-download"), {
+                      moviePath: "/js/ZeroClipboard.swf"
+                });
+                clip.on( 'mousedown', function(client) {
+                    clip.setText('http://wx.sz-sti.com'+$(this).attr('data-url'));
+                });
+                clip.on( 'complete', function(client, args) {
+                    var content = "您已经复制了全景 " + $(this).attr('data-name') + '的链接';
+                    $(document.body).append("<div id='copy_box'></div>");
+                    $("#copy_box").html(content);
+                    $("#copy_box").slideDown(500).delay(1500).slideUp(500);
+                    // .remove();     
+                });
+            }
+
+            copyinit();
+            
+            
+        </script>
+              
+    </body>
+</html>

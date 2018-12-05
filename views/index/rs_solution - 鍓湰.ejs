@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>多线实时激光雷达-产品介绍</title>
+    <link rel="stylesheet" href="/index/css/common.css" type="text/css"> 
+    <link rel="stylesheet" href="/index/css/rs_solution.css">
+    <script src="/index/js/modernizr.js"></script>
+</head>
+<body>
+    <%include nav%>
+    <div id="navtop">
+        <navtop>
+          <div class="three-menu" slot="navbottom">
+            <div class="link">
+                <a href="/web/rslidar/<%=lang%>" class="button">
+                    <span v-text="threeMenu.introduction"></span>
+                </a>
+            </div>
+            <div class="link">
+                <a href="/web/rslidar/solution/<%=lang%>" class="button active">
+                    <span v-text="threeMenu.solution"></span>
+                </a>
+            </div>
+          </div>
+        </navtop>
+    </div>
+    <div id="rslidar">
+        <div class="app" id="app-container">
+            <div data-reactroot="" class="root-component">
+                <main class="app-main">
+                    <span>
+                        <div class="page page--node page--fixed page--carousel" id="page--node-2">
+                            <section class="page__content">
+                                <section class="scenario-carousel scenario-carousel--5">
+                                    <div class="scenario-carousel__container">
+                                        <ul class="scenario-carousel__parallax">
+                                            <li class="scenario-carousel__item" style="background-image: url(/index/images/rs_solution/more_continous_engagement.jpg);">
+                                                <a href="http://www.healthdigitaltransformation.com/pillar/2/scenario/2">
+                                                    <span class="scenario-carousel__teaser">
+                                                        <i class="icon-plus_circle"></i>
+                                                        <p class="scenario-carousel__desc">gggggg</p>
+                                                    </span>
+                                                    <span class="scenario-carousel__teaser">
+                                                        <i class="icon-Care-Coordanation"></i>
+                                                        <h3 class="scenario-carousel__title">dsdghhh</h3><hr>
+                                                        <p class="scenario-carousel__desc">Ldsdsdsdsjjghjgh</p>
+                                                        <button class="ui-btn ui-btn--large ui-btn--transparent" data-analytic="Learn More">
+                                                            <span class="ui-btn__label">Learn More</span>
+                                                        </button>
+                                                    </span>
+                                                </a>
+                                            </li>
+                                            <li class="scenario-carousel__item" style="background-image: url(virtual_care.jpg);">
+                                                <a href="http://www.healthdigitaltransformation.com/pillar/2/scenario/3">
+                                                    <span class="scenario-carousel__teaser">
+                                                        <i class="icon-plus_circle"></i>
+                                                        <p class="scenario-carousel__desc">dsdsdsd</p>
+                                                    </span>
+                                                    <span class="scenario-carousel__teaser">
+                                                        <i class="icon-Vistual-Health"></i>
+                                                        <h3 class="scenario-carousel__title">sdodjos</h3><hr>
+                                                        <p class="scenario-carousel__desc">Virtual Health leverages Office 365 &amp; Skype for Business to enable clinical care through telemedicine, telehealth and collaboration at-a-distance.&nbsp; Connecting clinicians, patients and care teams to provide health services, and coordinate care.</p>
+                                                        <button class="ui-btn ui-btn--large ui-btn--transparent" data-analytic="Learn More">
+                                                            <span class="ui-btn__label">Learn More</span>
+                                                        </button>
+                                                    </span>
+                                                </a>
+                                            </li>
+                                            <li class="scenario-carousel__item" style="background-image: url(population_health.jpg);">
+                                                <a href="ssss">
+                                                    <span class="scenario-carousel__teaser">
+                                                        <i class="icon-plus_circle"></i>
+                                                        <p class="scenario-carousel__desc">dds</p>
+                                                    </span>
+                                                    <span class="scenario-carousel__teaser">
+                                                        <i class="icon-medical-data-storage"></i>
+                                                        <h3 class="scenario-carousel__title">klkl</h3><hr>
+                                                        <p class="scenario-carousel__desc">gfgf</p>
+                                                        <button class="ui-btn ui-btn--large ui-btn--transparent" data-analytic="Learn More">
+                                                            <span class="ui-btn__label">Learn More</span>
+                                                        </button>
+                                                    </span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <figure class="scenario-img" style="background-image: url(/index/images/rs_solution/solution_bg.png);"></figure>
+                                </section>
+                            </section>
+                        </div>
+                    </span>
+                    <div class="modal modal--warning">
+                        <div class="modal__inner">
+                            <span class="modal__text">This site is not optimized for this screen size or landscape view.</span>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </div>
+    
+    <script type="text/javascript">
+        var navtop = new Vue({
+            el: '#navtop',
+            data: {
+                threeMenu: ''
+            }
+        });
+        var footnav = new Vue({
+            el: '#footnav'
+        });
+        var rslidar = new Vue({
+            el: '#rslidar',
+            data: {
+                rslidardata: <%-include("lang_"+lang, {lang: lang})%>
+            },
+            methods: {
+                init: function(){
+                    navtop.threeMenu = this.rslidardata.rslidar.threeMenu;
+                }
+            }
+        });
+        rslidar.init();
+    </script>
+</body>
+</html>

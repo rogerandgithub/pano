@@ -1,0 +1,90 @@
+<div id="trashpano" class="toast-content" transition="qrtoast" v-show="showtptoast">
+    <span @click="hide"><i class="close-pop ico-close"></i></span>
+    <div class="toast-center-wrapper">
+        <div class="m-header">
+            <h1 class="text-center"><i class="icon-lock"></i></h1>
+            <h6 class="toast-title text-center">密码认证</h6>
+        </div>
+        <div>
+            <!-- <div class="toast-body" v-if="!expire"> -->
+            <div class="toast-body">
+                <p class="text-center">请输入您的删除密码</p>
+                <div class="form-group"> 
+                    <input id="deletepsw" class="form-control" type="password" placeholder="请输入您的删除密码" autocomplete="off" @keyup.enter="submit" v-model="delepsw" />
+                </div>
+            </div>
+            <div class="m-footer">
+                <div class="text-center">
+                    <button class="btn btn-cancel btn-lg" type="button" @click="hide">取消</button>
+                    <button class="btn btn-primary btn-setter btn-lg" :disabled="disabled" type="submit" @click="submit">确定</button> 
+                </div>
+            </div>
+        </div>
+    </div>   
+</div>
+<script type="text/javascript">
+    var trashpano = new Vue({
+        el: '#trashpano',
+        data: {
+            showtptoast: false,
+            delepsw: '',
+            callback: null,
+            global: true,
+            id: 0,
+            showbox: 0,
+            expire: false
+        },
+        computed: {
+            disabled: function(){
+                return !this.delepsw&&!this.expire;
+            }
+        },
+        methods: {
+            show: function(expire, fun, id, global){
+                this.expire = expire;
+                if(!id||isNaN(id)){
+                    toast.showmsg('I need a id-value');
+                    return;
+                }
+                this.id = id;
+                this.showtptoast = true;
+                this.$nextTick(function(){
+                    $('#deletepsw').focus();
+                });
+                if(fun&&typeof fun == 'function')this.fun = fun;
+                this.global = global;
+            },
+            hide: function(){
+                if (this.showbox) {
+                    try{
+                        editpano.showbox = true;
+                    }catch(error){
+                        console.log(error);
+                    }
+                };
+                this.showtptoast = false;
+                this.delepsw = '';
+            },
+            submit: function(){
+                var data = {
+                    id: this.id,
+                    deletepsw: this.delepsw
+                };
+                
+                var _this = this;
+                $.post(_this.global?'/setitem/delpano':'/setitem/delscene',data,function(res){
+                    if(res.code!=0){
+                        toast.showmsg(res.msg, true);
+                        return;
+                    }
+                    toast.showmsg('删除成功');
+                    _this.fun();
+                    setTimeout(function(){
+                        _this.hide();
+                        panolist.loadimages();
+                    }, 300);
+                });
+            }
+        }
+    });
+</script>

@@ -1,0 +1,54 @@
+</script><script type="text/javascript">
+    Vue.component('menulist', Vue.extend({
+        template:   '<div id="menulist" class="navbar navbar-inverse">\
+                        <div class="navbar-inner">\
+                            <p class="btngroups">\
+                                <a href="javascript:;" @click="showvideo">视频教程</a>\
+                                <a href="tencent://message/?uin=3327837004&Site=&menu=yes">联系客服</a>\
+                                <a href="javascript:;" @click="shownotice">消息<slot name="readcount"></slot></a>\
+                                <a href="/newitem/logout">账号注销</a>\
+                            </p>\
+                            <slot name="orderPano"></slot>\
+                            <button id="menu-toggler" type="button" class="btn btn-navbar visible-phone" @click.stop="togglenav">\
+                                <span class="icon-bar"></span>\
+                                <span class="icon-bar"></span>\
+                                <span class="icon-bar"></span>\
+                            </button>\
+                        </div>\
+                    </div>',
+        props: ['readcount'],
+        methods: {
+            togglenav: function(){
+                nav.display = !nav.display;
+            },
+            // goHistory: function(){
+            //     if(this.gorouter=='1'){
+            //         location.href='/panoitem';
+            //         return;
+            //     }else if(this.gorouter=='3'){
+            //         location.href='/indexitem';
+            //         return;
+            //     }else{
+            //         history.go(-1);
+            //     }  
+            // },
+            showvideo: function(){
+                videotoast.showvideo = true;
+                videotoast.styleZindex.zIndex = '5555';
+            },
+            shownotice: function(){
+                noticetoast.shownotice = true;
+                noticetoast.styleZindex.zIndex = '5555';
+            }
+        }
+    }));
+    Vue.config.errorHandler = function (err, vm) {
+        var componentName = Vue.util.formatComponentName(vm),
+            propsData = vm.$options.propsData;
+        fundebug.notifyError(err, {
+            metaData: {
+                componentName: componentName,
+                propsData: propsData
+        }});
+    }
+</script>

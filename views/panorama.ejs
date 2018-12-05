@@ -1,0 +1,1048 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="format-detection" content="telephone=no">
+        <meta name="viewport" content=" user-scalable=no, initial-scale=1.0,minimum-scale=1.0, maximum-scale=1.0">
+        <meta name="viewport" content="target-densitydpi=high-dpi, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+        <meta name="author" content="muwenhu@gmail.com">
+        <title><%=title%></title>
+        <link rel="stylesheet" type="text/css" href="/css/common.css">
+        <link rel="stylesheet" type="text/css" href="/css/sti-pano.css">
+        <link rel="stylesheet" type="text/css" href="/css/panorama.css">
+        <%if(mode=='editor'&&platform.indexOf('pc-webkit')>=0){%>
+        <link rel="stylesheet" type="text/css" href="/css/pc-editor.css">
+        <%}%>
+        <style>
+
+            .preview{height: 100%;z-index: 100;}
+            .preview-pointer{position: absolute;z-index: 9999;display: none;position: absolute;width: 14px;height: 14px;box-shadow: 0px 2px 3px #000;border: 3px solid #fff;background: rgba(255,0,0,0.5);border-radius: 10px;z-index: 26;-webkit-transform: translateX(-10px) translateY(-10px);-webkit-animation: shinning 0.6s infinite alternate;}
+            .btn-finish-content{bottom: 25px;}
+            .setTelphone{
+                display: none;
+                font-family: '黑体';
+                position: absolute;
+                left: 0;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.65);
+                z-index: 99999;
+            }
+            .setTelphone .telphone-box{
+                width: 80%;
+                padding: 20px 0;
+                height: 120px;
+                border-radius: 10px;
+                box-shadow: 0 0 24px rgba(0,0,0,0.85);
+                background: rgba(230,33,41,0.41);
+                position: relative;
+                left: 10%;
+                top: 50%;
+                margin-top: -100px;
+            }
+            .setTelphone .telphone-num{
+                font-family: '黑体';
+                display: block;
+                width: 80%;
+                margin: 20px auto 0 auto;
+                height: 40px;
+                border: 1px solid #fff;
+                border-radius: 5px;
+                outline: none;
+                text-indent: 35px;
+                color: #f9f4f4;
+                background:transparent url(../images/topnavbar.png) no-repeat -5px -245px;
+            }
+            .setTelphone .submitTel{
+                font-family: '黑体';
+                display: block;
+                background: rgba(86,11,14,0.65);
+                border:none;
+                color: #f9f4f4;
+                width: 80%;
+                margin: 10px auto 0 auto;
+                height: 40px; 
+                font-size: 16px;
+                border-radius: 5px;
+                outline: none;
+            }
+            #loadTips{
+                font-family: '黑体';
+                position: absolute;
+                left: 0;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.65);
+                z-index: 99999;
+                display: box;
+                display: -webkit-box;
+                display: -ms-box;
+                display: -moz-box;
+                box-pack:center;
+                -webkit-box-pack:center;
+                -ms-box-pack:center;
+                -moz-box-pack:center;
+                box-align:center;
+                -webkit-box-align:center;
+                -ms-box-align:center;
+                -moz-box-align:center;
+                opacity: 0;
+            }
+            #loadTips .tipsbox{
+                width: 80%;
+                z-index: 99999;
+            }
+            #loadTips .tipsbox img{
+                display: block;
+                width: 100%;
+            }
+        </style>
+        <script type="text/javascript">
+            if (match = navigator.userAgent.match(/Android (\d+\.\d+)/)) {
+                if (parseFloat(match[1]) <= 5) {
+                    if (TARGET_WIDTH == 320) TARGET_WIDTH++;
+                    var scale = window.screen.width / TARGET_WIDTH;
+                    if (navigator.userAgent.match(/N910A/)) {
+                        document.querySelector('meta[name="viewport"]').setAttribute('content', 'width=device-width, initial-scale = 1.0, target-densitydpi=medium-dpi');
+                    };
+                    <%if(platform.indexOf('app')!=-1){%>
+                        document.querySelector('meta[name="viewport"]').setAttribute('content', 'width=low-width, initial-scale = 1.0, target-densitydpi=low-dpi');
+                    <%}%>
+                    <%if(platform=='android-app'){%>
+                        if(!navigator.userAgent.match(/HM 1SC/)){
+                        document.querySelector('meta[name="viewport"]').setAttribute('content', 'width=device-width, initial-scale = 1.0, target-densitydpi=medium-dpi');
+                        }
+                    <%}%>
+                }
+            }
+        </script>
+
+    </head>
+    <%if(mode=='viewer'){%>
+    <script>
+        function webgl_detect(return_context)
+        {
+            if (!!window.WebGLRenderingContext) {
+                var canvas = document.createElement("canvas"),
+                     names = ["webgl", "experimental-webgl", "moz-webgl", "webkit-3d"],
+                   context = false;
+        
+                for(var i=0;i<4;i++) {
+                    try {
+                        context = canvas.getContext(names[i]);
+                        if (context && typeof context.getParameter == "function") {
+                            // WebGL is enabled
+                            if (return_context) {
+                                // return WebGL object if the function's argument is present
+                                return {name:names[i], gl:context};
+                            }
+                            // else, return just true
+                            return true;
+                        }
+                    } catch(e) {}
+                }
+        
+                // WebGL is supported, but disabled
+                return false;
+            }
+        
+            // WebGL not supported
+            return false;
+        }
+        // if(webgl_detect()){
+        //     var u=location.href;
+        //     u=u.replace('/scene','/scene/panorama_webgl');
+        //     location.href=u;
+        // }
+    </script>
+    <%}%>
+    <script src="/js/jquery-1.8.3.min.js"></script>
+    <script src="/js/zepto-tween-xss-pano.min.js?v=<%=version%>"></script>
+    <script src="/js/template-native.js?v=<%=version%>"></script>
+    <script src="/js/sti-common.min.js?<%=version%>"></script>
+    <script src="/js/zepto.min.js"></script>
+    <script src="/js/tour.js"></script>
+    <script>
+    template.config('openTag','<#');
+    template.config('closeTag','#>');
+    </script>
+    <%if(mode=='viewer'){%>
+        <%include panorama_switches%>
+        <%include panorama_slider%>
+    <%}%>
+    <body>
+        <%include alert%>
+        <%if(mode=='viewer'){%>
+            <%include header%>
+            <div class="visited-wrap horizontal">
+                <i class="icon eye"></i><div id="visited" style="margin-left:5px;line-height:18px;"><%=visited%></div>
+            </div>
+        <%}%>
+        
+        <!--设置电话弹框-->
+        <div class="setTelphone">
+            <div class="telphone-box">
+                <input type="text" class="telphone-num" value="<%=group_info.telephone%>" placeholder="请输入电话号码">
+                <button class="submitTel">完成</button>
+            </div>
+        </div>
+
+        <!--load弹窗提示-->
+        <%if(platform.indexOf('app')!=-1&&simple=='1'){%>
+        <div id="loadTips">
+            <div class="tipsbox">
+                <img src="../../images/tippic.png" />
+            </div>
+        </div>
+        <%}%>
+
+
+        <!-- Loading Animation -->
+        <table class="loader">
+            <tbody>
+            <tr>
+                <td>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <!-- Essential -->
+        <div id="sti-pano"></div>
+
+        <!-- Preview -->
+
+        <!-- Editor -->
+        <div id="sti-editor" class="vertical h100">
+            <div class="flex1 overflow">
+            <div id="editor-switch-romaing-content">
+                <div class="scene-list">
+                    <%for(var i in romaing){%><div class="item" data-id="<%=romaing[i].id%>" data-scene="<%=romaing[i].key%>" data-name="<%=romaing[i].name%>" style="background-image:url(<%=cdnImagesPath%>/scenes/<%=romaing[i].key%>/allinone.jpg?imageMogr2/gravity/NorthWest/crop/!1024x1024a0a0/interlace/0/thumbnail/!10p);">
+                        <div class="romaing-name flex1 vcenter hcenter" >
+                            <%=romaing[i].name%>
+                        </div>
+                        <div class="icon check hide"></div>
+                    </div><%}%>
+                </div>
+                <div class="horizontal padding10 marginbottom10 vcenter">
+                    <div>场景指引名称:</div>
+                    <div class="input-wrap flex1">
+                        <input class="romaing-input" placeholder="">
+                    </div>
+                </div>
+                <div class="padding10">
+                    <div>选择图标:</div>
+                    <div class="iselector vertical vcenter hcenter checked" data-icon-type='0'>
+                        <div class="icon spot0"></div>
+                    </div>
+                    <div class="iselector vertical vcenter hcenter" data-icon-type='1'>
+                        <div class="icon spot1"></div>
+                    </div>
+                    <div class="iselector vertical vcenter hcenter" data-icon-type='2'>
+                        <div class="icon spot2"></div>
+                    </div>
+                    <div class="iselector vertical vcenter hcenter" data-icon-type='3'>
+                        <div class="icon spot3"></div>
+                    </div>
+                    <div class="iselector vertical vcenter hcenter" data-icon-type='4'>
+                        <div class="icon spot4"></div>
+                    </div>
+                    <div class="iselector vertical vcenter hcenter" data-icon-type='5'>
+                        <div class="icon spot5"></div>
+                    </div>
+                    <div class="iselector vertical vcenter hcenter" data-icon-type='6'>
+                        <div class="icon spot6"></div>
+                    </div>
+                    <div class="iselector vertical vcenter hcenter" data-icon-type='7'>
+                        <div class="icon spot7"></div>
+                    </div>
+                    <div class="iselector vertical vcenter hcenter" data-icon-type='8'>
+                        <div class="icon spot8"></div>
+                    </div>
+                    <div class="iselector vertical vcenter hcenter" data-icon-type='9'>
+                        <div class="icon spot9"></div>
+                    </div>
+                </div>
+            </div>
+            <div id="editor-switch-description-content" style="display:none">
+                <div class="input-wrap" style="padding:10px">
+                    <textarea placeholder="添加文字介绍" class="editor-textarea"></textarea>
+                </div>
+            </div>
+            <div id="editor-switch-mosaic-content" style="display:none;padding:10px;">
+                <div data-size="1" class="mosaic mosaic-small selected"></div>
+                <div data-size="2" class="mosaic mosaic-middle"></div>
+                <div data-size="3" class="mosaic mosaic-large"></div>
+            </div>
+            </div>
+            <div class="buttons margintop10">
+                <button class="btn gray flex1" id="sti-editor-cancel">取消</button>
+                <button class="btn red flex1" id="sti-editor-add">新增</button>
+            </div>
+        </div>
+
+
+
+        <!-- Debug -->
+        <div id="logger"></div>
+
+        <%for(var i in romaing){%>
+        <%}%>
+    </body>
+    <%if(platform.indexOf('wechat')>=0){%>
+        <%include panorama_wechat_sharing%>
+    <%}%>
+    <script>
+
+        var view_rx=0, view_rx=0, view_fov=0;
+        var position_x,position_y,position_z;
+        var add_flag=1;
+        var preview_clicking=false;
+        var scene_width;
+        var scene={
+            id:"<%=mainscene.id%>",
+            key:"<%=mainscene.key%>",
+            groupkey:"<%=groupKey%>"
+        };
+
+        function passRxandRy(rx, ry, fov, mouse_x, mouse_y, bool, width, height){
+            view_rx = -parseInt(rx)+0;
+            view_ry = -parseInt(ry)+0;
+            view_fov = fov;
+            var container_w = $('#sti-pano').width()+0;
+            var container_h = $('#sti-pano').height()+0;
+
+            position_x = rx;
+            position_y = ry;
+            
+            if(bool=="click"){
+
+                mouse_x = mouse_x*(container_w/width);
+                mouse_y = mouse_y*(container_h/height);
+
+                position_x = -(fov/container_w)*(container_w/2-mouse_x)-view_rx;
+                position_y = -(fov/container_w)*(container_h/2-mouse_y)-view_ry;
+
+                position_y = position_y>90?90:position_y;
+                position_y = position_y<-90?-90:position_y;
+                if($('.btn-mode-add').hasClass('selected')){
+                    editor.show();
+                }
+            }               
+        }
+
+
+
+
+        function setView(){
+            $.ajax({
+                type:'post',
+                url:'/scene/set_view?token=<%=token%>',
+                data:{
+                    key:"<%=mainscene.key%>",
+                    rx:view_rx,
+                    ry:view_ry,
+                    is_new:1
+                },
+                success:function(r){
+                    if(r.code!=0){
+                        $('.alert-wrap').css('visibility','visible');
+                        initAlert('alert',{
+                            title:"提示",
+                            content:'<div class="middle">'+r.msg+'</div>'
+                        });
+                        return;
+                    }
+
+                    $('.alert-wrap').css('visibility','visible');
+                    initAlert('alert',{
+                        title:"提示",
+                        content:'<div class="middle">设置默认视角成功</div>'
+                    });
+                }
+            });
+        }
+
+        function getSceneInfo(sceneKey){
+            if(sti.loaderDom){
+                sti.loaderDom.show();
+            }
+            <%if(mode=='viewer'&&maps.length!=0){%>
+                $('.map-spot').removeClass('current');
+                $('.map-spot[key="'+sceneKey+'"]').addClass('current');
+            <%}%>
+
+            $.ajax({
+                type:'GET',
+                url:'/scene?token=<%=token%>',
+                data:{
+                    scene_key:sceneKey,
+                    group_key:sti.groupKey,
+                    type:'json'
+                },
+                async:false,
+                timeout:3000,
+                success:function(r){
+                    if(r.code!=0){
+                        $('.alert-wrap').css('visibility','visible');
+                        initAlert('alert',{
+                            content:r.msg
+                        });
+                        return;
+                    }
+                    $('#title').text(r.title);
+                    <%if(platform.indexOf('wechat')>=0){%>
+                    configWechatSharing('http://wx.sz-sti.com/scene?key='+r.sceneKey,'<%=cdnImagesPath%>/scenes/'+r.sceneKey+'/allinone.jpg?imageMogr2/gravity/NorthWest/crop/!1024x1024a0a0/interlace/0/thumbnail/!10p',r.title);
+                    <%}%>
+
+                    r.advertisement=JSON.parse(filterXSS(unicode2Chr(r.advertisement),{whiteList:{div:[]}}));
+                    r.advertisement=r.advertisement?r.advertisement:'速腾聚创';
+                    r.top_ad='http://qncdn.sz-sti.com/images/tools/logo_ie.png';
+
+                    $('#visited').html(r.visited);
+
+                    sti.init(r,true);
+                },
+                error:function(r){
+                    alert('error');
+                }
+            });
+        }
+
+        var editor={
+            dom:$('#sti-editor'),
+            btnAdd:$('#sti-editor-add'),
+            btnCancel:$('#sti-editor-cancel'),
+            mode:'add',
+            data:{type:0}
+        };
+
+        var newspot = {};
+        var addspotname;
+
+        function newaddSpot(ath, atv, arrow_type, go_scene, text){
+            var data={
+                text:text,
+                position_x:ath,
+                position_y:atv,
+                position_z:0,
+                scene_id:scene.id,
+                is_new:1,
+                type:arrow_type,
+                groupkey:"<%=groupKey%>",
+                go_scene:go_scene
+            }
+
+            $.ajax({
+                type:'post',
+                url:'/scene/add_spot?token=<%=token%>',
+                data:data,
+                timeout:3000,
+                async:false,
+                success:function(r){
+                        if(<%if(platform.indexOf('pc')==-1){%>true<%}else{%>false<%}%>){
+                            $('.alert-wrap').css('visibility','visible');
+                            initAlert('alert',{
+                                title:"提示",
+                                content:'<div class="middle" style="font-size:20px;">'+r.msg+'</div>'
+                            });
+                        }else{
+                            alert(r.msg);
+                        }
+                        newspot[addspotname]=r.id;
+                        return;
+                },
+                error:function(){
+                    alert('Time out');
+                }
+            });
+        };
+
+
+
+        
+        window.onload = function() {
+            $('#loadTips').on('click',function(){
+                $(this).hide();
+            }); 
+            $('.tipsbox').on('click',function(e){
+                e.stopPropagation();
+            });
+            function tiphide(){
+                $('#loadTips').css('opacity','1').delay(3000).fadeOut(1000);
+            };
+            tiphide();
+        }
+        
+        function setTelphone(){
+            $('.setTelphone').show();
+        }
+        $('.setTelphone').on('click',function(){
+            $(this).hide();
+        });
+        $('.telphone-box').on('click',function(e){
+            e.stopPropagation();
+        });
+        $('.submitTel').on('click',function(e){
+            $.post('/romaing/tel',
+                {
+                    telephone:$('.telphone-num').val(),
+                    groupid:<%=group_info.id%>
+                },
+                function(res){
+                    if(res.code!=0){
+                        alert(res.msg);
+                    }
+                    if(!$('.telphone-num').val())
+                        krpano.call('setTelphone(<%=user_info.telephone%>)');
+                    else
+                        krpano.call('setTelphone('+$('.telphone-num').val()+')');
+                    setTimeout(function(){
+                        $('.setTelphone').hide();
+                    },200);
+                }
+            );
+        });
+
+        function setphone(){
+            $('.alert-wrap').css('visibility','visible');
+            initAlert('',{
+                title:'设置联系电话',
+                content:'<textarea class="input-tel" style="margin-bottom:10px;" type="tel" placeholder="请输入6位以上电话号码"><%=group_info.telephone%></textarea>',
+                buttons:[
+                {
+                    text:'取消'
+                },{
+                    text:'确定',
+                    color:'red',
+                    callBack:function(){
+
+                        $.post('/romaing/tel',
+                            {
+                                telephone:$('.input-tel').val(),
+                                groupid:<%=group_info.id%>
+                            },
+                            function(res){
+                                if(res.code!=0){
+                                    alert(res.msg);
+                                }
+                                if(!$('.input-tel').val())
+                                    krpano.call('setphone(<%=user_info.telephone%>)');
+                                else
+                                    krpano.call('setphone('+$('.input-tel').val()+')');
+                                setTimeout(function(){
+                                    $('.alert-wrap').css('visibility','hidden');
+                                },100);
+                            }
+                        );
+                    }
+                }
+                ]
+            });
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        function add_comment(ath, atv, size){
+            $.ajax({
+                type:'POST',
+                url:'/scene/add_comment?token=<%=token%>',
+                data:{
+                    position_x:ath,
+                    position_y:atv,
+                    position_z:0,
+                    reply_id:0,
+                    scene_key:'<%=sceneKey%>',
+                    group_key:"<%=groupKey%>",
+                    is_new:1,
+                    //type:editor.data.type,
+                    type:7,
+                    is_description:0,
+                    is_mosaic:size
+                },
+                timeout:3000,
+                async:false,
+                success:function(r){
+                    if(r.code!=0){
+                        $('.alert-wrap').css('visibility','visible');
+                        initAlert('alert',{
+                            title:"提示",
+                            content:'<div class="middle" style="font-size:20px;">'+r.msg+'</div>'
+                        });
+                    }else{
+                        newspot[addspotname]=r.id;
+                        $('.alert-wrap').css('visibility','visible');
+                        initAlert('alert',{
+                            title:"提示",
+                            content:'<div class="middle" style="font-size:20px;">添加马赛克成功</div>'
+                        });
+                    }
+                    return;
+                },
+                error:function(){
+                    $('.alert-wrap').css('visibility','visible');
+                    initAlert('alert',{
+                        title:"提示",
+                        content:'<div class="middle" style="font-size:20px;">error</div>'
+                    });
+                    return;
+                }
+            });
+            return;
+        }
+
+
+        function deleteComment(id,name){
+
+                if(isNaN(id))id=newspot[id];
+
+                // if(confirm('是否删除该马赛克')){
+                    $.ajax({
+                        type:'post',
+                        url:'/scene/delete_comment?token=<%=token%>',
+                        data:{
+                            group_key:'<%=groupKey%>',
+                            scene_id:'<%=sceneKey%>',
+                            comment_id:id
+                        },
+                        async:false,
+                        timeout:3000,
+                        success:function(r){
+                            $('.alert-wrap').css('visibility','visible');
+                            initAlert('alert',{
+                                title:"提示",
+                                content:'<div class="middle" style="font-size:20px;">'+r.msg+'</div>'
+                            });
+                            return;
+                        },
+                        error:function(){
+                            $('.alert-wrap').css('visibility','visible');
+                            initAlert('alert',{
+                                title:"提示",
+                                content:'<div class="middle" style="font-size:20px;">connect error</div>'
+                            });
+                        }
+                    });
+                    return;
+                // }
+            }
+
+        function savename(newname){
+            if(newname&&!newspot[newname]){
+                addspotname = newname;
+            }
+        }
+
+
+        function deleteSpot(linkid, name){
+            
+            if(isNaN(linkid))linkid=newspot[linkid];
+
+            $.ajax({
+                type:'post',
+                url:'/scene/delete_spot?token=<%=token%>',
+                data:{
+                    link_id:linkid,
+                    scene_id:scene.id,
+                    scene_key:scene.key,
+                    groupkey:scene.groupkey
+                },
+                async:false,
+                timeout:3000,
+                success:function(r){
+                    if(r.code==0){
+                        krpano.call('copy(hotspot['+name+'].visible, false);show_delete_menu(false);');
+                        $('.alert-wrap').css('visibility','visible');
+                        initAlert('alert',{
+                            title:"删除成功",
+                            content:'<div class="middle">'+r.msg+'</div>'
+                        });
+                        return;
+                    }
+                    // $('#spot_'+editor.data.id).closest('.sprite').remove();
+                },
+                error:function(){
+                    $('.alert-wrap').css('visibility','visible');
+                    initAlert('alert',{
+                        title:"删除成功",
+                        content:'<div class="middle">连接超时</div>'
+                    });
+                }
+            });
+        }
+
+        editor.show=function(dom){
+            editor.dom.show();
+            editor.dom.find('.item').removeClass('checked');
+            editor.dom.find('.iselector').removeClass('checked');
+
+            if(dom){
+                var matrix=text2Matrix(dom.closest('.sprite').css('-webkit-transform'));
+                editor.data={
+                    id:dom.attr('data-id'),
+                    scene:dom.attr('data-scene'),
+                    type:dom.attr('data-type'),
+                    text:dom.attr('data-text'),
+                    x:sti.cubeSize/2-matrix[12],
+                    y:sti.cubeSize/2-matrix[13],
+                    z:-matrix[14]
+                }
+
+                editor.dom.find('.item[data-scene="'+sti.editor.data.scene+'"]').each(function(){
+                        $(this).addClass('checked');
+                        editor.dom.find('.romaing-input').val(editor.data.text);
+                        editor.dom.find('.iselector[data-icon-type="'+editor.data.type+'"]').addClass('checked');
+                });
+            }else{
+                editor.dom.find('.item').eq(0).addClass('checked');
+                editor.dom.find('.romaing-input').val(editor.dom.find('.item').attr('data-name'));
+                editor.dom.find('.iselector').eq(0).addClass('checked');
+            }
+            editor.dom.css('visibility','visible');
+        }
+        editor.hide=function(){
+            editor.dom.hide();
+            editor.dom.find('.item').removeClass('checked');
+        }
+        editor.addSpot=function(){
+            // if(!editor.dom.hasClass('show')){
+            //     return;
+            // }
+            $('.iselector').each(function(){
+                if($(this).hasClass('checked')){
+                    editor.data.type=$(this).attr('data-icon-type');
+                }
+            });
+            editor.data.text=editor.dom.find('.romaing-input').val();
+            editor.data.position_x=position_x;
+            editor.data.position_y=position_y;
+            editor.data.position_z=0;
+            editor.data.scene_id=scene.id;
+            editor.data.is_new=1;
+            editor.data.groupkey="<%=groupKey%>";
+            editor.data.go_scene=editor.dom.find('.item.checked').attr('data-id');
+
+            if($('.editor-switch-description').hasClass('on')||$('.editor-switch-mosaic').hasClass('on')){
+
+                var text=$('.editor-switch-description').hasClass('on')?$('.editor-textarea').val():'';
+                $.ajax({
+                    type:'POST',
+                    url:'/scene/add_comment?token=<%=token%>',
+                    data:{
+                        position_x:position_x,
+                        position_y:position_y,
+                        position_z:0,
+                        reply_id:0,
+                        scene_key:'<%=sceneKey%>',
+                        group_key:'<%=groupKey%>',
+                        text:text,
+                        //type:editor.data.type,
+                        type:7,
+                        is_new:1,
+                        is_description:$('.editor-switch-description').hasClass('on')?1:0,
+                        is_mosaic:$('.editor-switch-mosaic').hasClass('on')?$('.mosaic.selected').attr('data-size'):0
+                    },
+                    timeout:3000,
+                    async:false,
+                    success:function(r){
+                        if(r.code!=0){
+                            $('.alert-wrap').css('visibility','visible');
+                            initAlert('alert',{
+                                title:"提示",
+                                content:'<div class="middle" style="font-size:20px;">删除成功</div>'
+                            });
+                        }else{
+                            removepano("stipano");
+                            embedpano({swf:"tour.swf", xml:"/scene/editor-panoxml?scene_key=<%=sceneKey%>&width="+scene_width+"&rx="+position_x+"&ry="+position_y, target:"sti-pano", html5:"prefer", id:"stipano", passQueryParameters:true});
+                            krpano = document.getElementById("stipano"); 
+                            krpano.set("deleteable", true);
+                            $('.btn-mode-add').addClass('selected');
+                            $('.btn-mode-del').removeClass('selected');
+                        }
+                        editor.hide();
+                    },
+                    error:function(){
+                        $('.alert-wrap').css('visibility','visible');
+                        initAlert('alert',{
+                            title:"提示",
+                            content:'<div class="middle" style="font-size:20px;">error</div>'
+                        });
+                        return;
+                    }
+                });
+                return;
+            }
+
+            $.ajax({
+                type:'post',
+                url:'/scene/add_spot?token=<%=token%>',
+                data:editor.data,
+                timeout:3000,
+                async:false,
+                success:function(r){
+                    if(r.code!=0){
+                        $('.alert-wrap').css('visibility','visible');
+                        initAlert('alert',{
+                            content:r.msg
+                        });
+                        return;
+                    }
+                    removepano("stipano");
+                    embedpano({swf:"tour.swf", xml:"/scene/editor-panoxml?scene_key=<%=sceneKey%>&width="+scene_width+"&rx="+position_x+"&ry="+position_y, target:"sti-pano", html5:"prefer", id:"stipano", passQueryParameters:true});
+                    krpano = document.getElementById("stipano"); 
+                    krpano.set("deleteable", true);
+                    $('.btn-mode-add').addClass('selected');
+                    $('.btn-mode-del').removeClass('selected');
+                    editor.hide();
+                },
+                error:function(){
+                    alert('Time out');
+                }
+            });
+        }
+
+
+        $('.slider-scroller').width($('.slider').size()*90);
+
+        editor.deleteSpot=function(){
+            if(editor.data['dom-id'].indexOf('comment')!=-1){
+                $.ajax({
+                    type:'post',
+                    url:'/scene/delete_comment?token=<%=token%>',
+                    data:{
+                        group_key:sti.groupKey,
+                        scene_id:sti.scene_id,
+                        comment_id:editor.data.id
+                    },
+                    async:false,
+                    timeout:3000,
+                    success:function(r){
+                        if(r.code!=0){
+                            $('.alert-wrap').css('visibility','visible');
+                            initAlert('alert',{
+                                content:r.msg
+                            });
+                            return;
+                        }
+                        $("#"+editor.data['dom-id']).closest('.sprite').remove();
+                    },
+                    error:function(){
+                        initAlert('alert',{
+                            content:'error'
+                        });
+                    }
+                });
+                return;
+            }
+            $.ajax({
+                type:'post',
+                url:'/scene/delete_spot?token=<%=token%>',
+                data:{
+                    link_id:editor.data.id,
+                    scene_id:sti.scene_id,
+                    scene_key:sti.sceneKey,
+                    groupkey:sti.groupKey
+                },
+                async:false,
+                timeout:3000,
+                success:function(r){
+                    if(r.code!=0){
+                        $('.alert-wrap').css('visibility','visible');
+                        initAlert('alert',{
+                            content:r.msg
+                        });
+                        return;
+                    }
+                    $('#spot_'+editor.data.id).closest('.sprite').remove();
+                    editor.hide();
+                },
+                error:function(){
+                    alert('连接超时');
+                }
+            });
+        }
+        editor.changeScene=function(){
+            editor.dom.find('.item').removeClass('checked');
+
+            var self=$(this);
+            self.addClass('checked');
+            editor.dom.find('.romaing-input').val(self.attr('data-name'));
+            //editor.dom.find('.iselector').removeClass('checked');
+            //editor.dom.find('.iselector').eq(0).addClass('checked');
+
+        }
+        editor.changeIcon=function(){
+            editor.dom.find('.iselector').removeClass('checked');
+            $(this).addClass('checked');
+        }
+
+        function changeScene(key){
+            $('#switch-maps').removeClass('on');
+            $('#switch-maps').addClass('off');
+            $('.maps-wrap').hide();
+            sti.sceneKey=key;
+            $('.map-spot').removeClass('current');
+            $(this).addClass('current');
+            getSceneInfo(sti.sceneKey);
+        }
+
+        function editorSwitch(){
+            $('.editor-switch').removeClass('on');
+            $('.editor-switch').addClass('off');
+            $(this).addClass('on');
+            if($(this).hasClass('editor-switch-romaing')){
+                $('#editor-switch-romaing-content').show();
+                $('#editor-switch-mosaic-content').hide();
+                $('#editor-switch-description-content').hide();
+            }else if($(this).hasClass('editor-switch-description')){
+                $('#editor-switch-romaing-content').hide();
+                $('#editor-switch-mosaic-content').hide();
+                $('#editor-switch-description-content').show();
+            }else if($(this).hasClass('editor-switch-mosaic')){
+                $('#editor-switch-romaing-content').hide();
+                $('#editor-switch-description-content').hide();
+                $('#editor-switch-mosaic-content').show();
+            }
+        }
+
+        function sliderSwitch(){
+            if($('.slider-wrap').hasClass('show')){
+                $('.slider-wrap').removeClass('show');
+            }else{
+                $('.slider-wrap').addClass('show');
+            }
+        }
+
+        function sliderClick(){
+            location.href='/scene?key='+$(this).attr('data-key');
+        }
+
+        function mosaicSwitch(){
+            $('.mosaic').removeClass('selected');
+            $(this).addClass('selected');
+        }
+
+        var preview_x=0;
+        var preview_y=0;
+
+        // function previewMousemove(e){
+        //     if(preview_clicking){
+        //         $('.preview-pointer').hide();
+        //         editor.hide();
+        //     }
+        // }
+
+        $('.slider-btn').on('click',sliderSwitch);
+        $('.slider').on('click',sliderClick);
+        editor.btnCancel.on('click',editor.hide);
+        editor.btnAdd.on('click',editor.addSpot);
+        editor.dom.find('.item').on('click',editor.changeScene);
+        editor.dom.find('.iselector').on('click',editor.changeIcon);
+        $('.btn-mode-add').on('click',switchMode);
+        $('.btn-mode-del').on('click',switchMode);
+        $('.btn-view').on('click',setView);
+        $('.editor-switch').on('click',editorSwitch);
+        $('.mosaic').on('click',mosaicSwitch);
+
+
+            // bindClick($('.slider-btn'),sliderSwitch);
+            // bindClick(editor.btnCancel,editor.hide);
+            // bindClick(editor.btnAdd,editor.addSpot);
+            // bindClick(editor.dom.find('.item'),editor.changeScene);
+            // bindClick(editor.dom.find('.iselector'),editor.changeIcon);
+            // bindClick($('.btn-mode-add'),switchMode);
+            // bindClick($('.btn-mode-del'),switchMode);
+            // bindClick($('.btn-view'),setView);
+
+            // bindClick($('.slider'),sliderClick);
+            // bindClick($('.editor-switch'),editorSwitch);
+            // bindClick($('.mosaic'),mosaicSwitch);
+
+        var advertisement='';
+        advertisement=advertisement?advertisement:'速腾聚创';
+
+        var top_ad='http://qncdn.sz-sti.com/images/tools/logo_ie.png';
+
+        var maxfov=120;
+        var minfov=90;
+        var fov=110;
+
+        var moveRatio=0.3;
+        if(isIpad()){
+            moveRatio=0.2;
+        }
+
+        scene_width = <%=infowidth%>;
+
+        embedpano({swf:"tour.swf", xml:"/scene/editor-panoxml?scene_key=<%=sceneKey%>&width=<%=infowidth%>&simple=<%=simple%>&platform=<%=platform%>", target:"sti-pano", html5:"prefer", id:"stipano", passQueryParameters:true});
+
+        var krpano = document.getElementById("stipano"); 
+        krpano.set("deleteable", true);
+
+        function switchMode(){
+            $('.preview-pointer').hide();
+            editor.hide();
+            $('.btn-mode-add').removeClass('selected');
+            $('.btn-mode-del').removeClass('selected');
+            $(this).addClass('selected');
+            editor.mode=$(this)[0].className.indexOf('add')>=0?'add':'del';
+            if(editor.mode=='add'){
+                $('.comment').removeClass('deleteable');
+                krpano.set("deleteable", true);
+            }else{
+                $('.comment').addClass('deleteable');
+                krpano.set("deleteable", false);
+            }
+        }
+
+        <%if(mode=='viewer'){%>
+        var maps=JSON.parse('<%-JSON.stringify(maps)%>')
+        var switchConfig={
+            cdnImagesPath:'<%-cdnImagesPath%>',
+            curSceneKey:'<%=sceneKey%>',
+            audio:{
+                status:true,
+                value:'<%-cdnImagesPath%>/tools/785.mp3'
+            },
+            introduction:{
+                status:false,
+                value:"<%-introduction%>"
+            },
+            rotate:{
+                status:true,
+                value:0.1
+            },
+            maps:maps,
+            telephone:'<%=group_info.telephone%>'
+        };
+        initSwitches(switchConfig);
+        var sliderConfig={
+            cdnImagesPath:'<%=cdnImagesPath%>',
+            romaing:JSON.parse(<%-JSON.stringify(romaing)%>)
+        };
+        initSlider(sliderConfig);
+        <%}%>
+    </script>
+</html>

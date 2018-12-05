@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+    <title><%=title%></title>
+		<meta charset="utf-8">
+        <meta name="format-detection" content="telephone=no">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="/css/common.css?v=<%=version%>">
+	</head>
+	<body ondrag="return false">
+    <script src="<%=cdnJsPath%>/zepto.min.js?v=<%=libVersion%>"></script>
+    <%include alert%>
+    <div class="vertical h100">
+        <%include header%>
+        <div class="margintop10">
+            <input id="input-file" type="file">
+        </div>
+        <div class="buttons">
+            <button class="btn grap flex1 vcenter hcenter btn-up">上传</button>
+        </div>
+    </div>
+    <script src="/js/sti-common.min.js?<%=version%>"></script>
+    </body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+    <title><%=title%></title>
+		<meta charset="utf-8">
+        <meta name="format-detection" content="telephone=no">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="/css/common.css?v=<%=version%>">
+        <style>
+            .romaing-title{height:40px;font-size:15px;text-align:center;line-height:40px;}
+        </style>
+	</head>
+	<body ondrag="return false">
+    <script src="<%=cdnJsPath%>/zepto.min.js?v=<%=libVersion%>"></script>
+    <script src="/js/sti-common.min.js?<%=version%>"></script>
+    <%include alert%>
+    <div class="vertical h100">
+        <%include header%>
+        <div class="scene-list flex1 overflow">
+            <%for(var i in romaing){%>
+            <div class="item lightgray">
+                <div class="groupname" data-groupkey="<%=romaing[i].key%>">
+                    <%=romaing[i].name%>
+                </div>
+            </div>
+            <%}%>
+            <div class="padding10" style="font-size:12px;">
+                提示：已添加的漫游会在漫游列表中显示,单个场景无法创建漫游
+            </div>
+        </div>
+    </div>
+    <script>
+    $(function(){
+            $('.item').click(function(){
+                var groupkey=$(this).find('.groupname').attr('data-groupkey');
+                $.post('/romaing/new',{groupkey:groupkey},function(result){
+                        if(result.code==0){
+                        location.href='/romaing/list?groupkey='+groupkey+'<%if(platform=='android-app'||platform=='ios-app'){%>&platform=<%=platform%><%}%>';
+                        }else{
+                            alert(result.msg);
+                        }
+                    });
+            });
+    });
+    </script>
+    </body>
+</html>

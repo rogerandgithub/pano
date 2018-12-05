@@ -1,0 +1,30 @@
+<div id="toastbox">
+    <my-component :msg="msg" :showalert="showalert" :iserror="iserror"></my-component>
+</div>
+
+<script type="text/javascript">
+    Vue.component('my-component', Vue.extend({
+        props: ['msg', 'showalert', 'iserror'],
+        template: '<div id="toast" class="alert" transition="toast" v-show="showalert" v-bind:class="{ warning: iserror, success: !iserror }" role="alert">{{msg}}</div>'
+    }));
+
+    var toast = new Vue({
+        el: '#toastbox',
+        data: {
+            msg: '[error]: No msg！',
+            showalert: false,
+            iserror: false
+        },
+        methods: {
+            showmsg: function(msg, iserror){
+                this.msg = msg;
+                this.showalert = true;
+                iserror?this.iserror = true:this.iserror = false;
+                var _this = this;
+                setTimeout(function(){
+                    _this.showalert = false;
+                }, 800);
+            }
+        }
+    });  
+</script>

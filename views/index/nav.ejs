@@ -1,0 +1,136 @@
+<script type="text/javascript" src="/index/js/jquery-2.2.4.min.js"></script>
+<script type="text/javascript" src="/index/js/smooth-scroll.min.js"></script>
+<script src="/index/js/Vue.min.js"></script>
+<script src="/index/js/move.js"></script>
+<style type="text/css">
+    #backtop{
+        position: fixed;
+        right: 60px;
+        bottom: 60px;
+        width: 60px;
+        z-index: 9999;
+        cursor: pointer;
+    }
+    #backtop img{
+        display: block;
+        width: 100%;
+    }
+</style>
+<div id="backtop">
+    <img src="/index/images/backtop.png">
+</div>
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?d83330e7d7e017536f325698f7a0c3df";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+<script type="text/javascript">
+    $('#backtop').on('click',function(){
+        $.smoothScroll({
+            scrollTarget: 'html',
+            speed: 1200
+        });
+    })
+    Vue.component('navtop', Vue.extend({
+        template:   '<div id="header">\
+                        <div id="nav" class="{{border}}">\
+                            <h2 class="logo fl">\
+                                <a class="robosense" href="/web/main/<%=lang%>"><img src="http://qncdn.sz-sti.com/images/icon/logo.png" alt="速腾聚创logo"></a>\
+                            </h2>\
+                            <p class="menu">\
+                                <a href="/web/rslidar/<%=lang%>" v-text="langdata.navtop.rslidar"></a>\
+                                <a href="/web/three-dimensional/<%=lang%>" v-text="langdata.navtop.threedimensional"></a>\
+                                <a href="/web/company/<%=lang%>" v-text="langdata.navtop.company"></a>\
+                                <a href="/web/contact/<%=lang%>" v-text="langdata.navtop.contact"></a>\
+                                <a href="/web/news/<%=lang%>" v-text="langdata.navtop.news"></a>\
+                                <a href="/web/resource/<%=lang%>" v-text="langdata.navtop.resource"></a>\
+                                <a href="/web/recruitment/<%=lang%>" v-text="langdata.navtop.recruit"></a>\
+                                <a target="_blank" href="http://robopano.com/" v-text="langdata.navtop.Subsidiary"></a>\
+                            </p>\
+                            <div class="fr changeLang" @mouseover="showlangover()" @mouseout="hidelangout()">\
+                                <a href="javascript:;"><img :src="langlist.<%=lang%>" /></a>\
+                                <div id="langlist" transition="lang" v-show="showlang" @mouseover="showlangover()" @mouseout="hidelangout()">\
+                                    <a class="lang" @click.stop="togglelang()"><img :src="langlist.<%=lang=="cn"?"en":"cn"%>" /></a>\
+                                </div>\
+                            </div>\
+                        </div>\
+                        <slot name="item-menu"></slot>\
+                        <slot name="navbottom"></slot>\
+                    </div>',
+        props: ['border'],
+        data: function(){
+            return { 
+                showlang: false,
+                langlist: {'cn':'/index/images/icon/chinese.png','en':'/index/images/icon/english.png'},
+                langdata: <%-include("nav_lang_"+lang, {lang: lang})%>,
+                key: '<%=lang%>',
+                timer: null,
+                isActive: {
+                    rslidar: false,
+                    threedimensional: false,
+                    company: false,
+                    contact: false,
+                    news: false,
+                    resource: false,
+                    recruitment: false
+                }
+            }
+        },
+        methods: {
+            togglelang: function(){
+                this.showlang = false;
+                if(this.key == 'cn'){
+                    location.href = location.href.replace('/cn', '/en');
+                }else{
+                    location.href = location.href.replace('/en', '/cn');
+                }
+            },
+            showlangover: function(){
+                clearTimeout(this.timer);
+                this.showlang = true;
+                this.timer = null;
+            },
+            hidelangout: function(){
+                clearTimeout(this.timer);
+                var _this = this;
+                this.timer = setTimeout(function(){
+                    _this.showlang = false;
+                },600); 
+            },
+            setCookie: function(value){
+                var Days = 30;
+                var exp = new Date();
+                exp.setTime(exp.getTime() + Days*24*60*60*1000);
+                document.cookie = "language="+ escape (value) + ";expires=" + exp.toGMTString();
+            },
+            getCookie: function(name){
+                var arr,reg=new RegExp("(^| )language=([^;]*)(;|$)");
+                if(arr=document.cookie.match(reg)){
+                    return unescape(arr[2]);
+                }else{
+                    return null;
+                }
+            }
+        }
+    }));
+</script>
+<script>
+    $(function(){
+        window.onscroll = function () { 
+            var t = document.documentElement.scrollTop || document.body.scrollTop;
+            if (t > 69) { 
+                move("#navtop").ease('snap').set('top','-60px').end();
+                move("#header").ease('snap').set('top',0).end();
+            }else{ 
+                move("#navtop").ease('snap').set('top','0px').end(); 
+                move("#header").ease('snap').set('top','60px').end(); 
+            } 
+        }
+    })
+</script>

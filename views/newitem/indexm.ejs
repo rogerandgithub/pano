@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>STi 速腾聚创 后台</title>
+		<meta charset="utf-8">
+        <meta name="format-detection" content="telephone=no">
+		<meta name="viewport" content="width=device-width, user-scalable=no">
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <link rel="stylesheet" type="text/css" href="/css/newitem/suteng.css">
+        <link rel="stylesheet" type="text/css" href="/css/newitem/reset.css">
+        <link rel="stylesheet" type="text/css" href="/css/newitem/common.css">
+        <link href="/css/newitem/icons.css" rel="stylesheet" type="text/css" />
+        <script src="/js/newitem/vue.min.js"></script>
+        <script src="/js/newitem/qrcode.min.js"></script>
+        <script src="/js/newitem/jquery-2.2.4.min.js"></script>
+        <script src="/js/template-native.js?v=<%=version%>"></script>
+	</head>
+<body id="index">
+
+    <%include toast%>
+    <%include trash%>
+    <!-- 计费弹窗 start -->
+    <div class="a_alert">
+        <div class="alert_left">
+            <i class="alert_icon"></i>
+        </div>
+        <div class="alert_right">
+            <div class="alert_close">
+                <span>&nbsp; 关闭&nbsp; </span>
+                <span class="line"></span>
+                <span>x&nbsp;&nbsp;</span>
+            </div>
+            <div class="alert_msg">
+                <p class="alert_title">系统提示：</p>
+                <p class="alert_content">您好，您的VIP会员功能将于 <span id="alert_les"></span> 天后到期，为保障您的正常使用，请您及时充值</p>
+            </div>
+        </div>
+    </div>
+    <!-- 计费弹窗 end -->
+
+    <div class="sti-container" id="sti-container">
+
+        <div class="nav">
+            <div class="logo icon"></div>
+            <div class="nav-item">
+                <a href="http://www.sz-sti.com">官网链接</a>
+                <a href="javascript:;" class="download" @click="appdownload">APP下载</a>
+                <a href="/newitem/logout">账号注销</a>
+            </div>
+        </div>
+
+        <div class="menu">
+            <a href="/panoitem" class="romaing"><span class="icon romaingbg"></span><span class="title">作品列表</span></a>
+            <a href="/setitem" class="globalset"><span class="icon searchbg"></span><span class="title">全局设置</span></a>
+            <a href="/appitem" class="appdownload"><span class="icon setallbg"></span><span class="title">APP下载</span></a>
+            <a href="/useritem#/index" class="personal-center"><span class="icon managementbg"></span><span class="title">个人中心</span></a>
+        </div>
+
+        <ul id="lists">
+            <li><a href="javascript:;" class="video-course" @click="showvideo"></a></li>
+            <li><a href="tencent://message/?uin=3033371239&Site=&menu=yes" class="contact-service"></a></li>
+        </ul>
+        
+    </div>
+
+    <!--二维码弹窗 start-->
+    <div id="qrtoast" class="toast-content" transition="qrtoast" v-show="showqrtoast">
+        <span><i class="close-pop ico-close" @click="hide"></i></span>
+        <div class="toast-center-wrapper" style="width:500px;">
+            <div>
+                <div id="qrcoder" class="toast-body">
+                    <p>
+                        <!-- <a href="javascript:;" class="qrcode iosQrcode" @click="changetoF"></a>
+                        <a href="javascript:;" class="qrcode andriodQrcode" @click="changetoS"></a> -->
+                    </p>
+                    <div class="qrcodeBox">
+                        <img :src="iosURL" />
+                        <img :src="andriodURL" />
+                    </div>
+                </div>
+                <div class="m-footer">
+                    <h6 class="text-center" v-text="panoname"></h6>
+                    <p class="text-center">用手机 “扫一扫”，即可下载该APP</p>
+                </div>
+            </div>
+        </div>   
+    </div>
+    <!--二维码弹窗 end-->
+
+    <!--视频教程弹窗 start-->
+    <div id="videotoast" class="toast-content-half" transition="qrtoast" v-show="showvideo">
+        <span><i class="close-pop ico-close" @click="hide"></i></span>
+        <div class="toast-center-wrapper">
+            <div>
+                <div id="vediocoder" class="toast-body">
+                    <div class="videowrap clearfix" v-show="showwrap">
+                        <div class="videobox" @click="handleurl">
+                            <img src="../images/newitem/icons/handle.png" />
+                            <p>IPANO操作视频演绎</p>
+                        </div>
+                        <div class="videobox" @click="mobileurl">
+                            <img src="../images/newitem/icons/mobile.png" />
+                            <p>IPANO各项功能介绍<br/>（手机版）</p>
+                        </div>
+                        <div class="videobox" @click="cpturl">
+                            <img src="../images/newitem/icons/computer.png" />
+                            <p>IPANO各项功能介绍<br/>（电脑版）</p>
+                        </div>
+                    </div>
+                    <div class="youkubox" v-show="showyouku">
+                        <iframe height="300" width="100%" :src="videourl" style="background:#fff;" frameborder=0 allowfullscreen></iframe>
+                        <a class="cancel" href="javascript:;" @click="show">取消</a>
+                    </div>
+                </div>
+            </div>
+        </div>   
+    </div>
+    <!--视频教程弹窗 end-->
+
+    <script>
+    var qrtoast = new Vue({
+        el: '#qrtoast',
+        data: {
+            showqrtoast: false,
+            panoname:'IPANO最新版APP',
+            count:1,
+            andriodURL:'/images/newitem/android.png',
+            iosURL:'/images/newitem/ios.png'
+        },
+        methods: {
+            hide: function(){
+                this.showqrtoast = false;
+            }
+        }
+    });
+    var videotoast = new Vue({
+        el:'#videotoast',
+        data:{
+            showvideo:false,
+            showwrap:true,
+            showyouku:false,
+            videourl:''
+        },
+        methods:{
+            hide: function(){
+                this.showvideo = false;
+            },
+            show: function(){
+                this.showwrap = true;
+                this.showyouku = false;
+            },
+            changebox: function(){
+                this.showwrap = false;
+                this.showyouku = true;
+            },
+            handleurl: function(){
+                this.changebox();
+                this.videourl = 'http://player.youku.com/embed/XMTUxODM5MTgxMg==';
+            },
+            mobileurl: function(){
+                this.changebox();
+                this.videourl = 'http://player.youku.com/embed/XMTUxODIzNDAwMA==';
+            },
+            cpturl: function(){
+                this.changebox();
+                this.videourl = 'http://player.youku.com/embed/XMTUxODIxNTcwOA==';
+            }
+        }
+    })
+    var stiContainer = new Vue({
+        el:'#sti-container',
+        methods:{
+            appdownload: function(){
+                qrtoast.showqrtoast = true;
+            },
+            showvideo: function(){
+                videotoast.showvideo = true;
+            }
+        }
+    });
+    </script>
+    
+</body>
+</html>

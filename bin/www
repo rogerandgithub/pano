@@ -1,0 +1,32 @@
+#!/usr/bin/env node
+
+var debug = require('debug')('hello');
+var app = require('../app');
+var config = require('../routes/config');
+var fs = require('fs');
+var https = require('https');
+
+app.set('port', config.port || 80);
+
+var server = app.listen(app.get('port'), function() {
+    console.log('Express server listening on port ' + server.address().port);
+});
+
+//ssl证书
+
+var option = {
+    key: fs.readFileSync('./https_cert/wx.sz-sti.com.key'),
+    cert: fs.readFileSync('./https_cert/wx.sz-sti.com.crt'),
+    ca: fs.readFileSync('./https_cert/root_bundle.crt')
+};
+
+
+// var option = {
+//     key: fs.readFileSync('./https_cert/1_full_eallwd.key'),
+//     cert: fs.readFileSync('./https_cert/1_full_eallwd.pem')
+// };
+
+
+
+var httpsserver = https.createServer(option, app).listen(443);
+

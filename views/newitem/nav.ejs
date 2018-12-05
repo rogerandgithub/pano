@@ -1,0 +1,667 @@
+<script src="/js/newitem/jquery-2.2.4.min.js"></script>
+<script src="/js/qnuploader.js"></script>
+<script src="/js/pdfobject.js"></script>
+<div id="sidebar-nav" @click.stop :class="{display:display}">
+    <div class="logo-wrapper">
+        <a href="/panoitem"><img class="logo-img" src="/images/newitem/icons/robopanologo.png" /></a>
+    </div>
+    <div class="user-name">
+        <input id="avatar_input" style="display:none;" type="file" @change="avatarchange">
+        <!-- <h2 class="avatar" @click="uploadavatar">
+            <img :src="avatarpic" v-if="!showstatus" />
+            <p v-if="showstatus" v-text="avatarstatus"></p>
+        </h2> -->
+        <p v-text="username"></p>
+    </div>
+    <div class="search" v-if="issearch1&&issearch2">
+        <div class="search-input-wrapper">
+            <i class="icon-search"></i><input type="text" placeholder="搜索用户名" v-model="name" @keyup="keyup | debounce 800" @focus="this.showchildren = true;" @blur="showchildren = false">
+            <ul class="searchbox" transition="onehalf" v-show="showchildren">
+                <li @click="selectchild()">all全部</li>
+                <li v-for="user in children | filterBy name" v-text="user" @click="selectchild(user)"></li>
+            </ul>
+        </div>
+    </div>
+    <ul id="dashboard-menu">
+        <li :class="{active:current.pano}" @mouseover="showtips('panoitem')" @mouseout="hidetips('panoitem')">
+            <div class="pointer" v-if="current.pano"></div>
+            <a :href="href.panoitem">
+                <span v-text="navtext.panoitem"></span>
+            </a>
+        </li>
+        <li :class="{active:current.merge}" v-if="showmerge" @mouseover="showtips('mergeitem')" @mouseout="hidetips('mergeitem')">
+            <div class="pointer" v-if="current.merge"></div>
+            <a :href="href.mergeitem">
+                <span v-text="navtext.mergeitem"></span>
+            </a>
+        </li>
+        <li :class="{active:current.set}" @mouseover="showtips('setitem')" @mouseout="hidetips('setitem')">
+            <div class="pointer" v-if="current.set"></div>
+            <a :href="href.setitem">
+                <span v-text="navtext.setitem"></span>
+            </a>
+        </li>
+        <li :class="{active:current.center}" @mouseover="showtips('useritem')" @mouseout="hidetips('useritem')">
+            <div class="pointer" v-if="current.center"></div>
+            <a href="/useritem">
+                <span v-text="navtext.useritem"></span>
+            </a>
+        </li>
+        <li :class="{active:current.app}" @mouseover="showtips('appitem')" @mouseout="hidetips('appitem')">
+            <div class="pointer" v-if="current.app"></div>
+            <a :href="href.appitem">
+                <span v-text="navtext.appitem"></span>
+            </a>
+        </li>
+    </ul>
+</div>
+<div id="navtips">
+    <ul>
+        <li v-show="tips.panoitem" v-text="navtext.panoitem"></li>
+        <li v-show="tips.mergeitem" v-text="navtext.mergeitem"></li>
+        <li v-show="tips.setitem" v-text="navtext.setitem"></li>
+        <li v-show="tips.useritem" v-text="navtext.useritem"></li>
+        <li v-show="tips.appitem" v-text="navtext.appitem"></li>
+    </ul>
+</div>
+<!--视频教程弹窗 start-->
+<div id="videotoast" :style="styleZindex" class="toast-content-half z-index" transition="qrtoast" v-show="showvideo" @click="hide">
+    <!-- <span><i class="close-pop ico-close" @click="hide"></i></span> -->
+    <div class="toast-center-wrapper" @click.stop>
+        <div>
+            <div id="vediocoder" class="toast-body">
+                <div class="videowrap clearfix" v-show="showwrap">
+                    <div class="videobox" @click="handleurl">
+                        <img src="/images/newitem/icons/handle.png" />
+                        <p>IPANO操作视频演绎</p>
+                    </div>
+                    <div class="videobox" @click="mobileurl">
+                        <img src="/images/newitem/icons/mobile.png" />
+                        <p>IPANO各项功能介绍<br/>（手机版）</p>
+                    </div>
+                    <div class="videobox" @click="cpturl">
+                        <img src="/images/newitem/icons/computer.png" />
+                        <p>IPANO各项功能介绍<br/>（电脑版）</p>
+                    </div>
+                </div>
+                <div class="youkubox" v-show="showyouku">
+                    <iframe height="300" width="100%" :src="videourl" style="background:#fff;" frameborder=0 allowfullscreen></iframe>
+                    <a class="cancel" href="javascript:;" @click="show">取消</a>
+                </div>
+            </div>
+        </div>
+    </div>   
+</div>
+<!--视频教程弹窗 end-->
+<div id="noticetoast" :style="styleZindex" class="toast-content-half z-index" transition="qrtoast" v-show="shownotice" @click="hide">
+    <!-- <span><i class="close-pop ico-close" @click="hide"></i></span> -->
+    <div class="notice-wrapper" @click.stop>
+        <div class="tiptop" transition="qrtoast" v-show="showtiptop">
+            <div class="toast-center-wrapper">
+                <div class="m-header">
+                    <h6 class="toast-title">{{dealobj.title}}提示</h6>
+                </div>
+                <div>
+                    <div class="toast-body">
+                        <p class="text-center">{{dealobj.content}}</p>
+                    </div>
+                    <div class="m-footer">
+                        <div class="text-center">
+                            <button class="btn btn-cancel btn-lg" type="button" @click="showtiptop = false">取消</button>
+                            <button class="btn btn-primary btn-setter btn-lg" type="submit" @click="dealcopy">确定</button> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="header">通知公告</div>
+        <div class="noticeLists">
+
+            <div v-for="notice in notices | orderBy 'order' | limitBy limit offset" :class="{'grouplist':notice.isgroup,'list':!notice.isgroup}" @click.stop="checknotice(notice.createdAt, !notice.isgroup)">
+                <div v-if="notice.isgroup">
+                    <span class="pull-left title">
+                        <img style="position:relative;top:0px;left:2px;" width="20" src="/images/newitem/notice.png" />
+                        {{notice.createdAt}}
+                    </span>
+                    <span class="pull-left contents">{{notice.copyfrom}}&nbsp;&nbsp;给你发送了全景&nbsp;&nbsp;<a href="javascript:;" @click="openurl(notice.id)" v-text="notice.title"></a></span>
+                    <span class="pull-right time">
+                        <a class="btn-flat" @click="delcopy(notice.id)">删除</a>
+                        <a class="btn-flat" @click="insertcopy(notice.id)">插入列表</a>
+                    </span>
+                </div>
+                <div v-else>
+                    <span class="pull-left title">
+                        <img style="position:relative;" width="35" :src="notice.read?'/images/newitem/read.png':'/images/newitem/noread.png'" />
+                        <span>{{notice.title}}</span>
+                    </span>
+                    <span class="pull-left contents" v-text="notice.noticetext"></span>
+                    <span class="pull-right time" v-text="notice.settime"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="pagination pull-right" v-if="count>limit">
+            <ul>
+                <li :class="{'disabled': 1 == pagindex}"><a href="javascript:;" @click="load(1)">&#8249;&#8249;</a></li>
+                <li :class="{'disabled': 1 == pagindex}" class="child"><a href="javascript:;" @click="load(pagindex-1)">&#8249;</a></li>
+                <li v-for="cur in pages" v-if="pagindex>3&&pages-2>pagindex?(cur+1<=pagindex+2&&cur+1>=pagindex-2):(pagindex<=3?cur+1<=5:cur+1>=pages-4)" :class="{'active': cur+1 == pagindex}">
+                    <a href="javascript:;" @click="load(cur+1)" v-text="cur+1"></a>
+                </li>
+                <li :class="{'disabled': pages == pagindex}" class="child"><a href="javascript:;" @click="load(pagindex+1)">&#8250;</a></li>
+                <li :class="{'disabled': pages == pagindex}"><a href="javascript:;" @click="load(pages)">&#8250;&#8250;</a></li>
+            </ul>
+        </div>   
+    </div>  
+</div>
+<!-- <div id="uploadavatar" class="toast-content" transition="qrtoast" v-show="showavatar" >
+    <span><i class="close-pop ico-close" @click="hide"></i></span>
+    <div class="toast-center-wrapper">
+        <div class="toast-body">
+            <img :src="avatarurl" />
+        </div>
+        <div class="m-footer">
+            <div class="text-center">
+                <button class="btn btn-cancel btn-lg" type="button" @click="hide">取消</button>
+                <button class="btn btn-primary btn-setter btn-lg" type="submit" @click="submit">确定</button> 
+            </div>
+        </div>
+    </div> 
+</div> -->
+<div id="noticepreview" style="overflow: auto;" class="toast-content" transition="qrtoast" v-show="showpreview">
+    <span @click="hide"><i class="ico-close close-pop fixed"></i></span>
+    <div class="previewcontent">
+        <h4 class="title" v-text="previewTitle"></h4>
+        <div class="notice"></div>
+    </div>
+</div>
+<div id="pdfview" v-show="showpdfview" transition="qrtoast"></div>
+
+<script type="text/javascript">
+    // var uploadavatar = new Vue({
+    //     el: '#uploadavatar',
+    //     data: {
+    //         showavatar: false,
+    //         avatarurl: ''
+    //     },
+    //     methods: {
+    //         hide: function(){
+    //             this.showavatar = false;
+    //             document.getElementById("avatar_input").value='';
+    //         },
+    //         submit: function(){
+    //             nav.showstatus = true;
+    //             nav.avatarstatus = '正在上传';
+    //             this.hide();
+    //             $.post('/tokenitem/avatar',{},function(res){
+    //                 var token = res.token;
+    //                 var url = res.url;
+    //                 var key = res.key;
+    //                 Q.addEvent("progress", function(p, s) {
+    //                     //.......
+    //                 });
+    //                 Q.addEvent("putFinished", function(fsize, response, taking) {
+    //                     nav.showstatus = false;
+    //                     nav.avatarpic = 'http://qncdn.sz-sti.com/' + url;
+    //                     toast.showmsg('上传成功');
+    //                 });
+    //                 Q.SetToken(token);
+    //                 Q.Upload(document.getElementById('avatar_input').files[0], url);
+    //             });
+    //         }
+    //     }
+    // });
+    var noticepreview = new Vue({
+        el: '#noticepreview',
+        data: {
+            showpreview: false,
+            previewTitle: ''
+        },
+        methods: {
+            hide: function(){
+                this.showpreview = false;
+            }
+        }
+    });  
+    var pdfview = new Vue({
+        el: '#pdfview',
+        data: {
+            showpdfview: false
+        }
+    });
+    var noticetoast = new Vue({
+        el: '#noticetoast',
+        data: {
+            shownotice: false,
+            styleZindex:{
+                zIndex:'-9999'
+            },
+            notices: [],
+            showtiptop: false,
+            count:0,
+            pagindex:1,
+            limit:6,
+            pages:0,
+            cgroups: [],
+            dealtype: false,
+            dealobj: {
+                type: 0,
+                title: '',
+                content: ''
+            },
+            readnotice: <%-user.readnotice%>
+        },
+        computed: {
+            offset: function(){
+                return (this.pagindex-1)*this.limit;
+            },
+            pages: function(){
+                return Math.ceil(this.count/this.limit);
+            }
+        },
+        methods: {
+            checknotice: function(create, bool){
+                if(!bool)return;
+                var createdAt = create;
+                var list = this.readnotice;
+                var _this = this;
+                var index;
+                for(var i in _this.notices){
+                    if(create == _this.notices[i].createdAt){
+                        index = i;
+                    }
+                }
+                if(list.indexOf(JSON.stringify(createdAt))==-1){
+                    list.push(JSON.stringify(createdAt));
+                    var data = {
+                        readnotice: list,
+                        userid: '<%=user.id%>'
+                    }
+                    $.post('/supermaster/updateread',data,function(res){
+                        if(res.code!=0){
+                            return;
+                        }
+                        list.push(JSON.stringify(createdAt));
+                        _this.notices[index].read = true;
+                        _this.readnotice = list;
+                        menubox.readcount--;
+                    });
+                }
+                noticepreview.showpreview = true;
+                noticepreview.previewTitle = this.notices[index].title;
+                $('#noticepreview .previewcontent .notice').html(this.notices[index].noticehtml);
+                $('.pdfwrap').on('click',function(){
+                    pdfview.showpdfview = true;
+                    var src = $(this).attr('data-src');
+                    PDFObject.embed(src, "#pdfview");
+                    $('#pdfview').append('<span class="closepdf"><i class="close-pop ico-close"></i></span>');
+                    $('.closepdf').on('click',function(){
+                        pdfview.showpdfview = false;
+                        $(this).remove();
+                    });
+                });
+            },
+            openurl: function(groupid){
+                window.open(location.origin+'/scene/'+groupid+'?preview=4');
+            },
+            hide: function(){
+                this.shownotice = false;
+            },
+            delcopy: function(groupid){
+                this.showtiptop = true;
+                this.dealobj = {
+                    type: 0,
+                    groupid: groupid,
+                    title: '删除',
+                    content: '确定是否删除？'
+                }
+            },
+            insertcopy: function(groupid){
+                var _this = this;
+                $.get('/panoitem/check/'+groupid, function(res){
+                    _this.dealobj = {
+                        type: 1,
+                        groupid: groupid,
+                        title: '插入',
+                        content: '检测到列表中已存在相同房源，是否多复制一套？'
+                    }
+                    if(res.code == 0){
+                        _this.dealcopy();
+                        return;
+                    }
+                    if(res.code == 1){
+                        _this.showtiptop = true;
+                        return;
+                    }
+                    toast.showmsg(res.msg);
+                });
+            },
+            dealcopy: function(){
+                var _this = this;
+                $.post('/panoitem/deal/'+this.dealobj.groupid, {confirm: this.dealobj.type}, function(res){
+                    toast.showmsg(res.msg);
+                    if(res.code == 0){
+                        var index;
+                        for(var i in _this.notices){
+                            if(_this.notices[i].id&&(_this.notices[i].id == _this.dealobj.groupid))index = i;
+                        }
+                        for(var i in res.groups){
+                            res.groups[i].panoname = res.groups[i].city+res.groups[i].region+res.groups[i].community+' '+res.groups[i].building+' '+res.groups[i].room;
+                            res.groups[i].createdTime = Date.parse(new Date(res.groups[i].createdAt));
+                            res.groups[i].createdAt=(new Date(res.groups[i].createdAt)).toLocaleDateString();
+                            res.groups[i].type != '7' || res.groups[i].type == '-1'?res.groups[i].handlebox = false:res.groups[i].handlebox = true;;
+                            res.groups[i].isshare = false;
+                            <%if(select){%>
+                            _this.$nextTick(function(){
+                                panolist.lazyloadarr.unshift(res.groups[i].thumbsrc);
+                                panolist.panolist.unshift(res.groups[i]);
+                                panolist.loadimages();
+                            });
+                            <%}%>
+                        }
+                        _this.notices.splice(index, 1);
+                        menubox.readcount--;
+                        _this.showtiptop = false;
+                        _this.shownotice = false;
+                    }
+                });
+            },
+            load: function(cur){
+                if(cur!=this.pagindex){
+                    if(cur<1){
+                        toast.showmsg('当前就是首页了！', true);
+                        return;
+                    }
+                    if(cur>this.pages){
+                        toast.showmsg('没有下一页了', true);
+                        return;
+                    }
+                    this.pagindex = cur;
+                }
+            },
+            init: function(){
+                var _this = this;
+                $.get('/supermaster/notice/data',function(res){
+                    var count = 0;
+                    var readnoticearr = _this.readnotice;
+                    var lists = [];
+                    for(var i in res){
+                        lists.unshift(JSON.stringify(res[i].createdAt));
+                        if(readnoticearr.indexOf(JSON.stringify(res[i].createdAt))==-1){
+                            count++;
+                        }
+                        var createdAt;
+                        var time = new Date(res[i].createdAt);
+                        createdAt = (parseInt(time.getMonth())+1<10?'0':'')+(parseInt(time.getMonth())+1);
+                        createdAt += '-'+(time.getDate()<10?'0':'')+time.getDate();
+                        createdAt += ' '+(time.getHours()<10?'0':'')+time.getHours();
+                        createdAt += ':'+(time.getMinutes()<10?'0':'')+time.getMinutes();
+                        res[i].settime = createdAt; 
+                        res[i].read = false; //默认未读
+                        res[i].isgroup = false;
+                        _this.notices.unshift(res[i]);
+                    }
+                    for(var i in _this.cgroups){
+                        var time = new Date(_this.cgroups[i].createdAt);
+                        _this.cgroups[i].createdAt = (parseInt(time.getMonth())+1<10?'0':'')+(parseInt(time.getMonth())+1);
+                        _this.cgroups[i].createdAt += '-'+(time.getDate()<10?'0':'')+time.getDate();
+                        _this.cgroups[i].createdAt += ' '+(time.getHours()<10?'0':'')+time.getHours();
+                        _this.cgroups[i].createdAt += ':'+(time.getMinutes()<10?'0':'')+time.getMinutes();
+                        _this.cgroups[i].isgroup = true;
+                        _this.notices.unshift(_this.cgroups[i]);
+                        lists.unshift(JSON.stringify(_this.cgroups[i].createdAt));
+                    }
+                    var len = readnoticearr.length;
+                    var noread = lists.length;
+                    for(var i=0;i<len;i++){
+                        var index = lists.indexOf(readnoticearr[i]);
+                        if(index==-1){
+                            readnoticearr.splice(index,1);
+                            len--;
+                            i--;
+                        }else{
+                            _this.notices[index].read = true; //更改为已读
+                            noread--;
+                        }
+                    }
+                    menubox.readcount = noread;
+                    _this.count = _this.notices.length;
+                })
+            }
+        }
+    }) 
+    var videotoast = new Vue({
+        el:'#videotoast',
+        data:{
+            showvideo:false,
+            showwrap:true,
+            showyouku:false,
+            videourl:'',
+            styleZindex:{
+                zIndex:'-9999'
+            }
+        },
+        methods:{
+            hide: function(){
+                this.showvideo = false;
+            },
+            show: function(){
+                this.showwrap = true;
+                this.showyouku = false;
+            },
+            changebox: function(){
+                this.showwrap = false;
+                this.showyouku = true;
+            },
+            handleurl: function(){
+                this.changebox();
+                this.videourl = 'http://player.youku.com/embed/XMjczMDAyMDg1Mg==';
+            },
+            mobileurl: function(){
+                this.changebox();
+                this.videourl = 'http://player.youku.com/embed/XMTUxODIzNDAwMA==';
+            },
+            cpturl: function(){
+                this.changebox();
+                this.videourl = 'http://player.youku.com/embed/XMjcyOTQ5NjMwNA==';
+            }
+        }
+    })
+</script>
+
+
+
+<script type="text/javascript">
+    var navtips = new Vue({
+        el:'#navtips',
+        data:{
+            tips:{
+                panoitem: false,
+                mergeitem: false,
+                setitem: false,
+                useritem: false,
+                appitem: false
+            },
+            navtext:{}
+        }
+    })
+    var nav = new Vue({
+        el:'#sidebar-nav',
+        data:{
+            issearch1: false,
+            issearch2: false,
+            avatarstatus: '',
+            showstatus: true,
+            name: '',
+            timer: null,
+            display: false,
+            active: false,
+            showchildren: false,
+            avatarpic: '',
+            current: {
+                pano: false,
+                merge: false,
+                set: false,
+                center: false,
+                app: false
+            },
+            navtext:{
+                panoitem: '作品列表',
+                mergeitem: '多项目列表',
+                setitem: '全局设置',
+                useritem: '个人中心',
+                appitem: 'APP下载'
+            },
+            user: {
+                id: '',
+                name: ''
+            },
+            children: [],
+            showmerge: '',
+            username: ''
+        },
+        computed: {
+            href: function(){
+                return {
+                    panoitem: '/panoitem',
+                    mergeitem: this.current.merge?'JavaScript:;':'/mergeitem',
+                    setitem: this.current.set?'JavaScript:;':'/setitem',
+                    appitem: this.current.app?'JavaScript:;':'/appitem'
+                }
+            },
+            filtername: function(){
+                return this.name;
+            }
+        },
+        methods: {
+            showtips: function(name){
+                navtips.tips[name] = true;
+            },
+            hidetips: function(name){
+                navtips.tips[name] = false;
+            },
+            <%try{console.log(select)}catch(err){var select=false}%>
+            <%if(select){%>
+            keyup: function(){
+                panolist.name = this.name;
+                this.showloading2();
+                panolist.loadimages();
+            },
+            showloading2: function(){
+                panolist.isshowload2 = true;
+                setTimeout(function(){
+                    panolist.isshowload2 = false;
+                }, 500);
+            },
+            selectchild: function(name){
+                this.showchildren = false;
+                this.name = name?name:'';
+                panolist.name = name?name:'';
+                this.showloading2();
+                panolist.loadimages();
+            },
+            <%}%>
+            getObject: function(){
+                var file = document.getElementById('avatar_input').files[0];
+                var url = undefined;
+                if (window.createObjectURL) {
+                    url = createObjectURL(file);
+                }else if(window.URL){
+                    url = URL.createObjectURL(file);
+                }else if(window.webkitURL){
+                    url = webkitURL.createObjectURL(file);
+                };
+                return {
+                    url: url,
+                    size: file.size,
+                    type: file.type
+                };
+            },
+            uploadavatar: function(event){
+                $('#avatar_input').click();
+            },
+            avatarchange: function(event,src){
+                if(src){
+                    var url = src;
+                }else{
+                    var obj = this.getObject();
+                    if(obj.type.split('/')[0]!='image'){
+                        toast.showmsg('不是图片类型的文件', true);
+                        return;
+                    }
+                    if(obj.size>1048576){
+                        toast.showmsg('图片大小不得大于1M', true);
+                        return;
+                    };
+                    var url = obj.url;
+                }
+                var _this = this;
+                _this.showstatus = true;
+                _this.avatarstatus = '正在上传';
+                $.post('/tokenitem/avatar',{},function(res){
+                    var token = res.token;
+                    var url = res.url;
+                    var key = res.key;
+                    Q.addEvent("progress", function(p, s) {
+                        //.......
+                    });
+                    Q.addEvent("putFinished", function(fsize, response, taking) {
+                        _this.showstatus = false;
+                        _this.avatarpic = 'http://qncdn.sz-sti.com/' + url;
+                        toast.showmsg('上传成功');
+                    });
+                    Q.SetToken(token);
+                    Q.Upload(document.getElementById('avatar_input').files[0], url);
+                });
+            },
+            init: function(){
+                var _this = this;
+                navtips.navtext = this.navtext;
+                $.get('/useritem/info', function(res){
+                    if(res.code!=0){
+                        toast.showmsg(res.msg, true);
+                        return;
+                    }
+                    console.log(res)
+                    if(res.cgs.length>0){
+                        for(var i in res.cgs){
+                            noticetoast.cgroups.push(res.cgs[i]);
+                        }
+                    }
+                    noticetoast.init();
+                    _this.user = res.user;
+                    if(_this.user.realname!='{}'){
+                        var realname = JSON.parse(_this.user.realname);
+                        var content1 = realname.content1;
+                        var content2 = realname.content2;
+                        content1?content2?_this.username = content1+'-'+content2:_this.username = content1:_this.username = content2;
+                    }else{
+                        _this.username = _this.user.name;
+                    }
+                    console.log(_this.username)
+                    _this.avatarpic = 'http://qncdn.sz-sti.com/avatar/'+res.user.avatar+'.jpg';
+                    _this.showstatus = res.user.avatar?false:true;
+                    _this.avatarstatus = res.user.avatar?'':'点击上传头像';
+                    _this.showmerge = res.user.multipro.length?true:false;
+					_this.children.push(res.user.name);
+                    if(res.user.children_name.length > 0){
+                        _this.issearch1 = true;
+                        for(var i in res.user.children_name){
+                            _this.children.push(res.user.children_name[i]);
+                        }
+                    }
+                });
+            }
+        }
+    });
+
+    nav.init();
+</script>
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?a78a89d21bc59dbb41e2904c980419b9";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <base target="_blank">
+        <title>STi 速腾聚创-登陆</title>
+        <link href="/css/newitem/bootstrap.css" rel="stylesheet">
+        <link href="/css/newitem/reset.css" rel="stylesheet">
+        <link href="/css/newitem/font-awesome.min.css" rel="stylesheet">
+        <link href="/css/newitem/animate.min.css" rel="stylesheet">
+        <link href="/css/newitem/main.css" rel="stylesheet">
+        <link href="/css/newitem/common.css" rel="stylesheet">
+        <script src="/js/newitem/vue.min.js"></script>
+        <script src="/js/newitem/jquery-2.2.4.min.js"></script><script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?a78a89d21bc59dbb41e2904c980419b9";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    </head>
+    <body class="gray-bg">
+        <div class="react">
+            <span class="line"></span>
+            <span class="line"></span>
+            <span class="line"></span>
+            <span class="line"></span>
+            <div class="middle-box text-center loginscreen animated" v-bind:class="{ fadeInDown: !isloaded, fadeOutUp: isloaded }" id="app">
+                <h1 class="logo-name">
+                    <img src="/images/newitem/robopano.png" />
+                </h1>
+                <div class="mt_30 login">
+                    <div class="form-group mb_10" v-bind:class="{'has-error':nameerror}">
+                        <label class="usericon"></label>
+                        <input style="display:none"><!--兼容谷歌自动填充-->
+                        <input type="text" v-model="username" autocomplete="off" @blur="namechange" @keyup.enter="submit" class="form-control username" placeholder="账号：">
+                        <p id="nameerror" v-if="nameerror" v-text="nameerrorinfo"></p>
+                    </div>
+                    <div class="form-group mb_20" v-bind:class="{'has-error':pswerror}">
+                        <label class="pswicon"></label>
+                        <input style="display:none"><!--兼容谷歌自动填充-->
+                        <input type="password" v-model="password" autocomplete="off" @blur="pswchange" @keyup.enter="submit" class="form-control password" placeholder="密码：">
+                        <p id="pswerror" v-if="pswerror" v-text="pswerrorinfo"></p>
+                    </div>
+                    <button id="submitbtn" v-on:click="submit" :disabled="submit_disabled" class="btn btn-primary block full-width btn-height" v-text="submit_html" :class="{light:fillover}"></button>
+                </div>
+            </div>
+        </div>
+
+        <%include toast%>
+
+        <script type="text/javascript">
+
+            var login = new Vue({
+                el: "#app",
+                data: {
+                    username: '',
+                    password: '',
+                    nameerrorinfo: '',
+                    pswerrorinfo: '',
+                    nameerror: false,
+                    pswerror: false,
+                    isloaded: false,
+                    submit_disabled: false
+                },
+                computed: {
+                    submit_html: function(){
+                        return this.submit_disabled?'加载中..':'登录'
+                    },
+                    fillover: function(){
+                        return this.username && this.password;
+                    }
+                },
+                methods: {
+                    namechange: function(){
+                        this.username = this.username.trim();
+                        this.nameerrorinfo = this.username == ''?'账号不能为空':'';
+                        this.nameerror = !this.username;
+                    },
+                    pswchange: function(){
+                        this.password = this.password.trim();
+                        this.pswerrorinfo = this.password == ''?'密码不能为空':'';
+                        this.pswerror = !this.password;
+                    },
+                    submit: function(){
+
+                        this.namechange();
+                        this.pswchange();
+
+                        var _this = this;
+
+                        if(!this.nameerror&&!this.pswerror){
+
+                            var data = {
+                                username: this.username,
+                                password: this.password
+                            };
+
+                            this.submit_disabled = true;
+
+                            $.post('/newitem',data,function(result){
+                                if(result.code==0){
+                                    _this.isloaded = true;
+                                    setTimeout(function(){
+                                        if(result.redirect_url){
+                                            location.href = result.redirect_url;
+                                        }else{
+                                            location.href = "/panoitem";
+                                        }
+                                    }, 1000);
+                                }else{
+                                    toast.showmsg(result.msg, true);
+                                    setTimeout(function(){
+                                        _this.submit_disabled = false;
+                                    }, 500);
+                                }
+                            });
+                        }
+                    }
+                }
+            });
+ 
+        </script>
+        <script>
+            (function() {
+                var lastTime = 0;
+                var vendors = ['ms', 'moz', 'webkit', 'o'];
+                for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+                    window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
+                    window.cancelAnimationFrame = window[vendors[x]+'CancelAnimationFrame'] || window[vendors[x]+'CancelRequestAnimationFrame'];
+                }
+
+                if (!window.requestAnimationFrame)
+                    window.requestAnimationFrame = function(callback, element) {
+                        var currTime = new Date().getTime();
+                        var timeToCall = Math.max(0, 16 - (currTime - lastTime));
+                        var id = window.setTimeout(function() { callback(currTime + timeToCall); },
+                            timeToCall);
+                        lastTime = currTime + timeToCall;
+                        return id;
+                    };
+
+                if (!window.cancelAnimationFrame)
+                    window.cancelAnimationFrame = function(id) {
+                        clearTimeout(id);
+                    };
+            }());
+        </script>
+    </body>
+</html>

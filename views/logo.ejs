@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+    <title><%=title%></title>
+		<meta charset="utf-8">
+        <meta name="format-detection" content="telephone=no">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="/css/common.css?v=<%=version%>">
+        <style>
+            .romaing-editor{
+                display:none;position:absolute;left:0;top:0;width:100%;height:100%;z-index:31;background-color:#fff;
+            }
+        </style>
+	</head>
+	<body ondrag="return false">
+    <script src="<%=cdnJsPath%>/zepto.min.js?v=<%=libVersion%>"></script>
+    <script src="/js/sti-common.min.js?<%=version%>"></script>
+    <script src="http://qtestbucket.qiniudn.com/demo/qiniu.uploader.js?id=2"></script>
+    <%include alert%>
+    <div class="vertical h100">
+        <%include header%>
+        <input type="file" id="input-file" style="display:none">
+        <div class="flex1 overflow">
+            <div class="buttons margintop10">
+                <button class="btn bloodred flex1 btn-up borderbox" <%if(platform=='android-app'){%>style="display:none"<%}%>>上传logo</button>
+            </div>
+            <%if(!logo||logo.length==0){%>
+            <div class="margin10">
+                您目前没有上传logo</br>推荐上传50*28像素,png格式的图片
+            </div>
+            <%}else{%>
+            <div class="margin10">
+                <img class="logo-img" width="100%" src="<%=logo%>">
+            </div>
+            <%}%>
+            <div class="buttons margintop10">
+                <button class="btn bloodred flex1 btn-logo-delete" <%if(!logo||logo.length==0){%>style="display:none;"<%}%>>删除</button>
+                <button class="btn gray flex1" onClick="location.href='/settings';">返回</button>
+            </div>
+        </div>
+    </div>
+    <script>
+    $(function(){
+    var curX,curY;
+    var curLinkId;
+
+    function uploadClick(){
+        $('#input-file').click();
+    }
+    if(checkMobile()){
+        $('.btn-up').on('touchend',uploadClick);
+
+        $('.btn-logo-delete').on('touchend',deleteLogo);
+    }else{
+        $('.btn-up').on('mouseup',uploadClick);
+        $('.btn-logo-delete').on('mouseup',deleteLogo);
+    }
+
+        function deleteLogo(){
+            //if(confirm('确定要删除吗？')){
+            if(1){
+            $.ajax({
+                    type:'POST',
+                    url:'/logo/set',
+                    async:false,
+                    data:{
+                        logo:''
+                    },
+                    success:function(res){
+                        if(res.code==0){
+                            location.reload();
+                        }else{
+                            alert(res.msg);
+                        }
+                    }
+            });
+            }
+        }
+
+
+        $('#input-file').on('change',up);
+        var hasup=0;
+        function update(a,b){
+            $('.btn-up').text(a+' '+(b?b:''));
+        }
+        function up(){
+            if(document.getElementById('input-file').files.length==0){
+                alert("请选择文件");
+                return;
+            }
+            if(hasup){
+                return;
+            }
+            hasup=1;
+            $.post('/upload/logotoken',{},function(res){
+                var token = res.token;
+                var key = res.key;
+                Q.addEvent("progress", function(p, s) {
+                    update((p==100?99:p)+'%', s);
+                });
+                //上传完成回调
+                //fsize:文件大小(MB)
+                //res:上传返回结果，默认为{hash:<hash>,key:<key>}
+                Q.addEvent("putFinished", function(fsize, res, taking) {
+                    uploadSpeed = 1024 * fsize / (taking * 1000);
+                    if (uploadSpeed > 1024) {
+                        formatSpeed = (uploadSpeed / 1024).toFixed(2) + "Mb\/s";
+                    } else {
+                        formatSpeed = uploadSpeed.toFixed(2) + "Kb\/s";
+                    };
+                    var res = {
+                        key: res.key,
+                        hash: res.hash,
+                        speed: formatSpeed
+                    };
+                    update('上传成功');
+                    location.reload();
+                });
+                Q.SetToken(token);
+                Q.Upload(document.getElementById('input-file').files[0], key);
+            });
+        };
+
+    });
+    </script>
+    </body>
+</html>
