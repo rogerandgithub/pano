@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "sudo /usr/local/node-6.11.2/bin/node ./bin/www"
+    "start": "node ./bin/www"
   },
   "dependencies": {
     "archiver": "~0.21.0",

@@ -13,10 +13,10 @@ exports.config={
     AppSecret:'8fe6339d6a4aedf353d89d15063eca35',
     AppID:'wx4f50446382062f4e',
 
-    dbHost:'rm-wz9d341ilt2627z9io.mysql.rds.aliyuncs.com',
+    dbHost:'localhost',
     //dbHost:'120.76.27.228',
-    dbUser:'suteng',
-    dbPassword:'muwenhu20131415926',
+    dbUser:'root',
+    dbPassword:'root',
     dbDatabase:'suteng',
     cdnHttpsDomain:'https://ohpltmm4t.qnssl.com',
     getcdndomain: function (istrust){
