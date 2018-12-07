@@ -53,6 +53,12 @@
                 <span v-text="navtext.appitem"></span>
             </a>
         </li>
+        <li :class="{active:current.support}" @mouseover="showtips('supportitem')" @mouseout="hidetips('supportitem')">
+            <div class="pointer" v-if="current.support"></div>
+            <a :href="href.supportitem">
+                <span v-text="navtext.supportitem"></span>
+            </a>
+        </li>
     </ul>
 </div>
 <div id="navtips">
@@ -62,6 +68,7 @@
         <li v-show="tips.setitem" v-text="navtext.setitem"></li>
         <li v-show="tips.useritem" v-text="navtext.useritem"></li>
         <li v-show="tips.appitem" v-text="navtext.appitem"></li>
+        <li v-show="tips.supportitem" v-text="navtext.supportitem"></li>
     </ul>
 </div>
 <!--视频教程弹窗 start-->
@@ -479,7 +486,8 @@
                 mergeitem: false,
                 setitem: false,
                 useritem: false,
-                appitem: false
+                appitem: false,
+                supportitem: false
             },
             navtext:{}
         }
@@ -502,14 +510,16 @@
                 merge: false,
                 set: false,
                 center: false,
-                app: false
+                app: false,
+                support: false
             },
             navtext:{
                 panoitem: '作品列表',
                 mergeitem: '多项目列表',
                 setitem: '全局设置',
                 useritem: '个人中心',
-                appitem: 'APP下载'
+                appitem: 'APP下载',
+                supportitem: '支持中心'
             },
             user: {
                 id: '',
@@ -525,7 +535,8 @@
                     panoitem: '/panoitem',
                     mergeitem: this.current.merge?'JavaScript:;':'/mergeitem',
                     setitem: this.current.set?'JavaScript:;':'/setitem',
-                    appitem: this.current.app?'JavaScript:;':'/appitem'
+                    appitem: this.current.app?'JavaScript:;':'/appitem',
+                    supportitem: this.current.support?'JavaScript:;':'/supportitem'
                 }
             },
             filtername: function(){

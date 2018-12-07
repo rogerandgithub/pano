@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>STi 速腾聚创-后台</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+</head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+<meta property="qc:admins" content="7713503706325341637570167"/>
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!-- bootstrap -->
+<link href="/css/newitem/bootstrap.css" rel="stylesheet"/>
+<link href="/css/newitem/bootstrap-responsive.css" rel="stylesheet"/>
+<link href="/css/newitem/bootstrap-overrides.css" type="text/css" rel="stylesheet"/>
+<!-- libraries -->
+<link href="/css/newitem/font-awesome.css" type="text/css" rel="stylesheet"/>
+<!-- global styles -->
+<link href="/css/newitem/layout.css" rel="stylesheet" type="text/css"/>
+<link href="/css/newitem/elements.css" rel="stylesheet" type="text/css"/>
+<link href="/css/newitem/icons.css" rel="stylesheet" type="text/css"/>
+<link href="/css/newitem/common.css" rel="stylesheet" type="text/css"/>
+<link href="/css/newitem/reset.css" rel="stylesheet" type="text/css"/>
+<script src="/js/newitem/vue.min.js"></script>
+
+
+<link href="/css/newitem/user.css" type="text/css" rel="stylesheet" media="screen"/>
+<link rel="stylesheet" href="/css/newitem/index.css" type="text/css">
+<script src="/js/newitem/jquery-2.2.4.min.js"></script>
+<script src="/js/newitem/director.min.js"></script>
+
+
+<style>
+    #qrcoder p {
+        text-align: center;
+    }
+
+    #qrcoder a.qrcode {
+        display: inline-block;
+        height: 70px;
+        margin: 5px 30px;
+        background: url(/images/newitem/icons/sprite.png) no-repeat;
+    }
+
+    #qrcoder a.iosQrcode {
+        width: 64px;
+        background-position: -385px -132px;
+    }
+
+    #qrcoder a.andriodQrcode {
+        width: 64px;
+        background-position: -456px -133px;
+    }
+
+    #qrcoder .qrcodeBox {
+        text-align: center;
+        margin: 100px 0 20px 0;
+    }
+
+    #qrcoder .qrcodeBox img {
+        display: inline-block;
+        width: 230px;
+        margin: 0 5px;
+    }
+
+    .q-item-label {
+        margin-bottom: 30px;
+        line-height: 60px;
+        height: 60px;
+        padding: 0 50px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2) !important;
+        border-bottom: 1px solid #fff;
+        font-size: 22px;
+        font-weight: 500;
+        color: #292c33;
+    }
+
+    .m-footer h6 {
+        padding: 10px 30px;
+        margin: 0 10px;
+        font-weight: bold;
+        font-size: 14px;
+    }
+</style>
+</head>
+<body>
+
+<% include loading %>
+
+<div id="wrapper">
+    <!-- sidebar -->
+    <% include nav %>
+    <% include menu %>
+    <!-- end sidebar -->
+
+    <!-- main container -->
+    <div class="content">
+
+        <div id="menubox">
+            <menulist>
+                <span slot="readcount" v-text="readcount" v-if="readcount>0"></span>
+            </menulist>
+        </div>
+        <div class="container-fluid">
+            <div id="qrtoast">
+                <div id="qrcoder" class="toast-body">
+                    <h6 class="q-item-label mt_55" id="advance-setting">支持中心</h6>
+                </div>
+                <div id="user-profile" class="user-body">
+                    <div id="router-content" class="row-fluid profile">
+                        <!--<div class="has-identity has-resource" style="margin-bottom:20px;">-->
+                        <div class="has-identity" style="margin-bottom:20px;">
+                            <h6>下载相机标定文件</h6>
+                            <div id="wrapperbox">
+                                <div class="app-resource clearfix">
+                                    <div class="form-group form-inline">
+                                        <input type="text" name="prefix" class="form-control" placeholder="请输入相机ID"
+                                               v-model="cameraId"
+                                               style="border: 1px solid #e72420;width: 355px;text-align: left;"/>
+                                        <div class="uploadBtn" @click="queryFile"
+                                             style="margin-left:0;line-height: 39px;">快速查询
+                                        </div>
+                                    </div>
+                                    <div class="contentbox col-xs-9">
+                                        <div class="item w640" transition="onehalf" v-show="showFile">
+                                            <div class="document-content">
+                                                <ul>
+                                                    <li>calibration_2cam.xml</li>
+                                                    <li>camera.xml</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="item w640" transition="onehalf" v-show="showFileNotFound">
+                                            <div class="document-content">
+                                                <h4>很抱歉, 未查询到该相机的标定文件！</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <!-- end main container -->
+</div>
+
+<script src="/js/new/moment.js"></script>
+<script src="/js/new/qrcode.min.js"></script>
+<script type="text/javascript">
+    var menubox = new Vue({
+        el: '#menubox',
+        data: {
+            readcount: ''
+        }
+    });
+    loading1.isshow = false;
+    nav.current.support = true;
+    var qrtoast = new Vue({
+        el: '#qrtoast',
+        data: {
+            showqrtoast: false,
+            //count: 1,
+            showFile: false,
+            showFileNotFound: false,
+            cameraId: ""
+        },
+        methods: {
+            hide: function () {
+                this.showqrtoast = false;
+            },
+            queryFile: function () {
+                var data = {
+                    cameraId: this.cameraId
+                };
+                $.post('/support/queryFile', data, function (r) {
+                    if (r.code != 0) {
+                        alert(r.msg);
+                        return;
+                    }
+                    //location.reload();
+                });
+            }
+        }
+    });
+
+</script>
+</body>
+</html>
