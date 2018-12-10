@@ -11,7 +11,7 @@ var sequelize = new Sequelize(config.dbDatabase, config.dbUser, config.dbPasswor
     charset:'utf8',
     timestamps: false,
     timezone: '+08:00',
-    logging: false
+    logging: true
 });
 
 
@@ -980,6 +980,31 @@ var Orders = sequelize.define('orders', {
   freezeTableName: true
 });
 
+var Support = sequelize.define('support', {
+    id: {
+        type: Sequelize.INTEGER,
+        field: 'id',
+        primaryKey: true,
+        autoIncrement: true
+    },
+    camera_id: {
+        type: Sequelize.CHAR(50),
+        field: 'camera_id'
+    },
+    calibration_2cam_xml_url: {
+        type: Sequelize.CHAR(255),
+        field: 'calibration_2cam_xml_url'
+    },
+    camera_xml_url: {
+        type: Sequelize.CHAR(255),
+        field: 'camera_xml_url'
+    }
+}, {
+    freezeTableName: true,
+    timestamps: false,
+    updatedAt: false
+});
+
 exports.Maps=Maps;
 exports.Scenes=Scenes;
 exports.Comments=Comments;
@@ -993,3 +1018,4 @@ exports.Action_log=Action_log;
 exports.Missions=Missions;
 exports.MultiPro=MultiPro;
 exports.Orders=Orders;
+exports.Support=Support;
