@@ -114,7 +114,7 @@
                                 <div class="app-resource clearfix">
                                     <div class="form-group form-inline">
                                         <input type="text" name="prefix" class="form-control" placeholder="请输入相机ID"
-                                               v-model="cameraId"
+                                               v-model="deviceid"
                                                style="border: 1px solid #e72420;width: 355px;text-align: left;"/>
                                         <div class="uploadBtn" @click="queryFile"
                                              style="margin-left:0;line-height: 39px;">快速查询
@@ -169,7 +169,7 @@
             //count: 1,
             showFile: false,
             showFileNotFound: false,
-            cameraId: "",
+            deviceid: "",
             supportObj: []
         },
         methods: {
@@ -178,7 +178,7 @@
             },
             queryFile: function () {
                 let data = {
-                    cameraId: this.cameraId
+                    deviceid: this.deviceid
                 };
                 let _this = this;
                 $.post('/supportitem/queryFile', data, function (r) {

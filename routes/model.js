@@ -987,9 +987,13 @@ var Support = sequelize.define('support', {
         primaryKey: true,
         autoIncrement: true
     },
-    camera_id: {
+    key: {
+        type: Sequelize.CHAR(128),
+        field: 'key'
+    },
+    deviceid: {
         type: Sequelize.CHAR(50),
-        field: 'camera_id'
+        field: 'deviceid'
     },
     calibration_2cam_xml_url: {
         type: Sequelize.CHAR(255),
