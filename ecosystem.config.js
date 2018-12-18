@@ -8,9 +8,9 @@ module.exports = {
         {
             name: 'www',
             script: './bin/www',
-            // watch: ['.well-known', 'bin', 'config', 'https_cert', 'node_modules', 'public', 'routes', 'views'],
-            // ignore_watch: ['routes/newitem/*.jpg', 'views'],
-            'instances': 'max',
+            watch: ['.well-known', 'bin', 'config', 'https_cert', 'node_modules', 'public', 'routes', 'views'],
+            ignore_watch: ['routes/newitem/*.jpg', 'views', 'public/css/newitem/*.css', 'routes/newitem/*.xml'],
+            'instances': '1',
             'exec_mode': 'cluster',
             log_date_format: 'YYYY-MM-DD HH:mm:ss',
             error_file: 'pm2_err_log/pm2_err.log',

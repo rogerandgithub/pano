@@ -267,6 +267,9 @@ input.search{
 #dashboard-menu > li:nth-of-type(5) > a{
 	background-position:30px -418px;
 }
+#dashboard-menu > li:nth-of-type(6) > a{
+	background-position:30px -528px;
+}
 #dashboard-menu > li{
 	position:relative;
 }

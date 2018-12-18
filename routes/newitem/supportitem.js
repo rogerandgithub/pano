@@ -8,6 +8,7 @@ var nodegrass = require('nodegrass');
 var fs = require('fs');
 var path = require('path');
 var request = require('request');
+var qiniu = require('qiniu');
 
 
 router.get('/', function (req, res) {
@@ -25,101 +26,68 @@ router.get('/', function (req, res) {
     });
 });
 
-router.post('/test', function (req, res) {
-    var files = getCalibrationFile(req, res);
-});
 
-router.post('/sssssssssssss', function (req, res) {
-    db.Scenes.sequelize.query('select * from scenes where id in (select max(id) as id from scenes group by deviceid)', {
+router.post('/test', function (req, res) {
+    //db.Scenes.sequelize.query("select * from scenes where id in (select max(id) as id from scenes group by deviceid)", {
+    db.Scenes.sequelize.query("select * from scenes where `key` = '21c40c1658'", {
         model: db.Scenes
-    }).then(function (scenes) {
+    }).then(function (scenesList) {
         db.Scenes.sequelize.query('select * from support order by deviceid asc', {
             model: db.Support
-        }).then(function (support) {
-            for (var key in scenes) {
-                var isExist = false;
-                var calibrationUrl = '';
-                var cameraUrl = '';
-                for (var keys in support) {
-                    if (scenes[key].dataValues.deviceid == support[keys].dataValues.deviceid) {
-                        isExist = true;
-                        if (scenes[key].dataValues.key != support[keys].dataValues.key) {
-                            if (calibrationUrl == '') {
-                                var files = getCalibrationFile(scenes[key].dataValues, support[keys].dataValues);
-                                calibrationUrl = compareFile(files[0], files[1]);
-                            }
-                            if (cameraUrl == '') {
-                                var files = getCameraFile(scenes[key].dataValues, support[keys].dataValues);
-                                cameraUrl = compareFile(files[0], files[1]);
-                            }
-                        }
-                    }
-                }
-                if (!isExist) {
-                    //如果不存在则需要新增记录
-                    // db.Support.create({
-                    //     key: scenes[key].dataValues.key,
-                    //     deviceid: scenes[key].dataValues.deviceid,
-                    //     calibration_2cam_xml_url: scenes[key].dataValues.key,
-                    //     camera_xml_url: scenes[key].dataValues.key
-                    // }).then(function (result) {
-                    //     console.log(result);
-                    // }).catch(function (ex) {
-                    //     console.log(ex);
-                    // });
-                }
-            }
+        }).then(function (supportList) {
+            
         });
     });
 });
-
-function getCalibrationFile(scenes, support) {
-    var oldUrl = 'http://qncdn.sz-sti.com/pano/d7be08ecf9.jpg'
-    var readStream = request(oldUrl);
-    var writeStream = fs.createWriteStream(__dirname + '/test.jpg');
-    readStream.pipe(writeStream);
-    writeStream.on("finish", function () {
-        var newFileSrc = path.join(__dirname, '../../../../Downloads/00005fa875/calibration_2cam.xml');
-        fs.readFile(newFileSrc, function (err, data) {
-            fs.readFile(writeStream.path, function (err, datas) {
-                //console.log(datas.toString());
-            });
-        });
-    });
-    return '';
-}
-
-function getCameraFile(scenes, support) {
-    return [];
-}
-
-function compareFile(file, files) {
-
-    return '';
-}
 
 
 router.post('/queryFile', function (req, res) {
-    var supportObj = {};
-    db.Support.findOne({
+    var supportList = [];
+    db.Support.findAll({
         where: {
             deviceid: req.body.deviceid
         }
     }).then(function (support) {
         if (support) {
-            supportObj = {
-                "id": support.dataValues.id,
-                "deviceid": support.dataValues.deviceid,
-                "calibration_2cam_xml_name": "calibration_2cam_.xml",
-                "calibrationUrl": support.dataValues.calibrationUrl,
-                "camera_xml_name": "camera.xml",
-                "cameraUrl": support.dataValues.cameraUrl
-            };
-            res.json({supportObj: supportObj, code: 0, msg: 'OK'});
+            supportList = support;
+            res.json({supportList: supportList, code: 0, msg: 'OK'});
         } else {
             res.json({code: 1, msg: 'NO'});
         }
     });
 });
-//
+
+//构造上传函数
+function uptoken(bucket, key) {
+    var putPolicy = new qiniu.rs.PutPolicy(bucket + ":" + key);
+    putPolicy.callbackUrl = 'http://120.76.27.228/supportitem/nodeupcb';
+    putPolicy.callbackBody = 'filename=$(fname)&filesize=$(fsize)';
+    return putPolicy.token();
+}
+
+//七牛云CDN上传回调
+router.post('/nodeupcb', function (req, res) {
+    res.json({code: 0, msg: 'OK'});
+});
+
+//构造上传函数
+function uploadFile(uptoken, key, localFile, callback) {
+    var extra = new qiniu.io.PutExtra();
+    qiniu.io.putFile(uptoken, key, localFile, extra, function (err, ret) {
+        callback();
+    });
+}
+
+//上传图片到七牛云
+function uploadFileToQiniu(key, fileName) {
+    var bucket = 'suteng';    //要上传的空间
+    var qiniu_key = 'calibration/' + key + '/' + fileName;    //上传到七牛后保存的文件名
+    var token = uptoken(bucket, qiniu_key);    //要上传文件的本地路径
+    var filePath = path.join(__dirname, '../../../../Downloads/' + key + '/' + fileName);    //本地文件路径
+    //var filePath = path.join(__dirname, '../../public/pano/pano2T/' + key + '/' + fileName);
+    uploadFile(token, qiniu_key, filePath, function (err) {
+        console.log("上传成功");
+    });
+}
+
 module.exports = router;
