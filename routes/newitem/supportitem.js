@@ -35,10 +35,35 @@ router.post('/test', function (req, res) {
         db.Scenes.sequelize.query('select * from support order by deviceid asc', {
             model: db.Support
         }).then(function (supportList) {
-            
+            scenesList.forEach(function (scenes) {
+                scenes.localCalibrationUrl = path.join(__dirname, '../../../../Downloads/' + scenes.key + '/calibration_2cam.xml');
+                scenes.localCalibrationData = fs.readFileSync(scenes.localCalibrationUrl);
+
+                var list = [];
+
+            });
         });
     });
 });
+
+
+//准备递归
+var recursiveFile = function (scenes, supportList, callback) {
+
+
+}
+
+
+var compareFile = function (scenes, support, callback) {
+    var downCalibrationUrl = 'http://qncdn.sz-sti.com/calibration/' + scenes.key + '/calibration_2cam.xml';
+    var readStream = request(downCalibrationUrl);
+    var writeStream = fs.createWriteStream(__dirname + '/calibration_2cam.xml');
+    readStream.pipe(writeStream);
+    writeStream.on("finish", function () {
+        var downCalibrationData = fs.readFileSync(writeStream.path);
+        scenes.localCalibrationData.toString() == downCalibrationData.toString() ? callback(true) : callback(false);
+    });
+}
 
 
 router.post('/queryFile', function (req, res) {
@@ -57,6 +82,7 @@ router.post('/queryFile', function (req, res) {
     });
 });
 
+
 //构造上传函数
 function uptoken(bucket, key) {
     var putPolicy = new qiniu.rs.PutPolicy(bucket + ":" + key);
@@ -65,10 +91,12 @@ function uptoken(bucket, key) {
     return putPolicy.token();
 }
 
+
 //七牛云CDN上传回调
 router.post('/nodeupcb', function (req, res) {
     res.json({code: 0, msg: 'OK'});
 });
+
 
 //构造上传函数
 function uploadFile(uptoken, key, localFile, callback) {
@@ -77,6 +105,7 @@ function uploadFile(uptoken, key, localFile, callback) {
         callback();
     });
 }
+
 
 //上传图片到七牛云
 function uploadFileToQiniu(key, fileName) {
@@ -89,5 +118,6 @@ function uploadFileToQiniu(key, fileName) {
         console.log("上传成功");
     });
 }
+
 
 module.exports = router;

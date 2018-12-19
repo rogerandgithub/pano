@@ -7,3 +7,5 @@ node_modules/
 pm2_err_log/
 
 routes/newitem/*.jpg
+
+routes/newitem/*.xml
