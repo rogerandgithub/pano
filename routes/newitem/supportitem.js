@@ -36,32 +36,90 @@ router.post('/test', function (req, res) {
             model: db.Support
         }).then(function (supportList) {
             scenesList.forEach(function (scenes) {
-                scenes.localCalibrationUrl = path.join(__dirname, '../../../../Downloads/' + scenes.key + '/calibration_2cam.xml');
-                scenes.localCalibrationData = fs.readFileSync(scenes.localCalibrationUrl);
+                var localFilePath = getLocalFilePath(scenes);
+                scenes.localCalibrationData = fs.readFileSync(localFilePath.localCalibrationUrl);
+                scenes.localCameraData = fs.readFileSync(localFilePath.localCameraUrl);
+                var pList = [];
+                supportList.forEach(function (support) {
+                    pList.push(new Promise(function (resolve, reject) {
+                        if (scenes.deviceid == support.deviceid) {
+                            compareCalibrationFile(scenes, support, function (calibrationResult) {
+                                compareCameraFile(scenes, support, function (cameraResult) {
+                                    resolve({
+                                        calibrationResult: calibrationResult,
+                                        cameraResult: cameraResult,
+                                        scenes: scenes,
+                                        support: support
+                                    });
+                                });
+                            });
+                        }
+                    }))
+                });
+                Promise.all(pList).then(function (resultList) {
+                    var calibrationExist = false;
+                    var cameraExist = false;
 
-                var list = [];
+                    var currentScenes = {};
+                    var oldSupport = {};
+                    resultList.forEach(function (result) {
+                        currentScenes = result.scenes;
+                        if (result.calibrationResult) {
+                            calibrationExist = true;
+                            oldSupport = result.support;
+                        }
+                        if (result.cameraResult) {
+                            cameraExist = true;
+                            oldSupport = result.support;
+                        }
+                    });
 
+                    if (!calibrationExist && !cameraExist) {    //如果两个文件都不存在相同
+
+                    } else if (!calibrationExist || !cameraExist) {    //如果只有一个文件存在相同
+
+                    } else {    //两个文件均相同
+                        //Nothing to do...
+                    }
+
+                });
             });
         });
     });
 });
 
 
-//准备递归
-var recursiveFile = function (scenes, supportList, callback) {
-
-
+var getLocalFilePath = function (scenes) {
+    var localCalibrationUrl = path.join(__dirname, '../../public/pano/pano2T/' + scenes.key + '/calibration_2cam.xml');
+    var localCameraUrl = path.join(__dirname, '../../public/pano/pano2T/' + scenes.key + '/camera.xml');
+    return {localCalibrationUrl: localCalibrationUrl, localCameraUrl: localCameraUrl};
 }
 
 
-var compareFile = function (scenes, support, callback) {
-    var downCalibrationUrl = 'http://qncdn.sz-sti.com/calibration/' + scenes.key + '/calibration_2cam.xml';
-    var readStream = request(downCalibrationUrl);
+var compareCalibrationFile = function (scenes, support, callback) {
+    var readStream = request(support.calibration_2cam_xml_url);
     var writeStream = fs.createWriteStream(__dirname + '/calibration_2cam.xml');
     readStream.pipe(writeStream);
     writeStream.on("finish", function () {
         var downCalibrationData = fs.readFileSync(writeStream.path);
+        if (fs.existsSync(writeStream.path)) {
+            //fs.unlinkSync(writeStream.path);
+        }
         scenes.localCalibrationData.toString() == downCalibrationData.toString() ? callback(true) : callback(false);
+    });
+}
+
+
+var compareCameraFile = function (scenes, support, callback) {
+    var readStream = request(support.camera_xml_url);
+    var writeStream = fs.createWriteStream(__dirname + '/camera.xml');
+    readStream.pipe(writeStream);
+    writeStream.on("finish", function () {
+        var downCameraData = fs.readFileSync(writeStream.path);
+        if (fs.existsSync(writeStream.path)) {
+            //fs.unlinkSync(writeStream.path);
+        }
+        scenes.localCameraData.toString() == downCameraData.toString() ? callback(true) : callback(false);
     });
 }
 

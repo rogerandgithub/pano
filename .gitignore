@@ -9,3 +9,5 @@ pm2_err_log/
 routes/newitem/*.jpg
 
 routes/newitem/*.xml
+
+public/pano/pano2T/
