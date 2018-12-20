@@ -9,7 +9,7 @@ var fs = require('fs');
 var path = require('path');
 var request = require('request');
 var qiniu = require('qiniu');
-
+var deploy = require('../../config/deploy').config;
 
 router.get('/', function (req, res) {
     var r = {};
@@ -37,10 +37,12 @@ router.post('/test', function (req, res) {
         }).then(function (supportList) {
             scenesList.forEach(function (scenes) {
                 var localFilePath = getLocalFilePath(scenes);
-                scenes.localCalibrationData = fs.readFileSync(localFilePath.localCalibrationUrl);
-                scenes.localCameraData = fs.readFileSync(localFilePath.localCameraUrl);
+                scenes.localCalibrationUrl = localFilePath.localCalibrationUrl;
+                scenes.localCameraUrl = localFilePath.localCameraUrl;
+                scenes.localCalibrationData = fs.readFileSync(scenes.localCalibrationUrl);
+                scenes.localCameraData = fs.readFileSync(scenes.localCameraUrl);
                 var pList = [];
-                supportList.forEach(function (support) {
+                supportList.forEach(function (support, index) {
                     pList.push(new Promise(function (resolve, reject) {
                         if (scenes.deviceid == support.deviceid) {
                             compareCalibrationFile(scenes, support, function (calibrationResult) {
@@ -48,22 +50,20 @@ router.post('/test', function (req, res) {
                                     resolve({
                                         calibrationResult: calibrationResult,
                                         cameraResult: cameraResult,
-                                        scenes: scenes,
                                         support: support
                                     });
                                 });
                             });
                         }
-                    }))
+                    }));
                 });
+                //当 Promise 没有 resolve 操作时证明数据库没有存在对应的记录， 需要新增一条， 这个时候也要监控到
                 Promise.all(pList).then(function (resultList) {
+                    console.log("找到了至少一条 Support 记录");
                     var calibrationExist = false;
                     var cameraExist = false;
-
-                    var currentScenes = {};
                     var oldSupport = {};
                     resultList.forEach(function (result) {
-                        currentScenes = result.scenes;
                         if (result.calibrationResult) {
                             calibrationExist = true;
                             oldSupport = result.support;
@@ -73,15 +73,40 @@ router.post('/test', function (req, res) {
                             oldSupport = result.support;
                         }
                     });
-
-                    if (!calibrationExist && !cameraExist) {    //如果两个文件都不存在相同
-
-                    } else if (!calibrationExist || !cameraExist) {    //如果只有一个文件存在相同
-
-                    } else {    //两个文件均相同
-                        //Nothing to do...
+                    if (!calibrationExist && !cameraExist) {
+                        console.log("两个文件均不相同");
+                        var bucket = 'suteng';
+                        var qiniu_key = 'calibration/' + scenes.key + '/' + 'calibration_2cam.xml';
+                        var token = uptoken(bucket, qiniu_key);
+                        uploadFile(token, qiniu_key, scenes.localCalibrationUrl, function (calibrationErr, calibrationRet) {
+                            qiniu_key = 'calibration/' + scenes.key + '/' + 'camera.xml';
+                            token = uptoken(bucket, qiniu_key);
+                            uploadFile(token, qiniu_key, scenes.localCameraUrl, function (cameraErr, cameraRet) {
+                                var calibrationCallback = JSON.parse(calibrationErr.error);
+                                var cameraCallback = JSON.parse(cameraErr.error);
+                                console.log(deploy.cdnPath + "/" + calibrationCallback.key);
+                                console.log(deploy.cdnPath + "/" + cameraCallback.key);
+                                //接下来进行写入数据库的操作
+                                //Nothing to do...
+                            });
+                        });
+                    } else if (!calibrationExist || !cameraExist) {
+                        console.log("只有一个文件存在不相同");
+                        var filePath = !calibrationExist ? scenes.localCalibrationUrl : scenes.localCameraUrl;
+                        var fileName = !calibrationExist ? 'calibration_2cam.xml' : 'camera.xml';
+                        var bucket = 'suteng';
+                        var qiniu_key = 'calibration/' + scenes.key + '/' + fileName;
+                        var token = uptoken(bucket, qiniu_key);
+                        uploadFile(token, qiniu_key, scenes.localCameraUrl, function (err, ret) {
+                            var callback = JSON.parse(err.error);
+                            console.log(deploy.cdnPath + "/" + callback.key);
+                            console.log(oldSupport);    //找到旧数据对象, 需要用三目运算符号判断哪个文件内容有变化, 另一个文件就无需上传, 直接加入url就好了
+                            //接下来进行写入数据库的操作
+                            //Nothing to do...
+                        });
+                    } else {
+                        console.log("两个文件均相同");
                     }
-
                 });
             });
         });
@@ -160,20 +185,7 @@ router.post('/nodeupcb', function (req, res) {
 function uploadFile(uptoken, key, localFile, callback) {
     var extra = new qiniu.io.PutExtra();
     qiniu.io.putFile(uptoken, key, localFile, extra, function (err, ret) {
-        callback();
-    });
-}
-
-
-//上传图片到七牛云
-function uploadFileToQiniu(key, fileName) {
-    var bucket = 'suteng';    //要上传的空间
-    var qiniu_key = 'calibration/' + key + '/' + fileName;    //上传到七牛后保存的文件名
-    var token = uptoken(bucket, qiniu_key);    //要上传文件的本地路径
-    var filePath = path.join(__dirname, '../../../../Downloads/' + key + '/' + fileName);    //本地文件路径
-    //var filePath = path.join(__dirname, '../../public/pano/pano2T/' + key + '/' + fileName);
-    uploadFile(token, qiniu_key, filePath, function (err) {
-        console.log("上传成功");
+        callback(err, ret);
     });
 }
 

@@ -9,7 +9,7 @@ module.exports = {
             name: 'www',
             script: './bin/www',
             watch: ['.well-known', 'bin', 'config', 'https_cert', 'node_modules', 'public', 'routes', 'views'],
-            ignore_watch: ['routes/newitem/*.jpg', 'views', 'public/css/newitem/*.css', 'routes/newitem/*.xml'],
+            ignore_watch: ['routes/newitem/*.jpg', 'views', 'public/css/newitem/*.css', 'routes/newitem/*.xml', 'public/pano/pano2T/'],
             'instances': '1',
             'exec_mode': 'cluster',
             log_date_format: 'YYYY-MM-DD HH:mm:ss',
