@@ -40,7 +40,7 @@ router.post('/test', function (req, res) {
                 scenes.localCameraUrl = localFilePath.localCameraUrl;
 
                 if (!fs.existsSync(scenes.localCalibrationUrl) || !fs.existsSync(scenes.localCameraUrl)) {
-                    console.log("文件不存在, 开始下一轮循环: " + index);
+                    //console.log("文件不存在, 开始下一轮循环: " + index);
                     return;
                 }
 
