@@ -28,27 +28,26 @@ router.get('/', function (req, res) {
 
 
 router.post('/test', function (req, res) {
-    //db.Scenes.sequelize.query("select * from scenes where id in (select max(id) as id from scenes group by deviceid)", {
-    db.Scenes.sequelize.query("select * from scenes where `key` = '21c40c1658'", {
+    db.Scenes.sequelize.query("select * from scenes where id in (select max(id) as id from scenes group by deviceid) and deviceid != ''", {
         model: db.Scenes
     }).then(function (scenesList) {
         db.Scenes.sequelize.query('select * from support order by deviceid asc', {
             model: db.Support
         }).then(function (supportList) {
-            scenesList.forEach(function (scenes) {
+            scenesList.forEach(function (scenes, index) {
                 var localFilePath = getLocalFilePath(scenes);
                 scenes.localCalibrationUrl = localFilePath.localCalibrationUrl;
                 scenes.localCameraUrl = localFilePath.localCameraUrl;
 
                 if (!fs.existsSync(scenes.localCalibrationUrl) || !fs.existsSync(scenes.localCameraUrl)) {
-                    console.log("文件不存在, 开始下一轮循环");
+                    console.log("文件不存在, 开始下一轮循环: " + index);
                     return;
                 }
 
                 scenes.localCalibrationData = fs.readFileSync(scenes.localCalibrationUrl);
                 scenes.localCameraData = fs.readFileSync(scenes.localCameraUrl);
                 var pList = [];
-                supportList.forEach(function (support) {
+                supportList.forEach(function (support, index) {
                     pList.push(new Promise(function (resolve, reject) {
                         if (scenes.deviceid == support.deviceid) {
                             compareCalibrationFile(scenes, support, function (calibrationResult) {
@@ -94,7 +93,7 @@ router.post('/test', function (req, res) {
                                     camera_xml_url: deploy.cdnPath + "/" + cameraCallback.key
                                 }
                                 db.Support.create(data).then(function (result) {
-                                    console.log("两个文件均不相同 新增数据成功");
+                                    console.log("两个文件均不相同, 新增数据成功");
                                 });
                             });
                         });
@@ -123,7 +122,7 @@ router.post('/test', function (req, res) {
                                 }
                             }
                             db.Support.create(data).then(function (result) {
-                                console.log("只有一个文件存在不相同 新增数据成功");
+                                console.log("只有一个文件存在不相同, 新增数据成功");
                             });
                         });
                     } else {
