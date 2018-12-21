@@ -47,11 +47,15 @@ router.post('/test', function (req, res) {
                 scenes.localCalibrationData = fs.readFileSync(scenes.localCalibrationUrl);
                 scenes.localCameraData = fs.readFileSync(scenes.localCameraUrl);
                 var pList = [];
-                supportList.forEach(function (support, index) {
-                    pList.push(new Promise(function (resolve, reject) {
+                pList.push(new Promise(function (resolve, reject) {
+                    var count = 0;
+                    supportList.forEach(function (support, index) {
                         if (scenes.deviceid == support.deviceid) {
+                            count++;
                             compareCalibrationFile(scenes, support, function (calibrationResult) {
                                 compareCameraFile(scenes, support, function (cameraResult) {
+                                    //这里比较的值就有错误， 需要排查是文件原因还是网络原因
+                                    return;
                                     resolve({
                                         calibrationResult: calibrationResult,
                                         cameraResult: cameraResult,
@@ -60,8 +64,16 @@ router.post('/test', function (req, res) {
                                 });
                             });
                         }
-                    }));
-                });
+                    });
+                    if (count == 0) {
+                        console.log("没有发现文件");
+                        resolve({
+                            calibrationResult: false,
+                            cameraResult: false,
+                            support: {}
+                        });
+                    }
+                }));
                 Promise.all(pList).then(function (resultList) {
                     var calibrationExist = false;
                     var cameraExist = false;
