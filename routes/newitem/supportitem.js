@@ -155,17 +155,29 @@ var getLocalFilePath = function (scenes) {
 
 
 var compareCalibrationFile = function (scenes, support, callback) {
-    request(support.calibration_2cam_xml_url).pipe(fs.createWriteStream(__dirname + '/calibration_2cam.xml')).on('close', function () {
-        var downCalibrationData = fs.readFileSync(__dirname + '/calibration_2cam.xml');
+    var readStream = request(support.calibration_2cam_xml_url);
+    var writeStream = fs.createWriteStream(__dirname + '/calibration_2cam.xml');
+    readStream.pipe(writeStream);
+    writeStream.on("finish", function () {
+        var downCalibrationData = fs.readFileSync(writeStream.path);
+        // if (fs.existsSync(writeStream.path)) {
+        //     fs.unlinkSync(writeStream.path);
+        // }
         scenes.localCalibrationData.toString() == downCalibrationData.toString() ? callback(true) : callback(false);
     });
 }
 
 
 var compareCameraFile = function (scenes, support, callback) {
-    request(support.calibration_2cam_xml_url).pipe(fs.createWriteStream(__dirname + '/camera.xml')).on('close', function () {
-        var downCalibrationData = fs.readFileSync(__dirname + '/camera.xml');
-        scenes.localCalibrationData.toString() == downCalibrationData.toString() ? callback(true) : callback(false);
+    var readStream = request(support.camera_xml_url);
+    var writeStream = fs.createWriteStream(__dirname + '/camera.xml');
+    readStream.pipe(writeStream);
+    writeStream.on("finish", function () {
+        var downCameraData = fs.readFileSync(writeStream.path);
+        // if (fs.existsSync(writeStream.path)) {
+        //     fs.unlinkSync(writeStream.path);
+        // }
+        scenes.localCameraData.toString() == downCameraData.toString() ? callback(true) : callback(false);
     });
 }
 
