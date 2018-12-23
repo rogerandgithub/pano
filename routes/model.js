@@ -1,5 +1,6 @@
 var Sequelize = require("sequelize");
 var config = require("./config");
+var moment = require('moment');
 var sequelize = new Sequelize(config.dbDatabase, config.dbUser, config.dbPassword, {
     host: config.dbHost,
     dialect: 'mysql',
@@ -1002,6 +1003,20 @@ var Support = sequelize.define('support', {
     camera_xml_url: {
         type: Sequelize.CHAR(255),
         field: 'camera_xml_url'
+    },
+    createdAt: {
+        type: Sequelize.DATE,
+        field: 'createdAt',
+        get() {
+            return moment(this.getDataValue('createdAt')).format('YYYY-MM-DD HH:mm:ss');
+        }
+    },
+    updatedAt: {
+        type: Sequelize.DATE,
+        field: 'updatedAt',
+        get() {
+            return moment(this.getDataValue('updatedAt')).format('YYYY-MM-DD HH:mm:ss');
+        }
     }
 }, {
     freezeTableName: true,

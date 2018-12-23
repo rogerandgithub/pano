@@ -188,9 +188,8 @@ router.post('/queryFile', function (req, res) {
         where: {
             deviceid: req.body.deviceid
         }
-    }).then(function (support) {
-        if (support) {
-            supportList = support;
+    }).then(function (supportList) {
+        if (supportList) {
             res.json({supportList: supportList, code: 0, msg: 'OK'});
         } else {
             res.json({code: 1, msg: 'NO'});

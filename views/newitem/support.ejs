@@ -126,9 +126,14 @@
                                     <div class="contentbox col-xs-9">
                                         <div class="item w640" transition="onehalf" v-show="showFile">
                                             <div class="document-content">
-                                                <ul>
-                                                    <li><a>{{supportObj.calibration_2cam_xml_name}}</a></li>
-                                                    <li><a>{{supportObj.camera_xml_name}}</a></li>
+                                                <ul v-for="support in supportList">
+                                                    <li>{{support.createdAt}}</li>
+                                                    <li><a @mousedown.stop
+                                                           @click="downloadXml(support.calibration_2cam_xml_url)">calibration_2cam.xml</a>
+                                                    </li>
+                                                    <li><a @mousedown.stop
+                                                           @click="downloadXml(support.camera_xml_url)">camera.xml</a>
+                                                    </li>
                                                 </ul>
                                             </div>
                                         </div>
@@ -170,7 +175,7 @@
             showFile: false,
             showFileNotFound: false,
             deviceid: "",
-            supportObj: []
+            supportList: []
         },
         methods: {
             hide: function () {
@@ -190,10 +195,14 @@
                     } else {
                         _this.showFile = true;
                         _this.showFileNotFound = false;
-                        _this.supportObj = r.supportObj;
-                        console.log(_this.result);
+                        _this.supportList = r.supportList;
+                        console.log(_this.supportList);
                     }
                 });
+            },
+            downloadXml: function (url) {
+                console.log(url);
+                location.href = url + '?download';
             },
             test: function () {
                 $.post('/supportitem/test', null, function (r) {
