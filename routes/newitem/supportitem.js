@@ -47,15 +47,13 @@ router.post('/test', function (req, res) {
                 scenes.localCalibrationData = fs.readFileSync(scenes.localCalibrationUrl);
                 scenes.localCameraData = fs.readFileSync(scenes.localCameraUrl);
                 var pList = [];
-                pList.push(new Promise(function (resolve, reject) {
-                    var count = 0;
-                    supportList.forEach(function (support, index) {
-                        if (scenes.deviceid == support.deviceid) {
+                var count = 0;
+                supportList.forEach(function (support, index) {
+                    if (scenes.deviceid == support.deviceid) {
+                        pList.push(new Promise(function (resolve, reject) {
                             count++;
                             compareCalibrationFile(scenes, support, function (calibrationResult) {
                                 compareCameraFile(scenes, support, function (cameraResult) {
-                                    //这里比较的值就有错误， 需要排查是文件原因还是网络原因
-                                    return;
                                     resolve({
                                         calibrationResult: calibrationResult,
                                         cameraResult: cameraResult,
@@ -63,18 +61,22 @@ router.post('/test', function (req, res) {
                                     });
                                 });
                             });
-                        }
-                    });
-                    if (count == 0) {
-                        console.log("没有发现文件");
+                        }));
+                    }
+                });
+                if (count == 0) {
+                    console.log("没有发现文件");
+                    pList.push(new Promise(function (resolve, reject) {
                         resolve({
                             calibrationResult: false,
                             cameraResult: false,
                             support: {}
                         });
-                    }
-                }));
+                    }));
+                }
                 Promise.all(pList).then(function (resultList) {
+                    //终止程序-------------------------------------------------------------------------------------------
+                    return;
                     var calibrationExist = false;
                     var cameraExist = false;
                     var oldSupport = {};
@@ -160,9 +162,6 @@ var compareCalibrationFile = function (scenes, support, callback) {
     readStream.pipe(writeStream);
     writeStream.on("finish", function () {
         var downCalibrationData = fs.readFileSync(writeStream.path);
-        // if (fs.existsSync(writeStream.path)) {
-        //     fs.unlinkSync(writeStream.path);
-        // }
         scenes.localCalibrationData.toString() == downCalibrationData.toString() ? callback(true) : callback(false);
     });
 }
@@ -174,9 +173,6 @@ var compareCameraFile = function (scenes, support, callback) {
     readStream.pipe(writeStream);
     writeStream.on("finish", function () {
         var downCameraData = fs.readFileSync(writeStream.path);
-        // if (fs.existsSync(writeStream.path)) {
-        //     fs.unlinkSync(writeStream.path);
-        // }
         scenes.localCameraData.toString() == downCameraData.toString() ? callback(true) : callback(false);
     });
 }
