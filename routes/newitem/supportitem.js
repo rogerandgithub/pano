@@ -10,6 +10,7 @@ var path = require('path');
 var request = require('request');
 var qiniu = require('qiniu');
 var deploy = require('../../config/deploy').config;
+var dateFormat = require('dateformat');
 
 router.get('/', function (req, res) {
     var r = {};
@@ -156,7 +157,9 @@ var executeCompare = function (scenesList, supportList, callback) {
                             key: scenes.key,
                             deviceid: scenes.deviceid,
                             calibration_2cam_xml_url: deploy.cdnPath + "/" + calibrationCallback.key,
-                            camera_xml_url: deploy.cdnPath + "/" + cameraCallback.key
+                            camera_xml_url: deploy.cdnPath + "/" + cameraCallback.key,
+                            createdAt: dateFormat(new Date(), 'yyyy-mm-dd HH:mm:ss'),
+                            updatedAt: dateFormat(new Date(), 'yyyy-mm-dd HH:mm:ss')
                         }
                         db.Support.create(data).then(function (result) {
                             console.log("两个文件均不相同, 新增数据成功");
@@ -177,14 +180,18 @@ var executeCompare = function (scenesList, supportList, callback) {
                             key: scenes.key,
                             deviceid: scenes.deviceid,
                             calibration_2cam_xml_url: deploy.cdnPath + "/" + callback.key,
-                            camera_xml_url: oldSupport.camera_xml_url
+                            camera_xml_url: oldSupport.camera_xml_url,
+                            createdAt: dateFormat(new Date(), 'yyyy-mm-dd HH:mm:ss'),
+                            updatedAt: dateFormat(new Date(), 'yyyy-mm-dd HH:mm:ss')
                         }
                     } else {
                         data = {
                             key: scenes.key,
                             deviceid: scenes.deviceid,
                             calibration_2cam_xml_url: oldSupport.calibration_2cam_xml_url,
-                            camera_xml_url: deploy.cdnPath + "/" + callback.key
+                            camera_xml_url: deploy.cdnPath + "/" + callback.key,
+                            createdAt: dateFormat(new Date(), 'yyyy-mm-dd HH:mm:ss'),
+                            updatedAt: dateFormat(new Date(), 'yyyy-mm-dd HH:mm:ss')
                         }
                     }
                     db.Support.create(data).then(function (result) {
