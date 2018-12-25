@@ -27,7 +27,7 @@ router.get('/', function (req, res) {
 });
 
 
-router.post('/updateFileLibrary', function (req, res) {
+router.get('/updateFileLibrary', function (req, res) {
     db.Scenes.sequelize.query("select * from scenes where id in (select max(id) as id from scenes group by deviceid) and deviceid != ''", {
         model: db.Scenes
     }).then(function (scenesList) {
@@ -47,6 +47,7 @@ router.post('/updateFileLibrary', function (req, res) {
 var downloadAllFile = function (supportList, callback) {
     var tempFilePath = __dirname + '/temp_file/';
     if (fs.existsSync(tempFilePath)) {
+        console.log("temp_file 目录已存在, 先清空再下载");
         var files = fs.readdirSync(tempFilePath);
         files.forEach(function (file, index) {
             fs.unlinkSync(tempFilePath + file);
@@ -54,6 +55,7 @@ var downloadAllFile = function (supportList, callback) {
         fs.rmdirSync(tempFilePath);
         fs.mkdirSync(tempFilePath);
     } else {
+        console.log("temp_file 目录不存在, 新建目录");
         fs.mkdirSync(tempFilePath);
     }
 
@@ -75,6 +77,7 @@ var downloadAllFile = function (supportList, callback) {
         }));
     });
     Promise.all(processList).then(function (resultList) {
+        console.log("下载所有文件成功");
         callback(resultList);
     });
 }
@@ -223,7 +226,8 @@ router.post('/queryFile', function (req, res) {
     db.Support.findAll({
         where: {
             deviceid: req.body.deviceid
-        }
+        },
+        order: "id DESC"
     }).then(function (supportList) {
         if (supportList) {
             res.json({supportList: supportList, code: 0, msg: 'OK'});

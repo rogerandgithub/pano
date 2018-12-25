@@ -250,7 +250,7 @@ input.search{
 	/*padding:19px 14px 15px 20px;*/
 	color: #fff;
 	outline:none;
-	background: url(/images/newitem/icons/icon-btn.png) no-repeat;
+	background: url(/images/newitem/icons/icon-btn-new.png) no-repeat;
 }
 #dashboard-menu > li:nth-of-type(1) > a{
 	background-position:30px 12px; 

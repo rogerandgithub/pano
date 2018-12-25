@@ -119,15 +119,12 @@
                                         <div class="uploadBtn" @click="queryFile"
                                              style="margin-left:0;line-height: 39px;">快速查询
                                         </div>
-                                        <div class="uploadBtn" @click="updateFileLibrary"
-                                             style="margin-left:0;line-height: 39px;">更新文件库
-                                        </div>
                                     </div>
                                     <div class="contentbox col-xs-9">
                                         <div class="item w640" transition="onehalf" v-show="showFile">
                                             <div class="document-content">
                                                 <ul v-for="support in supportList">
-                                                    <li>{{support.createdAt}}</li>
+                                                    <li>{{support.createdAt}} - {{support.key}}</li>
                                                     <li><a @mousedown.stop
                                                            @click="downloadXml(support.calibration_2cam_xml_url)">calibration_2cam.xml</a>
                                                     </li>
@@ -193,25 +190,22 @@
                         _this.showFile = false;
                         return;
                     } else {
-                        _this.showFile = true;
-                        _this.showFileNotFound = false;
-                        _this.supportList = r.supportList;
-                        console.log(_this.supportList);
+                        if (r.supportList.length > 0) {
+                            _this.showFile = true;
+                            _this.showFileNotFound = false;
+                            _this.supportList = r.supportList;
+                            console.log(_this.supportList);
+                        } else {
+                            _this.showFileNotFound = true;
+                            _this.showFile = false;
+                            return;
+                        }
                     }
                 });
             },
             downloadXml: function (url) {
                 console.log(url);
                 location.href = url + '?download';
-            },
-            updateFileLibrary: function () {
-                $.post('/supportitem/updateFileLibrary', null, function (r) {
-                    if (r.code != 0) {
-                        alert("更新文件库失败");
-                    } else {
-                        alert("更新文件库成功");
-                    }
-                });
             }
         }
     });
