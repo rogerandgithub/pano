@@ -27,7 +27,7 @@ router.get('/', function (req, res) {
 });
 
 
-router.post('/test', function (req, res) {
+router.post('/updateFileLibrary', function (req, res) {
     db.Scenes.sequelize.query("select * from scenes where id in (select max(id) as id from scenes group by deviceid) and deviceid != ''", {
         model: db.Scenes
     }).then(function (scenesList) {
@@ -35,7 +35,9 @@ router.post('/test', function (req, res) {
             model: db.Support
         }).then(function (supportList) {
             downloadAllFile(supportList, function (resultList) {
-                executeCompare(scenesList, resultList);
+                executeCompare(scenesList, resultList, function () {
+                    res.json({code: 0, msg: 'OK'});
+                });
             });
         });
     });
@@ -58,9 +60,9 @@ var downloadAllFile = function (supportList, callback) {
     //清除本地 temp_file 文件夹开关, 只需要取消 return 的注释即可
     //return;
 
-    var pList = [];
+    var processList = [];
     supportList.forEach(function (support, index) {
-        pList.push(new Promise(function (resolve, reject) {
+        processList.push(new Promise(function (resolve, reject) {
             var tempCalibrationPath = tempFilePath + support.deviceid + '_' + support.key + '_calibration_2cam.xml';
             var tempCameraPath = tempFilePath + support.deviceid + '_' + support.key + '_camera.xml';
             request(support.calibration_2cam_xml_url).pipe(fs.createWriteStream(tempCalibrationPath)).on("finish", function () {
@@ -72,14 +74,19 @@ var downloadAllFile = function (supportList, callback) {
             });
         }));
     });
-    Promise.all(pList).then(function (resultList) {
+    Promise.all(processList).then(function (resultList) {
         callback(resultList);
     });
 }
 
 
-var executeCompare = function (scenesList, supportList) {
+var executeCompare = function (scenesList, supportList, callback) {
+    var allProcessList = [];
     scenesList.forEach(function (scenes, index) {
+        allProcessList.push(new Promise(function (resolve, reject) {
+            resolve();
+        }));
+
         var localFilePath = getLocalFilePath(scenes);
         scenes.localCalibrationPath = localFilePath.localCalibrationPath;
         scenes.localCameraPath = localFilePath.localCameraPath;
@@ -90,11 +97,11 @@ var executeCompare = function (scenesList, supportList) {
 
         scenes.localCalibrationFile = fs.readFileSync(scenes.localCalibrationPath);
         scenes.localCameraFile = fs.readFileSync(scenes.localCameraPath);
-        var pList = [];
+        var processList = [];
         var count = 0;
         supportList.forEach(function (support, index) {
             if (scenes.deviceid == support.deviceid) {
-                pList.push(new Promise(function (resolve, reject) {
+                processList.push(new Promise(function (resolve, reject) {
                     count++;
                     compareCalibrationFile(scenes, support, function (calibrationResult) {
                         compareCameraFile(scenes, support, function (cameraResult) {
@@ -110,7 +117,7 @@ var executeCompare = function (scenesList, supportList) {
         });
         if (count == 0) {
             console.log("没有发现文件");
-            pList.push(new Promise(function (resolve, reject) {
+            processList.push(new Promise(function (resolve, reject) {
                 resolve({
                     calibrationResult: false,
                     cameraResult: false,
@@ -118,7 +125,7 @@ var executeCompare = function (scenesList, supportList) {
                 });
             }));
         }
-        Promise.all(pList).then(function (resultList) {
+        Promise.all(processList).then(function (resultList) {
             var calibrationExist = false;
             var cameraExist = false;
             var oldSupport = {};
@@ -185,6 +192,9 @@ var executeCompare = function (scenesList, supportList) {
                 console.log("两个文件均相同, 不执行任何操作");
             }
         });
+    });
+    Promise.all(allProcessList).then(function () {
+        callback();
     });
 }
 

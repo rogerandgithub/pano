@@ -119,8 +119,8 @@
                                         <div class="uploadBtn" @click="queryFile"
                                              style="margin-left:0;line-height: 39px;">快速查询
                                         </div>
-                                        <div class="uploadBtn" @click="test"
-                                             style="margin-left:0;line-height: 39px;">测试更新文件库
+                                        <div class="uploadBtn" @click="updateFileLibrary"
+                                             style="margin-left:0;line-height: 39px;">更新文件库
                                         </div>
                                     </div>
                                     <div class="contentbox col-xs-9">
@@ -204,12 +204,12 @@
                 console.log(url);
                 location.href = url + '?download';
             },
-            test: function () {
-                $.post('/supportitem/test', null, function (r) {
+            updateFileLibrary: function () {
+                $.post('/supportitem/updateFileLibrary', null, function (r) {
                     if (r.code != 0) {
-
+                        alert("更新文件库失败");
                     } else {
-
+                        alert("更新文件库成功");
                     }
                 });
             }
