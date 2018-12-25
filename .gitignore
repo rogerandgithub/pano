@@ -10,4 +10,6 @@ routes/newitem/*.jpg
 
 routes/newitem/*.xml
 
-public/pano/pano2T
+public/pano/pano2T/
+
+routes/newitem/temp_file/
