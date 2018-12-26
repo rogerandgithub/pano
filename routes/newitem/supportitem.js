@@ -29,7 +29,7 @@ router.get('/', function (req, res) {
 
 
 router.get('/updateFileLibrary', function (req, res) {
-    db.Scenes.sequelize.query("select * from scenes where id in (select max(id) as id from scenes group by deviceid) and deviceid != ''", {
+    db.Scenes.sequelize.query("select a.* from scenes as a inner join (select max(id) as id from scenes where deviceid != '' group by deviceid) as b on (a.id = b.id)", {
         model: db.Scenes
     }).then(function (scenesList) {
         db.Scenes.sequelize.query('select * from support order by deviceid asc', {
@@ -145,25 +145,27 @@ var executeCompare = function (scenesList, supportList, callback) {
             });
             if (!calibrationExist && !cameraExist) {
                 var bucket = 'suteng';
-                var qiniu_key = 'calibration/' + scenes.key + '/' + 'calibration_2cam.xml';
-                var token = uptoken(bucket, qiniu_key);
-                uploadFile(token, qiniu_key, scenes.localCalibrationPath, function (calibrationErr, calibrationRet) {
-                    qiniu_key = 'calibration/' + scenes.key + '/' + 'camera.xml';
-                    token = uptoken(bucket, qiniu_key);
-                    uploadFile(token, qiniu_key, scenes.localCameraPath, function (cameraErr, cameraRet) {
-                        var calibrationCallback = JSON.parse(calibrationErr.error);
-                        var cameraCallback = JSON.parse(cameraErr.error);
-                        var data = {
-                            key: scenes.key,
-                            deviceid: scenes.deviceid,
-                            calibration_2cam_xml_url: deploy.cdnPath + "/" + calibrationCallback.key,
-                            camera_xml_url: deploy.cdnPath + "/" + cameraCallback.key,
-                            createdAt: dateFormat(new Date(), 'yyyy-mm-dd HH:mm:ss'),
-                            updatedAt: dateFormat(new Date(), 'yyyy-mm-dd HH:mm:ss')
+                var calibration_qiniu_key = 'calibration/' + scenes.key + '/' + 'calibration_2cam.xml';
+                var calibration_token = uptoken(bucket, calibration_qiniu_key);
+                uploadFile(calibration_token, calibration_qiniu_key, scenes.localCalibrationPath, function (calibrationErr, calibrationRet) {
+                    var camera_qiniu_key = 'calibration/' + scenes.key + '/' + 'camera.xml';
+                    var camera_token = uptoken(bucket, camera_qiniu_key);
+                    uploadFile(camera_token, camera_qiniu_key, scenes.localCameraPath, function (cameraErr, cameraRet) {
+                        if (calibrationRet.code == 0 && cameraRet.code == 0) {
+                            var data = {
+                                key: scenes.key,
+                                deviceid: scenes.deviceid,
+                                calibration_2cam_xml_url: deploy.cdnPath + "/" + calibration_qiniu_key,
+                                camera_xml_url: deploy.cdnPath + "/" + camera_qiniu_key,
+                                createdAt: dateFormat(new Date(), 'yyyy-mm-dd HH:mm:ss'),
+                                updatedAt: dateFormat(new Date(), 'yyyy-mm-dd HH:mm:ss')
+                            }
+                            db.Support.create(data).then(function (result) {
+                                console.log("两个文件均不相同, 新增数据成功");
+                            });
+                        } else {
+                            console.log("两个文件均不相同, 新增数据失败");
                         }
-                        db.Support.create(data).then(function (result) {
-                            console.log("两个文件均不相同, 新增数据成功");
-                        });
                     });
                 });
             } else if (!calibrationExist || !cameraExist) {
@@ -173,30 +175,33 @@ var executeCompare = function (scenesList, supportList, callback) {
                 var qiniu_key = 'calibration/' + scenes.key + '/' + fileName;
                 var token = uptoken(bucket, qiniu_key);
                 uploadFile(token, qiniu_key, filePath, function (err, ret) {
-                    var callback = JSON.parse(err.error);
-                    var data = {};
-                    if (!calibrationExist) {
-                        data = {
-                            key: scenes.key,
-                            deviceid: scenes.deviceid,
-                            calibration_2cam_xml_url: deploy.cdnPath + "/" + callback.key,
-                            camera_xml_url: oldSupport.camera_xml_url,
-                            createdAt: dateFormat(new Date(), 'yyyy-mm-dd HH:mm:ss'),
-                            updatedAt: dateFormat(new Date(), 'yyyy-mm-dd HH:mm:ss')
+                    if (ret.code == 0) {
+                        var data = {};
+                        if (!calibrationExist) {
+                            data = {
+                                key: scenes.key,
+                                deviceid: scenes.deviceid,
+                                calibration_2cam_xml_url: deploy.cdnPath + "/" + qiniu_key,
+                                camera_xml_url: oldSupport.camera_xml_url,
+                                createdAt: dateFormat(new Date(), 'yyyy-mm-dd HH:mm:ss'),
+                                updatedAt: dateFormat(new Date(), 'yyyy-mm-dd HH:mm:ss')
+                            }
+                        } else {
+                            data = {
+                                key: scenes.key,
+                                deviceid: scenes.deviceid,
+                                calibration_2cam_xml_url: oldSupport.calibration_2cam_xml_url,
+                                camera_xml_url: deploy.cdnPath + "/" + qiniu_key,
+                                createdAt: dateFormat(new Date(), 'yyyy-mm-dd HH:mm:ss'),
+                                updatedAt: dateFormat(new Date(), 'yyyy-mm-dd HH:mm:ss')
+                            }
                         }
+                        db.Support.create(data).then(function (result) {
+                            console.log("只有一个文件存在不相同, 新增数据成功");
+                        });
                     } else {
-                        data = {
-                            key: scenes.key,
-                            deviceid: scenes.deviceid,
-                            calibration_2cam_xml_url: oldSupport.calibration_2cam_xml_url,
-                            camera_xml_url: deploy.cdnPath + "/" + callback.key,
-                            createdAt: dateFormat(new Date(), 'yyyy-mm-dd HH:mm:ss'),
-                            updatedAt: dateFormat(new Date(), 'yyyy-mm-dd HH:mm:ss')
-                        }
+                        console.log("只有一个文件存在不相同, 新增数据失败");
                     }
-                    db.Support.create(data).then(function (result) {
-                        console.log("只有一个文件存在不相同, 新增数据成功");
-                    });
                 });
             } else {
                 console.log("两个文件均相同, 不执行任何操作");
