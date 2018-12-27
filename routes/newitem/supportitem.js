@@ -87,10 +87,6 @@ var downloadAllFile = function (supportList, callback) {
 var executeCompare = function (scenesList, supportList, callback) {
     var allProcessList = [];
     scenesList.forEach(function (scenes, index) {
-        allProcessList.push(new Promise(function (resolve, reject) {
-            resolve();
-        }));
-
         var localFilePath = getLocalFilePath(scenes);
         scenes.localCalibrationPath = localFilePath.localCalibrationPath;
         scenes.localCameraPath = localFilePath.localCameraPath;
@@ -207,6 +203,9 @@ var executeCompare = function (scenesList, supportList, callback) {
                 console.log("两个文件均相同, 不执行任何操作");
             }
         });
+        allProcessList.push(new Promise(function (resolve, reject) {
+            resolve();
+        }));
     });
     Promise.all(allProcessList).then(function () {
         callback();
