@@ -1,5 +1,6 @@
 var Sequelize = require("sequelize");
 var config = require("./config");
+var moment = require('moment');
 var sequelize = new Sequelize(config.dbDatabase, config.dbUser, config.dbPassword, {
     host: config.dbHost,
     dialect: 'mysql',
@@ -980,6 +981,49 @@ var Orders = sequelize.define('orders', {
   freezeTableName: true
 });
 
+var Support = sequelize.define('support', {
+    id: {
+        type: Sequelize.INTEGER,
+        field: 'id',
+        primaryKey: true,
+        autoIncrement: true
+    },
+    key: {
+        type: Sequelize.CHAR(128),
+        field: 'key'
+    },
+    deviceid: {
+        type: Sequelize.CHAR(50),
+        field: 'deviceid'
+    },
+    calibration_2cam_xml_url: {
+        type: Sequelize.CHAR(255),
+        field: 'calibration_2cam_xml_url'
+    },
+    camera_xml_url: {
+        type: Sequelize.CHAR(255),
+        field: 'camera_xml_url'
+    },
+    createdAt: {
+        type: Sequelize.DATE,
+        field: 'createdAt',
+        get() {
+            return moment(this.getDataValue('createdAt')).format('YYYY-MM-DD HH:mm:ss');
+        }
+    },
+    updatedAt: {
+        type: Sequelize.DATE,
+        field: 'updatedAt',
+        get() {
+            return moment(this.getDataValue('updatedAt')).format('YYYY-MM-DD HH:mm:ss');
+        }
+    }
+}, {
+    freezeTableName: true,
+    timestamps: false,
+    updatedAt: false
+});
+
 exports.Maps=Maps;
 exports.Scenes=Scenes;
 exports.Comments=Comments;
@@ -993,3 +1037,4 @@ exports.Action_log=Action_log;
 exports.Missions=Missions;
 exports.MultiPro=MultiPro;
 exports.Orders=Orders;
+exports.Support=Support;

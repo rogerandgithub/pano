@@ -2,4 +2,10 @@
 
 node_modules/
 
-.idea/workspace.xml
+.idea/
+
+pm2_err_log/
+
+public/pano/pano2T/
+
+routes/newitem/temp_file/

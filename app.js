@@ -46,6 +46,7 @@ var missionitem = require('./routes/newitem/missionitem');
 var submititem = require('./routes/newitem/submititem');
 var uploadsitem = require('./routes/newitem/uploaditem');
 var appitem = require('./routes/newitem/appitem');
+var supportitem = require('./routes/newitem/supportitem');
 
 var app = express();
 // app.listen(80);
@@ -161,6 +162,7 @@ app.use('/missionitem', missionitem);
 app.use('/submititem', submititem);
 app.use('/uploadsitem', uploadsitem);
 app.use('/appitem', appitem);
+app.use('/supportitem', supportitem);
 app.use('/web', web);
 app.use('/mobile', mobile);
 
