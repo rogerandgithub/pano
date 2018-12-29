@@ -35,28 +35,39 @@ router.get('/testDeleteQiniuFile', function (req, res) {
     db.Support.sequelize.query('select * from support order by deviceid asc', {
         model: db.Support
     }).then(function (supportList) {
+        var client = new qiniu.rs.Client();
+        var bucket = 'suteng';
+        var cdnLength = (deploy.cdnPath + "/").length;
+        var processList = [];
         supportList.forEach(function (support, index) {
-            db.Support.destroy({
-                where: {
-                    id: 1
-                }
-            }).then(function (result) {
-                console.log("删除成功");
-            });
+            processList.push(new Promise(function (resolve, reject) {
+                db.Support.destroy({
+                    where: {
+                        id: support.id
+                    }
+                }).then(function (result) {
+                    var calibrationKey = support.calibration_2cam_xml_url.substring(cdnLength);
+                    var cameraKey = support.camera_xml_url.substring(cdnLength);
+                    client.remove(bucket, calibrationKey, function (calibrationErr, calibrationRet) {
+                        client.remove(bucket, cameraKey, function (cameraErr, cameraRet) {
+                            if (!calibrationErr && !cameraErr) {
+                                console.log("删除成功");
+                                resolve(true);
+                            } else {
+                                console.log("删除失败");
+                                console.log(calibrationErr);
+                                console.log(cameraErr);
+                            }
+                        });
+                    });
+                });
+            }));
+        });
+        Promise.all(processList).then(function (resultList) {
+            console.log("删除所有文件成功");
+            res.json({code: 0, msg: 'OK'});
         });
     });
-
-    var client = new qiniu.rs.Client();
-    bucket = 'suteng';
-    key = 'calibration/test/';
-    client.remove(bucket, key, function (err, ret) {
-        if (!err) {
-            //删除成功
-        } else {
-            console.log(err);
-        }
-    });
-    res.json({code: 0, msg: 'OK'});
 });
 
 
@@ -174,10 +185,10 @@ var executeCompare = function (scenesList, supportList, callback) {
             });
             if (!calibrationExist && !cameraExist) {
                 var bucket = 'suteng';
-                var calibration_qiniu_key = 'calibration/test/' + scenes.key + '/' + 'calibration_2cam.xml';
+                var calibration_qiniu_key = 'calibration/' + scenes.key + '/' + 'calibration_2cam.xml';
                 var calibration_token = uptoken(bucket, calibration_qiniu_key);
                 uploadFile(calibration_token, calibration_qiniu_key, scenes.localCalibrationPath, function (calibrationErr, calibrationRet) {
-                    var camera_qiniu_key = 'calibration/test/' + scenes.key + '/' + 'camera.xml';
+                    var camera_qiniu_key = 'calibration/' + scenes.key + '/' + 'camera.xml';
                     var camera_token = uptoken(bucket, camera_qiniu_key);
                     uploadFile(camera_token, camera_qiniu_key, scenes.localCameraPath, function (cameraErr, cameraRet) {
                         if (calibrationRet.code == 0 && cameraRet.code == 0) {
@@ -201,7 +212,7 @@ var executeCompare = function (scenesList, supportList, callback) {
                 var filePath = !calibrationExist ? scenes.localCalibrationPath : scenes.localCameraPath;
                 var fileName = !calibrationExist ? 'calibration_2cam.xml' : 'camera.xml';
                 var bucket = 'suteng';
-                var qiniu_key = 'calibration/test/' + scenes.key + '/' + fileName;
+                var qiniu_key = 'calibration/' + scenes.key + '/' + fileName;
                 var token = uptoken(bucket, qiniu_key);
                 uploadFile(token, qiniu_key, filePath, function (err, ret) {
                     if (ret.code == 0) {
@@ -237,10 +248,10 @@ var executeCompare = function (scenesList, supportList, callback) {
             }
         });
         allProcessList.push(new Promise(function (resolve, reject) {
-            resolve();
+            resolve(true);
         }));
     });
-    Promise.all(allProcessList).then(function () {
+    Promise.all(allProcessList).then(function (resultList) {
         callback();
     });
 }
