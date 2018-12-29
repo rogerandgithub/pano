@@ -12,6 +12,9 @@ var qiniu = require('qiniu');
 var deploy = require('../../config/deploy').config;
 var dateFormat = require('dateformat');
 
+qiniu.conf.ACCESS_KEY = "ek6zXNw1Zvl9LAeIXPfzf_EAQZ1sXz0DcXZ0WKsL";
+qiniu.conf.SECRET_KEY = "pUBR4t4LZOtXisXKm8O2Tj-tQnCxySmOwSJsXYDx";
+
 router.get('/', function (req, res) {
     var r = {};
 
@@ -28,7 +31,36 @@ router.get('/', function (req, res) {
 });
 
 
-router.get('/updateFileLibrary', function (req, res) {
+router.get('/testDeleteQiniuFile', function (req, res) {
+    db.Support.sequelize.query('select * from support order by deviceid asc', {
+        model: db.Support
+    }).then(function (supportList) {
+        supportList.forEach(function (support, index) {
+            db.Support.destroy({
+                where: {
+                    id: 1
+                }
+            }).then(function (result) {
+                console.log("删除成功");
+            });
+        });
+    });
+
+    var client = new qiniu.rs.Client();
+    bucket = 'suteng';
+    key = 'calibration/test/';
+    client.remove(bucket, key, function (err, ret) {
+        if (!err) {
+            //删除成功
+        } else {
+            console.log(err);
+        }
+    });
+    res.json({code: 0, msg: 'OK'});
+});
+
+
+router.get('/testUploadQiniuFile', function (req, res) {
     db.Scenes.sequelize.query("select a.* from scenes as a inner join (select max(id) as id from scenes where deviceid != '' group by deviceid) as b on (a.id = b.id)", {
         model: db.Scenes
     }).then(function (scenesList) {
@@ -142,10 +174,10 @@ var executeCompare = function (scenesList, supportList, callback) {
             });
             if (!calibrationExist && !cameraExist) {
                 var bucket = 'suteng';
-                var calibration_qiniu_key = 'calibration/' + scenes.key + '/' + 'calibration_2cam.xml';
+                var calibration_qiniu_key = 'calibration/test/' + scenes.key + '/' + 'calibration_2cam.xml';
                 var calibration_token = uptoken(bucket, calibration_qiniu_key);
                 uploadFile(calibration_token, calibration_qiniu_key, scenes.localCalibrationPath, function (calibrationErr, calibrationRet) {
-                    var camera_qiniu_key = 'calibration/' + scenes.key + '/' + 'camera.xml';
+                    var camera_qiniu_key = 'calibration/test/' + scenes.key + '/' + 'camera.xml';
                     var camera_token = uptoken(bucket, camera_qiniu_key);
                     uploadFile(camera_token, camera_qiniu_key, scenes.localCameraPath, function (cameraErr, cameraRet) {
                         if (calibrationRet.code == 0 && cameraRet.code == 0) {
@@ -169,7 +201,7 @@ var executeCompare = function (scenesList, supportList, callback) {
                 var filePath = !calibrationExist ? scenes.localCalibrationPath : scenes.localCameraPath;
                 var fileName = !calibrationExist ? 'calibration_2cam.xml' : 'camera.xml';
                 var bucket = 'suteng';
-                var qiniu_key = 'calibration/' + scenes.key + '/' + fileName;
+                var qiniu_key = 'calibration/test/' + scenes.key + '/' + fileName;
                 var token = uptoken(bucket, qiniu_key);
                 uploadFile(token, qiniu_key, filePath, function (err, ret) {
                     if (ret.code == 0) {
