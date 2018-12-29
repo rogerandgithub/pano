@@ -32,7 +32,7 @@ router.get('/updateFileLibrary', function (req, res) {
     db.Scenes.sequelize.query("select a.* from scenes as a inner join (select max(id) as id from scenes where deviceid != '' group by deviceid) as b on (a.id = b.id)", {
         model: db.Scenes
     }).then(function (scenesList) {
-        db.Scenes.sequelize.query('select * from support order by deviceid asc', {
+        db.Support.sequelize.query('select * from support order by deviceid asc', {
             model: db.Support
         }).then(function (supportList) {
             downloadAllFile(supportList, function (resultList) {
@@ -79,10 +79,8 @@ var downloadAllFile = function (supportList, callback) {
         }));
     });
     Promise.all(processList).then(function (resultList) {
-        setTimeout(function () {
-            console.log("下载所有文件成功");
-            callback(resultList);
-        }, 10000);
+        console.log("下载所有文件成功");
+        callback(resultList);
     });
 }
 
