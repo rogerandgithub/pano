@@ -68,18 +68,21 @@ var downloadAllFile = function (supportList, callback) {
         processList.push(new Promise(function (resolve, reject) {
             var tempCalibrationPath = tempFilePath + support.deviceid + '_' + support.key + '_calibration_2cam.xml';
             var tempCameraPath = tempFilePath + support.deviceid + '_' + support.key + '_camera.xml';
-            request(support.calibration_2cam_xml_url).pipe(fs.createWriteStream(tempCalibrationPath)).on("finish", function () {
-                request(support.camera_xml_url).pipe(fs.createWriteStream(tempCameraPath)).on("finish", function () {
+            request(support.calibration_2cam_xml_url + '?download').pipe(fs.createWriteStream(tempCalibrationPath)).on("finish", function () {
+                request(support.camera_xml_url + '?download').pipe(fs.createWriteStream(tempCameraPath)).on("finish", function () {
                     support.downCalibrationPath = tempCalibrationPath;
                     support.downCameraPath = tempCameraPath;
+                    console.log("下载文件成功");
                     resolve(support);
                 });
             });
         }));
     });
     Promise.all(processList).then(function (resultList) {
-        console.log("下载所有文件成功");
-        callback(resultList);
+        setTimeout(function () {
+            console.log("下载所有文件成功");
+            callback(resultList);
+        }, 10000);
     });
 }
 

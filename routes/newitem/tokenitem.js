@@ -1933,7 +1933,7 @@ function startUpload(){
 
 
 var upload_flg = 0;  // 控制上传
-var LIMIT_UPLOAD_NUM = 4;  // 上传数量控制器
+var LIMIT_UPLOAD_NUM = 6;  // 上传数量控制器
 var upload_num = LIMIT_UPLOAD_NUM;  // 上传数量控制器
 // 每次只上传一套，用普通的方式上传
 function startUpload(){
