@@ -32,6 +32,19 @@ router.get('/', function (req, res) {
 
 
 router.get('/testDeleteQiniuFile', function (req, res) {
+    var tempFilePath = __dirname + '/temp_file/';
+    if (fs.existsSync(tempFilePath)) {
+        console.log("temp_file 目录已存在, 先清空再下载");
+        var files = fs.readdirSync(tempFilePath);
+        files.forEach(function (file, index) {
+            fs.unlinkSync(tempFilePath + file);
+        });
+        fs.rmdirSync(tempFilePath);
+        fs.mkdirSync(tempFilePath);
+    } else {
+        console.log("temp_file 目录不存在, 新建目录");
+        fs.mkdirSync(tempFilePath);
+    }
     db.Support.sequelize.query('select * from support order by deviceid asc', {
         model: db.Support
     }).then(function (supportList) {
@@ -57,6 +70,7 @@ router.get('/testDeleteQiniuFile', function (req, res) {
                                 console.log("删除失败");
                                 console.log(calibrationErr);
                                 console.log(cameraErr);
+                                resolve(true);
                             }
                         });
                     });
@@ -102,9 +116,6 @@ var downloadAllFile = function (supportList, callback) {
         console.log("temp_file 目录不存在, 新建目录");
         fs.mkdirSync(tempFilePath);
     }
-
-    //清除本地 temp_file 文件夹开关, 只需要取消 return 的注释即可
-    //return;
 
     var processList = [];
     supportList.forEach(function (support, index) {
