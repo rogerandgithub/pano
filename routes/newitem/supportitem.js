@@ -173,10 +173,11 @@ var executeCompare = function (scenesList, supportList, callback) {
         if (count == 0) {
             console.log("没有发现文件");
             processList.push(new Promise(function (resolve, reject) {
-                resolve({
+                reject({
                     calibrationResult: false,
                     cameraResult: false,
-                    support: {}
+                    support: {},
+                    type: 0
                 });
             }));
         }
@@ -209,7 +210,8 @@ var executeCompare = function (scenesList, supportList, callback) {
                                 calibration_2cam_xml_url: deploy.cdnPath + "/" + calibration_qiniu_key,
                                 camera_xml_url: deploy.cdnPath + "/" + camera_qiniu_key,
                                 createdAt: dateFormat(new Date(), 'yyyy-mm-dd HH:mm:ss'),
-                                updatedAt: dateFormat(new Date(), 'yyyy-mm-dd HH:mm:ss')
+                                updatedAt: dateFormat(new Date(), 'yyyy-mm-dd HH:mm:ss'),
+                                type: 3
                             }
                             db.Support.create(data).then(function (result) {
                                 console.log("两个文件均不相同, 新增数据成功");
@@ -235,7 +237,8 @@ var executeCompare = function (scenesList, supportList, callback) {
                                 calibration_2cam_xml_url: deploy.cdnPath + "/" + qiniu_key,
                                 camera_xml_url: oldSupport.camera_xml_url,
                                 createdAt: dateFormat(new Date(), 'yyyy-mm-dd HH:mm:ss'),
-                                updatedAt: dateFormat(new Date(), 'yyyy-mm-dd HH:mm:ss')
+                                updatedAt: dateFormat(new Date(), 'yyyy-mm-dd HH:mm:ss'),
+                                type: 1
                             }
                         } else {
                             data = {
@@ -244,7 +247,8 @@ var executeCompare = function (scenesList, supportList, callback) {
                                 calibration_2cam_xml_url: oldSupport.calibration_2cam_xml_url,
                                 camera_xml_url: deploy.cdnPath + "/" + qiniu_key,
                                 createdAt: dateFormat(new Date(), 'yyyy-mm-dd HH:mm:ss'),
-                                updatedAt: dateFormat(new Date(), 'yyyy-mm-dd HH:mm:ss')
+                                updatedAt: dateFormat(new Date(), 'yyyy-mm-dd HH:mm:ss'),
+                                type: 2
                             }
                         }
                         db.Support.create(data).then(function (result) {
@@ -257,6 +261,34 @@ var executeCompare = function (scenesList, supportList, callback) {
             } else {
                 console.log("两个文件均相同, 不执行任何操作");
             }
+        }).catch(function (reject) {
+            var bucket = 'suteng';
+            var calibration_qiniu_key = 'calibration/' + scenes.key + '/' + 'calibration_2cam.xml';
+            var calibration_token = uptoken(bucket, calibration_qiniu_key);
+            uploadFile(calibration_token, calibration_qiniu_key, scenes.localCalibrationPath, function (calibrationErr, calibrationRet) {
+                var camera_qiniu_key = 'calibration/' + scenes.key + '/' + 'camera.xml';
+                var camera_token = uptoken(bucket, camera_qiniu_key);
+                uploadFile(camera_token, camera_qiniu_key, scenes.localCameraPath, function (cameraErr, cameraRet) {
+                    if (calibrationRet.code == 0 && cameraRet.code == 0) {
+                        var data = {
+                            key: scenes.key,
+                            deviceid: scenes.deviceid,
+                            calibration_2cam_xml_url: deploy.cdnPath + "/" + calibration_qiniu_key,
+                            camera_xml_url: deploy.cdnPath + "/" + camera_qiniu_key,
+                            createdAt: dateFormat(new Date(), 'yyyy-mm-dd HH:mm:ss'),
+                            updatedAt: dateFormat(new Date(), 'yyyy-mm-dd HH:mm:ss'),
+                            type: 0
+                        }
+                        db.Support.create(data).then(function (result) {
+                            console.log("两个文件均不存在, 新增数据成功");
+                        });
+                    } else {
+                        console.log("两个文件均不存在, 新增数据失败");
+                    }
+                });
+            });
+
+
         });
         allProcessList.push(new Promise(function (resolve, reject) {
             resolve(true);

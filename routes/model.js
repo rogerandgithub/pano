@@ -1017,6 +1017,10 @@ var Support = sequelize.define('support', {
         get() {
             return moment(this.getDataValue('updatedAt')).format('YYYY-MM-DD HH:mm:ss');
         }
+    },
+    type: {
+        type: Sequelize.INTEGER,
+        field: 'type'
     }
 }, {
     freezeTableName: true,
