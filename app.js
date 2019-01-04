@@ -80,7 +80,7 @@ app.set('view engine', 'ejs');
 
 var response = express.response,
     _render = response.render;
-    
+
 response.render = function (view, options, callback) {
     options = options || {};
     _.extend(options, {
@@ -98,7 +98,7 @@ response.render = function (view, options, callback) {
 app.use(logger('dev'));
 app.use(compression());
 // app.use(bodyParser.json());
-app.use(bodyParser({limit : "10000kb"}));  
+app.use(bodyParser({limit : "10000kb"}));
 // app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
@@ -201,6 +201,19 @@ fs.exists('usersdata.js', function(exists){
         utils.savefile();
     }
 });
+
+
+function scheduleCron() {
+    //每天凌晨 0时0分 执行扫描标定文件
+    schedule.scheduleJob('0 0 0 * * *', function () {
+        request('http://localhost:1234/supportitem/testUploadQiniuFile', function (error, response, body) {
+            console.log(body);
+        });
+    });
+}
+
+scheduleCron();
+
 
 // var rule = new schedule.RecurrenceRule();
 // rule.dayOfWeek = [0, new schedule.Range(1, 6)];
