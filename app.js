@@ -206,7 +206,7 @@ fs.exists('usersdata.js', function(exists){
 function scheduleCron() {
     //每天凌晨 0时0分 执行扫描标定文件
     schedule.scheduleJob('0 0 0 * * *', function () {
-        request('http://localhost:1234/supportitem/testUploadQiniuFile', function (error, response, body) {
+        request('https://wx.sz-sti.com/supportitem/testUploadQiniuFile', function (error, response, body) {
             console.log(body);
         });
     });
