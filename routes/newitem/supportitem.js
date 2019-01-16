@@ -10,7 +10,6 @@ var path = require('path');
 var request = require('request');
 var qiniu = require('qiniu');
 var deploy = require('../../config/deploy').config;
-var dateFormat = require('dateformat');
 
 qiniu.conf.ACCESS_KEY = "ek6zXNw1Zvl9LAeIXPfzf_EAQZ1sXz0DcXZ0WKsL";
 qiniu.conf.SECRET_KEY = "pUBR4t4LZOtXisXKm8O2Tj-tQnCxySmOwSJsXYDx";
@@ -209,8 +208,6 @@ var executeCompare = function (scenesList, supportList, callback) {
                                 deviceid: scenes.deviceid,
                                 calibration_2cam_xml_url: deploy.cdnPath + "/" + calibration_qiniu_key,
                                 camera_xml_url: deploy.cdnPath + "/" + camera_qiniu_key,
-                                createdAt: dateFormat(new Date(), 'yyyy-mm-dd HH:mm:ss'),
-                                updatedAt: dateFormat(new Date(), 'yyyy-mm-dd HH:mm:ss'),
                                 type: 3
                             }
                             db.Support.create(data).then(function (result) {
@@ -236,8 +233,6 @@ var executeCompare = function (scenesList, supportList, callback) {
                                 deviceid: scenes.deviceid,
                                 calibration_2cam_xml_url: deploy.cdnPath + "/" + qiniu_key,
                                 camera_xml_url: oldSupport.camera_xml_url,
-                                createdAt: dateFormat(new Date(), 'yyyy-mm-dd HH:mm:ss'),
-                                updatedAt: dateFormat(new Date(), 'yyyy-mm-dd HH:mm:ss'),
                                 type: 1
                             }
                         } else {
@@ -246,8 +241,6 @@ var executeCompare = function (scenesList, supportList, callback) {
                                 deviceid: scenes.deviceid,
                                 calibration_2cam_xml_url: oldSupport.calibration_2cam_xml_url,
                                 camera_xml_url: deploy.cdnPath + "/" + qiniu_key,
-                                createdAt: dateFormat(new Date(), 'yyyy-mm-dd HH:mm:ss'),
-                                updatedAt: dateFormat(new Date(), 'yyyy-mm-dd HH:mm:ss'),
                                 type: 2
                             }
                         }
@@ -275,8 +268,6 @@ var executeCompare = function (scenesList, supportList, callback) {
                             deviceid: scenes.deviceid,
                             calibration_2cam_xml_url: deploy.cdnPath + "/" + calibration_qiniu_key,
                             camera_xml_url: deploy.cdnPath + "/" + camera_qiniu_key,
-                            createdAt: dateFormat(new Date(), 'yyyy-mm-dd HH:mm:ss'),
-                            updatedAt: dateFormat(new Date(), 'yyyy-mm-dd HH:mm:ss'),
                             type: 0
                         }
                         db.Support.create(data).then(function (result) {

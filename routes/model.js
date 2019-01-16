@@ -1,6 +1,5 @@
 var Sequelize = require("sequelize");
 var config = require("./config");
-var moment = require('moment');
 var sequelize = new Sequelize(config.dbDatabase, config.dbUser, config.dbPassword, {
     host: config.dbHost,
     dialect: 'mysql',
@@ -36,9 +35,7 @@ var Missions = sequelize.define('Missions', {
         field: 'status'
     }
 }, {
-    freezeTableName: true,
-    timestamps: false,
-    updatedAt: false
+    freezeTableName: true
 });
 
 
@@ -1004,28 +1001,12 @@ var Support = sequelize.define('support', {
         type: Sequelize.CHAR(255),
         field: 'camera_xml_url'
     },
-    createdAt: {
-        type: Sequelize.DATE,
-        field: 'createdAt',
-        get() {
-            return moment(this.getDataValue('createdAt')).format('YYYY-MM-DD HH:mm:ss');
-        }
-    },
-    updatedAt: {
-        type: Sequelize.DATE,
-        field: 'updatedAt',
-        get() {
-            return moment(this.getDataValue('updatedAt')).format('YYYY-MM-DD HH:mm:ss');
-        }
-    },
     type: {
         type: Sequelize.INTEGER,
         field: 'type'
     }
 }, {
-    freezeTableName: true,
-    timestamps: false,
-    updatedAt: false
+    freezeTableName: true
 });
 
 exports.Maps=Maps;
