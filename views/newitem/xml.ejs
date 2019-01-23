@@ -70,7 +70,7 @@
 		<%for(var i in groups){%>
 			<layer name="nav_thumbs_container_<%=i%>" <%if(i==0){%>visible="true"<%}else{%>visible="false"<%}%> keep="true" type="container" align="lefttop" y="25" width="100%" height="77">
 				<layer name="nav_scroll_container_<%=i%>" keep="true" type="container" align="lefttop" y="0" width="100%" height="100%" bgcolor="0x000000" bgalpha="0.3">
-					<layer name="nav_thumbs_<%=i%>" state="opened" url="http://qncdn.sz-sti.com/document/plugins/scrollarea.swf" alturl="http://qncdn.sz-sti.com/document/plugins/scrollarea.js" align="center" width="<%=groups[i].scenes.length*95+10%>" height="100%" direction="h" onhover_autoscrolling="false">
+					<layer name="nav_thumbs_<%=i%>" state="opened" url="https://qncdn.sz-sti.com/document/plugins/scrollarea.swf" alturl="https://qncdn.sz-sti.com/document/plugins/scrollarea.js" align="center" width="<%=groups[i].scenes.length*95+10%>" height="100%" direction="h" onhover_autoscrolling="false">
 						<%for(var j in groups[i].scenes){%>
 							<layer name="nav_thumb_<%=i%><%=j%>" style="skin_tooltips" align="lefttop" keep="true" width="85" height="57" x="<%=j*95+10%>" y="10" linkedscene="scene<%=groups[i].scenes[j].id%>" onclick="looktocenter(get(view.hlookat), get(view.vlookat)); loadscene(get(linkedscene),null,get(skin_settings.loadscene_flags),get(skin_settings.loadscene_blend));"  url="<%=groups[i].scenes[j].navthumb%>" crop="<%if(groups[i].scenes[j].type>=5){%>0|0|205|137<%}else{%>0|40|250|210<%}%>" tooltip="<%=groups[i].scenes[j].name%>" onloaded="setname('<%=i%><%=j%>','<%=groups[i].scenes[j].name%>')"/>
 						<%}%>
