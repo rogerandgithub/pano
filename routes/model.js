@@ -39,7 +39,7 @@ var Missions = sequelize.define('Missions', {
 });
 
 
-var MultiPro = sequelize.define('multiPro', {
+var MultiPro = sequelize.define('multipro', {
     id: {
         type: Sequelize.INTEGER,
         field: 'id',
