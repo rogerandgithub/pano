@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="753a8b9f-61e3-4678-83d9-697e9fea5176" name="suteng" url="http://120.76.27.228">
+        <fileTransfer host="120.76.27.228" port="33" rootFolder="/home/qson/suteng" accessType="SFTP">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+          <option name="port" value="33" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
