@@ -25,25 +25,22 @@ router.get('/download',function(req,res){
     });
 });
 
-router.get('/download/pano/:key',function(req,res){
-    
+
+router.get('/download/pano/:key', function (req, res) {
     var key = req.params.key;
-    var name = req.query.name?req.query.name:'';
-
-    var jpgurl = path.join(__dirname, '../../public/pano/'+key+'.jpg');
-
+    var name = req.query.name ? req.query.name : '';
+    var jpgurl = path.join(__dirname, '../../public/pano/' + key + '.jpg');
     console.log(jpgurl);
-
-    fs.exists(jpgurl, function(panoexists){
-
-        if(!panoexists){
-            res.json({code:-1,msg:'pano image is not exists'});
-            return;
+    fs.exists(jpgurl, function (panoexists) {
+        if (!panoexists) {
+            var tempName = name ? (name + '.jpg') : "none.jpg";
+            var url = "https://qncdn.sz-sti.com/pano/" + key + ".tiles/pano_s.jpg?attname=" + tempName;
+            res.json({code: -1, msg: '该图片已迁移, 请复制此链接粘贴到浏览器地址栏下载 ' + url + " "});
+        } else {
+            res.download(jpgurl, name ? (name + '.jpg') : null);
         }
-        res.download(jpgurl,name?(name+'.jpg'):null);
     });
 });
-
 
 
 router.get('/login',function(req, res){
