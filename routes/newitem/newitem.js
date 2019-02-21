@@ -29,13 +29,21 @@ router.get('/download',function(req,res){
 router.get('/download/pano/:key', function (req, res) {
     var key = req.params.key;
     var name = req.query.name ? req.query.name : '';
+    var type = req.query.type ? req.query.type : '';
     var jpgurl = path.join(__dirname, '../../public/pano/' + key + '.jpg');
     console.log(jpgurl);
     fs.exists(jpgurl, function (panoexists) {
         if (!panoexists) {
+            console.log(type);
             var tempName = name ? (name + '.jpg') : "none.jpg";
-            var url = "https://qncdn.sz-sti.com/pano/" + key + ".tiles/pano_s.jpg?attname=" + tempName;
-            res.json({code: -1, msg: '该图片已迁移, 请复制此链接粘贴到浏览器地址栏下载 ' + url + " "});
+            var url = "";
+            if (type == '19') {    //当该图片为PC端高级上传时
+                url = "https://qncdn.sz-sti.com/pano/" + key + ".jpg?download";
+            } else {
+                url = "https://qncdn.sz-sti.com/pano/" + key + ".tiles/pano_s.jpg?download";
+            }
+            console.log(url);
+            request.get(url).pipe(res);
         } else {
             res.download(jpgurl, name ? (name + '.jpg') : null);
         }

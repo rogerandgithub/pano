@@ -1540,7 +1540,7 @@
                         location.href = 'http://qncdn.sz-sti.com/pano/'+this.scenes[index].key.split('_')[0]+'.jpg?download';
                     }else{
 
-                    scene.type==6 || scene.type==9 || scene.type==5 || scene.key.split('_')[0].length == 10 ? location.href = '/newitem/download/pano/'+scene.key.split('_')[0]+'?name='+scene.name : location.href = '<%=cdnImagesPath%>/scenes/'+this.scenes[index].key.split('_')[0]+'/allinone.jpg?download';
+                    scene.type==6 || scene.type==9 || scene.type==5 || scene.key.split('_')[0].length == 10 ? location.href = '/newitem/download/pano/'+scene.key.split('_')[0]+'?name='+scene.name+'&type='+scene.type : location.href = '<%=cdnImagesPath%>/scenes/'+this.scenes[index].key.split('_')[0]+'/allinone.jpg?download';
                     }
                 },
                 setcover: function(i){
