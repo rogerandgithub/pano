@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ff8f922c-36eb-444f-8f33-ad88fdcf3451" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="ff8f922c-36eb-444f-8f33-ad88fdcf3451" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
@@ -137,49 +135,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="pano" type="b2602c69:ProjectViewProjectNode" />
-              <item name="pano" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="pano" type="b2602c69:ProjectViewProjectNode" />
-              <item name="pano" type="462c0819:PsiDirectoryNode" />
-              <item name="https_cert" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="pano" type="b2602c69:ProjectViewProjectNode" />
-              <item name="pano" type="462c0819:PsiDirectoryNode" />
-              <item name="node_modules" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="pano" type="b2602c69:ProjectViewProjectNode" />
-              <item name="pano" type="462c0819:PsiDirectoryNode" />
-              <item name="node_modules" type="462c0819:PsiDirectoryNode" />
-              <item name="crypto" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="pano" type="b2602c69:ProjectViewProjectNode" />
-              <item name="pano" type="462c0819:PsiDirectoryNode" />
-              <item name="routes" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="pano" type="b2602c69:ProjectViewProjectNode" />
-              <item name="pano" type="462c0819:PsiDirectoryNode" />
-              <item name="routes" type="462c0819:PsiDirectoryNode" />
-              <item name="newitem" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="pano" type="b2602c69:ProjectViewProjectNode" />
-              <item name="pano" type="462c0819:PsiDirectoryNode" />
-              <item name="views" type="462c0819:PsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
+      <pane id="ProjectPane" />
       <pane id="Scope" />
     </panes>
   </component>
@@ -255,16 +211,15 @@
       <workItem from="1552014577100" duration="118000" />
       <workItem from="1552267129584" duration="2000" />
       <workItem from="1552269254598" duration="2195000" />
-      <workItem from="1552288486327" duration="3905000" />
+      <workItem from="1552288486327" duration="4202000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="70910000" />
+    <option name="totallyTimeSpent" value="71207000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="65" y="-4" width="1855" height="1084" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49920762" visible="true" weight="0.18372993" />
       <window_info id="Structure" order="1" sideWeight="0.5007924" side_tool="true" weight="0.17044826" />
