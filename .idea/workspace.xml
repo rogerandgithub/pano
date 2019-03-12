@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ff8f922c-36eb-444f-8f33-ad88fdcf3451" name="Default Changelist" comment="" />
+    <list default="true" id="ff8f922c-36eb-444f-8f33-ad88fdcf3451" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/views/editor-panoxml.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/editor-panoxml.ejs" afterDir="false" />
+    </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
@@ -34,7 +36,7 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/views/editor-panoxml.ejs">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
+            <state relative-caret-position="2156">
               <caret line="98" column="13" selection-start-line="98" selection-start-column="13" selection-end-line="98" selection-end-column="13" />
               <folding>
                 <element signature="e#20508#20527#0#HTML" expanded="true" />
@@ -216,7 +218,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="71207000" />
+    <option name="totallyTimeSpent" value="71859000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="65" y="-4" width="1855" height="1084" extended-state="6" />
@@ -553,7 +555,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/views/editor-panoxml.ejs">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
+        <state relative-caret-position="2156">
           <caret line="98" column="13" selection-start-line="98" selection-start-column="13" selection-end-line="98" selection-end-column="13" />
           <folding>
             <element signature="e#20508#20527#0#HTML" expanded="true" />
