@@ -367,7 +367,7 @@ router.get('/editxml', function(req, res) {
                                         result.logo=owner.logo?owner.logo:result.logo;
                                     }
 
-                                    var advertisement=s.advertisement?s.advertisement:"速腾聚创";
+                                    var advertisement=s.advertisement?s.advertisement:"RoboPano";
 
                                     advertisement=advertisement.replace(/"/g,'').replace(/<div>/g,'');
                                     advertisement=advertisement.split('</div>');
@@ -389,7 +389,7 @@ router.get('/editxml', function(req, res) {
                                     result.text2=text2;
                                     result.text3=text3;
 
-                                    result.title1=owner.permission_prefix&&owner.prefix?owner.prefix:'速腾聚创';;//输出大标题
+                                    result.title1=owner.permission_prefix&&owner.prefix?owner.prefix:'RoboPano';;//输出大标题
                                     result.title2=result.group_info.city+' '+result.group_info.region+' '+result.group_info.community+' '+s.name;//输出小标题
                                     result.title=result.title1+' '+result.group_info.city+' '+result.group_info.region+' '+result.group_info.community;
 

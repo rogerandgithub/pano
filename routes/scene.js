@@ -361,7 +361,7 @@ router.get('/panoxml/:key',function(req,res){
                             logo: 'http://qncdn.sz-sti.com/logo-2.png',
                             trademark: 'http://qncdn.sz-sti.com/logo_ie.png',
                             bottrademark: 'http://qncdn.sz-sti.com/images/tools/botimg.png',
-                            company: '速腾聚创',
+                            company: 'RoboPano',
                             itcwebsite: 'www.robopano.com',
                             introduction: '',
                             maps: [],
@@ -654,7 +654,7 @@ router.get('/panoxml/:key',function(req,res){
                                                     result.owner = owner;
 
                                                     var advertisement = s.advertisement?s.advertisement:owner.advertisement;
-                                                        advertisement = advertisement?advertisement:"速腾聚创";
+                                                        advertisement = advertisement?advertisement:"RoboPano";
 
                                                     advertisement = advertisement.replace(/"/g,'').replace(/<div>/g,'');
                                                     advertisement = advertisement.split('</div>');
@@ -1072,7 +1072,7 @@ router.get('/editor-panoxml', function(req, res) {
                                         result.logo=owner.logo?owner.logo:result.logo;
                                     }
 
-                                    var advertisement=s.advertisement?s.advertisement:"速腾聚创";
+                                    var advertisement=s.advertisement?s.advertisement:"RoboPano";
 
                                     advertisement=advertisement.replace(/"/g,'').replace(/<div>/g,'');
                                     advertisement=advertisement.split('</div>');
@@ -1101,7 +1101,7 @@ router.get('/editor-panoxml', function(req, res) {
                                     result.telephone = romaing[0].telephone?romaing[0].telephone:owner.telephone;
 
 
-                                    result.title1=owner.permission_prefix&&owner.prefix?owner.prefix:'速腾聚创';;//输出大标题
+                                    result.title1=owner.permission_prefix&&owner.prefix?owner.prefix:'RoboPano';;//输出大标题
                                     result.title2=result.group_info.city+' '+result.group_info.region+' '+result.group_info.community+' '+s.name;//输出小标题
                                     result.title=result.title1+' '+result.group_info.city+' '+result.group_info.region+' '+result.group_info.community;
 
@@ -2055,7 +2055,7 @@ router.get('/panoxml', function(req,res){
         logo: 'http://qncdn.sz-sti.com/logo-2.png',
         trademark: 'http://qncdn.sz-sti.com/logo_ie.png',
         bottrademark: 'http://qncdn.sz-sti.com/images/tools/botimg1.png',
-        company: '速腾聚创',
+        company: 'RoboPano',
         itcwebsite: 'www.robopano.com',
         introduction: '',
         jz: {},
