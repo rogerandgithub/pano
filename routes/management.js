@@ -408,7 +408,7 @@ router.get('/tour.js', function(req, res){
             return;
         }
         if(name){
-            data = data.replace('关于速腾聚创', name);
+            data = data.replace('关于RoboPano', name);
             if(url){
                 data = data.replace('http://www.sz-sti.com', 'http://'+url);
             }

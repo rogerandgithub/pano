@@ -391,7 +391,7 @@
 
                     r.spots=JSON.parse(filterXSS(unicode2Chr(r.spots),{whiteList:{div:[]}}));
                     r.advertisement=JSON.parse(filterXSS(unicode2Chr(r.advertisement),{whiteList:{div:[]}}));
-                    r.advertisement=r.advertisement?r.advertisement:'速腾聚创';
+                    r.advertisement=r.advertisement?r.advertisement:'RoboPano';
                     r.comments=JSON.parse(filterXSS(unicode2Chr(r.comments),{whiteList:{div:[]}}));
                     r.top_ad=filterXSS(unicode2Chr(r.trademark),{whiteList:{div:[]}});
 
@@ -751,7 +751,7 @@
         }
 
         var advertisement=JSON.parse(filterXSS(unicode2Chr('<%-advertisement%>'),{whiteList:{div:[]}}));
-        advertisement=advertisement?advertisement:'速腾聚创';
+        advertisement=advertisement?advertisement:'RoboPano';
 
         var spots=JSON.parse(filterXSS(unicode2Chr('<%-spots%>'),{whiteList:{div:[]}}));
         var comments=JSON.parse(filterXSS(unicode2Chr('<%-comments%>'),{whiteList:{div:[]}}));
