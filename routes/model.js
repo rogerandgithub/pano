@@ -11,7 +11,7 @@ var sequelize = new Sequelize(config.dbDatabase, config.dbUser, config.dbPasswor
     charset:'utf8',
     timestamps: false,
     timezone: '+08:00',
-    logging: true
+    logging: false
 });
 
 
