@@ -3,7 +3,136 @@
   <component name="ChangeListManager">
     <list default="true" id="ff8f922c-36eb-444f-8f33-ad88fdcf3451" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/model.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/model.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/404.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/404.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/_lists.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/_lists.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/account.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/account.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/accounts.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/accounts.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/analysis.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/analysis.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/analysislogin.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/analysislogin.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/api.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/api.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/api_confirm.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/api_confirm.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/api_login.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/api_login.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/article1.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/article1.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/article2.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/article2.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/article3.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/article3.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/article4.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/article4.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/chart.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/chart.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/data.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/data.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/dataLists.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/dataLists.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/download.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/download.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/download_houseworld.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/download_houseworld.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/download_houseworld_temp.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/download_houseworld_temp.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/download_jjhh.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/download_jjhh.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/download_temp.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/download_temp.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/download_v2.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/download_v2.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/exports.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/exports.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/feedback.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/feedback.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/haofang.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/haofang.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/help.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/help.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/about.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/about.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/algorithm.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/algorithm.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/application.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/application.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/buy.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/buy.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/company.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/company.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/contact.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/contact.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/cooperation.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/cooperation.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/join.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/join.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/join_sch_us.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/join_sch_us.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/joinus.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/joinus.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/m-three-dimensional.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/m-three-dimensional.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/m_algorithm.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/m_algorithm.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/m_company.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/m_company.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/m_contact.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/m_contact.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/m_main.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/m_main.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/m_newinfo.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/m_newinfo.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/m_news.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/m_news.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/m_platform.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/m_platform.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/m_promethus.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/m_promethus.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/m_recruitment.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/m_recruitment.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/m_resource.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/m_resource.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/m_rsSolution.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/m_rsSolution.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/m_rslidar.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/m_rslidar.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/m_rssolutioninfo.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/m_rssolutioninfo.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/m_social.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/m_social.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/m_socialinfo.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/m_socialinfo.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/main.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/main.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/merge.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/merge.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/mobilerecruit.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/mobilerecruit.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/newinfo.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/newinfo.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/news.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/news.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/panorama.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/panorama.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/pillar.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/pillar.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/platform.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/platform.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/prometheus.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/prometheus.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/promethus.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/promethus.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/recruitment.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/recruitment.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/resource.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/resource.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/rs-lidar.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/rs-lidar.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/rs_solution - 副本.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/rs_solution - 副本.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/rs_solution - 鍓湰.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/rs_solution - 鍓湰.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/rs_solution.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/rs_solution.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/rslidar-application.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/rslidar-application.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/rslidar-software.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/rslidar-software.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/service.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/service.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/social.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/social.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/socialinfo.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/socialinfo.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/software.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/software.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/three-dimensional.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/three-dimensional.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/two-dimensional-x.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/two-dimensional-x.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/two-dimensional.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/two-dimensional.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/login.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/login.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/logo.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/logo.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/management.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/management.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/maps.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/maps.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/maps_pc.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/maps_pc.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/maps_upload.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/maps_upload.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/master.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/master.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/newitem/app.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/newitem/app.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/newitem/download.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/newitem/download.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/newitem/edit.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/newitem/edit.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/newitem/editmap.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/newitem/editmap.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/newitem/editscene.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/newitem/editscene.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/newitem/index.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/newitem/index.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/newitem/indexm.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/newitem/indexm.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/newitem/login.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/newitem/login.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/newitem/merge.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/newitem/merge.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/newitem/pano.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/newitem/pano.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/newitem/scene.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/newitem/scene.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/newitem/set.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/newitem/set.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/newitem/support.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/newitem/support.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/newitem/upload.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/newitem/upload.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/newitem/user.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/newitem/user.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/notice.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/notice.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/order.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/order.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/panorama.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/panorama.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/panorama_ie.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/panorama_ie.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/panorama_kr.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/panorama_kr.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/panorama_pc.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/panorama_pc.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/panorama_webgl.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/panorama_webgl.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/panotest.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/panotest.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/ports.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/ports.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/resetpwd.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/resetpwd.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/robot.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/robot.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/romaing-edit.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/romaing-edit.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/romaing-list.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/romaing-list.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/romaing-new.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/romaing-new.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/romaing.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/romaing.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/save.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/save.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/save1.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/save1.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/setpermission.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/setpermission.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/settings.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/settings.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/smlogin.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/smlogin.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/stipage.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/stipage.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/supermaster.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/supermaster.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/test_sphere.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/test_sphere.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/tip.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/tip.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/tips.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/tips.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/trademark.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/trademark.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/trademark2.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/trademark2.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/upload12.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/upload12.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/upload16.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/upload16.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/works.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/works.ejs" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -17,61 +146,134 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/routes/model.js">
+        <entry file="file://$PROJECT_DIR$/views/test_sphere.ejs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="286">
-              <caret line="13" column="18" selection-start-line="13" selection-start-column="18" selection-end-line="13" selection-end-column="18" />
+            <state relative-caret-position="110">
+              <caret line="5" column="48" selection-start-line="5" selection-start-column="48" selection-end-line="5" selection-end-column="48" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/views/tip.ejs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="110">
+              <caret line="5" selection-start-line="5" selection-end-line="5" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/views/tips.ejs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="110">
+              <caret line="5" column="48" selection-start-line="5" selection-start-column="48" selection-end-line="5" selection-end-column="48" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/views/toast.ejs">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/views/trademark.ejs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="110">
+              <caret line="5" column="48" selection-start-line="5" selection-start-column="48" selection-end-line="5" selection-end-column="48" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/views/trademark2.ejs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="110">
+              <caret line="5" column="48" selection-start-line="5" selection-start-column="48" selection-end-line="5" selection-end-column="48" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/views/upload12.ejs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="132">
+              <caret line="6" column="48" selection-start-line="6" selection-start-column="48" selection-end-line="6" selection-end-column="48" />
+              <folding>
+                <element signature="n#style#0;n#div#1;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#2;n#div#0;n#!!top" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/views/upload16.ejs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="132">
+              <caret line="6" column="48" selection-start-line="6" selection-start-column="48" selection-end-line="6" selection-end-column="48" />
+              <folding>
+                <element signature="n#style#0;n#div#1;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#2;n#div#0;n#!!top" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/views/works.ejs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="110">
+              <caret line="5" column="48" selection-start-line="5" selection-start-column="48" selection-end-line="5" selection-end-column="48" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/routes/scene.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="1593" lean-forward="true" selection-start-line="1593" selection-end-line="1593" />
-            </state>
-          </provider>
+        <entry file="file://$PROJECT_DIR$/views/xml.ejs">
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
     </leaf>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>http://qncdn.sz-sti.com/document/plugins/scrollarea.swf</find>
-      <find>设置默认视角</find>
-      <find>场景指引</find>
-      <find>请选择跳转的场景和箭头样式</find>
-      <find>马赛克</find>
-      <find>删除模式</find>
-      <find>添加模式</find>
-      <find>panorama_kr</find>
-      <find>thumbn</find>
-      <find>/thumb.jpg</find>
-      <find>&lt;!--设置电话弹框--&gt;</find>
-      <find>console</find>
-      <find>console.log</find>
-      <find>editor-panoxml</find>
-      <find>panorama</find>
-      <find>v-for</find>
-      <find>wx.sz-sti.com/pano</find>
-      <find>pano/</find>
-      <find>thumburl=</find>
-      <find>thumburl</find>
-      <find>thumb.jpg</find>
-      <find>client</find>
-      <find>sha1</find>
-      <find>该作品不存在或已经删除1</find>
-      <find>速腾聚创</find>
-      <find>token</find>
       <find>result.token</find>
       <find>req.query.token</find>
       <find>0d4a3dddcd55d4183de932b214b113914b4cc59e</find>
       <find>跳转了链接</find>
+      <find>hehe</find>
+      <find>JSON.</find>
+      <find>s</find>
+      <find>app</find>
+      <find>req</find>
+      <find>/app</find>
+      <find>index</find>
+      <find>/app/signin</find>
+      <find>testUpload</find>
+      <find>sessionStorage</find>
+      <find>/list</find>
+      <find>signout</find>
+      <find>works/delete</find>
+      <find>/delete</find>
+      <find>删除成功</find>
+      <find>var nodegrass = require('nodegrass');</find>
+      <find>nodegrass</find>
+      <find>设置房源信息</find>
+      <find>room</find>
+      <find>modify-info</find>
+      <find>0|www      |</find>
+      <find>h</find>
+      <find>a</find>
+      <find>&lt;meta charset=&quot;UTF-8&quot;&gt;</find>
+      <find>&lt;meta charset=&quot;utf-8&quot; /&gt;</find>
+      <find>&lt;meta name=&quot;robots&quot; content=&quot;noarchive&quot;&gt;</find>
     </findStrings>
     <replaceStrings>
       <replace>//console.log</replace>
       <replace>RoboPano</replace>
+      <replace />
     </replaceStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$/.well-known</dir>
@@ -84,39 +286,57 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/bin/www" />
-        <option value="&lt;33298e03-920c-41d0-8e99-85bd31ff4860&gt;/routes/newitem/newitem.js" />
-        <option value="$PROJECT_DIR$/.gitignore" />
-        <option value="$PROJECT_DIR$/views/supermaster.ejs" />
-        <option value="$PROJECT_DIR$/views/newitem/edit.ejs" />
-        <option value="$PROJECT_DIR$/routes/newitem/newitem.js" />
-        <option value="$PROJECT_DIR$/views/newitem/editor-panoxml.ejs" />
-        <option value="$PROJECT_DIR$/views/panorama.ejs" />
-        <option value="$PROJECT_DIR$/views/panorama_kr.ejs" />
-        <option value="$PROJECT_DIR$/views/panorama_ie.ejs" />
-        <option value="$PROJECT_DIR$/views/panorama_pc.ejs" />
-        <option value="$PROJECT_DIR$/views/panorama_slider.ejs" />
-        <option value="$PROJECT_DIR$/views/panorama_switches.ejs" />
-        <option value="$PROJECT_DIR$/views/panorama_webgl.ejs" />
-        <option value="$PROJECT_DIR$/views/panorama_wechat_sharing.ejs" />
-        <option value="$PROJECT_DIR$/routes/utils.js" />
-        <option value="$PROJECT_DIR$/routes/new/scenes.js" />
-        <option value="$PROJECT_DIR$/views/editor-panoxml.ejs" />
-        <option value="$PROJECT_DIR$/public/assets/images/map/merge.ejs" />
-        <option value="$PROJECT_DIR$/public/assets/images/map/pano.ejs" />
-        <option value="$PROJECT_DIR$/public/js/editscene.ejs" />
-        <option value="$PROJECT_DIR$/routes/newitem/scene.js_bak" />
-        <option value="$PROJECT_DIR$/views/api_confirm.ejs" />
-        <option value="$PROJECT_DIR$/views/api_login.ejs" />
-        <option value="$PROJECT_DIR$/views/article1.ejs" />
-        <option value="$PROJECT_DIR$/views/article2.ejs" />
-        <option value="$PROJECT_DIR$/views/article4.ejs" />
         <option value="$PROJECT_DIR$/views/chart.ejs" />
+        <option value="$PROJECT_DIR$/views/data.ejs" />
         <option value="$PROJECT_DIR$/views/dataLists.ejs" />
-        <option value="$PROJECT_DIR$/routes/newitem/scenesitem.js" />
-        <option value="$PROJECT_DIR$/routes/model.js" />
-        <option value="$PROJECT_DIR$/routes/newitem/scene.js" />
-        <option value="$PROJECT_DIR$/routes/scene.js" />
+        <option value="$PROJECT_DIR$/views/download.ejs" />
+        <option value="$PROJECT_DIR$/views/download_houseworld.ejs" />
+        <option value="$PROJECT_DIR$/views/download_houseworld_temp.ejs" />
+        <option value="$PROJECT_DIR$/views/download_jjhh.ejs" />
+        <option value="$PROJECT_DIR$/views/download_temp.ejs" />
+        <option value="$PROJECT_DIR$/views/download_v2.ejs" />
+        <option value="$PROJECT_DIR$/views/exports.ejs" />
+        <option value="$PROJECT_DIR$/views/feedback.ejs" />
+        <option value="$PROJECT_DIR$/views/haofang.ejs" />
+        <option value="$PROJECT_DIR$/views/help.ejs" />
+        <option value="$PROJECT_DIR$/views/index.ejs" />
+        <option value="$PROJECT_DIR$/views/login.ejs" />
+        <option value="$PROJECT_DIR$/views/logo.ejs" />
+        <option value="$PROJECT_DIR$/views/management.ejs" />
+        <option value="$PROJECT_DIR$/views/maps.ejs" />
+        <option value="$PROJECT_DIR$/views/maps_pc.ejs" />
+        <option value="$PROJECT_DIR$/views/maps_upload.ejs" />
+        <option value="$PROJECT_DIR$/views/master.ejs" />
+        <option value="$PROJECT_DIR$/views/notice.ejs" />
+        <option value="$PROJECT_DIR$/views/order.ejs" />
+        <option value="$PROJECT_DIR$/views/panorama.ejs" />
+        <option value="$PROJECT_DIR$/views/panorama_ie.ejs" />
+        <option value="$PROJECT_DIR$/views/panorama_kr.ejs" />
+        <option value="$PROJECT_DIR$/views/panorama_pc.ejs" />
+        <option value="$PROJECT_DIR$/views/panorama_webgl.ejs" />
+        <option value="$PROJECT_DIR$/views/panotest.ejs" />
+        <option value="$PROJECT_DIR$/views/ports.ejs" />
+        <option value="$PROJECT_DIR$/views/resetpwd.ejs" />
+        <option value="$PROJECT_DIR$/views/robot.ejs" />
+        <option value="$PROJECT_DIR$/views/romaing.ejs" />
+        <option value="$PROJECT_DIR$/views/romaing-edit.ejs" />
+        <option value="$PROJECT_DIR$/views/romaing-list.ejs" />
+        <option value="$PROJECT_DIR$/views/romaing-new.ejs" />
+        <option value="$PROJECT_DIR$/views/save.ejs" />
+        <option value="$PROJECT_DIR$/views/save1.ejs" />
+        <option value="$PROJECT_DIR$/views/setpermission.ejs" />
+        <option value="$PROJECT_DIR$/views/settings.ejs" />
+        <option value="$PROJECT_DIR$/views/smlogin.ejs" />
+        <option value="$PROJECT_DIR$/views/stipage.ejs" />
+        <option value="$PROJECT_DIR$/views/supermaster.ejs" />
+        <option value="$PROJECT_DIR$/views/test_sphere.ejs" />
+        <option value="$PROJECT_DIR$/views/tip.ejs" />
+        <option value="$PROJECT_DIR$/views/tips.ejs" />
+        <option value="$PROJECT_DIR$/views/trademark.ejs" />
+        <option value="$PROJECT_DIR$/views/trademark2.ejs" />
+        <option value="$PROJECT_DIR$/views/upload12.ejs" />
+        <option value="$PROJECT_DIR$/views/upload16.ejs" />
+        <option value="$PROJECT_DIR$/views/works.ejs" />
       </list>
     </option>
   </component>
@@ -131,7 +351,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -142,44 +361,25 @@
             <path>
               <item name="pano" type="b2602c69:ProjectViewProjectNode" />
               <item name="pano" type="462c0819:PsiDirectoryNode" />
-              <item name="bin" type="462c0819:PsiDirectoryNode" />
+              <item name="views" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="pano" type="b2602c69:ProjectViewProjectNode" />
               <item name="pano" type="462c0819:PsiDirectoryNode" />
-              <item name="config" type="462c0819:PsiDirectoryNode" />
+              <item name="views" type="462c0819:PsiDirectoryNode" />
+              <item name="index" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="pano" type="b2602c69:ProjectViewProjectNode" />
               <item name="pano" type="462c0819:PsiDirectoryNode" />
-              <item name="https_cert" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="pano" type="b2602c69:ProjectViewProjectNode" />
-              <item name="pano" type="462c0819:PsiDirectoryNode" />
-              <item name="linux_2cam_server" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="pano" type="b2602c69:ProjectViewProjectNode" />
-              <item name="pano" type="462c0819:PsiDirectoryNode" />
-              <item name="routes" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="pano" type="b2602c69:ProjectViewProjectNode" />
-              <item name="pano" type="462c0819:PsiDirectoryNode" />
-              <item name="routes" type="462c0819:PsiDirectoryNode" />
-              <item name="new" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="pano" type="b2602c69:ProjectViewProjectNode" />
-              <item name="pano" type="462c0819:PsiDirectoryNode" />
-              <item name="routes" type="462c0819:PsiDirectoryNode" />
+              <item name="views" type="462c0819:PsiDirectoryNode" />
               <item name="newitem" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -189,7 +389,7 @@
     <property name="WebServerToolWindowPanel.toolwindow.show.date" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.show.permissions" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.show.size" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../robopano-vue" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="Errors" />
   </component>
@@ -266,62 +466,56 @@
       <workItem from="1552635570843" duration="165000" />
       <workItem from="1552635759136" duration="123000" />
       <workItem from="1552636050496" duration="2055000" />
-      <workItem from="1552640112628" duration="2732000" />
+      <workItem from="1552640112628" duration="3391000" />
+      <workItem from="1552873273165" duration="3846000" />
+      <workItem from="1552891217647" duration="13692000" />
+      <workItem from="1553221804325" duration="2022000" />
+      <workItem from="1553241219780" duration="4542000" />
+      <workItem from="1553479990020" duration="6400000" />
+      <workItem from="1553597901602" duration="12012000" />
+      <workItem from="1553760037043" duration="2475000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="82156000" />
+    <option name="totallyTimeSpent" value="127804000" />
+  </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
   </component>
   <component name="ToolWindowManager">
     <frame x="65" y="-4" width="1855" height="1084" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49920762" visible="true" weight="0.19867183" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49920762" visible="true" weight="0.18705036" />
       <window_info id="Structure" order="1" sideWeight="0.5007924" side_tool="true" weight="0.17044826" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info id="npm" order="3" side_tool="true" />
       <window_info id="Grunt " order="4" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.6091476" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.5313808" />
       <window_info anchor="bottom" id="Run" order="2" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.3294979" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" weight="0.3294979" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="9" visible="true" weight="0.5585774" />
-      <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
-      <window_info anchor="bottom" id="Messages" order="11" />
-      <window_info anchor="bottom" id="File Transfer" order="12" weight="0.3294979" />
+      <window_info anchor="bottom" id="Terminal" order="9" visible="true" weight="0.42991632" />
+      <window_info anchor="bottom" id="Messages" order="10" />
+      <window_info anchor="bottom" id="File Transfer" order="11" weight="0.3294979" />
+      <window_info anchor="bottom" id="Event Log" order="12" weight="0.29497907" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="right" id="Remote Host" order="3" weight="0.32982844" />
     </layout>
-    <layout-to-restore>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49920762" visible="true" weight="0.19867183" />
-      <window_info id="Structure" order="1" sideWeight="0.5007924" side_tool="true" weight="0.17044826" />
-      <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.6091476" />
-      <window_info anchor="bottom" id="Run" order="2" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="8" weight="0.3294979" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="9" visible="true" weight="0.40376568" />
-      <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
-      <window_info anchor="bottom" id="Messages" order="11" />
-      <window_info anchor="bottom" id="File Transfer" order="12" weight="0.3294979" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="Remote Host" order="3" weight="0.32982844" />
-    </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
@@ -353,309 +547,361 @@
     </option>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor />
-          <second_editor />
+    <entry file="file://$PROJECT_DIR$/views/header.ejs">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/help.ejs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="110">
+          <caret line="5" column="48" selection-start-line="5" selection-start-column="48" selection-end-line="5" selection-end-column="48" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lock_2t">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/https_cert/wx.sz-sti.com.crt">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/views/newitem/alert.ejs">
+    <entry file="file://$PROJECT_DIR$/views/index.ejs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1305" />
+        <state relative-caret-position="110">
+          <caret line="5" column="48" selection-start-line="5" selection-start-column="48" selection-end-line="5" selection-end-column="48" />
+          <folding>
+            <element signature="n#style#0;n#div#1;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#2;n#div#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/views/newitem/app.ejs">
+    <entry file="file://$PROJECT_DIR$/views/index.jade">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/views/newitem/axml.ejs">
+    <entry file="file://$PROJECT_DIR$/views/layout.jade">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/login.ejs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-990" />
+        <state relative-caret-position="110">
+          <caret line="5" column="48" selection-start-line="5" selection-start-column="48" selection-end-line="5" selection-end-column="48" />
+        </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/views/newitem/download.ejs">
+    <entry file="file://$PROJECT_DIR$/views/logo.ejs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="110">
+          <caret line="5" column="48" selection-start-line="5" selection-start-column="48" selection-end-line="5" selection-end-column="48" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/management.ejs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="110">
+          <caret line="5" column="48" selection-start-line="5" selection-start-column="48" selection-end-line="5" selection-end-column="48" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/maps.ejs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="110">
+          <caret line="5" column="48" selection-start-line="5" selection-start-column="48" selection-end-line="5" selection-end-column="48" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/maps_pc.ejs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="110">
+          <caret line="5" column="48" selection-start-line="5" selection-start-column="48" selection-end-line="5" selection-end-column="48" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/maps_upload.ejs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="110">
+          <caret line="5" column="48" selection-start-line="5" selection-start-column="48" selection-end-line="5" selection-end-column="48" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/master.ejs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="110">
+          <caret line="5" column="48" selection-start-line="5" selection-start-column="48" selection-end-line="5" selection-end-column="48" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/mheader.ejs">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/routes/login.js">
+    <entry file="file://$PROJECT_DIR$/views/notice.ejs">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="88">
-          <caret line="4" column="30" selection-start-line="4" selection-start-column="30" selection-end-line="4" selection-end-column="30" />
+          <caret line="4" column="44" selection-start-line="4" selection-start-column="44" selection-end-line="4" selection-end-column="44" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/views/newitem/login.ejs">
+    <entry file="file://$PROJECT_DIR$/views/order.ejs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2332">
-          <caret line="106" column="44" selection-start-line="106" selection-start-column="37" selection-end-line="106" selection-end-column="44" />
+        <state relative-caret-position="88">
+          <caret line="4" column="44" selection-start-line="4" selection-start-column="44" selection-end-line="4" selection-end-column="44" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/node_modules/crypto/sha1.js">
+    <entry file="file://$PROJECT_DIR$/views/panorama.ejs">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="66">
-          <caret line="10" column="28" selection-start-line="10" selection-start-column="28" selection-end-line="10" selection-end-column="28" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
+          <caret line="3" column="48" selection-start-line="3" selection-start-column="48" selection-end-line="3" selection-end-column="48" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/node_modules/crypto/md5.js">
+    <entry file="file://$PROJECT_DIR$/views/panorama_ie.ejs">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
+        <state relative-caret-position="110">
+          <caret line="5" column="48" selection-start-line="5" selection-start-column="48" selection-end-line="5" selection-end-column="48" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/panorama_kr.ejs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="66">
+          <caret line="3" column="48" selection-start-line="3" selection-start-column="48" selection-end-line="3" selection-end-column="48" />
           <folding>
-            <element signature="n#!!doc" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#canvas#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/node_modules/crypto/package.json">
+    <entry file="file://$PROJECT_DIR$/views/panorama_pc.ejs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="66">
+          <caret line="3" column="48" selection-start-line="3" selection-start-column="48" selection-end-line="3" selection-end-column="48" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/panorama_slider.ejs">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/routes/newitem/newitem.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="535">
-          <caret line="77" column="31" selection-start-line="77" selection-start-column="31" selection-end-line="77" selection-end-column="31" />
-        </state>
-      </provider>
+    <entry file="file://$PROJECT_DIR$/views/panorama_switches.ejs">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/routes/newitem/panoitem.js">
+    <entry file="file://$PROJECT_DIR$/views/panorama_webgl.ejs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1562">
-          <caret line="71" column="34" selection-start-line="71" selection-start-column="28" selection-end-line="71" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/routes/utils.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="616">
-          <caret line="28" column="39" selection-start-line="28" selection-start-column="39" selection-end-line="28" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/views/newitem/editor-panoxml.ejs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="309">
-          <caret line="281" column="306" selection-start-line="281" selection-start-column="306" selection-end-line="281" selection-end-column="306" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/node_modules/grunt-contrib-jshint/tasks/lib/jshint.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="309">
-          <caret line="177" column="6" selection-start-line="177" selection-start-column="6" selection-end-line="177" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/redis.conf">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-330" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/routes/romaing.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="264">
-          <caret line="246" column="82" lean-forward="true" selection-start-line="246" selection-start-column="82" selection-end-line="246" selection-end-column="82" />
+        <state relative-caret-position="110">
+          <caret line="5" column="48" selection-start-line="5" selection-start-column="48" selection-end-line="5" selection-end-column="48" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/views/panorama_wechat_sharing.ejs">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/panotest.ejs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="220">
-          <caret line="10" column="50" selection-start-line="10" selection-start-column="29" selection-end-line="10" selection-end-column="50" />
+        <state relative-caret-position="44">
+          <caret line="2" column="44" selection-start-line="2" selection-start-column="44" selection-end-line="2" selection-end-column="44" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/views/editor-panoxml.ejs">
+    <entry file="file://$PROJECT_DIR$/views/panoxml.ejs">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/ports.ejs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1232">
-          <caret line="98" column="13" lean-forward="true" selection-start-line="98" selection-start-column="13" selection-end-line="98" selection-end-column="13" />
+        <state relative-caret-position="110">
+          <caret line="5" column="4" selection-start-line="5" selection-start-column="4" selection-end-line="5" selection-end-column="4" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/https_cert/root_bundle.crt">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/https_cert/1_full_eallwd.pem">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/https_cert/1_full_eallwd.key">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/https_cert/wx.sz-sti.com.key">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/package-lock.json">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Gruntfile.js">
+    <entry file="file://$PROJECT_DIR$/views/resetpwd.ejs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="484">
-          <caret line="22" column="25" selection-start-line="22" selection-start-column="25" selection-end-line="22" selection-end-column="25" />
+        <state relative-caret-position="110">
+          <caret line="5" column="4" selection-start-line="5" selection-start-column="4" selection-end-line="5" selection-end-column="4" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/favicon.ico">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/feedback_data.json">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/assets/images/map/pano.ejs">
+    <entry file="file://$PROJECT_DIR$/views/robot.ejs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="66">
-          <caret line="3" column="23" selection-start-line="3" selection-start-column="23" selection-end-line="3" selection-end-column="23" />
+        <state relative-caret-position="110">
+          <caret line="5" column="48" selection-start-line="5" selection-start-column="48" selection-end-line="5" selection-end-column="48" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/js/editscene.ejs">
+    <entry file="file://$PROJECT_DIR$/views/romaing.ejs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="66">
-          <caret line="3" column="23" selection-start-line="3" selection-start-column="23" selection-end-line="3" selection-end-column="23" />
+        <state relative-caret-position="110">
+          <caret line="5" column="48" selection-start-line="5" selection-start-column="48" selection-end-line="5" selection-end-column="48" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/views/api_confirm.ejs">
+    <entry file="file://$PROJECT_DIR$/views/romaing-edit.ejs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="108">
-          <caret line="31" column="64" selection-start-line="31" selection-start-column="64" selection-end-line="31" selection-end-column="64" />
+        <state relative-caret-position="110">
+          <caret line="5" column="48" selection-start-line="5" selection-start-column="48" selection-end-line="5" selection-end-column="48" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/romaing-list.ejs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="110">
+          <caret line="5" column="48" selection-start-line="5" selection-start-column="48" selection-end-line="5" selection-end-column="48" />
           <folding>
-            <element signature="n#style#0;n#div#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#input#0;n#div#1;n#!!top" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/views/api_login.ejs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="66">
-          <caret line="3" column="27" selection-start-line="3" selection-start-column="27" selection-end-line="3" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/views/article1.ejs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="66">
-          <caret line="3" column="23" selection-start-line="3" selection-start-column="23" selection-end-line="3" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/views/article2.ejs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="66">
-          <caret line="3" column="15" selection-start-line="3" selection-start-column="15" selection-end-line="3" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/views/article4.ejs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="66">
-          <caret line="3" column="15" selection-start-line="3" selection-start-column="15" selection-end-line="3" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/views/chart.ejs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="66">
-          <caret line="3" column="27" selection-start-line="3" selection-start-column="27" selection-end-line="3" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/views/dataLists.ejs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
-          <caret line="9" column="7" selection-start-line="9" selection-start-column="7" selection-end-line="9" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/assets/images/map/merge.ejs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="66">
-          <caret line="3" column="15" selection-start-line="3" selection-start-column="15" selection-end-line="3" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/routes/newitem/scene.js_bak">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="116">
-          <caret line="2041" column="18" selection-start-line="2041" selection-start-column="18" selection-end-line="2041" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5500">
-          <caret line="250" column="14" selection-start-line="250" selection-start-column="14" selection-end-line="250" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/package.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="231">
-          <caret line="23" column="20" selection-start-line="23" selection-start-column="20" selection-end-line="23" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/routes/newitem/scenesitem.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1540">
-          <caret line="70" column="30" selection-start-line="70" selection-start-column="30" selection-end-line="70" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ecosystem.config.js">
+    <entry file="file://$PROJECT_DIR$/views/romaing-new.ejs">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="110">
-          <caret line="5" column="11" selection-start-line="5" selection-start-column="11" selection-end-line="5" selection-end-column="11" />
+          <caret line="5" column="48" selection-start-line="5" selection-start-column="48" selection-end-line="5" selection-end-column="48" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/config/deploy.js">
+    <entry file="file://$PROJECT_DIR$/views/save.ejs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-312" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bin/www">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-466" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="638">
-          <caret line="158" column="26" selection-start-line="158" selection-start-column="26" selection-end-line="158" selection-end-column="26" />
+        <state relative-caret-position="88">
+          <caret line="4" selection-start-line="4" selection-end-line="4" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/routes/model.js">
+    <entry file="file://$PROJECT_DIR$/views/save1.ejs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="286">
-          <caret line="13" column="18" selection-start-line="13" selection-start-column="18" selection-end-line="13" selection-end-column="18" />
+        <state relative-caret-position="88">
+          <caret line="4" selection-start-line="4" selection-end-line="4" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/routes/newitem/scene.js">
+    <entry file="file://$PROJECT_DIR$/views/setpermission.ejs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="65">
-          <caret line="1599" column="26" lean-forward="true" selection-start-line="1599" selection-start-column="26" selection-end-line="1599" selection-end-column="26" />
+        <state relative-caret-position="154">
+          <caret line="7" column="44" selection-start-line="7" selection-start-column="44" selection-end-line="7" selection-end-column="44" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/routes/scene.js">
+    <entry file="file://$PROJECT_DIR$/views/settings.ejs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="1593" lean-forward="true" selection-start-line="1593" selection-end-line="1593" />
+        <state relative-caret-position="110">
+          <caret line="5" column="48" selection-start-line="5" selection-start-column="48" selection-end-line="5" selection-end-column="48" />
+          <folding>
+            <element signature="n#style#0;n#div#1;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#2;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#input#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#1;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#2;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#input#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#1;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#2;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#input#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#img#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#input#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/sidebar.ejs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="n#style#0;n#div#1;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#2;n#div#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/smheader.ejs">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/smlogin.ejs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="110">
+          <caret line="5" column="48" selection-start-line="5" selection-start-column="48" selection-end-line="5" selection-end-column="48" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/stipage.ejs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="110">
+          <caret line="5" column="44" selection-start-line="5" selection-start-column="44" selection-end-line="5" selection-end-column="44" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/supermaster.ejs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="132">
+          <caret line="6" selection-start-line="6" selection-end-line="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/test_sphere.ejs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="110">
+          <caret line="5" column="48" selection-start-line="5" selection-start-column="48" selection-end-line="5" selection-end-column="48" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/tip.ejs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="110">
+          <caret line="5" selection-start-line="5" selection-end-line="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/tips.ejs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="110">
+          <caret line="5" column="48" selection-start-line="5" selection-start-column="48" selection-end-line="5" selection-end-column="48" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/toast.ejs">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/trademark.ejs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="110">
+          <caret line="5" column="48" selection-start-line="5" selection-start-column="48" selection-end-line="5" selection-end-column="48" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/trademark2.ejs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="110">
+          <caret line="5" column="48" selection-start-line="5" selection-start-column="48" selection-end-line="5" selection-end-column="48" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/upload12.ejs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="132">
+          <caret line="6" column="48" selection-start-line="6" selection-start-column="48" selection-end-line="6" selection-end-column="48" />
+          <folding>
+            <element signature="n#style#0;n#div#1;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#2;n#div#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/upload16.ejs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="132">
+          <caret line="6" column="48" selection-start-line="6" selection-start-column="48" selection-end-line="6" selection-end-column="48" />
+          <folding>
+            <element signature="n#style#0;n#div#1;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#2;n#div#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/works.ejs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="110">
+          <caret line="5" column="48" selection-start-line="5" selection-start-column="48" selection-end-line="5" selection-end-column="48" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/xml.ejs">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
   </component>
 </project>
