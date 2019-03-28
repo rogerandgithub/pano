@@ -2,7 +2,134 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ff8f922c-36eb-444f-8f33-ad88fdcf3451" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/404.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/404.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/_lists.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/_lists.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/account.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/account.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/accounts.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/accounts.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/analysis.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/analysis.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/analysislogin.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/analysislogin.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/api.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/api.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/api_confirm.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/api_confirm.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/api_login.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/api_login.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/article1.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/article1.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/article2.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/article2.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/article3.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/article3.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/article4.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/article4.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/chart.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/chart.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/data.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/data.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/dataLists.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/dataLists.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/download.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/download.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/download_houseworld.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/download_houseworld.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/download_houseworld_temp.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/download_houseworld_temp.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/download_jjhh.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/download_jjhh.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/download_temp.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/download_temp.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/download_v2.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/download_v2.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/exports.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/exports.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/feedback.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/feedback.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/haofang.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/haofang.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/help.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/help.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/about.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/about.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/algorithm.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/algorithm.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/application.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/application.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/buy.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/buy.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/company.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/company.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/contact.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/contact.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/cooperation.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/cooperation.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/join.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/join.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/join_sch_us.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/join_sch_us.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/joinus.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/joinus.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/m-three-dimensional.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/m-three-dimensional.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/m_algorithm.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/m_algorithm.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/m_company.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/m_company.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/m_contact.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/m_contact.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/m_main.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/m_main.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/m_newinfo.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/m_newinfo.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/m_news.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/m_news.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/m_platform.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/m_platform.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/m_promethus.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/m_promethus.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/m_recruitment.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/m_recruitment.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/m_resource.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/m_resource.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/m_rsSolution.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/m_rsSolution.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/m_rslidar.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/m_rslidar.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/m_rssolutioninfo.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/m_rssolutioninfo.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/m_social.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/m_social.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/m_socialinfo.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/m_socialinfo.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/main.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/main.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/merge.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/merge.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/mobilerecruit.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/mobilerecruit.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/newinfo.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/newinfo.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/news.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/news.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/panorama.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/panorama.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/pillar.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/pillar.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/platform.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/platform.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/prometheus.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/prometheus.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/promethus.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/promethus.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/recruitment.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/recruitment.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/resource.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/resource.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/rs-lidar.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/rs-lidar.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/rs_solution.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/rs_solution.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/rslidar-application.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/rslidar-application.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/rslidar-software.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/rslidar-software.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/service.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/service.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/social.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/social.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/socialinfo.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/socialinfo.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/software.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/software.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/three-dimensional.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/three-dimensional.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/two-dimensional-x.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/two-dimensional-x.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index/two-dimensional.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/index/two-dimensional.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/login.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/login.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/logo.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/logo.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/management.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/management.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/maps.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/maps.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/maps_pc.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/maps_pc.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/maps_upload.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/maps_upload.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/master.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/master.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/newitem/app.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/newitem/app.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/newitem/download.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/newitem/download.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/newitem/edit.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/newitem/edit.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/newitem/editmap.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/newitem/editmap.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/newitem/editscene.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/newitem/editscene.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/newitem/index.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/newitem/index.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/newitem/indexm.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/newitem/indexm.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/newitem/login.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/newitem/login.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/newitem/merge.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/newitem/merge.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/newitem/pano.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/newitem/pano.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/newitem/scene.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/newitem/scene.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/newitem/set.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/newitem/set.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/newitem/support.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/newitem/support.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/newitem/upload.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/newitem/upload.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/newitem/user.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/newitem/user.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/notice.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/notice.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/order.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/order.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/panorama.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/panorama.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/panorama_ie.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/panorama_ie.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/panorama_kr.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/panorama_kr.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/panorama_pc.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/panorama_pc.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/panorama_webgl.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/panorama_webgl.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/panotest.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/panotest.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/ports.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/ports.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/resetpwd.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/resetpwd.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/robot.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/robot.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/romaing-edit.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/romaing-edit.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/romaing-list.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/romaing-list.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/romaing-new.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/romaing-new.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/romaing.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/romaing.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/save.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/save.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/save1.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/save1.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/setpermission.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/setpermission.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/settings.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/settings.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/smlogin.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/smlogin.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/stipage.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/stipage.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/supermaster.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/supermaster.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/test_sphere.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/test_sphere.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/tip.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/tip.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/tips.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/tips.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/trademark.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/trademark.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/trademark2.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/trademark2.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/upload12.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/upload12.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/upload16.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/upload16.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/works.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/works.ejs" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -16,16 +143,8 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-87">
-              <caret line="14" column="14" lean-forward="true" selection-start-line="14" selection-start-column="14" selection-end-line="14" selection-end-column="14" />
-              <folding>
-                <element signature="e#2108#2112#0" expanded="true" />
-                <element signature="e#2123#2127#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
+        <entry file="file://$PROJECT_DIR$/views/index/buy.ejs">
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
     </leaf>
@@ -98,6 +217,7 @@
         <option value="$PROJECT_DIR$/routes/new/scenes.js" />
         <option value="$PROJECT_DIR$/routes/newitem/scenesitem.js" />
         <option value="$PROJECT_DIR$/views/editor-panoxml.ejs" />
+        <option value="$PROJECT_DIR$/views/index/buy.ejs" />
       </list>
     </option>
   </component>
@@ -112,6 +232,28 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="pano" type="b2602c69:ProjectViewProjectNode" />
+              <item name="pano" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="pano" type="b2602c69:ProjectViewProjectNode" />
+              <item name="pano" type="462c0819:PsiDirectoryNode" />
+              <item name="views" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="pano" type="b2602c69:ProjectViewProjectNode" />
+              <item name="pano" type="462c0819:PsiDirectoryNode" />
+              <item name="views" type="462c0819:PsiDirectoryNode" />
+              <item name="index" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
       <pane id="Scope">
         <subPane subId="Scope 'Project Files'; set:Project Files; class com.intellij.psi.search.scope.ProjectFilesScope">
           <expand>
@@ -123,17 +265,6 @@
               <item name="pano" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
               <item name="" type="442cc68d:ScopeViewTreeModel$RootNode" />
               <item name=".idea" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="pano" type="b2602c69:ProjectViewProjectNode" />
-              <item name="pano" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -154,6 +285,7 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/public/pano" />
     </key>
   </component>
@@ -218,12 +350,13 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="74137000" />
+    <option name="totallyTimeSpent" value="74155000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="65" y="-4" width="1855" height="1084" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49920762" visible="true" weight="0.19194704" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49920762" visible="true" weight="0.18705036" />
       <window_info id="Structure" order="1" sideWeight="0.5007924" side_tool="true" weight="0.17044826" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -235,7 +368,7 @@
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" weight="0.3294979" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="9" visible="true" weight="0.6600832" />
+      <window_info anchor="bottom" id="Terminal" order="9" visible="true" weight="0.42991632" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
       <window_info anchor="bottom" id="Messages" order="11" />
       <window_info anchor="bottom" id="File Transfer" order="12" weight="0.3294979" />
@@ -305,15 +438,22 @@
         </entry>
       </map>
     </option>
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Branch">
+          <value>
+            <list />
+          </value>
+        </entry>
+        <entry key="User">
+          <value>
+            <list />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/public/skin/vtourskin.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2">
-          <caret line="374" column="73" selection-start-line="374" selection-start-column="73" selection-end-line="374" selection-end-column="73" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/views/xml.ejs">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="196">
@@ -604,6 +744,9 @@
           </folding>
         </state>
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/index/buy.ejs">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
   </component>
 </project>
