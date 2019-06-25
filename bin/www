@@ -9,7 +9,7 @@ var https = require('https');
 app.set('port', config.port || 80);
 
 var server = app.listen(app.get('port'), function() {
-    console.log('Express server listening on port ' + server.address().port);
+    console.log('Express http server listening on port ' + server.address().port);
 });
 
 //ssl证书
@@ -28,5 +28,6 @@ var option = {
 
 
 
-var httpsserver = https.createServer(option, app).listen(443);
-
+var httpsserver = https.createServer(option, app).listen(443, function() {
+    console.log('Express https server listening on port ' + httpsserver.address().port);
+});
