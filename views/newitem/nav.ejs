@@ -97,7 +97,7 @@
                 </div>
             </div>
         </div>
-    </div>   
+    </div>
 </div>
 <!--视频教程弹窗 end-->
 <div id="noticetoast" :style="styleZindex" class="toast-content-half z-index" transition="qrtoast" v-show="shownotice" @click="hide">
@@ -115,7 +115,7 @@
                     <div class="m-footer">
                         <div class="text-center">
                             <button class="btn btn-cancel btn-lg" type="button" @click="showtiptop = false">取消</button>
-                            <button class="btn btn-primary btn-setter btn-lg" type="submit" @click="dealcopy">确定</button> 
+                            <button class="btn btn-primary btn-setter btn-lg" type="submit" @click="dealcopy">确定</button>
                         </div>
                     </div>
                 </div>
@@ -157,8 +157,8 @@
                 <li :class="{'disabled': pages == pagindex}" class="child"><a href="javascript:;" @click="load(pagindex+1)">&#8250;</a></li>
                 <li :class="{'disabled': pages == pagindex}"><a href="javascript:;" @click="load(pages)">&#8250;&#8250;</a></li>
             </ul>
-        </div>   
-    </div>  
+        </div>
+    </div>
 </div>
 <!-- <div id="uploadavatar" class="toast-content" transition="qrtoast" v-show="showavatar" >
     <span><i class="close-pop ico-close" @click="hide"></i></span>
@@ -169,10 +169,10 @@
         <div class="m-footer">
             <div class="text-center">
                 <button class="btn btn-cancel btn-lg" type="button" @click="hide">取消</button>
-                <button class="btn btn-primary btn-setter btn-lg" type="submit" @click="submit">确定</button> 
+                <button class="btn btn-primary btn-setter btn-lg" type="submit" @click="submit">确定</button>
             </div>
         </div>
-    </div> 
+    </div>
 </div> -->
 <div id="noticepreview" style="overflow: auto;" class="toast-content" transition="qrtoast" v-show="showpreview">
     <span @click="hide"><i class="ico-close close-pop fixed"></i></span>
@@ -228,7 +228,7 @@
                 this.showpreview = false;
             }
         }
-    });  
+    });
     var pdfview = new Vue({
         el: '#pdfview',
         data: {
@@ -386,6 +386,10 @@
                 }
             },
             init: function(){
+                // 页面初始化时默认打开通知窗口
+                noticetoast.shownotice = true;
+                noticetoast.styleZindex.zIndex = '5555';
+
                 var _this = this;
                 $.get('/supermaster/notice/data',function(res){
                     var count = 0;
@@ -402,7 +406,7 @@
                         createdAt += '-'+(time.getDate()<10?'0':'')+time.getDate();
                         createdAt += ' '+(time.getHours()<10?'0':'')+time.getHours();
                         createdAt += ':'+(time.getMinutes()<10?'0':'')+time.getMinutes();
-                        res[i].settime = createdAt; 
+                        res[i].settime = createdAt;
                         res[i].read = false; //默认未读
                         res[i].isgroup = false;
                         _this.notices.unshift(res[i]);
@@ -426,8 +430,8 @@
                             len--;
                             i--;
                         }else{
-                            _this.notices[index].read = true; //更改为已读
-                            noread--;
+                            //_this.notices[index].read = true; //更改为已读
+                            //noread--;
                         }
                     }
                     menubox.readcount = noread;
@@ -435,7 +439,7 @@
                 })
             }
         }
-    }) 
+    })
     var videotoast = new Vue({
         el:'#videotoast',
         data:{
@@ -672,7 +676,7 @@ var _hmt = _hmt || [];
 (function() {
   var hm = document.createElement("script");
   hm.src = "https://hm.baidu.com/hm.js?a78a89d21bc59dbb41e2904c980419b9";
-  var s = document.getElementsByTagName("script")[0]; 
+  var s = document.getElementsByTagName("script")[0];
   s.parentNode.insertBefore(hm, s);
 })();
 </script>
