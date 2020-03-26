@@ -438,7 +438,10 @@
                     _this.count = _this.notices.length;
 
                     // 页面初始化时默认打开通知详情窗口
-                    _this.checknotice(1584676800000, true);
+                    if (sessionStorage.getItem("firstNotice") == null) {
+                        _this.checknotice(1584676800000, true);
+                        sessionStorage.setItem("firstNotice", false);
+                    }
                 })
             }
         }
